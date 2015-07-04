@@ -41,6 +41,8 @@ $chart->series = array(
 echo $chart->render('simple-custom-id');
 ```
 
+### Advance
+
 ```php
 // The advance example
 use Hisune\EchartsPHP\ECharts;
@@ -218,6 +220,19 @@ $chart->series = array(
     ),
 );
 echo $chart->render('advance-custom-id');
+```
+
+### Javascript function
+```php
+'axisLabel' => array(
+    // this array value will automatic conversion to js callback function
+    'formatter' => "
+        function (value)
+        {
+            return value + ' °C'
+        }
+    "
+)
 ```
 
 Demos
