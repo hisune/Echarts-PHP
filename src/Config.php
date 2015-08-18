@@ -10,8 +10,9 @@ namespace Hisune\EchartsPHP;
 
 class Config
 {
-    public static $dist = 'https://cdnjs.cloudflare.com/ajax/libs/echarts/2.2.5';
+    public static $dist = 'https://cdnjs.cloudflare.com/ajax/libs/echarts/2.2.7';
     public static $method = array();
+    public static $isOutputJs = false;
 
     public static function scriptCdn()
     {
@@ -60,10 +61,15 @@ class Config
         $option = self::_jsonEncode($option);
         $attribute = self::_renderAttribute($attribute);
         is_null($theme) && $theme = 'null';
+        if(!static::$isOutputJs){
+            $js = '<script src="' . $dist . '/echarts.js"></script>';
+            static::$isOutputJs = true;
+        } else
+            $js = '';
 
         return <<<HTML
-<div id="$id" style="height:400px" $attribute></div>
-<script src="{$dist}/echarts.js"></script>
+<div id="$id" $attribute></div>
+$js
 <script type="text/javascript">
 	require.config({
 		paths: {
@@ -105,6 +111,8 @@ HTML;
     {
         $attributeString = '';
 
+        if(!isset($attribute['style']))
+            $attribute['style'] = 'height:400px';
         foreach ($attribute as $k => $v) {
             $attributeString .= " $k=\"" . self::_h($v) . '"';
         }
