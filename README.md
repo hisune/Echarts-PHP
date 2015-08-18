@@ -54,6 +54,11 @@ echo $chart->render('simple-custom-id');
 )
 ```
 
+### Customer attribute
+```php
+$chart->render('simple-custom-id2', ['style' => 'height: 500px;']);
+```
+
 Demos
 -----
 
