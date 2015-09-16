@@ -64,6 +64,13 @@ Demos
 
 All the Echarts live demos present on http://echarts.baidu.com/.
 
+For Yii2
+-----
+
+https://github.com/hisune/Echarts-PHP/issues/2
+
+(Thx for [@bubifengyun](https://github.com/bubifengyun))
+
 About author
 -----
 Hisune [lyx](http://hisune.com)
