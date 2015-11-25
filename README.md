@@ -8,11 +8,18 @@ Setup
 
 The recommended way to install Echarts-PHP is through  [`Composer`](http://getcomposer.org). Just run the composer command to install it:
 ```sh
-composer require "hisune/echarts-php"
+composer require "hisune/echarts-php:~1.0.2"
 ```
 
 Usage
 -----
+
+### Array key support
+
+```php
+$chart->legend->data[] = '销量';
+$chart->yAxis[0] = array('type' => 'value');
+```
 
 ### Simple
 
@@ -21,7 +28,7 @@ Usage
 use Hisune\EchartsPHP\ECharts;
 $chart = new ECharts();
 $chart->tooltip->show = true;
-$chart->legend->data = array('销量');
+$chart->legend->data[] = '销量';
 $chart->xAxis = array(
     array(
         'type' => 'category',

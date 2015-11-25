@@ -10,6 +10,8 @@ namespace Hisune\EchartsPHP;
 class ECharts implements \ArrayAccess
 {
 
+    public $_options = [];
+
     /**
      * @param $dist string, dist of libraries
      */
@@ -31,30 +33,49 @@ class ECharts implements \ArrayAccess
 
     public function offsetExists ($offset)
     {
-        return property_exists($this, $offset);
+        return isset($this->_options[$offset]);
     }
 
     public function offsetGet ($offset)
     {
         if(!$this->offsetExists($offset))
-            $this->$offset = new self;
+            $this->_options[$offset] = new self;
 
-        return $this->$offset;
+        return $this->_options[$offset];
     }
 
     public function offsetSet ($offset, $value)
     {
-        return $this->$offset = $value;
+        if(is_null($offset))
+            return $this->_options[] = $value;
+        else
+            return $this->_options[$offset] = $value;
     }
 
     public function offsetUnset ($offset)
     {
-        unset($this->$offset);
+        unset($this->_options[$offset]);
     }
 
     public function render($id, $attribute = array(), $theme = null)
     {
-        return Config::render($id, get_object_vars($this), $theme, $attribute);
+        return Config::render($id, $this->getOption(), $theme, $attribute);
+    }
+
+    public function getOption($render = null)
+    {
+        $options = [];
+        is_null($render) && $render = $this->_options;
+
+        foreach($render as $k => $v){
+            if(is_object($v)){
+                $options[$k] = $v->_options;
+                if(is_array($options[$k]))
+                    $options[$k] = $this->getOption($options[$k]);
+            }else
+                $options[$k] = $v;
+        }
+        return $options;
     }
 
 }
