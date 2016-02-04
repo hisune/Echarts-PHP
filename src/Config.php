@@ -10,16 +10,9 @@ namespace Hisune\EchartsPHP;
 
 class Config
 {
-    public static $dist = 'https://cdnjs.cloudflare.com/ajax/libs/echarts/2.2.7';
+    public static $dist = '//cdnjs.cloudflare.com/ajax/libs/echarts/2.2.7/';
     public static $method = array();
     public static $isOutputJs = false;
-
-    public static function scriptCdn()
-    {
-        return array(
-            'bar' => 'chart/bar.js',
-        );
-    }
 
     private static function _jsMethod($value)
     {
@@ -56,18 +49,20 @@ class Config
     {
         self::_optionMethod($option);
 
-        $dist = self::$dist;
-        $require = self::_require($option);
-        $option = self::_jsonEncode($option);
         $attribute = self::_renderAttribute($attribute);
         is_null($theme) && $theme = 'null';
         if(!static::$isOutputJs){
-            $js = '<script src="' . $dist . '/echarts.js"></script>';
+            $js = '<script src="' . self::$dist . '/echarts.js"></script>';
             static::$isOutputJs = true;
         } else
             $js = '';
 
-        return <<<HTML
+        $distArray = explode('/', trim(self::$dist, '/'));
+        if(version_compare(end($distArray), '3.0.0') < 0){
+            $dist = self::$dist;
+            $require = self::_require($option);
+            $option = self::_jsonEncode($option);
+            return <<<HTML
 <div id="$id" $attribute></div>
 $js
 <script type="text/javascript">
@@ -88,6 +83,18 @@ $js
 	);
 </script>
 HTML;
+        }else{
+            $option = self::_jsonEncode($option);
+            return <<<HTML
+<div id="$id" $attribute></div>
+$js
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('$id'));
+    var option = $option;
+    myChart.setOption(option);
+</script>
+HTML;
+        }
     }
 
     private static function _require($option)
