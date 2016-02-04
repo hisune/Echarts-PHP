@@ -1,7 +1,7 @@
 Echarts-PHP
 =============
 
-Echarts-PHP is a PHP library that works as a wrapper for the **Echarts js** library (https://github.com/ecomfe/echarts).
+Echarts-PHP is a PHP library that works as a wrapper for the **Echarts js** library (https://github.com/ecomfe/echarts). Support echarts version from 2.2.x to 3.0.x.
 
 Setup
 -----
@@ -60,6 +60,11 @@ echo $chart->render('simple-custom-id');
 ### Customer attribute
 ```php
 $chart->render('simple-custom-id2', ['style' => 'height: 500px;']);
+```
+
+### Customer dist
+```php
+Hisune\EchartsPHP\Config::$dist = 'your dist url';
 ```
 
 Demos
