@@ -76,7 +76,7 @@ $js
 			$require
 		],
 		function (ec) {
-			var myChart = ec.init(document.getElementById('$id'), $theme);
+			var myChart = ec.init(document.getElementById('$id'), '$theme');
 			var option = $option;
 			myChart.setOption(option);
 		}
