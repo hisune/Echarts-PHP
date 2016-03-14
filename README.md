@@ -8,7 +8,7 @@ Setup
 
 The recommended way to install Echarts-PHP is through  [`Composer`](http://getcomposer.org). Just run the composer command to install it:
 ```sh
-composer require "hisune/echarts-php:~1.0.4"
+composer require "hisune/echarts-php:~1.0.5"
 ```
 
 Usage
