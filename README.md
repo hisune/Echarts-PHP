@@ -1,3 +1,9 @@
+[![Latest Stable Version](https://poser.pugx.org/hisune/Echarts-PHP/v/stable)](https://packagist.org/packages/hisune/Echarts-PHP) 
+[![Total Downloads](https://poser.pugx.org/hisune/Echarts-PHP/downloads)](https://packagist.org/packages/hisune/Echarts-PHP) 
+[![Latest Unstable Version](https://poser.pugx.org/hisune/Echarts-PHP/v/unstable)](https://packagist.org/packages/hisune/Echarts-PHP) 
+[![License](https://poser.pugx.org/hisune/Echarts-PHP/license)](https://packagist.org/packages/hisune/Echarts-PHP)
+
+
 Echarts-PHP
 =============
 
