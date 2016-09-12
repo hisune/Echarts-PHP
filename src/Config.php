@@ -54,7 +54,6 @@ class Config
 
     public static function render($id, $option, $theme = null, array $attribute = array())
     {
-
         $attribute = self::_renderAttribute($attribute);
         is_null($theme) && $theme = 'null';
         if(!static::$isOutputJs){
@@ -72,6 +71,7 @@ class Config
         if(version_compare(end($distArray), '3.0.0') < 0){
             $dist = self::$dist;
             $require = self::_require($option);
+            $option = self::jsonEncode($option);
             return <<<HTML
 <div id="$id" $attribute></div>
 $js
@@ -94,6 +94,7 @@ $js
 </script>
 HTML;
         }else{
+            $option = self::jsonEncode($option);
             return <<<HTML
 <div id="$id" $attribute></div>
 $js
