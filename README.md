@@ -118,14 +118,6 @@ Hisune\EchartsPHP\Config::$dist = 'your dist url';
 Hisune\EchartsPHP\Config::addExtraScript('extension/dataTool.js'); // the second param is your customer dist url
 ```
 
-### Async loading with getOption()
-```js
-var myChart = echarts.init(document.getElementById('custom-id3'));
-$.get('data.json').done(function (data) {
-    myChart.setOption(<?php echo $chart->getOption(); ?>);
-});
-```
-
 Demos
 -----
 
