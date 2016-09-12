@@ -62,6 +62,7 @@ $option = array (
       0 => '销量',
     ),
   ),
+  // ...
 )
 $chart->setOption($option);
 ```
@@ -80,7 +81,7 @@ $chart->setOption($option);
 )
 ```
 ```php
-// Or you can add any js expr
+// Or you can add any js expr with jsExpr
 'backgroundColor' => \Hisune\EchartsPHP\Config::jsExpr('
     new echarts.graphic.RadialGradient(0.5, 0.5, 0.4, [{
         offset: 0,
