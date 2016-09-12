@@ -85,10 +85,10 @@ $chart->yAxis[0] = array('type' => 'value');
 'backgroundColor' => \Hisune\EchartsPHP\Config::jsExpr('
     new echarts.graphic.RadialGradient(0.5, 0.5, 0.4, [{
         offset: 0,
-        color: '#4b5769'
+        color: "#4b5769"
     }, {
         offset: 1,
-        color: '#404a59'
+        color: "#404a59"
     }])
 ');
 ```
@@ -116,6 +116,14 @@ Hisune\EchartsPHP\Config::$dist = 'your dist url';
 ### Add extra script from cdn
 ```php
 Hisune\EchartsPHP\Config::addExtraScript('extension/dataTool.js'); // the second param is your customer dist url
+```
+
+### Async loading with getOption()
+```js
+var myChart = echarts.init(document.getElementById('custom-id3'));
+$.get('data.json').done(function (data) {
+    myChart.setOption(<?php echo $chart->getOption(); ?>);
+});
 ```
 
 Demos
