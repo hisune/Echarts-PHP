@@ -5,25 +5,18 @@
 Echarts-PHP
 =============
 
-Echarts-PHP is a PHP library that works as a wrapper for the **Echarts js** library (https://github.com/ecomfe/echarts). Support echarts version from 2.2.x to 3.0.x.
+Echarts-PHP is a PHP library that works as a wrapper for the **Echarts js** library (https://github.com/ecomfe/echarts). Support echarts version from 2.2.x to 3.x.
 
 Setup
 -----
 
 The recommended way to install Echarts-PHP is through  [`Composer`](http://getcomposer.org). Just run the composer command to install it:
 ```sh
-composer require "hisune/echarts-php:~1.0.5"
+composer require "hisune/echarts-php:~1.0.6"
 ```
 
 Usage
 -----
-
-### Array key support
-
-```php
-$chart->legend->data[] = '销量';
-$chart->yAxis[0] = array('type' => 'value');
-```
 
 ### Simple
 
@@ -65,6 +58,13 @@ $option = array (
   // ...
 )
 $chart->setOption($option);
+```
+
+### Array key support
+
+```php
+$chart->legend->data[] = '销量';
+$chart->yAxis[0] = array('type' => 'value');
 ```
 
 ### Javascript function
