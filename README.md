@@ -48,8 +48,27 @@ $chart->series[] = array(
 echo $chart->render('simple-custom-id');
 ```
 
+### Set option array
+```php
+$option = array (
+  'tooltip' =>
+  array (
+    'show' => true,
+  ),
+  'legend' =>
+  array (
+    'data' =>
+    array (
+      0 => '销量',
+    ),
+  ),
+)
+$chart->setOption($option);
+```
+
 ### Javascript function
 ```php
+// With 'function' letter startup
 'axisLabel' => array(
     // this array value will automatic conversion to js callback function
     'formatter' => "
@@ -60,6 +79,18 @@ echo $chart->render('simple-custom-id');
     "
 )
 ```
+```php
+// Or you can add any js expr
+'backgroundColor' => \Hisune\EchartsPHP\Config::jsExpr('
+    new echarts.graphic.RadialGradient(0.5, 0.5, 0.4, [{
+        offset: 0,
+        color: '#4b5769'
+    }, {
+        offset: 1,
+        color: '#404a59'
+    }])
+');
+```
 
 ### Customer attribute
 ```php
@@ -69,6 +100,21 @@ $chart->render('simple-custom-id2', ['style' => 'height: 500px;']);
 ### Customer dist
 ```php
 Hisune\EchartsPHP\Config::$dist = 'your dist url';
+```
+
+### Dist type
+```php
+\Hisune\EchartsPHP\Config::$distType = 'common'; // '' or 'common' or 'simple'
+```
+
+### Whether or not load minify js file
+```php
+\Hisune\EchartsPHP\Config::$minify = false; // default is true
+```
+
+### Add extra script from cdn
+```php
+Hisune\EchartsPHP\Config::addExtraScript('extension/dataTool.js'); // the second param is your customer dist url
 ```
 
 Demos

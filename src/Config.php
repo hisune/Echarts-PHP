@@ -10,9 +10,17 @@ namespace Hisune\EchartsPHP;
 
 class Config
 {
-    public static $dist = '//cdnjs.cloudflare.com/ajax/libs/echarts/2.2.7/';
+    public static $dist = '//cdnjs.cloudflare.com/ajax/libs/echarts/3.2.3';
     public static $method = array();
     public static $isOutputJs = false;
+    public static $distType = ''; // Empty is full, other options: simple, common
+    public static $minify = true; // Whether or not load minify js file
+    public static $extraScript = array();
+
+    public static function jsExpr($string)
+    {
+        return self::_jsMethod($string);
+    }
 
     private static function _jsMethod($value)
     {
@@ -26,7 +34,7 @@ class Config
     {
         foreach($option as $k => $v){
             if(is_string($v)){
-                $replace = str_replace(array("\t","\r","\n","\0","\x0B", ' '), '', $v);
+                $replace = str_replace(array("\t","\r","\n","\0","\x0B",' '), '', $v);
                 if(strpos($replace, 'function(') === 0)
                     $option[$k] = self::_jsMethod($v);
 
@@ -52,7 +60,12 @@ class Config
         $attribute = self::_renderAttribute($attribute);
         is_null($theme) && $theme = 'null';
         if(!static::$isOutputJs){
-            $js = '<script src="' . self::$dist . '/echarts.js"></script>';
+            $js = '<script src="' . self::$dist . '/echarts' . (self::$distType ? '.' . self::$distType : '') . (self::$minify ? '.min' : '') . '.js"></script>';
+
+            if(static::$extraScript)
+                foreach(static::$extraScript as $k => $v)
+                    $js .= '<script src="' . $v . '/' . $k . '"></script>';
+
             static::$isOutputJs = true;
         } else
             $js = '';
@@ -89,7 +102,7 @@ HTML;
 <div id="$id" $attribute></div>
 $js
 <script type="text/javascript">
-    var myChart = echarts.init(document.getElementById('$id'));
+    var myChart = echarts.init(document.getElementById('$id'), '$theme');
     var option = $option;
     myChart.setOption(option);
 </script>
@@ -130,6 +143,12 @@ HTML;
     private static function _h($string)
     {
         return htmlspecialchars($string, ENT_QUOTES, 'utf-8');
+    }
+
+    public static function addExtraScript($file, $dist = null)
+    {
+        !$dist && $dist = self::$dist;
+        self::$extraScript[$file] = $dist;
     }
 
 }

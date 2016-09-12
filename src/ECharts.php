@@ -78,6 +78,12 @@ class ECharts implements \ArrayAccess
         return $options;
     }
 
+    public function setOption(array $options = array())
+    {
+        foreach($options as $k => $v)
+            $this->offsetSet($k, $v);
+    }
+
 }
 
 
