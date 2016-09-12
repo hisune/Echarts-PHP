@@ -62,7 +62,7 @@ class ECharts implements \ArrayAccess
         return Config::render($id, $this->getOption(), $theme, $attribute);
     }
 
-    public function getOption($render = null)
+    public function getOption($render = null, $jsObject = false)
     {
         $options = [];
         is_null($render) && $render = $this->_options;
@@ -75,7 +75,9 @@ class ECharts implements \ArrayAccess
             }else
                 $options[$k] = $v;
         }
-        return $options;
+        Config::optionMethod($options);
+
+        return $jsObject ? Config::jsonEncode($options) : $options;
     }
 
     public function setOption(array $options = array())

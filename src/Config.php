@@ -30,21 +30,20 @@ class Config
     }
 
     // 替换js的function
-    private static function _optionMethod(&$option)
+    public static function optionMethod(&$option)
     {
         foreach($option as $k => $v){
-            if(is_string($v)){
-                $replace = str_replace(array("\t","\r","\n","\0","\x0B",' '), '', $v);
-                if(strpos($replace, 'function(') === 0)
+            if(is_string($v)) {
+                $replace = str_replace(array("\t", "\r", "\n", "\0", "\x0B", ' '), '', $v);
+                if (strpos($replace, 'function(') === 0)
                     $option[$k] = self::_jsMethod($v);
-
             }elseif(is_array($v))
-                self::_optionMethod($option[$k]);
+                self::optionMethod($option[$k]);
         }
     }
 
     // 替换回js的函数
-    private static function _jsonEncode($option)
+    public static function jsonEncode($option)
     {
         $option = json_encode($option);
         if(self::$method){
@@ -55,7 +54,6 @@ class Config
 
     public static function render($id, $option, $theme = null, array $attribute = array())
     {
-        self::_optionMethod($option);
 
         $attribute = self::_renderAttribute($attribute);
         is_null($theme) && $theme = 'null';
@@ -74,7 +72,6 @@ class Config
         if(version_compare(end($distArray), '3.0.0') < 0){
             $dist = self::$dist;
             $require = self::_require($option);
-            $option = self::_jsonEncode($option);
             return <<<HTML
 <div id="$id" $attribute></div>
 $js
@@ -97,7 +94,6 @@ $js
 </script>
 HTML;
         }else{
-            $option = self::_jsonEncode($option);
             return <<<HTML
 <div id="$id" $attribute></div>
 $js
