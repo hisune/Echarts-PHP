@@ -121,6 +121,8 @@ Hisune\EchartsPHP\Config::addExtraScript('extension/dataTool.js'); // the second
 Demos
 -----
 
+https://demo.hisune.com/echarts-php/
+
 All the Echarts live demos present on http://echarts.baidu.com/.
 
 License
