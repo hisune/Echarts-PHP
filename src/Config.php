@@ -10,7 +10,8 @@ namespace Hisune\EchartsPHP;
 
 class Config
 {
-    public static $dist = '//cdnjs.cloudflare.com/ajax/libs/echarts/3.2.3';
+    public static $dist = '//cdnjs.cloudflare.com/ajax/libs/echarts/3.4.0';
+    public static $version = '3.4.0';
     public static $method = array();
     public static $isOutputJs = false;
     public static $distType = ''; // Empty is full, other options: simple, common
@@ -67,8 +68,7 @@ class Config
         } else
             $js = '';
 
-        $distArray = explode('/', trim(self::$dist, '/'));
-        if(version_compare(end($distArray), '3.0.0') < 0){
+        if(version_compare(self::$version, '3.0.0') < 0){
             $dist = self::$dist;
             $require = self::_require($option);
             $option = self::jsonEncode($option);

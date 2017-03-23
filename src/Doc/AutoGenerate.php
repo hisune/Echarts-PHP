@@ -4,6 +4,8 @@
  * User: Hisune <hi@hisune.com>
  * Date: 2017/3/23
  * Time: 11:30
+ *
+ * Auto generate PHPDoc for Echarts-PHP from option.json
  */
 
 if (!php_sapi_name() == 'cli') {
