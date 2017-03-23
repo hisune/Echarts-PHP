@@ -12,7 +12,7 @@ Setup
 
 The recommended way to install Echarts-PHP is through  [`Composer`](http://getcomposer.org). Just run the composer command to install it:
 ```sh
-composer require "hisune/echarts-php:~1.0.6"
+composer require "hisune/echarts-php:~1.0.7"
 ```
 
 Usage
@@ -117,6 +117,9 @@ Hisune\EchartsPHP\Config::$dist = 'your dist url';
 ```php
 Hisune\EchartsPHP\Config::addExtraScript('extension/dataTool.js'); // the second param is your customer dist url
 ```
+
+### Full Echarts PHPDoc
+https://hisune.com/view/50/echarts-php-property-phpdoc-auto-generate
 
 Demos
 -----
