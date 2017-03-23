@@ -7,6 +7,46 @@
  */
 namespace Hisune\EchartsPHP;
 
+/**
+ * Class ECharts
+ * Created by Hisune EchartsPHP AutoGenerate.
+ * @package Hisune\EchartsPHP
+ *
+ * @property Doc\IDE\Title $title
+ * @property Doc\IDE\Legend $legend
+ * @property Doc\IDE\Tooltip $tooltip
+ * @property Doc\IDE\Grid $grid
+ * @property Doc\IDE\XAxis $xAxis
+ * @property Doc\IDE\YAxis $yAxis
+ * @property Doc\IDE\Polar $polar
+ * @property Doc\IDE\RadiusAxis $radiusAxis
+ * @property Doc\IDE\AngleAxis $angleAxis
+ * @property Doc\IDE\Radar $radar
+ * @property callable $datazoom
+ * @property callable $visualmap
+ * @property Doc\IDE\AxisPointer $axisPointer
+ * @property Doc\IDE\Toolbox $toolbox
+ * @property Doc\IDE\Brush $brush
+ * @property Doc\IDE\Geo $geo
+ * @property Doc\IDE\Parallel $parallel
+ * @property Doc\IDE\ParallelAxis $parallelAxis
+ * @property Doc\IDE\SingleAxis $singleAxis
+ * @property Doc\IDE\Timeline $timeline
+ * @property Doc\IDE\Graphic $graphic
+ * @property Doc\IDE\Calendar $calendar
+ * @property callable $series
+ * @property callable $color
+ * @property callable $backgroundcolor
+ * @property Doc\IDE\TextStyle $textStyle
+ * @property callable $animation
+ * @property callable $animationthreshold
+ * @property callable $animationduration
+ * @property callable $animationeasing
+ * @property callable $animationdelay
+ * @property callable $animationdurationupdate
+ * @property callable $animationeasingupdate
+ * @property callable $animationdelayupdate
+ */
 class ECharts implements \ArrayAccess
 {
 
