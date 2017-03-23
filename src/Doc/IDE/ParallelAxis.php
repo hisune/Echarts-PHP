@@ -10,224 +10,221 @@ class ParallelAxis
 {            
         
     /**
-     * @var int Dimension index of coordinate axis.
-     * For example, series-parallel.data is the following data:
+     * @var int 坐标轴的维度序号。
+     * 例如 series-parallel.data 中有如下数据：
      * [
-     *     [1,  55,  9,   56,  0.46,  18,  6,  good],
-     *     [2,  25,  11,  21,  0.65,  34,  9,  excellent],
-     *     [3,  56,  7,   63,  0.3,   14,  5,  good],
-     *     [4,  33,  7,   29,  0.33,  16,  6,  excellent],
-     *     { // Data item can also be an Object, so that perticular settings of its line can be set here.
-     *         value: [5,  42,  24,  44,  0.76,  40,  16, excellent]
+     *     [1,  55,  9,   56,  0.46,  18,  6,  良],
+     *     [2,  25,  11,  21,  0.65,  34,  9,  优],
+     *     [3,  56,  7,   63,  0.3,   14,  5,  良],
+     *     [4,  33,  7,   29,  0.33,  16,  6,  优],
+     *     { // 数据项也可以是 Object，从而里面能含有对线条的特殊设置。
+     *         value: [5,  42,  24,  44,  0.76,  40,  16, 优]
      *         lineStyle: {...},
      *     }
      *     ...
      * ]
      * 
-     * In data above, each row is a data item, and each column represents a dimension. For example, the meanings of columns above are: data, AQI, PM2.5, PM10, carbon monoxide level, nitrogen dioxide level, and sulfur dioxide level.
-     * dim defines which dimension (which row) of data would map to this axis.
-     * Started from 0. For example, if the dim of coordinate axis is 1, it indicates that the second row of data would map to this axis.
+     * 数据中，每一行是一个『数据项』，每一列属于一个『维度』。（例如上面数据每一列的含义分别是：『日期』,『AQI指数』, 『PM2.5』, 『PM10』, 『一氧化碳值』, 『二氧化氮值』, 『二氧化硫值』）。
+     * dim 定义了数据的哪个维度（即哪个『列』）会对应到此坐标轴上。
+     * 从 0 开始计数。例如，假设坐标轴的 dim 为 1，则表示数据中的第二列会对应到此坐标轴上。
      */
     public $dim;        
         
     /**
-     * @var int It is used to define which coordinate the axis should map to.
-     * For example:
+     * @var int 用于定义『坐标轴』对应到哪个『坐标系』中。
+     * 比如有如下配置：
      * myChart.setOption({
      *     parallel: [
-     *         {...},                      // the first parallel coordinate
-     *         {...}                       // the second parallel coordinate
+     *         {...},                      // 第一个平行坐标系
+     *         {...}                       // 第二个平行坐标系
      *     ],
      *     parallelAxis: [
-     *         {parallelIndex: 1, ...},    // the first coordinate axis, mapping to the second parallel coordinate
-     *         {parallelIndex: 0, ...},    //  the second coordinate axis, mapping to the first parallel coordinate
-     *         {parallelIndex: 1, ...},    //  the third coordinate axis, mapping to the second parallel coordinate
-     *         {parallelIndex: 0, ...}     //  the fourth coordinate axis, mapping to the first parallel coordinate
+     *         {parallelIndex: 1, ...},    // 第一个坐标轴，对应到第二个平行坐标系
+     *         {parallelIndex: 0, ...},    // 第二个坐标轴，对应到第一个平行坐标系
+     *         {parallelIndex: 1, ...},    // 第三个坐标轴，对应到第二个平行坐标系
+     *         {parallelIndex: 0, ...}     // 第四个坐标轴，对应到第一个平行坐标系
      *     ],
      *     ...
      * });
      * 
-     * If there is only one parallel coordinate, you dont have to configure it, whose default value is 0.
+     * 只有一个平行坐标系时可不用设置，自动取默认值 0。
      */
     public $parallelIndex = 0;        
         
     /**
-     * @var boolean Whether to refresh view when brush-selecting axis. If is set to be false, view is updated after brush-selecting action ends.
-     * When data amount is large, it is suggested to set to be false to avoid efficiency problems.
+     * @var boolean 是否坐标轴刷选的时候，实时刷新视图。如果设为 false，则在刷选动作结束时候，才刷新视图。
+     * 大数据量时，建议设置成 false，从而避免卡顿。
      */
     public $realtime = true;        
         
     /**
-     * @var ParallelAxis\AreaSelectStyle Area selecting is available on axes. Here is some configurations.
+     * @var ParallelAxis\AreaSelectStyle 在坐标轴上可以进行框选，这里是一些框选的设置。
      */
     public $areaSelectStyle;        
         
     /**
-     * @var string Type of axis
-     * Option:
+     * @var string 坐标轴类型。
+     * 可选：
      * 
      * value
-     *   Numerical axis, suitable for continuous data.
+     *   数值轴，适用于连续数据。
      * 
      * category
-     *   Category axis, suitable for discrete category data. Data should only be set via data for this type.
+     *   类目轴，适用于离散的类目数据，为该类型时必须通过 data 设置类目数据。
      * 
      * time
-     *   Time axis, suitable for continuous time series data. As compared to value axis, it has a better formatting for time and a different tick calculation method. For example, it decides to use month, week, day or hour for tick based on the range of span.
+     *   时间轴，适用于连续的时序数据，与数值轴相比时间轴带有时间的格式化，在刻度计算上也有所不同，例如会根据跨度的范围来决定使用月，星期，日还是小时范围的刻度。
      * 
      * log
-     *   Log axis, suitable for log data.
+     *   对数轴。适用于对数数据。
      */
     public $type = 'value';        
         
     /**
-     * @var string Name of axis.
+     * @var string 坐标轴名称。
      */
     public $name;        
         
     /**
-     * @var string Location of axis name.
-     * Options: 
+     * @var string 坐标轴名称显示位置。
+     * 可选：
      * 
      * start
      * middle
      * end
      */
-    public $nameLocation = 'start';        
+    public $nameLocation = 'end';        
         
     /**
-     * @var ParallelAxis\NameTextStyle Text style of axis name.
+     * @var ParallelAxis\NameTextStyle 坐标轴名称的文字样式。
      */
     public $nameTextStyle;        
         
     /**
-     * @var int Gap between axis name and axis line.
+     * @var int 坐标轴名称与轴线之间的距离。
      */
     public $nameGap = 15;        
         
     /**
-     * @var int Rotation of axis name.
+     * @var int 坐标轴名字旋转，角度值。
      */
     public $nameRotate;        
         
     /**
-     * @var boolean Whether axis is inversed. New option from ECharts 3.
+     * @var boolean 是否是反向坐标轴。ECharts 3 中新加。
      */
     public $inverse = false;        
         
     /**
-     * @var boolean|array The boundary gap on both sides of a coordinate axis. The setting and behavior of category axes and non-category axes are different.
-     * The boundaryGap of category axis can be set to either true or false. Default value is set to be true, in which case axisTick is served only as a separation line, and labels and data appear only in the center part of two axis ticks, which is called band.
-     * For non-category axis, including time, numerical value, and log axes, boundaryGap is an array of two values, representing the spanning range between minimum and maximum value. The value can be set in numeric value or relative percentage, which becomes invalid after setting min and max.
-     * Example: 
+     * @var boolean|array 坐标轴两边留白策略，类目轴和非类目轴的设置和表现不一样。
+     * 类目轴中 boundaryGap 可以配置为 true 和 false。默认为 true，这时候刻度只是作为分隔线，标签和数据点都会在两个刻度之间的带(band)中间。
+     * 非类目轴，包括时间，数值，对数轴，boundaryGap是一个两个值的数组，分别表示数据最小值和最大值的延伸范围，可以直接设置数值或者相对的百分比，在设置 min 和 max 后无效。
+     * 示例：
      * boundaryGap: [20%, 20%]
      */
     public $boundaryGap;        
         
     /**
-     * @var int|string The minimun value of axis.
-     * It can be set to a special value dataMin so that the minimum value on this axis is set to be the minimum label.
-     * It will be automatically computed to make sure axis tick is equally distributed when not set.
-     * In category axis, it can also be set as the ordinal number. For example, if a catergory axis has data: [categoryA, categoryB, categoryC], and the ordinal 2 represents categoryC. Moreover, it can be set as negative number, like -3.
+     * @var int|string 坐标轴刻度最小值。
+     * 可以设置成特殊值 dataMin，此时取数据在该轴上的最小值作为最小刻度。
+     * 不设置时会自动计算最小值保证坐标轴刻度的均匀分布。
+     * 在类目轴中，也可以设置为类目的序数（如类目轴 data: [类A, 类B, 类C] 中，序数 2 表示 类C。也可以设置为负数，如 -3）。
      */
-    public $min;        
+    public $min = 'auto';        
         
     /**
-     * @var int|string The maximum value of axis.
-     * It can be set to a special value dataMax so that the minimum value on this axis is set to be the maximum label.
-     * It will be automatically computed to make sure axis tick is equally distributed when not set.
-     * In category axis, it can also be set as the ordinal number. For example, if a catergory axis has data: [categoryA, categoryB, categoryC], and the ordinal 2 represents categoryC. Moreover, it can be set as negative number, like -3.
+     * @var int|string 坐标轴刻度最大值。
+     * 可以设置成特殊值 dataMax，此时取数据在该轴上的最大值作为最大刻度。
+     * 不设置时会自动计算最大值保证坐标轴刻度的均匀分布。
+     * 在类目轴中，也可以设置为类目的序数（如类目轴 data: [类A, 类B, 类C] 中，序数 2 表示 类C。也可以设置为负数，如 -3）。
      */
-    public $max;        
+    public $max = 'auto';        
         
     /**
-     * @var boolean It is available only in numerical axis, i.e., type: value.
-     * It specifies whether not to contain zero position of axis compulsively. When it is set to be true, the axis may not contain zero position, which is useful in the scatter chart for both value axes.
-     * This configuration item is unavailable when the min and max are set.
+     * @var boolean 只在数值轴中（type: value）有效。
+     * 是否是脱离 0 值比例。设置成 true 后坐标刻度不会强制包含零刻度。在双数值轴的散点图中比较有用。
+     * 在设置 min 和 max 之后该配置项无效。
      */
     public $scale = false;        
         
     /**
-     * @var int Number of segments that the axis is split into. Note that this number serves only as a recommendation, and the true segments may be adjusted based on readability.
-     * This is unavailable for category axis.
+     * @var int 坐标轴的分割段数，需要注意的是这个分割段数只是个预估值，最后实际显示的段数会在这个基础上根据分割后坐标轴刻度显示的易读程度作调整。
+     * 在类目轴中无效。
      */
     public $splitNumber = 5;        
         
     /**
-     * @var int Minimum gap between split lines.
-     * For example, it can be set to be 1 to make sure axis label is show as integer.
+     * @var int 自动计算的坐标轴最小间隔大小。
+     * 例如可以设置成1保证坐标轴分割刻度显示成整数。
      * {
      *     minInterval: 1
      * }
      * 
-     * It is available only for axis of type value.
+     * 只在数值轴中（type: value）有效。
      */
     public $minInterval = 0;        
         
     /**
-     * @var int Compulsively set segmentation interval for axis.
-     * As splitNumber is a recommendation value, the calculated tick may not be the same as expected. In this case, interval should be used along with min and max to compulsively set tickings. But in most cases, we do not suggest using this, out automatic calculation is enough for most situations.
-     * This is unavailable for category axis. Timestamp should be passed for type: time axis. Logged value should be passed for type: log axis.
+     * @var int 强制设置坐标轴分割间隔。
+     * 因为 splitNumber 是预估的值，实际根据策略计算出来的刻度可能无法达到想要的效果，这时候可以使用 interval 配合 min、max 强制设定刻度划分，一般不建议使用。
+     * 无法在类目轴中使用。在时间轴（type: time）中需要传时间戳，在对数轴（type: log）中需要传指数值。
      */
     public $interval;        
         
     /**
-     * @var int Base of logarithm, which is valid only for numeric axes with type: log.
+     * @var int 对数轴的底数，只在对数轴中（type: log）有效。
      */
     public $logBase = 10;        
         
     /**
-     * @var boolean True for axis that cannot be interacted with.
+     * @var boolean 坐标轴是否是静态无法交互。
      */
     public $silent = false;        
         
     /**
-     * @var boolean Whether the labels of axis triggers and reacts to mouse events.
-     * Parameters of event includes:
+     * @var boolean 坐标轴的标签是否响应和触发鼠标事件，默认不响应。
+     * 事件参数如下：
      * {
-     *     // Component type: xAxis, yAxis, radiusAxis, angleAxis
-     *     // Each of which has an attribute for index, e.g., xAxisIndex for xAxis
+     *     // 组件类型，xAxis, yAxis, radiusAxis, angleAxis
+     *     // 对应组件类型都会有一个属性表示组件的 index，例如 xAxis 就是 xAxisIndex
      *     componentType: string,
-     *     // Value on axis before being formatted.
-     *     // Click on value label to trigger event.
+     *     // 未格式化过的刻度值, 点击刻度标签有效
      *     value: ,
-     *     // Name of axis.
-     *     // Click on laben name to trigger event.
+     *     // 坐标轴名称, 点击坐标轴名称有效
      *     name: 
      * }
      */
     public $triggerEvent = false;        
         
     /**
-     * @var ParallelAxis\AxisLine Settings related to axis line.
+     * @var ParallelAxis\AxisLine 坐标轴轴线相关设置。
      */
     public $axisLine;        
         
     /**
-     * @var ParallelAxis\AxisTick Settings related to axis tick.
+     * @var ParallelAxis\AxisTick 坐标轴刻度相关设置。
      */
     public $axisTick;        
         
     /**
-     * @var ParallelAxis\AxisLabel Settings related to axis label.
+     * @var ParallelAxis\AxisLabel 坐标轴刻度标签的相关设置。
      */
     public $axisLabel;        
         
     /**
-     * @var array Category data, available in type: category axis.
-     * Example:
-     * // Name list of all categories
-     * data: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]
-     * // Each item could also be a specific configuration item.
-     * // In this case, `value` is used as the category name.
+     * @var array 类目数据，在类目轴（type: category）中有效。
+     * 示例：
+     * // 所有类目名称列表
+     * data: [周一, 周二, 周三, 周四, 周五, 周六, 周日]
+     * // 每一项也可以是具体的配置项，此时取配置项中的 `value` 为类目名
      * data: [{
-     *     value: Monday,
-     *     // Highlight Monday
+     *     value: 周一,
+     *     // 突出周一
      *     textStyle: {
      *         fontSize: 20,
      *         color: red
      *     }
-     * }, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]
+     * }, 周二, 周三, 周四, 周五, 周六, 周日]
      */
     public $data;
 

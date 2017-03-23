@@ -10,12 +10,12 @@ class Emphasis
 {            
         
     /**
-     * @var boolean Whether to show label in highlighted state.
+     * @var boolean 是否在高亮状态下显示标签。
      */
     public $show = false;        
         
     /**
-     * @var Emphasis\TextStyle Style of text in highlighted state.
+     * @var Emphasis\TextStyle 高亮状态下的标签文本样式。
      */
     public $textStyle;
 

@@ -10,96 +10,97 @@ class Parallel
 {            
         
     /**
-     * @var int zlevel value of all graghical elements in .
-     * zlevel is used to make layers with Canvas. Graphical elements with different zlevel values will be placed in different Canvases, which is a common optimization technique. We can put those frequently changed elements (like those with animations) to a seperate zlevel. Notice that too many Canvases will increase memory cost, and should be used carefully on mobile phones to avoid crash.
-     * Canvases with bigger zlevel will be placed on Canvases with smaller zlevel.
+     * @var int 所有图形的 zlevel 值。
+     * zlevel用于 Canvas 分层，不同zlevel值的图形会放置在不同的 Canvas 中，Canvas 分层是一种常见的优化手段。我们可以把一些图形变化频繁（例如有动画）的组件设置成一个单独的zlevel。需要注意的是过多的 Canvas 会引起内存开销的增大，在手机端上需要谨慎使用以防崩溃。
+     * zlevel 大的 Canvas 会放在 zlevel 小的 Canvas 的上面。
      */
     public $zlevel = 0;        
         
     /**
-     * @var int z value of all graghical elements in , which controls order of drawing graphical components. Components with smaller z values may be overwritten by those with larger z values.
-     * z has a lower priority to zlevel, and will not create new Canvas.
+     * @var int 组件的所有图形的z值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖。
+     * z相比zlevel优先级更低，而且不会创建新的 Canvas。
      */
     public $z = 2;        
         
     /**
-     * @var string|int Distance between parallel  component and the left side of the container.
-     * left value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%; and it can also be left, center, or right.
-     * If the left value is set to be left, center, or right, then the component will be aligned automatically based on position.
+     * @var string|int parallel 组件离容器左侧的距离。
+     * left 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 left, center, right。
+     * 如果 left 的值为left, center, right，组件会根据相应的位置自动对齐。
      */
-    public $left = 80;        
+    public $left = 'auto';        
         
     /**
-     * @var string|int Distance between parallel  component and the top side of the container.
-     * top value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
-     * If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
+     * @var string|int parallel 组件离容器上侧的距离。
+     * top 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 top, middle, bottom。
+     * 如果 top 的值为top, middle, bottom，组件会根据相应的位置自动对齐。
      */
     public $top = 60;        
         
     /**
-     * @var string|int Distance between parallel  component and the right side of the container.
-     * right value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%.
+     * @var string|int parallel 组件离容器右侧的距离。
+     * right 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
      */
     public $right = 80;        
         
     /**
-     * @var string|int Distance between parallel  component and the bottom side of the container.
-     * bottom value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%.
+     * @var string|int parallel 组件离容器下侧的距离。
+     * bottom 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
      */
     public $bottom = 60;        
         
     /**
-     * @var string|int Width of parallel  component. Adaptive by default.
+     * @var string|int parallel 组件的宽度。默认自适应。
      */
     public $width = 'auto';        
         
     /**
-     * @var string|int Height of parallel  component. Adaptive by default.
+     * @var string|int parallel 组件的高度。默认自适应。
      */
     public $height = 'auto';        
         
     /**
-     * @var string Layout modes, whose optional values are:
+     * @var string 布局方式，可选值为：
      * 
-     * horizontal: place each axis horizontally.
+     * horizontal：水平排布各个坐标轴。
      * 
-     * vertical: place each axis vertically.
+     * vertical：竖直排布各个坐标轴。
      */
     public $layout = 'horizontal';        
         
     /**
-     * @var boolean When dimension number is extremely large, say, more than 50 dimensions, there will be more than 50 axes, which may hardly display in a page.
-     * In this case, you may use parallel.axisExpandable to improve the display. See this example:
+     * @var boolean 维度比较多时，比如有 50+ 的维度，那么就会有 50+ 个轴。那么可能会页面显示不下。
+     * 可以通过 parallel.axisExpandable 来改善显示效果，如下例子：
      * 
      * 
      * 
      * 
      * 
-     * Whether to enable toggling axis on clicking.
+     * 是否允许点击展开折叠 axis。
      */
     public $axisExpandable = false;        
         
     /**
-     * @var int Index of the axis which is used as the center of expanding initially. It doesnt have a default value, and needs to be assigned manually.
-     * Please refer to parallel.axisExpandable for more information.
+     * @var int 初始时，以哪个轴为中心展开，这里给出轴的 index。没有默认值，需要手动指定。
+     * 参见 parallel.axisExpandable
      */
     public $axisExpandCenter;        
         
     /**
-     * @var int Defines how many axes are at expanding state initially. Wed suggest you assign this value manually according to dimensions.
-     * Please refer to parallel.axisExpandCenter and parallel.axisExpandable.
+     * @var int 初始时，有多少个轴会处于展开状态。建议根据你的维度个数而手动指定。
+     * 参见 parallel.axisExpandCenter
+     * 参见 parallel.axisExpandable
      */
     public $axisExpandCount = 0;        
         
     /**
-     * @var int Distance between two axes when at expanding state, in pixels.
-     * Please refer to parallel.axisExpandable for more information.
+     * @var int 在展开状态，轴的间距是多少，单位为像素。
+     * 参见 parallel.axisExpandable
      */
     public $axisExpandWidth = 50;        
         
     /**
-     * @var Parallel\ParallelAxisDefault When configuring multiple parallelAxis, there might be some common attributes in each axis configuration. To avoid writing them repeatly, they can be put under parallel.parallelAxisDefault. Before initializing axis, configurations in parallel.parallelAxisDefault will be merged into parallelAxis to generate the final axis configuration.
-     * See the sample.
+     * @var Parallel\ParallelAxisDefault 配置多个 parallelAxis 时，有些值一样的属性，如果书写多遍则比较繁琐，那么可以放置在 parallel.parallelAxisDefault 里。在坐标轴初始化前，parallel.parallelAxisDefault 里的配置项，会分别融合进 parallelAxis，形成最终的坐标轴的配置。
+     * 参见示例
      */
     public $parallelAxisDefault;
 

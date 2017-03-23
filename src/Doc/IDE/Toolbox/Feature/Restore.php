@@ -10,22 +10,22 @@ class Restore
 {            
         
     /**
-     * @var boolean Whether to show the tool.
+     * @var boolean 是否显示该工具。
      */
     public $show = true;        
         
     /**
      * @var boolean 
      */
-    public $title = 'restore';        
+    public $title = '还原';        
         
     /**
-     * @var * Path string for icon. In ECharts 3, user-defined svg path is supported to be used as icon, whose format could be refered at SVG PathData. It could be edited and exported from some graphic tools such as Adobe Illustrator.
+     * @var * Icon 的 path 字符串，ECharts 3 中支持使用自定义的 svg path 作为 icon，格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
      */
     public $icon;        
         
     /**
-     * @var Restore\IconStyle The style setting of restore icon.
+     * @var Restore\IconStyle 还原 icon 样式设置。
      */
     public $iconStyle;
 

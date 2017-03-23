@@ -10,156 +10,158 @@ class Timeline
 {            
         
     /**
-     * @var boolean Whether to show the timeline component. It would not show with a setting of false, but its functions still remain.
+     * @var boolean 是否显示 timeline 组件。如果设置为false，不会显示，但是功能还存在。
      */
     public $show = true;        
         
     /**
-     * @var string This attribute has only one valid value as slider by now. You dont have to change it.
+     * @var string 这个属性目前只支持为 slider，不需要更改。
      */
     public $type = 'slider';        
         
     /**
-     * @var string Type of axis, whose values may be: 
+     * @var string 轴的类型。可选值为：
      * 
      * value
-     *   Numeric axis, which is suitable for continuous data.
+     *   数值轴，适用于连续数据。
+     * 
      * category
-     *   Category axis, which is suitable for category data.
+     *   类目轴，适用于离散的类目数据。
+     * 
      * time
-     *   Time axis, which is suitable for continuous time data. Compared with value axis, time axis is equipped with time formatting function and has a different method when calculating axis ticks. For example, for time axis, axis ticks may vary in choosing unit as month, week, date, or hour based on the range of data.
+     *   时间轴，适用于连续的时序数据，与数值轴相比时间轴带有时间的格式化，在刻度计算上也有所不同，例如会根据跨度的范围来决定使用月，星期，日还是小时范围的刻度。
      */
     public $axisType = 'time';        
         
     /**
-     * @var int Indicates which is the currently selected item. For instance, if currentIndex is 0, it indicates that the currently selected item is timeline.data[0] (namely, using options[0]).
+     * @var int 表示当前选中项是哪项。比如，currentIndex 为 0 时，表示当前选中项为 timeline.data[0]（即使用 options[0]）。
      */
     public $currentIndex = 0;        
         
     /**
-     * @var boolean Whether to play automatically.
+     * @var boolean 表示是否自动播放。
      */
     public $autoPlay = false;        
         
     /**
-     * @var boolean Whether supports playing reversely.
+     * @var boolean 表示是否反向播放。
      */
     public $rewind = false;        
         
     /**
-     * @var boolean Whether to loop playing.
+     * @var boolean 表示是否循环播放。
      */
     public $loop = true;        
         
     /**
-     * @var int Indicates play speed (gap time between two state), whose unit is millisecond.
+     * @var int 表示播放的速度（跳动的间隔），单位毫秒（ms）。
      */
     public $playInterval = 2000;        
         
     /**
-     * @var boolean Whether the view updates in real time during dragging the control dot.
+     * @var boolean 拖动圆点的时候，是否实时更新视图。
      */
     public $realtime = true;        
         
     /**
-     * @var string Position of the play button, whose valid values are left and right.
+     * @var string 表示『播放』按钮的位置。可选值：left、right。
      */
     public $controlPosition = 'left';        
         
     /**
-     * @var int zlevel value of all graghical elements in .
-     * zlevel is used to make layers with Canvas. Graphical elements with different zlevel values will be placed in different Canvases, which is a common optimization technique. We can put those frequently changed elements (like those with animations) to a seperate zlevel. Notice that too many Canvases will increase memory cost, and should be used carefully on mobile phones to avoid crash.
-     * Canvases with bigger zlevel will be placed on Canvases with smaller zlevel.
+     * @var int 所有图形的 zlevel 值。
+     * zlevel用于 Canvas 分层，不同zlevel值的图形会放置在不同的 Canvas 中，Canvas 分层是一种常见的优化手段。我们可以把一些图形变化频繁（例如有动画）的组件设置成一个单独的zlevel。需要注意的是过多的 Canvas 会引起内存开销的增大，在手机端上需要谨慎使用以防崩溃。
+     * zlevel 大的 Canvas 会放在 zlevel 小的 Canvas 的上面。
      */
     public $zlevel = 0;        
         
     /**
-     * @var int z value of all graghical elements in , which controls order of drawing graphical components. Components with smaller z values may be overwritten by those with larger z values.
-     * z has a lower priority to zlevel, and will not create new Canvas.
+     * @var int 组件的所有图形的z值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖。
+     * z相比zlevel优先级更低，而且不会创建新的 Canvas。
      */
     public $z = 2;        
         
     /**
-     * @var string|int Distance between timeline component and the left side of the container.
-     * left value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%; and it can also be left, center, or right.
-     * If the left value is set to be left, center, or right, then the component will be aligned automatically based on position.
+     * @var string|int timeline组件离容器左侧的距离。
+     * left 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 left, center, right。
+     * 如果 left 的值为left, center, right，组件会根据相应的位置自动对齐。
      */
     public $left = 'auto';        
         
     /**
-     * @var string|int Distance between timeline component and the top side of the container.
-     * top value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
-     * If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
+     * @var string|int timeline组件离容器上侧的距离。
+     * top 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 top, middle, bottom。
+     * 如果 top 的值为top, middle, bottom，组件会根据相应的位置自动对齐。
      */
     public $top = 'auto';        
         
     /**
-     * @var string|int Distance between timeline component and the right side of the container.
-     * right value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%.
-     * Adaptive by default.
+     * @var string|int timeline组件离容器右侧的距离。
+     * right 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
+     * 默认自适应。
      */
     public $right = 'auto';        
         
     /**
-     * @var string|int Distance between timeline component and the bottom side of the container.
-     * bottom value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%.
-     * Adaptive by default.
+     * @var string|int timeline组件离容器下侧的距离。
+     * bottom 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
+     * 默认自适应。
      */
     public $bottom = 'auto';        
         
     /**
-     * @var int|array timeline space around content. The unit is px. Default values for each position are 5. And they can be set to different values with left, right, top, and bottom.
-     * Examples: 
-     * // Set padding to be 5
+     * @var int|array timeline内边距，单位px，默认各方向内边距为5，接受数组分别设定上右下左边距。
+     * 使用示例：
+     * // 设置内边距为 5
      * padding: 5
-     * // Set the top and bottom paddings to be 5, and left and right paddings to be 10
+     * // 设置上下的内边距为 5，左右的内边距为 10
      * padding: [5, 10]
-     * // Set each of the four paddings seperately
+     * // 分别设置四个方向的内边距
      * padding: [
-     *     5,  // up
-     *     10, // right
-     *     5,  // down
-     *     10, // left
+     *     5,  // 上
+     *     10, // 右
+     *     5,  // 下
+     *     10, // 左
      * ]
      */
     public $padding = 5;        
         
     /**
-     * @var string Orientation of the component, whose valid values are:
+     * @var string 摆放方式，可选值有：
      * 
-     * vertical: vertical layout.
-     * horizontal: horizontal layout.
+     * vertical：竖直放置。
+     * horizontal：水平放置。
      */
     public $orient = 'horizontal';        
         
     /**
      * @var boolean 
-     * Whether to put the timeline component reversely, which makes the elements in the front to be at the end.
+     * 是否反向放置 timeline，反向则首位颠倒过来。
      */
     public $inverse = false;        
         
     /**
-     * @var string Symbol of timeline.
-     * Icon types provided by ECharts includes 
+     * @var string timeline标记的图形。
+     * ECharts 提供的标记类型包括 
      * circle, rect, roundRect, triangle, diamond, pin, arrow
-     * It can also be set to an image with image://url , in which url is the link to a picture.
-     * Icons can be set to arbitrary vector path via path:// in ECharts. As compared with raster image, vector paths prevent from jagging and blurring when scaled, and have a better control over changing colors. Size of vectoer icon will be adapted automatically. It will be set to be symbolSize if its a symbol. Refer to SVG PathData for more information about format of path. You may export vector paths from tools like Adobe Illustrator.
+     * 也可以通过 image://url 设置为图片，其中 url 为图片的链接。
+     * 在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
      */
     public $symbol = 'emptyCircle';        
         
     /**
-     * @var int|array timeline symbol size. It can be set to single numbers like 10, or use an array to represent width and height. For example, [20, 10] means symbol width is 20, and height is10.
+     * @var int|array timeline标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
      */
     public $symbolSize = 10;        
         
     /**
-     * @var int Rotate degree of timeline symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+     * @var int timeline标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
      */
     public $symbolRotate;        
         
     /**
-     * @var array Offset of timeline symbol relative to original position. By default, symbol will be put in the center position of data. But if symbol is from user-defined vector path or image, you may not expect symbol to be in center. In this case, you may use this attribute to set offset to default position. It can be in absolute pixel value, or in relative percentage value.
-     * For example, [0, 50%] means to move upside side position of symbol height. It can be used to make the arrow in the bottom to be at data position when symbol is pin.
+     * @var array timeline标记相对于原本位置的偏移。默认情况下，标记会居中置放在数据对应的位置，但是如果 symbol 是自定义的矢量路径或者图片，就有可能不希望 symbol 居中。这时候可以使用该配置项配置 symbol 相对于原本居中的偏移，可以是绝对的像素值，也可以是相对的百分比。
+     * 例如 [0, 50%] 就是把自己向上移动了一半的位置，在 symbol 图形是气泡的时候可以让图形下端的箭头对准数据点。
      */
     public $symbolOffset = '[0, 0]';        
         
@@ -169,39 +171,40 @@ class Timeline
     public $lineStyle;        
         
     /**
-     * @var Timeline\Label Label axis, which has normal and emphasis status. normal refers to the normal style of text, while emphasis is the highlighted style of text. For instance, text style in emphasis would be used when mouse hovers or legend connects.
+     * @var Timeline\Label 轴的文本标签。有 normal 和 emphasis 两个状态，normal 是文本正常的样式，emphasis 是文本高亮的样式，比如鼠标悬浮或者图例联动高亮的时候会使用 emphasis 作为文本的样式。
      */
     public $label;        
         
     /**
-     * @var Timeline\ItemStyle Graphic style of timeline , which has normal and emphasis two styles. normal is the style by default, while emphasis is the style when it is highlighted, like being hovered by mouse, or highlighted via legend connect.
+     * @var Timeline\ItemStyle timeline  图形样式，有 normal 和 emphasis 两个状态。normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
      */
     public $itemStyle;        
         
     /**
-     * @var Timeline\CheckpointStyle Style of the selected item (checkpoint).
+     * @var Timeline\CheckpointStyle 『当前项』（checkpoint）的图形样式。
      */
     public $checkpointStyle;        
         
     /**
-     * @var Timeline\ControlStyle The style of control button, which includes: play button, previous button, and next button.
+     * @var Timeline\ControlStyle 『控制按钮』的样式。『控制按钮』包括：『播放按钮』、『前进按钮』、『后退按钮』。
      */
     public $controlStyle;        
         
     /**
-     * @var array timeline data. Each item of Array can be a instant value. If you need to set style individually for a data item, the data item should be written as Object. In then Object, the attribute of value is numerical value. Other attributes, such as shown the examples below, could cover the attribute configurations in timeline.  
-     * as follows: 
+     * @var array timeline 数据。Array 的每一项，可以是直接的数值。
+     * 如果需要对每个数据项单独进行样式定义，则数据项写成 Object。Object中，value属性为数值。其他属性如下例子，可以覆盖 timeline 中的属性配置。
+     * 如下例：
      * [
      *     2002-01-01,
      *     2003-01-01,
      *     2004-01-01,
      *     {
      *         value: 2005-01-01,
-     *         tooltip: {          // enables `tooltip` to be displayed as mouse hovering to this item.
+     *         tooltip: {          // 让鼠标悬浮到此项时能够显示 `tooltip`。
      *             formatter: {b} xxxx
      *         },
-     *         symbol: diamond,  // the special setting of this items symbol.
-     *         symbolSize: 16      // the special setting of this items size.
+     *         symbol: diamond,  // 此项的图形的特别设置。
+     *         symbolSize: 16      // 此项的图形大小的特别设置。
      *     },
      *     2006-01-01,
      *     2007-01-01,
@@ -210,7 +213,7 @@ class Timeline
      *     2010-01-01,
      *     {
      *         value: 2011-01-01,
-     *         tooltip: {          // enables `tooltip` to be displayed as mouse hovering to this item.
+     *         tooltip: {          // 让鼠标悬浮到此项时能够显示 `tooltip`。
      *             formatter: function (params) {
      *                 return params.name + xxxx;
      *             }

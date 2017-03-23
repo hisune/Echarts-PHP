@@ -10,32 +10,32 @@ class Icon
 {            
         
     /**
-     * @var string Path string for icon. In ECharts 3, user-defined svg path is supported to be used as icon, whose format could be refered at SVG PathData. It could be edited and exported from some graphic tools such as Adobe Illustrator.
+     * @var string Icon 的 path 字符串，ECharts 3 中支持使用自定义的 svg path 作为 icon，格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
      */
     public $rect;        
         
     /**
-     * @var string Path string for icon. In ECharts 3, user-defined svg path is supported to be used as icon, whose format could be refered at SVG PathData. It could be edited and exported from some graphic tools such as Adobe Illustrator.
+     * @var string Icon 的 path 字符串，ECharts 3 中支持使用自定义的 svg path 作为 icon，格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
      */
     public $polygon;        
         
     /**
-     * @var string Path string for icon. In ECharts 3, user-defined svg path is supported to be used as icon, whose format could be refered at SVG PathData. It could be edited and exported from some graphic tools such as Adobe Illustrator.
+     * @var string Icon 的 path 字符串，ECharts 3 中支持使用自定义的 svg path 作为 icon，格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
      */
     public $lineX;        
         
     /**
-     * @var string Path string for icon. In ECharts 3, user-defined svg path is supported to be used as icon, whose format could be refered at SVG PathData. It could be edited and exported from some graphic tools such as Adobe Illustrator.
+     * @var string Icon 的 path 字符串，ECharts 3 中支持使用自定义的 svg path 作为 icon，格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
      */
     public $lineY;        
         
     /**
-     * @var string Path string for icon. In ECharts 3, user-defined svg path is supported to be used as icon, whose format could be refered at SVG PathData. It could be edited and exported from some graphic tools such as Adobe Illustrator.
+     * @var string Icon 的 path 字符串，ECharts 3 中支持使用自定义的 svg path 作为 icon，格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
      */
     public $keep;        
         
     /**
-     * @var string Path string for icon. In ECharts 3, user-defined svg path is supported to be used as icon, whose format could be refered at SVG PathData. It could be edited and exported from some graphic tools such as Adobe Illustrator.
+     * @var string Icon 的 path 字符串，ECharts 3 中支持使用自定义的 svg path 作为 icon，格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
      */
     public $clear;
 

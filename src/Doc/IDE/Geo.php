@@ -10,20 +10,20 @@ class Geo
 {            
         
     /**
-     * @var boolean Whether to show the geo component.
+     * @var boolean 是否显示地理坐标系组件。
      */
     public $show = true;        
         
     /**
-     * @var string Map charts.
-     * Due to the increase of fineness of map, ECharts 3 doesnt include map data by default for package size consideration. You may find map files you need on map download page and then include and register them in ECharts.
-     * Two formats of map data are provided in ECharts, one of which can be included in &lt;script&gt; tag as JavaScript file, and the other of is in JSON format and should be loaded using AJAX. Map name and data will be loaded automatically once the JavaScript file is loaded, while in the JSON form, you have to assign name explicitly.
-     * Here are examples of these two types:
-     *  JavaScript importing example 
+     * @var string 地图类型。
+     * ECharts 3 中因为地图精度的提高，不再内置地图数据增大代码体积，你可以在地图下载界面下载到需要的地图文件引入并注册到 ECharts 中。
+     * ECharts 中提供了两种格式的地图数据，一种是可以直接 script 标签引入的 js 文件，引入后会自动注册地图名字和数据。还有一种是 JSON 文件，需要通过 AJAX 异步加载后手动注册。
+     * 下面是两种类型的使用示例：
+     *  JavaScript 引入示例 
      * &lt;script src=echarts.js&gt;&lt;/script&gt;
      * &lt;script src=map/js/china.js&gt;&lt;/script&gt;
      * &lt;script&gt;
-     * var chart = echarts.init(document.getElmentById(main));
+     * var chart = echarts.init(document.getElementById(main));
      * chart.setOption({
      *     series: [{
      *         type: map,
@@ -32,10 +32,10 @@ class Geo
      * });
      * &lt;/script&gt;
      * 
-     *  JSON importing example 
+     *  JSON 引入示例 
      * $.get(map/json/china.json, function (chinaJson) {
      *     echarts.registerMap(china, chinaJson);
-     *     var chart = echarts.init(document.getElmentById(main));
+     *     var chart = echarts.init(document.getElementById(main));
      *     chart.setOption({
      *         series: [{
      *             type: map,
@@ -44,54 +44,40 @@ class Geo
      *     });
      * });
      * 
-     * ECharts uses geoJSON format as map outline. Besides the methods introduced above, you can also get geoJSON data through in other methods if you like and register it in ECharts. Reference to USA Population Estimates for more information.
+     * ECharts 使用 geoJSON 格式的数据作为地图的轮廓，除了上述数据，你也可以通过其它手段获取地图的 geoJSON 数据注册到 ECharts 中。参见示例 USA Population Estimates
      */
     public $map = '';        
         
     /**
-     * @var boolean Whether to enable mouse zooming and translating. false by default. If either zooming or translating is wanted, it can be set to scale or move. Otherwise, set it to be true to enable both.
+     * @var boolean 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移，可以设置成 scale 或者 move。设置成 true 为都开启
      */
     public $roam = false;        
         
     /**
-     * @var array Center of current view-port, in longitude and latitude.
-     * Example:
+     * @var array 当前视角的中心点，用经纬度表示
+     * 例如：
      * center: [115.97, 29.71]
      */
     public $center;        
         
     /**
-     * @var int Used to scale aspect of geo.
-     * The final aspect is calculated by: geoBoundingRect.width / geoBoundingRect.height * aspectScale.
+     * @var int 这个参数用于 scale 地图的长宽比。
+     * 最终的 aspect 的计算方式是：geoBoundingRect.width / geoBoundingRect.height * aspectScale
      */
     public $aspectScale = 0.75;        
         
     /**
-     * @var array Two dimension array. Define coord of left-top, right-bottom in layout box.
-     * // A complete world map
-     * map: world,
-     * left: 0, top: 0, right: 0, bottom: 0,
-     * boundingCoords: [
-     *     // [lng, lat] of left-top corner
-     *     [-180, 90],
-     *     // [lng, lat] of right-bottom corner
-     *     [180, -90]
-     * ],
-     */
-    public $boundingCoords;        
-        
-    /**
-     * @var int Zoom rate of current view-port.
+     * @var int 当前视角的缩放比例。
      */
     public $zoom = 1;        
         
     /**
-     * @var Geo\ScaleLimit Limit of scaling, with min and max. 1 by default.
+     * @var Geo\ScaleLimit 滚轮缩放的极限控制，通过min, max最小和最大的缩放值，默认的缩放为1。
      */
     public $scaleLimit;        
         
     /**
-     * @var array Name mapping for customized areas. For example:
+     * @var array 自定义地区的名称映射，如：
      * {
      *     China : 中国
      * }
@@ -99,84 +85,82 @@ class Geo
     public $nameMap;        
         
     /**
-     * @var boolean|string Selected mode decides whether multiple selecting is supported. By default, false is used for disabling selection. Its value can also be single for selecting single area, or multiple for selecting multiple areas.
+     * @var boolean|string 选中模式，表示是否支持多个选中，默认关闭，支持布尔值和字符串，字符串取值可选single表示单选，或者multiple表示多选。
      */
     public $selectedMode = false;        
         
     /**
-     * @var Geo\Label Text label of , to explain some data information about graphic item like value, name and so on. label is placed under itemStyle.normal in ECharts 2.x. In ECharts 3, to make the configuration structure flatter, labelis taken to be at the same level with itemStyle, and has two status normal and emphasis as itemStyle does.
+     * @var Geo\Label 图形上的文本标签，可用于说明图形的一些数据信息，比如值，名称等，label选项在 ECharts 2.x 中放置于itemStyle.normal下，在 ECharts 3 中为了让整个配置项结构更扁平合理，label 被拿出来跟 itemStyle 平级，并且跟 itemStyle 一样拥有 normal, emphasis 两个状态。
      */
     public $label;        
         
     /**
-     * @var Geo\ItemStyle Graphic style of Map Area Border, which has normal and emphasis two styles. normal is the style by default, while emphasis is the style when it is highlighted, like being hovered by mouse, or highlighted via legend connect.
+     * @var Geo\ItemStyle 地图区域的多边形 图形样式，有 normal 和 emphasis 两个状态。normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
      */
     public $itemStyle;        
         
     /**
-     * @var int zlevel value of all graghical elements in .
-     * zlevel is used to make layers with Canvas. Graphical elements with different zlevel values will be placed in different Canvases, which is a common optimization technique. We can put those frequently changed elements (like those with animations) to a seperate zlevel. Notice that too many Canvases will increase memory cost, and should be used carefully on mobile phones to avoid crash.
-     * Canvases with bigger zlevel will be placed on Canvases with smaller zlevel.
+     * @var int 所有图形的 zlevel 值。
+     * zlevel用于 Canvas 分层，不同zlevel值的图形会放置在不同的 Canvas 中，Canvas 分层是一种常见的优化手段。我们可以把一些图形变化频繁（例如有动画）的组件设置成一个单独的zlevel。需要注意的是过多的 Canvas 会引起内存开销的增大，在手机端上需要谨慎使用以防崩溃。
+     * zlevel 大的 Canvas 会放在 zlevel 小的 Canvas 的上面。
      */
     public $zlevel = 0;        
         
     /**
-     * @var int z value of all graghical elements in , which controls order of drawing graphical components. Components with smaller z values may be overwritten by those with larger z values.
-     * z has a lower priority to zlevel, and will not create new Canvas.
+     * @var int 组件的所有图形的z值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖。
+     * z相比zlevel优先级更低，而且不会创建新的 Canvas。
      */
     public $z = 2;        
         
     /**
-     * @var string|int Distance between  component and the left side of the container.
-     * left value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%; and it can also be left, center, or right.
-     * If the left value is set to be left, center, or right, then the component will be aligned automatically based on position.
+     * @var string|int 组件离容器左侧的距离。
+     * left 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 left, center, right。
+     * 如果 left 的值为left, center, right，组件会根据相应的位置自动对齐。
      */
     public $left = 'auto';        
         
     /**
-     * @var string|int Distance between  component and the top side of the container.
-     * top value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
-     * If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
+     * @var string|int 组件离容器上侧的距离。
+     * top 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 top, middle, bottom。
+     * 如果 top 的值为top, middle, bottom，组件会根据相应的位置自动对齐。
      */
     public $top = 'auto';        
         
     /**
-     * @var string|int Distance between  component and the right side of the container.
-     * right value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%.
-     * Adaptive by default.
+     * @var string|int 组件离容器右侧的距离。
+     * right 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
+     * 默认自适应。
      */
     public $right = 'auto';        
         
     /**
-     * @var string|int Distance between  component and the bottom side of the container.
-     * bottom value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%.
-     * Adaptive by default.
+     * @var string|int 组件离容器下侧的距离。
+     * bottom 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
+     * 默认自适应。
      */
     public $bottom = 'auto';        
         
     /**
-     * @var array layoutCenter and layoutSize provides layout strategy other than left/right/top/bottom/width/height.
-     * When using left/right/top/bottom/width/height, it is hard to put the map inside a box area with a fixed width-height ratio. In this case, layoutCenter attribute can be used to define the center position of map, and layoutSize can be used to define the size of map. For example:
+     * @var array layoutCenter 和 layoutSize 提供了除了 left/right/top/bottom/width/height 之外的布局手段。
+     * 在使用 left/right/top/bottom/width/height 的时候，可能很难在保持地图高宽比的情况下把地图放在某个盒形区域的正中间，并且保证不超出盒形的范围。此时可以通过 layoutCenter 属性定义地图中心在屏幕中的位置，layoutSize 定义地图的大小。如下示例
      * layoutCenter: [30%, 30%],
-     * // If width-height ratio is larger than 1, then width is set to be 100.
-     * // Otherwise, height is set to be 100.
-     * // This makes sure that it will not exceed the area of 100x100
+     * // 如果宽高比大于 1 则宽度为 100，如果小于 1 则高度为 100，保证了不超过 100x100 的区域
      * layoutSize: 100
      * 
-     * After setting these two values, left/right/top/bottom/width/height becomes invalid.
+     * 设置这两个值后 left/right/top/bottom/width/height 无效。
      */
     public $layoutCenter;        
         
     /**
-     * @var int|string Size of map, see layoutCenter for more information. Percentage relative to screen width, and absolute pixel values are supported.
+     * @var int|string 地图的大小，见 layoutCenter。支持相对于屏幕宽高的百分比或者绝对的像素大小。
      */
     public $layoutSize;        
         
     /**
-     * @var array Configure style for specified regions.
-     * For example:
+     * @var array 在地图中对特定的区域配置样式。
+     * 例如：
      * regions: [{
-     *     name: Guangdong,
+     *     name: 广东,
      *     itemStyle: {
      *         normal: {
      *             areaColor: red,
@@ -185,12 +169,12 @@ class Geo
      *     }
      * }]
      * 
-     * The region color can also be controlled by map series. See series-map.geoIndex.
+     * geo 区域的颜色也可以被 map series 所控制，参见 series-map.geoIndex。
      */
     public $regions;        
         
     /**
-     * @var boolean Whether to ignore mouse events. Default value is false, for triggering and responding to mouse events.
+     * @var boolean 图形是否不响应和触发鼠标事件，默认为 false，即响应和触发鼠标事件。
      */
     public $silent = false;
 

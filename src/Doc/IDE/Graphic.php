@@ -10,8 +10,8 @@ class Graphic
 {            
         
     /**
-     * @var array A list of all graphic elements.
-     * Note, the standard configuration of graphic component is:
+     * @var array 里面是所有图形元素的集合。
+     * 注意：graphic 的标准写法是：
      * {
      *     graphic: {
      *         elements: [
@@ -20,17 +20,17 @@ class Graphic
      *     }
      * }
      * 
-     * But we always use short patterns for convenience:
+     * 但是我们常常可以用简写：
      * {
-     *     graphic: { // Declare only one graphic element.
+     *     graphic: {
      *         type: rect,
      *         ...
      *     }
      * }
      * 
-     * Or:
+     * 或者：
      * {
-     *     graphic: [ // Declare multiple graphic elements.
+     *     graphic: [
      *         {type: rect, ...}, {type: circle, ...}, ...
      *     ]
      * }

@@ -10,326 +10,331 @@ class Tooltip
 {            
         
     /**
-     * @var boolean Whether to show the tooltip component, including tooltip floating layer and axisPointer.
+     * @var boolean 是否显示提示框组件，包括提示框浮层和 axisPointer。
      */
     public $show = true;        
         
     /**
-     * @var string Type of triggering.
-     * Options:
-     * 
-     * item
-     *   Triggered by data item, which is mainly used for charts that dont have a category axis like scatter charts or pie charts.
-     * 
-     * axis
-     *   Triggered by axes, which is mainly used for charts that have category axes, like bar charts or line charts.
-     *  ECharts 2.x only supports axis trigger for category axis. In ECharts 3, it is supported for all types of axes in grid or polar. Also, you may assign axis with axisPointer.axis.
-     * 
-     * none
-     *   Trigger nothing.
-     */
-    public $trigger = 'item';        
-        
-    /**
-     * @var Tooltip\AxisPointer Configuration item for axis indicator.
-     * tooltip.axisPointer is like syntactic sugar of axisPointer settings on axes (for example, xAxis.axisPointer or angleAxis.axisPointer). More detailed features can be configured on someAxis.axisPointer. But in common cases, using tooltip.axisPinter is more convenient.
-     * 
-     * Notice: configurations of tooltip.axisPointer has lower priority than that of someAxis.axisPointer.
-     * 
-     * 
-     * 坐标轴指示器是指示坐标轴当前刻度的工具。
-     * axisPointer is a tool for displaying reference line and axis value under mouse pointer.
-     * For example:
-     * 
-     * 
-     * 
-     * In the demo above, axisPointer.link is used to link axisPointer from different coordinate systems.
-     * axisPointer can also be used on touch device, where user can drag the button to move the reference line and label.
-     * 
-     * 
-     * 
-     * In the cases that more than one axis exist, axisPointer helps to look inside the data.
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * Notice:
-     * Generally, axisPointers is configured in each axes who need them (for example xAxis.axisPointer), or configured in tooltip (for example tooltip.axisPointer).
-     * But these configurations can only be configured in global axisPointer:
-     * axisPointer.triggerOn, axisPointer.link。
-     * 
-     * 
-     * 
-     * How to display axisPointer:
-     * In cartesian (grid) and polar](~polar) and (single axis, each axis has its own axisPointer.
-     * Those axisPointer will not be displayed by default, utill configured as follows:
-     * 
-     * Set someAxis.axisPointer.show (like xAxis.axisPointer.show) as true. Then axisPointer of this axis will be displayed.
-     * 
-     * Set tooltip.trigger as axis, or set tooltip.axisPointer.type as cross. Then coordinate system will automatically chose the axes who will display their axisPointers. (tooltip.axisPointer.axis can be used to change the choice.) Notice, axis.axisPointer will override tooltip.axisPointer settings.
-     * 
-     * 
-     * 
-     * How to display the label of axisPointer:
-     * The label of axisPointer will not be displayed by default(namely, only reference line will be displayed by default), utill configured as follows:
-     * 
-     * Set someAxis.axisPointer.label.show (for example xAxis.axisPointer.label.show) as true. Then the label of the axisPointer will be displayed.
-     * 
-     * Set tooltip.axisPointer.type as  cross. Then the label of the crossed axisPointers will be displayed.
-     * 
-     * 
-     * 
-     * How to configure axisPointer on touch device:
-     * Set someAxis.axisPointer.handle.show (for example xAxis.axisPointer.handle.show as true. Then the button for dragging will be displayed. (This feature is not supported on polar).
-     * Notice:
-     * If tooltip does not work well in this case, try to settooltip.triggerOn as none (for the effect: show tooltip when finger holding on the button, and hide tooltip after finger left the button), or set tooltip.alwaysShowContent as true (then tooltip will always be displayed).
-     * See the example.
-     */
-    public $axisPointer;        
-        
-    /**
-     * @var boolean Whether to show the tooltip floating layer, whose default value is true. It should be configurated to be false, if you only need tooltip to trigger the event or show the axisPointer without content.
+     * @var boolean 是否显示提示框浮层，默认显示。只需tooltip触发事件或显示axisPointer而不需要显示内容时可配置该项为false。
      */
     public $showContent = true;        
         
     /**
-     * @var boolean Whether to show tooltip content all the time. By default, it will be hidden after some time. It can be set to be true to preserve displaying.
-     * This attribute is newly added to ECharts 3.0.
+     * @var string 触发类型。
+     * 可选：
+     * 
+     * item
+     *   数据项图形触发，主要在散点图，饼图等无类目轴的图表中使用。
+     * 
+     * axis
+     *   坐标轴触发，主要在柱状图，折线图等会使用类目轴的图表中使用。
+     *   在 ECharts 2.x 中只支持类目轴上使用 axis trigger，在 ECharts 3 中支持在直角坐标系和极坐标系上的所有类型的轴。并且可以通过 axisPointer.axis 指定坐标轴。
+     */
+    public $trigger = 'item';        
+        
+    /**
+     * @var string 提示框触发的条件，可选：
+     * 
+     * mousemove
+     *   鼠标移动时触发。
+     * 
+     * click
+     *   鼠标点击时触发。
+     * 
+     * none
+     *   不触发，用户可以通过 action.tooltip.showTip 和 action.tooltip.hideTip 来手动触发和隐藏。
+     * 
+     * 
+     * 该属性为 ECharts 3.0 中新加。
+     */
+    public $triggerOn = 'mousemove';        
+        
+    /**
+     * @var boolean 是否永远显示提示框内容，默认情况下在移出可触发提示框区域后 一定时间 后隐藏，设置为 true 可以保证一直显示提示框内容。
+     * 该属性为 ECharts 3.0 中新加。
      */
     public $alwaysShowContent = false;        
         
     /**
-     * @var string Conditions to trigger tooltip. Options:
-     * 
-     * mousemove
-     *   Trigger when mouse moves.
-     * 
-     * click
-     *   Trigger when mouse clicks.
-     * 
-     * mousemove|click
-     *   Trigger when mouse clicks and moves.
-     * 
-     * none
-     *   Do not triggered by mousemove and click. Tooltip can be triggered and hidden manually by calling action.tooltip.showTip and action.tooltip.hideTip. It can also be triggered by axisPointer.handle in this case.
-     * 
-     * 
-     * This attribute is new to ECharts 3.0.
-     */
-    public $triggerOn = 'mousemove|click';        
-        
-    /**
-     * @var int Delay time for showing tooltip, in ms. No delay by default, and it is not recommended to set. Only valid when triggerOn is set to be mousemove.
+     * @var int 浮层显示的延迟，单位为 ms，默认没有延迟，也不建议设置。在 triggerOn 为 mousemove 时有效。
      */
     public $showDelay = 0;        
         
     /**
-     * @var int Delay time for hiding tooltip, in ms. It will be invalid when alwaysShowContent is true.
+     * @var int 浮层隐藏的延迟，单位为 ms，在 alwaysShowContent 为 true 的时候无效。
      */
     public $hideDelay = 100;        
         
     /**
-     * @var boolean Whether mouse is allowed to enter the floating layer of tooltip, whose default value is false. If you need to interact in the tooltip like with links or buttons, it can be set as true.
+     * @var boolean 鼠标是否可进入提示框浮层中，默认为false，如需详情内交互，如添加链接，按钮，可设置为 true。
      */
-    public $enterable = true;        
+    public $enterable = false;        
         
     /**
-     * @var boolean Whether confine tooltip content in the view rect of chart instance.
-     * Useful when tooltip is cut because of overflow: hidden set on outer dom of chart instance, or because of narrow screen on mobile.
-     */
-    public $confine = false;        
-        
-    /**
-     * @var int The transition duration of tooltips animation, in seconds. When it is set to be 0, it would move closely with the mouse.
-     */
-    public $transitionDuration = 0.4;        
-        
-    /**
-     * @var string|array The position of the tooltips floating layer, which would follow the position of mouse by default.
-     * Options:
+     * @var string|array|callable 提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
+     * 可选：
      * 
      * Array
-     *   Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
-     *   Example:
-     *   // absolute position, which is 10px to the left side and 10px to the top side of the container
+     *   通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
+     *   示例:
+     *   // 绝对位置，相对于容器左侧 10px, 上侧 10 px
      *   position: [10, 10]
-     *   // relative position, in the exact center of the container
+     *   // 相对位置，放置在容器正中间
      *   position: [50%, 50%]
      * 
      * 
      * Function
-     *   Callback function in the following form:
-     *   (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
+     *   回调函数，格式如下
+     *   (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object) =&gt; Array
      * 
-     *   Parameters:
-     *   point: Mouse position.
-     *   param: The same as formatter.
-     *   dom: The DOM object of tooltip.
-     *   rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
-     *   size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
-     *   Return:
-     *   Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
-     *   Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
-     *   For example:
-     *   position: function (point, params, dom, rect, size) {
-     *       // fixed at top
+     *   第一个参数是鼠标位置，第二个参数同 formatter 的参数相同，第三个参数是 tooltip 的 dom 对象， 第四个参数只有鼠标在图形上时有效，是一个用x, y, width, height 四个属性表达的图形包围盒。返回值是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相对的百分比。
+     *   如下示例：
+     *   position: function (point, params, dom) {
+     *       // 固定在顶部
      *       return [point[0], 10%];
-     *   }
-     * 
-     *   Or:
-     *   position: function (pos, params, dom, rect, size) {
-     *       // tooltip will be fixed on the right if mouse hovering on the left,
-     *       // and on the left if hovering on the right.
-     *       var obj = {top: 60};
-     *       obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
-     *       return obj;
      *   }
      * 
      * 
      * inside
-     *  Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
+     *   鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
      * 
      * top
-     *   Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
+     *   鼠标所在图形上侧，只在 trigger 为item的时候有效。
      * 
      * left
-     *   Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
+     *   鼠标所在图形左侧，只在 trigger 为item的时候有效。
      * 
      * right
-     *   Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
+     *   鼠标所在图形右侧，只在 trigger 为item的时候有效。
      * 
      * bottom
-     *   Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
+     *   鼠标所在图形底侧，只在 trigger 为item的时候有效。
      */
     public $position;        
         
     /**
-     * @var string|callable The content formatter of tooltips floating layer which supports string template and callback function.
-     * 1. String template
-     * The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
-     * {a}, {b}, {c}, {d} have different meanings for different series types:
+     * @var boolean 是否将 tooltip 框限制在图表的区域内。
+     * 当图表外层的 dom 被设置为 overflow: hidden，或者移动端窄屏，导致 tooltip 超出外界被截断时，此配置比较有用。
+     */
+    public $confine = false;        
+        
+    /**
+     * @var int 提示框浮层的移动动画过渡时间，单位是 s，设置为 0 的时候会紧跟着鼠标移动。
+     */
+    public $transitionDuration = 0.4;        
+        
+    /**
+     * @var string|callable 提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
      * 
-     * Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
+     * 字符串模板。
+     *  模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
+     *  在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
+     *  不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
+     *  其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
      * 
-     * Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
+     * 折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
      * 
-     * Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
+     * 散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
      * 
-     * Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
+     * 地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
      * 
-     * 
-     * Example: 
+     * 饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+     * 更多其它图表模板变量的含义可以见相应的图表的 label.normal.formatter 配置项。
+     * 示例：
      * formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
      * 
-     * 2. Callback function
-     * The format of callback function:
-     * (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
      * 
-     * The first parameter params is the data that the formatter needs. Its format is shown as follows:
-     * {
-     *     componentType: series,
-     *     // Series type
-     *     seriesType: string,
-     *     // Series index in option.series
-     *     seriesIndex: number,
-     *     // Series name
-     *     seriesName: string,
-     *     // Data name, or category name
-     *     name: string,
-     *     // Data index in input data array
-     *     dataIndex: number,
-     *     // Original data as input
-     *     data: Object,
-     *     // Value of data
-     *     value: number|Array,
-     *     // Color of data
-     *     color: string,
      * 
-     *     // the percentage of pie chart
-     *     percent: number,
      * 
-     * }
+     * 回调函数。
+     *  回调函数格式：
+     *  (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
      * 
-     * When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
-     * {
-     *     componentType: series,
-     *     // Series type
-     *     seriesType: string,
-     *     // Series index in option.series
-     *     seriesIndex: number,
-     *     // Series name
-     *     seriesName: string,
-     *     // Data name, or category name
-     *     name: string,
-     *     // Data index in input data array
-     *     dataIndex: number,
-     *     // Original data as input
-     *     data: Object,
-     *     // Value of data
-     *     value: number|Array,
-     *     // Color of data
-     *     color: string,
+     *  第一个参数 params 是 formatter 需要的数据集。格式如下：
+     *  {
+     *      componentType: series,
+     *      // 系列类型
+     *      seriesType: string,
+     *      // 系列在传入的 option.series 中的 index
+     *      seriesIndex: number,
+     *      // 系列名称
+     *      seriesName: string,
+     *      // 数据名，类目名
+     *      name: string,
+     *      // 数据在传入的 data 数组中的 index
+     *      dataIndex: number,
+     *      // 传入的原始数据项
+     *      data: Object,
+     *      // 传入的数据值
+     *      value: number|Array,
+     *      // 数据图形的颜色
+     *      color: string,
      * 
-     * }
+     *      // 饼图的百分比
+     *      percent: number,
      * 
-     * Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
-     * The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
-     * The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
-     * Example:
-     * formatter: function (params, ticket, callback) {
-     *     $.get(detail?name= + params.name, function (content) {
-     *         callback(ticket, toHTML(content));
-     *     });
-     *     return Loading;
-     * }
+     *  }
+     * 
+     *  在 trigger 为 axis 的时候 params 是多个系列的数据数组。
+     *  注： ECharts 2.x 使用数组表示各参数的方式不再支持。
+     *  第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
+     *  第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
+     *  示例：
+     *  formatter: function (params, ticket, callback) {
+     *      $.get(detail?name= + params.name, function (content) {
+     *          callback(ticket, toHTML(content));
+     *      });
+     *      return Loading;
+     *  }
      */
     public $formatter;        
         
     /**
-     * @var string The background color of tooltips floating layer.
+     * @var string 提示框浮层的背景颜色。
      */
     public $backgroundColor = 'rgba(50,50,50,0.7)';        
         
     /**
-     * @var string The border color of tooltips floating layer.
+     * @var string 提示框浮层的边框颜色。
      */
     public $borderColor = '#333';        
         
     /**
-     * @var int The border width of tooltips floating layer.
+     * @var int 提示框浮层的边框宽。
      */
     public $borderWidth = 0;        
         
     /**
-     * @var int The floating layer of tooltip space around content. The unit is px. Default values for each position are 5. And they can be set to different values with left, right, top, and bottom.
-     * Examples: 
-     * // Set padding to be 5
+     * @var int 提示框浮层内边距，单位px，默认各方向内边距为5，接受数组分别设定上右下左边距。
+     * 使用示例：
+     * // 设置内边距为 5
      * padding: 5
-     * // Set the top and bottom paddings to be 5, and left and right paddings to be 10
+     * // 设置上下的内边距为 5，左右的内边距为 10
      * padding: [5, 10]
-     * // Set each of the four paddings seperately
+     * // 分别设置四个方向的内边距
      * padding: [
-     *     5,  // up
-     *     10, // right
-     *     5,  // down
-     *     10, // left
+     *     5,  // 上
+     *     10, // 右
+     *     5,  // 下
+     *     10, // 左
      * ]
      */
     public $padding = 5;        
         
     /**
-     * @var Tooltip\TextStyle The text syle of tooltips floating layer.
+     * @var Tooltip\TextStyle 提示框浮层的文本样式。
      */
     public $textStyle;        
         
     /**
-     * @var string Extra CSS style for floating layer. The following is an example for adding shadow.
+     * @var string 额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
      * extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
      */
-    public $extraCssText;
+    public $extraCssText;        
+        
+    /**
+     * @var Tooltip\AxisPointer 坐标轴指示器配置项，在 trigger 为 axis 时有效。
+     */
+    public $axisPointer;        
+        
+    /**
+     * @var array 系列中的数据内容数组。数组项通常为具体的数据项。
+     * 通常来说，数据用一个二维数组表示。如下，每一列被称为一个『维度』。
+     * series: [{
+     *     data: [
+     *         // 维度X   维度Y   其他维度 ...
+     *         [  3.4,    4.5,   15,   43],
+     *         [  4.2,    2.3,   20,   91],
+     *         [  10.8,   9.5,   30,   18],
+     *         [  7.2,    8.8,   18,   57]
+     *     ]
+     * }]
+     * 
+     * 
+     * 在 直角坐标系 (grid) 中『维度X』和『维度Y』会默认对应于 xAxis 和 yAxis。
+     * 在 极坐标系 (polar) 中『维度X』和『维度Y』会默认对应于 radiusAxis 和 angleAxis。
+     * 后面的其他维度是可选的，可以在别处被使用，例如：
+     * 在 visualMap 中可以将一个或多个维度映射到颜色，大小等多个图形属性上。
+     * 在 series.symbolSize 中可以使用回调函数，基于某个维度得到 symbolSize 值。
+     * 使用 tooltip.formatter 或 series.label.normal.formatter 可以把其他维度的值展示出来。
+     * 
+     * 
+     * 
+     * 特别地，当只有一个轴为类目轴（axis.type 为 category）的时候，数据可以简化用一个一维数组表示。例如：
+     * xAxis: {
+     *     data: [a, b, m, n]
+     * },
+     * series: [{
+     *     // 与 xAxis.data 一一对应。
+     *     data: [23,  44,  55,  19]
+     *     // 它其实是下面这种形式的简化：
+     *     // data: [[0, 23], [1, 44], [2, 55], [3, 19]]
+     * }]
+     * 
+     * 
+     * 『值』与 轴类型 的关系：
+     * 
+     * 当某维度对应于数值轴（axis.type 为 value 或者 log）的时候：
+     *   其值可以为 number（例如 12）。（也可以容忍 string 形式的 number，例如 12）
+     * 
+     * 当某维度对应于类目轴（axis.type 为 category）的时候：
+     *   其值须为类目的『序数』（从 0 开始）或者类目的『字符串值』。例如：
+     *   xAxis: {
+     *       type: category,
+     *       data: [星期一, 星期二, 星期三, 星期四]
+     *   },
+     *   yAxis: {
+     *       type: category,
+     *       data: [a, b, m, n, p, q]
+     *   },
+     *   series: [{
+     *       data: [
+     *           // xAxis    yAxis
+     *           [  0,        0,    2  ], // 意思是此点位于 xAxis: 星期一, yAxis: a。
+     *           [  星期四,  2,    1  ], // 意思是此点位于 xAxis: 星期四, yAxis: m。
+     *           [  2,       p,   2  ], // 意思是此点位于 xAxis: 星期三, yAxis: p。
+     *           [  3,        3,    5  ]
+     *       ]
+     *   }]
+     * 
+     *   双类目轴的示例可以参考 Github Punchcard 示例。
+     * 
+     * 当某维度对应于时间轴（type 为 time）的时候：
+     *   值可以为一个时间戳（如 1484141700832），或者一个 Date 实例，或者字符串形式的值（如 2012-12-12，2012/12/12）。
+     * 
+     * 
+     * 
+     * 当需要对个别数据进行个性化定义时：
+     * 数组项可用对象，其中的 value 像表示具体的数值，如：
+     * [
+     *     12,
+     *     34,
+     *     {
+     *         value : 56,
+     *         //自定义标签样式，仅对该数据项有效
+     *         label: {},
+     *         //自定义特殊 itemStyle，仅对该数据项有效
+     *         itemStyle:{}
+     *     },
+     *     10
+     * ]
+     * // 或
+     * [
+     *     [12, 33],
+     *     [34, 313],
+     *     {
+     *         value: [56, 44],
+     *         label: {},
+     *         itemStyle:{}
+     *     },
+     *     [10, 33]
+     * ]
+     * 
+     * 
+     * 空值：
+     * 当某数据不存在时（ps：不存在不代表值为 0），可以用 - 或者 null 或者 undefined 或者 NaN 表示。
+     * 例如，无数据在折线图中可表现为该点是断开的，在其它图中可表示为图形不存在。
+     */
+    public $data;
 
 }

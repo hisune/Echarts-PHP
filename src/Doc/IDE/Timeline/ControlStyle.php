@@ -10,75 +10,75 @@ class ControlStyle
 {            
         
     /**
-     * @var boolean Whether to show control button. false for hide all.
+     * @var boolean 是否显示『控制按钮』。设置为 false 则全不显示。
      */
     public $show = true;        
         
     /**
-     * @var boolean Whether to show play button.
+     * @var boolean 是否显示『播放按钮』。
      */
     public $showPlayBtn = true;        
         
     /**
-     * @var boolean Whether to show previous button.
+     * @var boolean 是否显示『后退按钮』。
      */
     public $showPrevBtn = true;        
         
     /**
-     * @var boolean Whether to show next button.
+     * @var boolean 是否显示『前进按钮』。
      */
     public $showNextBtn = true;        
         
     /**
-     * @var int Size of control button, in pixels (px).
+     * @var int 『控制按钮』的尺寸，单位为像素（px）。
      */
     public $itemSize = 22;        
         
     /**
-     * @var int Interval between control button, in pixels (px).
+     * @var int 『控制按钮』的间隔，单位为像素（px）。
      */
     public $itemGap = 12;        
         
     /**
-     * @var string the location of control button.
+     * @var string 『控制按钮』的位置。
      * 
-     * When timeline.orient is set to be horizontal, left and rightare valid.
+     * 当 timeline.orient 为 horizontal时，left、right有效。
      * 
-     * When timeline.orient is set to be vertical, top and bottomare valid.
+     * 当 timeline.orient 为 vertical时，top、bottom有效。
      */
     public $position = 'left';        
         
     /**
-     * @var string Icon of play status for play button.
-     * Icons can be set to arbitrary vector path via path:// in ECharts. As compared with raster image, vector paths prevent from jagging and blurring when scaled, and have a better control over changing colors. Size of vectoer icon will be adapted automatically. It will be set to be symbolSize if its a symbol. Refer to SVG PathData for more information about format of path. You may export vector paths from tools like Adobe Illustrator.
+     * @var string 『播放按钮』的『可播放状态』的图形。
+     * 在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
      */
     public $playIcon;        
         
     /**
-     * @var string Icon of stop status for play button.
-     * Icons can be set to arbitrary vector path via path:// in ECharts. As compared with raster image, vector paths prevent from jagging and blurring when scaled, and have a better control over changing colors. Size of vectoer icon will be adapted automatically. It will be set to be symbolSize if its a symbol. Refer to SVG PathData for more information about format of path. You may export vector paths from tools like Adobe Illustrator.
+     * @var string 『播放按钮』的『可停止状态』的图形。
+     * 在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
      */
     public $stopIcon;        
         
     /**
-     * @var string Icon of previous button.
-     * Icons can be set to arbitrary vector path via path:// in ECharts. As compared with raster image, vector paths prevent from jagging and blurring when scaled, and have a better control over changing colors. Size of vectoer icon will be adapted automatically. It will be set to be symbolSize if its a symbol. Refer to SVG PathData for more information about format of path. You may export vector paths from tools like Adobe Illustrator.
+     * @var string 『后退按钮』的图形
+     * 在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
      */
     public $prevIcon;        
         
     /**
-     * @var string Icon of next button.
-     * Icons can be set to arbitrary vector path via path:// in ECharts. As compared with raster image, vector paths prevent from jagging and blurring when scaled, and have a better control over changing colors. Size of vectoer icon will be adapted automatically. It will be set to be symbolSize if its a symbol. Refer to SVG PathData for more information about format of path. You may export vector paths from tools like Adobe Illustrator.
+     * @var string 『前进按钮』的图形
+     * 在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
      */
     public $nextIcon;        
         
     /**
-     * @var ControlStyle\Normal Style of normal state for control button.
+     * @var ControlStyle\Normal 控制按钮的『正常状态』的样式。
      */
     public $normal;        
         
     /**
-     * @var ControlStyle\Emphasis Button style in highlighted state (when its hovered by mouse).
+     * @var ControlStyle\Emphasis 控制按钮的『高亮状态』的样式（hover时）。
      */
     public $emphasis;
 

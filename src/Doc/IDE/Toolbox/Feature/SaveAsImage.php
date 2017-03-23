@@ -10,47 +10,47 @@ class SaveAsImage
 {            
         
     /**
-     * @var string Format to save the image in, which supportspng and jpeg.
+     * @var string 保存的图片格式。支持 png 和 jpeg。
      */
     public $type = 'png';        
         
     /**
-     * @var string Name to save the image, whose default value is title.text.
+     * @var string 保存的文件名称，默认使用 title.text 作为名称。
      */
     public $name;        
         
     /**
-     * @var string Background color to save the image, whose default value is backgroundColor. If backgroundColor is not set, white color is used.
+     * @var string 保存的图片背景色，默认使用 backgroundColor，如果backgroundColor不存在的话会取白色。
      */
     public $backgroundColor = 'auto';        
         
     /**
-     * @var array Components to be excluded when export. By default, toolbox is excluded.
+     * @var array 保存为图片时忽略的组件列表，默认忽略工具栏。
      */
     public $excludeComponents = '[\'toolbox\']';        
         
     /**
-     * @var boolean Whether to show the tool.
+     * @var boolean 是否显示该工具。
      */
     public $show = true;        
         
     /**
      * @var boolean 
      */
-    public $title = 'save as image';        
+    public $title = '保存为图片';        
         
     /**
-     * @var * Path string for icon. In ECharts 3, user-defined svg path is supported to be used as icon, whose format could be refered at SVG PathData. It could be edited and exported from some graphic tools such as Adobe Illustrator.
+     * @var * Icon 的 path 字符串，ECharts 3 中支持使用自定义的 svg path 作为 icon，格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
      */
     public $icon;        
         
     /**
-     * @var SaveAsImage\IconStyle The style setting of save as image icon.
+     * @var SaveAsImage\IconStyle 保存为图片 icon 样式设置。
      */
     public $iconStyle;        
         
     /**
-     * @var int Resolution ratio to save image, whose default value is that of the container. Values larger than 1 (e.g.: 2) is supported when you need higher resolution.
+     * @var int 保存图片的分辨率比例，默认跟容器相同大小，如果需要保存更高分辨率的，可以设置为大于 1 的值，例如 2。
      */
     public $pixelRatio = 1;
 

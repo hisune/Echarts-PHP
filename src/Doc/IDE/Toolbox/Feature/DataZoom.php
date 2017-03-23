@@ -10,32 +10,32 @@ class DataZoom
 {            
         
     /**
-     * @var boolean Whether to show the tool.
+     * @var boolean 是否显示该工具。
      */
     public $show = true;        
         
     /**
-     * @var DataZoom\Title Restored and zoomed title text.
+     * @var DataZoom\Title 缩放和还原的标题文本。
      */
     public $title;        
         
     /**
-     * @var DataZoom\Icon Zooming and restore icon path.
+     * @var DataZoom\Icon 缩放和还原的 icon path。
      */
     public $icon;        
         
     /**
-     * @var DataZoom\IconStyle The style setting of data area zooming icon.
+     * @var DataZoom\IconStyle 数据区域缩放 icon 样式设置。
      */
     public $iconStyle;        
         
     /**
-     * @var int|array|boolean Defines which xAxis should be controlled. By default, it controls all x axes. If it is set to be false, then no x axis is controlled. If it is set to be then it controls axis with axisIndex of 3. If it is set to be [0, 3], it controls the x-axes with axisIndex of 0 and 3.
+     * @var int|array|boolean 指定哪些 xAxis 被控制。如果缺省则控制所有的x轴。如果设置为 false 则不控制任何x轴。如果设置成 3 则控制 axisIndex 为 3 的x轴。如果设置为 [0, 3] 则控制 axisIndex 为 0 和 3 的x轴。
      */
     public $xAxisIndex;        
         
     /**
-     * @var int|array|boolean Defines which yAxis should be controlled. By default, it controls all y axes. If it is set to be false, then no y axis is controlled. If it is set to be then it controls axis with axisIndex of 3. If it is set to be [0, 3], it controls the x-axes with axisIndex of 0 and 3.
+     * @var int|array|boolean 指定哪些 yAxis 被控制。如果缺省则控制所有的y轴。如果设置为 false 则不控制任何y轴。如果设置成 3 则控制 axisIndex 为 3 的y轴。如果设置为 [0, 3] 则控制 axisIndex 为 0 和 3 的y轴。
      */
     public $yAxisIndex;
 

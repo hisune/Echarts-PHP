@@ -10,12 +10,12 @@ class ItemStyle
 {            
         
     /**
-     * @var ItemStyle\Normal Map area style in normal state.
+     * @var ItemStyle\Normal 普通状态下的多边形样式。
      */
     public $normal;        
         
     /**
-     * @var ItemStyle\Emphasis Map area style in highlighted state.
+     * @var ItemStyle\Emphasis 高亮状态下的多边形样式。
      */
     public $emphasis;
 

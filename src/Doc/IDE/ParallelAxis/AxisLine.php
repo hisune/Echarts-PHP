@@ -10,7 +10,7 @@ class AxisLine
 {            
         
     /**
-     * @var boolean Whether to show the axis line or not.
+     * @var boolean 是否显示坐标轴轴线。
      */
     public $show = true;        
         

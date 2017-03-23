@@ -12,11 +12,11 @@ class Title
     /**
      * @var string 
      */
-    public $zoom = 'area zooming';        
+    public $zoom = '区域缩放';        
         
     /**
      * @var string 
      */
-    public $back = 'restore area zooming';
+    public $back = '区域缩放还原';
 
 }

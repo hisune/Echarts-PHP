@@ -15,59 +15,59 @@ class Legend
     public $show = true;        
         
     /**
-     * @var int zlevel value of all graghical elements in .
-     * zlevel is used to make layers with Canvas. Graphical elements with different zlevel values will be placed in different Canvases, which is a common optimization technique. We can put those frequently changed elements (like those with animations) to a seperate zlevel. Notice that too many Canvases will increase memory cost, and should be used carefully on mobile phones to avoid crash.
-     * Canvases with bigger zlevel will be placed on Canvases with smaller zlevel.
+     * @var int 所有图形的 zlevel 值。
+     * zlevel用于 Canvas 分层，不同zlevel值的图形会放置在不同的 Canvas 中，Canvas 分层是一种常见的优化手段。我们可以把一些图形变化频繁（例如有动画）的组件设置成一个单独的zlevel。需要注意的是过多的 Canvas 会引起内存开销的增大，在手机端上需要谨慎使用以防崩溃。
+     * zlevel 大的 Canvas 会放在 zlevel 小的 Canvas 的上面。
      */
     public $zlevel = 0;        
         
     /**
-     * @var int z value of all graghical elements in , which controls order of drawing graphical components. Components with smaller z values may be overwritten by those with larger z values.
-     * z has a lower priority to zlevel, and will not create new Canvas.
+     * @var int 组件的所有图形的z值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖。
+     * z相比zlevel优先级更低，而且不会创建新的 Canvas。
      */
     public $z = 2;        
         
     /**
-     * @var string|int Distance between legend component and the left side of the container.
-     * left value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%; and it can also be left, center, or right.
-     * If the left value is set to be left, center, or right, then the component will be aligned automatically based on position.
+     * @var string|int 图例组件离容器左侧的距离。
+     * left 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 left, center, right。
+     * 如果 left 的值为left, center, right，组件会根据相应的位置自动对齐。
      */
     public $left = 'auto';        
         
     /**
-     * @var string|int Distance between legend component and the top side of the container.
-     * top value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
-     * If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
+     * @var string|int 图例组件离容器上侧的距离。
+     * top 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 top, middle, bottom。
+     * 如果 top 的值为top, middle, bottom，组件会根据相应的位置自动对齐。
      */
     public $top = 'auto';        
         
     /**
-     * @var string|int Distance between legend component and the right side of the container.
-     * right value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%.
-     * Adaptive by default.
+     * @var string|int 图例组件离容器右侧的距离。
+     * right 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
+     * 默认自适应。
      */
     public $right = 'auto';        
         
     /**
-     * @var string|int Distance between legend component and the bottom side of the container.
-     * bottom value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%.
-     * Adaptive by default.
+     * @var string|int 图例组件离容器下侧的距离。
+     * bottom 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
+     * 默认自适应。
      */
     public $bottom = 'auto';        
         
     /**
-     * @var string|int Width of legend component. Adaptive by default.
+     * @var string|int 图例组件的宽度。默认自适应。
      */
     public $width = 'auto';        
         
     /**
-     * @var string|int Height of legend component. Adaptive by default.
+     * @var string|int 图例组件的高度。默认自适应。
      */
     public $height = 'auto';        
         
     /**
-     * @var string The layout orientation of legend. 
-     * Options:
+     * @var string 图例列表的布局朝向。
+     * 可选：
      * 
      * horizontal
      * vertical
@@ -75,8 +75,8 @@ class Legend
     public $orient = 'horizontal';        
         
     /**
-     * @var string Legend mrker and text aligning. By default, it automatically calculates from component location and orient. When left value of this component is right, and the vertical layout (orient is vertical), it would be aligned to right.
-     * Option: 
+     * @var string 图例标记和文本的对齐。默认自动，根据组件的位置和 orient 决定，当组件的 left 值为 right 以及纵向布局（orient 为  vertical）的时候为右对齐，及为 right。
+     * 可选：
      * 
      * auto
      * left
@@ -85,43 +85,43 @@ class Legend
     public $align = 'auto';        
         
     /**
-     * @var int legend space around content. The unit is px. Default values for each position are 5. And they can be set to different values with left, right, top, and bottom.
-     * Examples: 
-     * // Set padding to be 5
+     * @var int 图例内边距，单位px，默认各方向内边距为5，接受数组分别设定上右下左边距。
+     * 使用示例：
+     * // 设置内边距为 5
      * padding: 5
-     * // Set the top and bottom paddings to be 5, and left and right paddings to be 10
+     * // 设置上下的内边距为 5，左右的内边距为 10
      * padding: [5, 10]
-     * // Set each of the four paddings seperately
+     * // 分别设置四个方向的内边距
      * padding: [
-     *     5,  // up
-     *     10, // right
-     *     5,  // down
-     *     10, // left
+     *     5,  // 上
+     *     10, // 右
+     *     5,  // 下
+     *     10, // 左
      * ]
      */
     public $padding = 5;        
         
     /**
-     * @var int The distance between each legend, horizontal distance in horizontal layout, and vertical distance in vertical layout.
+     * @var int 图例每项之间的间隔。横向布局时为水平间隔，纵向布局时为纵向间隔。
      */
     public $itemGap = 10;        
         
     /**
-     * @var int Image width of legend symbol.
+     * @var int 图例标记的图形宽度。
      */
     public $itemWidth = 25;        
         
     /**
-     * @var int Image height of legend symbol.
+     * @var int 图例标记的图形高度。
      */
     public $itemHeight = 14;        
         
     /**
-     * @var string|callable Formatter is used to format label of legend, which supports string template and callback function.
-     * Example: 
-     * // using string template, the template variable is legend name {name}
+     * @var string|callable 用来格式化图例文本，支持字符串模板和回调函数两种形式。
+     * 示例：
+     * // 使用字符串模板，模板变量为图例名称 {name}
      * formatter: Legend {name}
-     * // using callback function
+     * // 使用回调函数
      * formatter: function (name) {
      *     return Legend  + name;
      * }
@@ -129,31 +129,107 @@ class Legend
     public $formatter;        
         
     /**
-     * @var string|boolean Selected mode of legend, which controls whether series can be toggled displaying by clicking legends. It is enabled by default, and you may set it to be false to disabled it.
-     * Besides, it can be set to single or multiple, for single selection and multiple selection.
+     * @var string|boolean 图例选择的模式，控制是否可以通过点击图例改变系列的显示状态。默认开启图例选择，可以设成 false 关闭。
+     * 除此之外也可以设成 single 或者  multiple 使用单选或者多选模式。
      */
     public $selectedMode = true;        
         
     /**
-     * @var string Legend color when not selected.
+     * @var string 图例关闭时的颜色。
      */
     public $inactiveColor = '#ccc';        
         
     /**
-     * @var array State table of selected legend.
-     * example: 
+     * @var array 图例选中状态表。
+     * 示例：
      * selected: {
-     *     // selectedseries 1
-     *     series 1: true,
-     *     // unselectedseries 2
-     *     series 2: false
+     *     // 选中系列1
+     *     系列1: true,
+     *     // 不选中系列2
+     *     系列2: false
      * }
      */
     public $selected;        
         
     /**
-     * @var Legend\TextStyle Legend text style.
+     * @var Legend\TextStyle 图例的公用文本样式。
      */
-    public $textStyle;
+    public $textStyle;        
+        
+    /**
+     * @var array 图例的 tooltip 配置，配置项同 tooltip。默认不显示，可以在 legend 文字很多的时候对文字做裁剪并且开启 tooltip，如下示例：
+     * legend: {
+     *     formatter: function (name) {
+     *         return echarts.format.truncateText(name, 40, 14px Microsoft Yahei, …);
+     *     },
+     *     tooltip: {
+     *         show: true
+     *     }
+     * }
+     */
+    public $tooltip;        
+        
+    /**
+     * @var array 图例的数据数组。数组项通常为一个字符串，每一项代表一个系列的 name（如果是饼图，也可以是饼图单个数据的 name）。图例组件会自动获取对应系列的颜色，图形标记（symbol）作为自己绘制的颜色和标记，特殊字符串 （空字符串）或者 \n（换行字符串）用于图例的换行。
+     * 如果要设置单独一项的样式，也可以把该项写成配置项对象。此时必须使用 name 属性对应表示系列的 name。
+     * 示例
+     * data: [{
+     *     name: 系列1,
+     *     // 强制设置图形为圆。
+     *     icon: circle,
+     *     // 设置文本为红色
+     *     textStyle: {
+     *         color: red
+     *     }
+     * }]
+     */
+    public $data;        
+        
+    /**
+     * @var string 图例背景色，默认透明。
+     * 
+     * 颜色可以使用 RGB 表示，比如 rgb(128, 128, 128)   ，如果想要加上 alpha 通道，可以使用 RGBA，比如 rgba(128, 128, 128, 0.5)，也可以使用十六进制格式，比如 #ccc
+     */
+    public $backgroundColor = 'transparent';        
+        
+    /**
+     * @var string 图例的边框颜色。支持的颜色格式同 backgroundColor。
+     */
+    public $borderColor = '#ccc';        
+        
+    /**
+     * @var int 图例的边框线宽。
+     */
+    public $borderWidth = 1;        
+        
+    /**
+     * @var int 图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。
+     * 示例：
+     * {
+     *     shadowColor: rgba(0, 0, 0, 0.5),
+     *     shadowBlur: 10
+     * }
+     * 
+     * 注意：此配置项生效的前提是，设置了 show: true 以及值不为 tranparent 的背景色 backgroundColor。
+     */
+    public $shadowBlur;        
+        
+    /**
+     * @var string 阴影颜色。支持的格式同color。
+     * 注意：此配置项生效的前提是，设置了 show: true。
+     */
+    public $shadowColor;        
+        
+    /**
+     * @var int 阴影水平方向上的偏移距离。
+     * 注意：此配置项生效的前提是，设置了 show: true。
+     */
+    public $shadowOffsetX = 0;        
+        
+    /**
+     * @var int 阴影垂直方向上的偏移距离。
+     * 注意：此配置项生效的前提是，设置了 show: true。
+     */
+    public $shadowOffsetY = 0;
 
 }

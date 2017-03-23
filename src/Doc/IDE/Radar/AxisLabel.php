@@ -10,38 +10,38 @@ class AxisLabel
 {            
         
     /**
-     * @var boolean Whether to show the label of axis label or not.
+     * @var boolean 是否显示刻度标签。
      */
     public $show = false;        
         
     /**
-     * @var boolean Specifies whether the axis label faces Inside. False by default.
+     * @var boolean 刻度标签是否朝内，默认朝外。
      */
     public $inside = false;        
         
     /**
-     * @var int Rotation degree of axis label, which is especially useful when there is no enough space for category axis.
-     * Rotation degree is from -90 to 90.
+     * @var int 刻度标签旋转的角度，在类目轴的类目标签显示不下的时候可以通过旋转防止标签之间重叠。
+     * 旋转的角度从 -90 度到 90 度。
      */
     public $rotate = 0;        
         
     /**
-     * @var int The margin between the axis label and the axis line.
+     * @var int 刻度标签与轴线之间的距离。
      */
     public $margin = 8;        
         
     /**
-     * @var string|callable Formatter of axis label, which supports string template and callback function.
-     * Example:
-     * // Use string template; template variable is the default label of axis {value}
+     * @var string|callable 刻度标签的内容格式器，支持字符串模板和回调函数两种形式。
+     * 示例:
+     * // 使用字符串模板，模板变量为刻度默认标签 {value}
      * formatter: {value} kg
      * 
-     * // Use callback function; function parameters are axis index
+     * // 使用函数模板，函数参数分别为刻度数值（类目），刻度的索引
      * formatter: function (value, index) {
-     *     // Formatted to be month/day; display year only in the first label
+     *     // 格式化成月/日，只在第一个刻度显示年份
      *     var date = new Date(value);
      *     var texts = [(date.getMonth() + 1), date.getDate()];
-     *     if (idx === 0) {
+     *     if (index === 0) {
      *         texts.unshift(date.getYear());
      *     }
      *     return texts.join(/);

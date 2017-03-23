@@ -10,22 +10,22 @@ class AxisTick
 {            
         
     /**
-     * @var boolean Whether to show the axis tick.
+     * @var boolean 是否显示坐标轴刻度。
      */
     public $show = false;        
         
     /**
-     * @var boolean Align axis tick with label, which is available only when boundaryGap is set to be true in category axis. See the following picture:
+     * @var boolean 类目轴中在 boundaryGap 为 true 的时候有效，可以保证刻度线和标签对齐。如下图：
      */
     public $alignWithLabel = false;        
         
     /**
-     * @var boolean Specifies whether the axis label faces Inside. False by default.
+     * @var boolean 坐标轴刻度是否朝内，默认朝外。
      */
     public $inside = false;        
         
     /**
-     * @var int The length of the axis tick.
+     * @var int 坐标轴刻度的长度。
      */
     public $length = 5;        
         

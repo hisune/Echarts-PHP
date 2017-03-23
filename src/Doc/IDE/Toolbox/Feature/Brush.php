@@ -10,24 +10,24 @@ class Brush
 {            
         
     /**
-     * @var array Icons used, whose values are:
+     * @var array 使用的按钮，取值：
      * 
-     * rect: Enabling selecting with rectangle area.
-     * polygon: Enabling selecting with any shape.
-     * lineX: Enabling horizontal selecting.
-     * lineY: Enabling vertical selecting.
-     * keep: Switching between single selecting and multiple selecting. The latter one can select multiple areas, while the former one cancels previous selection.
-     * clear: Clearing all selection.
+     * rect：开启矩形选框选择功能。
+     * polygon：开启任意形状选框选择功能。
+     * lineX：开启横向选择功能。
+     * lineY：开启纵向选择功能。
+     * keep：切换『单选』和『多选』模式。后者可支持同时画多个选框。前者支持单击清除所有选框。
+     * clear：清空所有选框。
      */
     public $type;        
         
     /**
-     * @var Brush\Icon Icon path for each icon.
+     * @var Brush\Icon 每个按钮的 icon path。
      */
     public $icon;        
         
     /**
-     * @var Brush\Title Title.
+     * @var Brush\Title 标题文本。
      */
     public $title;
 

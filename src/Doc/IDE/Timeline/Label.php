@@ -10,29 +10,28 @@ class Label
 {            
         
     /**
-     * @var string|int Configurations:
+     * @var string|int 可选的配置方式：
      * 
-     * auto: 
-     *   Automatic layout.
+     * auto：
+     *   完全自动决定。
      * 
-     * left: 
-     *   Put it along the left margin.
-     *   It is valid when timline.orient is set as horizontal .
+     * left：
+     *   贴左边界放置。
+     *   当 timline.orient 为 vertical 时有效。
      * 
-     * right: 
-     *   Put it along the right margin.
-     *   It is valid when timline.orient is set as horizontal.
+     * right：当 timline.orient 为 vertical 时有效。
+     *   贴右边界放置。
      * 
-     * top: 
-     *   Put it along the margin of the top.
-     *   It is valid when timline.orient is set as vertical.
+     * top：
+     *   贴上边界放置。
+     *   当 timline.orient 为 horizontal 时有效。
      * 
-     * bottom: 
-     *   Put it along the margin of the bottom.
-     *   It is valid when timline.orient is set as vertical.
+     * bottom：
+     *   贴下边界放置。
+     *   当 timline.orient 为 horizontal 时有效。
      * 
-     * number: 
-     *   When it is assigned to be a a number value, it indicates the distance between label and axis. If it is set to be 0 , label would be at the same position with axis. Negative value is valid for the other side of the axis.
+     * number：
+     *   指定某个数值时，表示 label 和轴的距离。为 0 时则和坐标轴重合，可以为正负值，决定 label 在坐标轴的哪一边。
      */
     public $position = 'auto';        
         

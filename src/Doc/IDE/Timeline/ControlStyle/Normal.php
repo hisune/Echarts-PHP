@@ -10,17 +10,17 @@ class Normal
 {            
         
     /**
-     * @var string Button color.
+     * @var string 按钮颜色。
      */
     public $color = '#304654';        
         
     /**
-     * @var string Color of button border.
+     * @var string 按钮边框颜色。
      */
     public $borderColor = '#304654';        
         
     /**
-     * @var int Border width of button.
+     * @var int 按钮边框线宽。
      */
     public $borderWidth = 1;
 

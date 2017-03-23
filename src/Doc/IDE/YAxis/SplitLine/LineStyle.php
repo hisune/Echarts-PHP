@@ -10,12 +10,12 @@ class LineStyle
 {            
         
     /**
-     * @var array|string The color of the splitLine, which could be set separately.
-     * SplitLine color could also be set in color array, which the split lines would take as their colors in turns.
-     * Example:
+     * @var array|string 分隔线颜色，可以设置成单个颜色。
+     * 也可以设置成颜色数组，分隔线会按数组中颜色的顺序依次循环设置颜色。
+     * 示例
      * splitLine: {
      *     lineStyle: {
-     *         // Dark and light colors will be used in turns
+     *         // 使用深浅的间隔色
      *         color: [#aaa, #ddd]
      *     }
      * }
@@ -23,13 +23,13 @@ class LineStyle
     public $color = '[\'#ccc\']';        
         
     /**
-     * @var int splitLine line width.
+     * @var int 分隔线线宽。
      */
     public $width = 1;        
         
     /**
-     * @var string splitLine line type.
-     * Options are: 
+     * @var string 分隔线线的类型。
+     * 可选：
      * 
      * solid
      * dashed
@@ -38,8 +38,8 @@ class LineStyle
     public $type = 'solid';        
         
     /**
-     * @var int Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
-     * For example:
+     * @var int 图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。
+     * 示例：
      * {
      *     shadowColor: rgba(0, 0, 0, 0.5),
      *     shadowBlur: 10
@@ -48,22 +48,22 @@ class LineStyle
     public $shadowBlur;        
         
     /**
-     * @var string Shadow color. Support same format as color.
+     * @var string 阴影颜色。支持的格式同color。
      */
     public $shadowColor;        
         
     /**
-     * @var int Offset distance on the horizontal direction of shadow.
+     * @var int 阴影水平方向上的偏移距离。
      */
     public $shadowOffsetX = 0;        
         
     /**
-     * @var int Offset distance on the vertical direction of shadow.
+     * @var int 阴影垂直方向上的偏移距离。
      */
     public $shadowOffsetY = 0;        
         
     /**
-     * @var int Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
+     * @var int 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。
      */
     public $opacity;
 

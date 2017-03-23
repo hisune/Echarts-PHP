@@ -12,31 +12,31 @@ class Title
     /**
      * @var string 
      */
-    public $rect = 'Rectangle selection';        
+    public $rect = '矩形选择';        
         
     /**
      * @var string 
      */
-    public $polygon = 'Polygon selection';        
+    public $polygon = '圈选';        
         
     /**
      * @var string 
      */
-    public $lineX = 'Horizontal selection';        
+    public $lineX = '横向选择';        
         
     /**
      * @var string 
      */
-    public $lineY = 'Vertical selection';        
+    public $lineY = '纵向选择';        
         
     /**
      * @var string 
      */
-    public $keep = 'Keep previous selection';        
+    public $keep = '保持选择';        
         
     /**
      * @var string 
      */
-    public $clear = 'Clear selection';
+    public $clear = '清除选择';
 
 }

@@ -10,12 +10,12 @@ class ScaleLimit
 {            
         
     /**
-     * @var int Minimum scaling
+     * @var int 最小的缩放值
      */
     public $min;        
         
     /**
-     * @var int Maximum scaling
+     * @var int 最大的缩放值
      */
     public $max;
 

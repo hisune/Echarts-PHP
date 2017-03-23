@@ -10,12 +10,12 @@ class Normal
 {            
         
     /**
-     * @var boolean Whether to show label in normal state.
+     * @var boolean 是否在普通状态下显示标签。
      */
     public $show = false;        
         
     /**
-     * @var Normal\TextStyle Style of text in normal state.
+     * @var Normal\TextStyle 普通状态下的标签文本样式。
      */
     public $textStyle;
 

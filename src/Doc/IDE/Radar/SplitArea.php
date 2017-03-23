@@ -10,12 +10,12 @@ class SplitArea
 {            
         
     /**
-     * @var boolean Whether to show the splitArea.
+     * @var boolean 是否显示分隔区域。
      */
     public $show = true;        
         
     /**
-     * @var SplitArea\AreaStyle Split area style.
+     * @var SplitArea\AreaStyle 分隔区域的样式设置。
      */
     public $areaStyle;
 

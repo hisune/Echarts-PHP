@@ -10,13 +10,13 @@ class TextStyle
 {            
         
     /**
-     * @var string main title text color.
+     * @var string 主标题文字的颜色。
      */
     public $color = '#333';        
         
     /**
-     * @var string main title font style
-     * Options are: 
+     * @var string 主标题文字字体的风格
+     * 可选：
      * 
      * normal
      * italic
@@ -25,8 +25,8 @@ class TextStyle
     public $fontStyle = 'normal';        
         
     /**
-     * @var string main title font thick weight
-     * Options are: 
+     * @var string 主标题文字字体的粗细
+     * 可选：
      * 
      * normal
      * bold
@@ -37,12 +37,12 @@ class TextStyle
     public $fontWeight = 'bolder';        
         
     /**
-     * @var string main title font family
+     * @var string 主标题文字的字体系列
      */
-    public $fontFamily = 'sans-serief';        
+    public $fontFamily = 'sans-serif';        
         
     /**
-     * @var int main title font size
+     * @var int 主标题文字的字体大小
      */
     public $fontSize = 18;
 

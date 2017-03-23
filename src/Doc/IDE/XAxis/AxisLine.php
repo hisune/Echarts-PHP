@@ -10,12 +10,12 @@ class AxisLine
 {            
         
     /**
-     * @var boolean Whether to show the axis line or not.
+     * @var boolean 是否显示坐标轴轴线。
      */
     public $show = true;        
         
     /**
-     * @var boolean Specifies whether X or Y axis lies on the others origin position, where value is 0 on axis. Valid only if the other axis is of value type, and contains 0 value.
+     * @var boolean X 轴或者 Y 轴的轴线是否在另一个轴的 0 刻度上，只有在另一个轴为数值轴且包含 0 刻度时有效。
      */
     public $onZero = true;        
         

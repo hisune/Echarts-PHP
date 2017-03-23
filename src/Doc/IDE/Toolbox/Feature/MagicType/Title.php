@@ -12,21 +12,21 @@ class Title
     /**
      * @var string 
      */
-    public $line = 'for line charts';        
+    public $line = '切换为折线图';        
         
     /**
      * @var string 
      */
-    public $bar = 'for bar charts';        
+    public $bar = '切换为柱状图';        
         
     /**
      * @var string 
      */
-    public $stack = 'for stacked charts';        
+    public $stack = '切换为堆叠';        
         
     /**
      * @var string 
      */
-    public $tiled = 'for tiled charts';
+    public $tiled = '切换为平铺';
 
 }

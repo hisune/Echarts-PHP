@@ -10,40 +10,40 @@ class DataView
 {            
         
     /**
-     * @var boolean Whether to show the tool.
+     * @var boolean 是否显示该工具。
      */
     public $show = true;        
         
     /**
      * @var boolean 
      */
-    public $title = 'data view';        
+    public $title = '数据视图';        
         
     /**
-     * @var * Path string for icon. In ECharts 3, user-defined svg path is supported to be used as icon, whose format could be refered at SVG PathData. It could be edited and exported from some graphic tools such as Adobe Illustrator.
+     * @var * Icon 的 path 字符串，ECharts 3 中支持使用自定义的 svg path 作为 icon，格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
      */
     public $icon;        
         
     /**
-     * @var DataView\IconStyle The style setting of data view icon.
+     * @var DataView\IconStyle 数据视图 icon 样式设置。
      */
     public $iconStyle;        
         
     /**
-     * @var boolean Whether it is read-only.
+     * @var boolean 是否不可编辑（只读）。
      */
     public $readOnly = false;        
         
     /**
      * @var callable (option:Object) =&gt; HTMLDomElement|string
      * 
-     * Define a function to present dataView. It is used to replace default textarea for richer data editing. It can return a DOM object, or an HTML string.
-     * For example:
+     * 自定义 dataView 展现函数，用以取代默认的 textarea 使用更丰富的数据编辑。可以返回 dom 对象或者 html 字符串。
+     * 如下示例使用表格展现数据值：
      * optionToContent: function(opt) {
      *     var axisData = opt.xAxis[0].data;
      *     var series = opt.series;
      *     var table = &lt;table style=width:100%;text-align:center&gt;&lt;tbody&gt;&lt;tr&gt;
-     *                  + &lt;td&gt;Time:&lt;/td&gt;
+     *                  + &lt;td&gt;时间&lt;/td&gt;
      *                  + &lt;td&gt; + series[0].name + &lt;/td&gt;
      *                  + &lt;td&gt; + series[1].name + &lt;/td&gt;
      *                  + &lt;/tr&gt;;
@@ -63,42 +63,42 @@ class DataView
     /**
      * @var callable (container:HTMLDomElement, option:Object) =&gt; Object
      * 
-     * When optionToContent is used, if you want to support refreshing chart after data changes, you need to implement the logic to merge options in this function.
+     * 在使用 optionToContent 的情况下，如果支持数据编辑后的刷新，需要自行通过该函数实现组装 option 的逻辑。
      */
     public $contentToOption;        
         
     /**
-     * @var array There are 3 names in data view, which are [data view, turn off and refresh].
+     * @var array 数据视图上有三个话术，默认是[数据视图, 关闭, 刷新]。
      */
-    public $lang = '[\'data view\', \'turn off\', \'refresh\']';        
+    public $lang = '[\'数据视图\', \'关闭\', \'刷新\']';        
         
     /**
-     * @var string Background color of the floating layer in data view.
+     * @var string 数据视图浮层背景色。
      */
     public $backgroundColor = '#fff';        
         
     /**
-     * @var string Background color of input area of the floating layer in data view.
+     * @var string 数据视图浮层文本输入区背景色。
      */
     public $textareaColor = '#fff';        
         
     /**
-     * @var string Border color of input area of the floating layer in data view.
+     * @var string 数据视图浮层文本输入区边框颜色。
      */
     public $textareaBorderColor = '#333';        
         
     /**
-     * @var string Text color.
+     * @var string 文本颜色。
      */
     public $textColor = '#000';        
         
     /**
-     * @var string Button color.
+     * @var string 按钮颜色。
      */
     public $buttonColor = '#c23531';        
         
     /**
-     * @var string Color of button text.
+     * @var string 按钮文本颜色。
      */
     public $buttonTextColor = '#fff';
 

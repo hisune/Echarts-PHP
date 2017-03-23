@@ -10,17 +10,17 @@ class Emphasis
 {            
         
     /**
-     * @var string Button color.
+     * @var string 按钮颜色。
      */
     public $color = '#c23531';        
         
     /**
-     * @var string Color of button border.
+     * @var string 按钮边框颜色。
      */
     public $borderColor = '#c23531';        
         
     /**
-     * @var int Width of button border.
+     * @var int 按钮边框线宽。
      */
     public $borderWidth = 2;
 

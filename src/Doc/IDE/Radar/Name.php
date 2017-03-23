@@ -10,15 +10,15 @@ class Name
 {            
         
     /**
-     * @var boolean Whether to display the indicators name.
+     * @var boolean 是否显示指示器名称。
      */
     public $show = true;        
         
     /**
-     * @var string|callable The formatter of indicators name, in which the string and callback function are supported. See the following example: 
-     * // using string template, the template variable should be the indicators name {value}
+     * @var string|callable 指示器名称显示的格式器。支持字符串和回调函数，如下示例：
+     * // 使用字符串模板，模板变量为指示器名称 {value}
      * formatter: 【{value}】
-     * // using callback function, the first parameter is the indicators name, and the second parameter id the indicators cinfiguration item 
+     * // 使用回调函数，第一个参数是指示器名称，第二个参数是指示器配置项
      * formatter: function (value, indicator) {
      *     return 【 + value + 】;
      * }

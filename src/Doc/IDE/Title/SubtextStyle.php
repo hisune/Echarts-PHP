@@ -10,13 +10,13 @@ class SubtextStyle
 {            
         
     /**
-     * @var string subtitle text color.
+     * @var string 副标题文字的颜色。
      */
     public $color = '#aaa';        
         
     /**
-     * @var string subtitle font style
-     * Options are: 
+     * @var string 副标题文字字体的风格
+     * 可选：
      * 
      * normal
      * italic
@@ -25,8 +25,8 @@ class SubtextStyle
     public $fontStyle = 'normal';        
         
     /**
-     * @var string subtitle font thick weight
-     * Options are: 
+     * @var string 副标题文字字体的粗细
+     * 可选：
      * 
      * normal
      * bold
@@ -37,12 +37,12 @@ class SubtextStyle
     public $fontWeight = 'normal';        
         
     /**
-     * @var string subtitle font family
+     * @var string 副标题文字的字体系列
      */
-    public $fontFamily = 'sans-serief';        
+    public $fontFamily = 'sans-serif';        
         
     /**
-     * @var int subtitle font size
+     * @var int 副标题文字的字体大小
      */
     public $fontSize = 12;
 

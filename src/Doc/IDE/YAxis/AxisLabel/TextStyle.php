@@ -10,21 +10,21 @@ class TextStyle
 {            
         
     /**
-     * @var string|callable Color of axis label is set to be axisLine.lineStyle.color by default. Callback function is supported, in the following format:
+     * @var string|callable 刻度标签文字的颜色，默认取 axisLine.lineStyle.color。支持回调函数，格式如下
      * (val: string) =&gt; Color
      * 
-     * Parameter is the text of label, and return value is the color. See the following example:
+     * 参数是标签的文本，返回颜色值，如下示例：
      * textStyle: {
-     *     color: function (value, index) {
-     *         return value &gt;= 0 ? green : red;
+     *     color: function (val) {
+     *         return val &gt;= 0 ? green : red;
      *     }
      * }
      */
     public $color;        
         
     /**
-     * @var string  font style
-     * Options are: 
+     * @var string 文字字体的风格
+     * 可选：
      * 
      * normal
      * italic
@@ -33,8 +33,8 @@ class TextStyle
     public $fontStyle = 'normal';        
         
     /**
-     * @var string  font thick weight
-     * Options are: 
+     * @var string 文字字体的粗细
+     * 可选：
      * 
      * normal
      * bold
@@ -45,23 +45,13 @@ class TextStyle
     public $fontWeight = 'normal';        
         
     /**
-     * @var string  font family
+     * @var string 文字的字体系列
      */
-    public $fontFamily = 'sans-serief';        
+    public $fontFamily = 'sans-serif';        
         
     /**
-     * @var int  font size
+     * @var int 文字的字体大小
      */
-    public $fontSize = 12;        
-        
-    /**
-     * @var string Label text align, can be left, right, center. Defaultly will choose one of them automatically.
-     */
-    public $align;        
-        
-    /**
-     * @var string Label text vertical align, can be top, middle, bottom. Defaultly will choose one of them automatically.
-     */
-    public $baseline;
+    public $fontSize = 12;
 
 }

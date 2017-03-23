@@ -10,138 +10,113 @@ class Grid
 {            
         
     /**
-     * @var boolean Whether to show the grid in rectangular coordinate.
+     * @var boolean 是否显示直角坐标系网格。
      */
     public $show = false;        
         
     /**
-     * @var int zlevel value of all graghical elements in .
-     * zlevel is used to make layers with Canvas. Graphical elements with different zlevel values will be placed in different Canvases, which is a common optimization technique. We can put those frequently changed elements (like those with animations) to a seperate zlevel. Notice that too many Canvases will increase memory cost, and should be used carefully on mobile phones to avoid crash.
-     * Canvases with bigger zlevel will be placed on Canvases with smaller zlevel.
+     * @var int 所有图形的 zlevel 值。
+     * zlevel用于 Canvas 分层，不同zlevel值的图形会放置在不同的 Canvas 中，Canvas 分层是一种常见的优化手段。我们可以把一些图形变化频繁（例如有动画）的组件设置成一个单独的zlevel。需要注意的是过多的 Canvas 会引起内存开销的增大，在手机端上需要谨慎使用以防崩溃。
+     * zlevel 大的 Canvas 会放在 zlevel 小的 Canvas 的上面。
      */
     public $zlevel = 0;        
         
     /**
-     * @var int z value of all graghical elements in , which controls order of drawing graphical components. Components with smaller z values may be overwritten by those with larger z values.
-     * z has a lower priority to zlevel, and will not create new Canvas.
+     * @var int 组件的所有图形的z值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖。
+     * z相比zlevel优先级更低，而且不会创建新的 Canvas。
      */
     public $z = 2;        
         
     /**
-     * @var string|int Distance between grid  component and the left side of the container.
-     * left value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%; and it can also be left, center, or right.
-     * If the left value is set to be left, center, or right, then the component will be aligned automatically based on position.
+     * @var string|int grid 组件离容器左侧的距离。
+     * left 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 left, center, right。
+     * 如果 left 的值为left, center, right，组件会根据相应的位置自动对齐。
      */
-    public $left = '10%';        
+    public $left = 'auto';        
         
     /**
-     * @var string|int Distance between grid  component and the top side of the container.
-     * top value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
-     * If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
+     * @var string|int grid 组件离容器上侧的距离。
+     * top 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 top, middle, bottom。
+     * 如果 top 的值为top, middle, bottom，组件会根据相应的位置自动对齐。
      */
     public $top = 60;        
         
     /**
-     * @var string|int Distance between grid  component and the right side of the container.
-     * right value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%.
+     * @var string|int grid 组件离容器右侧的距离。
+     * right 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
      */
     public $right = '10%';        
         
     /**
-     * @var string|int Distance between grid  component and the bottom side of the container.
-     * bottom value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%.
+     * @var string|int grid 组件离容器下侧的距离。
+     * bottom 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
      */
     public $bottom = 60;        
         
     /**
-     * @var string|int Width of grid  component. Adaptive by default.
+     * @var string|int grid 组件的宽度。默认自适应。
      */
     public $width = 'auto';        
         
     /**
-     * @var string|int Height of grid  component. Adaptive by default.
+     * @var string|int grid 组件的高度。默认自适应。
      */
     public $height = 'auto';        
         
     /**
-     * @var boolean Whether the grid region contains axis tick label of axis.
-     * 
-     * When containLabel is false:
-     * grid.left grid.right grid.top grid.bottom grid.width grid.height decide the location and size of the rectangle that is made of by xAxis and yAxis.
-     * Setting to false will helps when multiple gris need to be align at their axes.
-     * 
-     * 
-     * When containLabel is true:
-     * grid.left grid.right grid.top grid.bottom grid.width grid.height decide the location and size of the rectangle that is not only contains axes but also contains labels of those axes.
-     * Setting to true will helps when the length of axis labels is dynamic and is hard to approximate to avoid them overflowing the container or overlapping other components.
+     * @var boolean grid 区域是否包含坐标轴的刻度标签，在无法确定坐标轴标签的宽度，容器又比较小无法预留较多空间的时候，可以设为 true 防止标签溢出容器。
      */
     public $containLabel = false;        
         
     /**
-     * @var string Background color of grid, which is transparent by default.
+     * @var string 网格背景色，默认透明。
      * 
-     * Color can be represented in RGB, for example rgb(128, 128, 128). RGBA can be used when you need alpha channel, for example rgba(128, 128, 128, 0.5). You may also use hexadecimal format, for example #ccc.
+     * 颜色可以使用 RGB 表示，比如 rgb(128, 128, 128)   ，如果想要加上 alpha 通道，可以使用 RGBA，比如 rgba(128, 128, 128, 0.5)，也可以使用十六进制格式，比如 #ccc
      * 
-     * Attention: Works only if show: true is set.
+     * 注意：此配置项生效的前提是，设置了 show: true。
      */
     public $backgroundColor = 'transparent';        
         
     /**
-     * @var string Border color of grid. Support the same color format as backgroundColor.
-     * Attention: Works only if show: true is set.
+     * @var string 网格的边框颜色。支持的颜色格式同 backgroundColor。
+     * 注意：此配置项生效的前提是，设置了 show: true。
      */
     public $borderColor = '#ccc';        
         
     /**
-     * @var int Border width of grid.
-     * Attention: Works only if show: true is set.
+     * @var int 网格的边框线宽。
+     * 注意：此配置项生效的前提是，设置了 show: true。
      */
     public $borderWidth = 1;        
         
     /**
-     * @var int Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
-     * For example:
+     * @var int 图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。
+     * 示例：
      * {
      *     shadowColor: rgba(0, 0, 0, 0.5),
      *     shadowBlur: 10
      * }
      * 
-     * Attention: This property works only if show: true is configured and backgroundColor is defined other than transparent.
+     * 注意：此配置项生效的前提是，设置了 show: true 以及值不为 tranparent 的背景色 backgroundColor。
      */
     public $shadowBlur;        
         
     /**
-     * @var string Shadow color. Support same format as color.
-     * Attention: This property works only if show: true configured.
+     * @var string 阴影颜色。支持的格式同color。
+     * 注意：此配置项生效的前提是，设置了 show: true。
      */
     public $shadowColor;        
         
     /**
-     * @var int Offset distance on the horizontal direction of shadow.
-     * Attention: This property works only if show: true configured.
+     * @var int 阴影水平方向上的偏移距离。
+     * 注意：此配置项生效的前提是，设置了 show: true。
      */
     public $shadowOffsetX = 0;        
         
     /**
-     * @var int Offset distance on the vertical direction of shadow.
-     * Attention: This property works only if show: true configured.
+     * @var int 阴影垂直方向上的偏移距离。
+     * 注意：此配置项生效的前提是，设置了 show: true。
      */
-    public $shadowOffsetY = 0;        
-        
-    /**
-     * @var Grid\Tooltip tooltip settings in the coordinate system component.
-     * 
-     * General Introduction:
-     * tooltip can be configured on different places:
-     * 
-     * Configured on glboal: tooltip
-     * 
-     * Configured in a coordinate system: grid.tooltip, polar.tooltip, single.tooltip
-     * 
-     * Configured in a series: series.tooltip
-     * 
-     * Configured in each item of series.data: series.data.tooltip
-     */
-    public $tooltip;
+    public $shadowOffsetY = 0;
 
 }

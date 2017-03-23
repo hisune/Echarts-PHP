@@ -10,13 +10,13 @@ class TextStyle
 {            
         
     /**
-     * @var string  text color.
+     * @var string 文字的颜色。
      */
-    public $color = '"#fff"';        
+    public $color = '#333';        
         
     /**
-     * @var string  font style
-     * Options are: 
+     * @var string 文字字体的风格
+     * 可选：
      * 
      * normal
      * italic
@@ -25,8 +25,8 @@ class TextStyle
     public $fontStyle = 'normal';        
         
     /**
-     * @var string  font thick weight
-     * Options are: 
+     * @var string 文字字体的粗细
+     * 可选：
      * 
      * normal
      * bold
@@ -37,12 +37,12 @@ class TextStyle
     public $fontWeight = 'normal';        
         
     /**
-     * @var string  font family
+     * @var string 文字的字体系列
      */
-    public $fontFamily = 'sans-serief';        
+    public $fontFamily = 'sans-serif';        
         
     /**
-     * @var int  font size
+     * @var int 文字的字体大小
      */
     public $fontSize = 12;
 

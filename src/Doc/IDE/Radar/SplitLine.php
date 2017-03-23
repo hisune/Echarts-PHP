@@ -10,8 +10,13 @@ class SplitLine
 {            
         
     /**
-     * @var SplitLine\Show Whether to show the splitLine. Value axes are shown by default, while category axes are not.
+     * @var boolean 是否显示分隔线。默认数值轴显示，类目轴不显示。
      */
-    public $show = true;
+    public $show = true;        
+        
+    /**
+     * @var SplitLine\LineStyle 
+     */
+    public $lineStyle;
 
 }
