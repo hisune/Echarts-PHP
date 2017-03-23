@@ -143,22 +143,10 @@ PHP;
             if(!isset($detail['properties'])){
                 if(is_array($detail['type'])){
                     foreach ($detail['type'] as $k => $v){
-                        switch ($v){
-                            case 'number':
-                                $detail['type'][$k] = 'int';
-                                break;
-                            case 'Object':
-                            case 'Array':
-                                $detail['type'][$k] = 'array';
-                                break;
-                            case 'Color':
-                                $detail['type'][$k] = 'string';
-                                break;
-                            case 'Function':
-                                $detail['type'][$k] = 'callable';
-                                break;
-                        }
+                        $detail['type'][$k] = $this->_replacePropertyType($v);
                     }
+                }else if(is_string($detail['type'])){
+                    $detail['type'] = $this->_replacePropertyType($detail['type']);
                 }
                 $type = "/**\r\n     * @var " . (is_array($detail['type']) ? implode('|', $detail['type']) : $detail['type']) . ' ' . $detail['descriptionCN'] . "\r\n     */";
             }else{
@@ -175,6 +163,27 @@ PHP;
     public \${$name}{$default};
 PHP;
 
+    }
+
+    protected function _replacePropertyType($type)
+    {
+        switch ($type){
+            case 'number':
+                $type = 'int';
+                break;
+            case 'Object':
+            case 'Array':
+                $type = 'array';
+                break;
+            case 'Color':
+                $type = 'string';
+                break;
+            case 'Function':
+                $type = 'callable';
+                break;
+        }
+
+        return $type;
     }
 
 }

@@ -10,7 +10,7 @@ class Graphic
 {            
         
     /**
-     * @var Array A list of all graphic elements.
+     * @var array A list of all graphic elements.
      * Note, the standard configuration of graphic component is:
      * {
      *     graphic: {
