@@ -90,10 +90,11 @@ class AutoGenerate
 
             // 输出ECharts类的property doc
             if(!$dir){
+                $description = isset($property['descriptionCN']) ? $this->_replaceDescription($property['descriptionCN'], false) . "\r\n *" : '';
                 if(file_exists($dirToWrite . '/' . $top . '.php')){
-                    echo " * @property Doc\\IDE\\{$top} \$" . lcfirst($top) . "\r\n";
+                    echo " * @property Doc\\IDE\\{$top} \$" . lcfirst($top) . "\r\n *   " . $description . "\r\n";
                 }else{
-                    echo " * @property callable \$" . strtolower($top) . "\r\n";
+                    echo " * @property callable \$" . strtolower($top) . "\r\n *   " . $description . "\r\n";
                 }
             }
         }
@@ -137,7 +138,7 @@ PHP;
             }
         }
 
-        $detail['descriptionCN'] = str_replace("\n", "\r\n     * ", rtrim(str_replace(["&quot;", '&#39;', '/*', '*/'], '', strip_tags($detail['descriptionCN']))));
+        $detail['descriptionCN'] = isset($detail['descriptionCN']) ? $this->_replaceDescription($detail['descriptionCN']) : '';
 
         if(isset($detail['type'])){
             if(!isset($detail['properties'])){
@@ -184,6 +185,16 @@ PHP;
         }
 
         return $type;
+    }
+
+    protected function _replaceDescription($description, $multiLine = true)
+    {
+        if($multiLine){
+            return str_replace("\n", "\r\n     * ", rtrim(str_replace(["&quot;", '&#39;', '/*', '*/'], '', strip_tags($description))));
+        }else{
+            $explode = explode("\n", $description);
+            return rtrim(str_replace(["&quot;", '&#39;', '/*', '*/'], '', strip_tags($explode[0])));
+        }
     }
 
 }
