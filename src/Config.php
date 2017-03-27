@@ -43,6 +43,11 @@ class Config
         }
     }
 
+    public static function eventMethod($name)
+    {
+        return $name . '(params);';
+    }
+
     // 替换回js的函数
     public static function jsonEncode($option)
     {
@@ -53,7 +58,7 @@ class Config
         return $option;
     }
 
-    public static function render($id, $option, $theme = null, array $attribute = array())
+    public static function render($id, $option, $theme = null, array $attribute = array(), array $events = array())
     {
         $attribute = self::_renderAttribute($attribute);
         is_null($theme) && $theme = 'null';
@@ -67,6 +72,8 @@ class Config
             static::$isOutputJs = true;
         } else
             $js = '';
+
+        $random = uniqid();
 
         if(version_compare(self::$version, '3.0.0') < 0){
             $dist = self::$dist;
@@ -94,14 +101,19 @@ $js
 </script>
 HTML;
         }else{
+            $eventsHtml = '';
+            if($events){
+                foreach($events as $event => $call){
+                    $eventsHtml .= 'chart_'. $random . '.on(\'' . $event . '\', function (params) {' . $call . '});';
+                }
+            }
             $option = self::jsonEncode($option);
             return <<<HTML
 <div id="$id" $attribute></div>
 $js
 <script type="text/javascript">
-    var myChart = echarts.init(document.getElementById('$id'), '$theme');
-    var option = $option;
-    myChart.setOption(option);
+    var chart_$random = echarts.init(document.getElementById('$id'), '$theme');
+    chart_$random.setOption($option);$eventsHtml
 </script>
 HTML;
         }

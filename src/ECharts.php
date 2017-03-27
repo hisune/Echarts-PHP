@@ -125,6 +125,7 @@ class ECharts implements \ArrayAccess
 {
 
     public $_options = [];
+    public $_events = [];
 
     /**
      * @param $dist string, dist of libraries
@@ -173,7 +174,7 @@ class ECharts implements \ArrayAccess
 
     public function render($id, $attribute = array(), $theme = null)
     {
-        return Config::render($id, $this->getOption(), $theme, $attribute);
+        return Config::render($id, $this->getOption(), $theme, $attribute, $this->_events);
     }
 
     public function getOption($render = null, $jsObject = false)
@@ -198,6 +199,11 @@ class ECharts implements \ArrayAccess
     {
         foreach ($options as $k => $v)
             $this->offsetSet($k, $v);
+    }
+
+    public function on($event, $callback)
+    {
+        $this->_events[$event] = $callback;
     }
 
 }
