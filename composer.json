@@ -4,7 +4,7 @@
     "description": "A php wrapper for echarts javascript libraries",
     "keywords": ["echarts", "php", "charts", "javascript"],
     "homepage": "http://hisune.com",
-    "license": "GPL-3.0",
+    "license": "MIT",
     "authors": [
         {
             "name": "Hisune",

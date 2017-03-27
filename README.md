@@ -12,14 +12,15 @@ Setup
 
 The recommended way to install Echarts-PHP is through  [`Composer`](http://getcomposer.org). Just run the composer command to install it:
 ```sh
-composer require "hisune/echarts-php:~1.0.7"
+composer require "hisune/echarts-php"
 ```
 
 Usage
 -----
 
-### Simple
-
+### Simple, recommend using PHP property
+`public ECharts::__construct([string] $dist = '');`
+ - Param `dist` is your customer dist url.
 ```php
 // The most simple example
 use Hisune\EchartsPHP\ECharts;
@@ -41,7 +42,13 @@ $chart->series[] = array(
 echo $chart->render('simple-custom-id');
 ```
 
-### Set option array
+### Or you can set option array directly
+`void ECharts::setOption(array $option);`
+ - Param `option` is ECharts option array to be set.
+
+`array|string ECharts::getOption([array] $render = null, [boolean] $jsObject = false);`
+ - Param `render` is ECharts option array.
+ - Param `jsObject` is whether or not to return json string, return PHP string by default.
 ```php
 $option = array (
   'tooltip' =>
@@ -68,6 +75,7 @@ $chart->yAxis[0] = array('type' => 'value');
 ```
 
 ### Javascript function
+`string Config::jsExpr(string $string)`
 ```php
 // With 'function' letter startup
 'axisLabel' => array(
@@ -82,7 +90,8 @@ $chart->yAxis[0] = array('type' => 'value');
 ```
 ```php
 // Or you can add any js expr with jsExpr
-'backgroundColor' => \Hisune\EchartsPHP\Config::jsExpr('
+use \Hisune\EchartsPHP\Config;
+'backgroundColor' => Config::jsExpr('
     new echarts.graphic.RadialGradient(0.5, 0.5, 0.4, [{
         offset: 0,
         color: "#4b5769"
@@ -92,10 +101,37 @@ $chart->yAxis[0] = array('type' => 'value');
     }])
 ');
 ```
+### Customer JS variable name
+`void ECharts::setJsVar(string $name = null)`
+ - Param `name` is your customer js variable name. By default, js variable name will generate by random.  
+
+`string ECharts::getJsVar()`
+```php
+$chart->setJsVar('test');
+echo $chart->getJsVar(); // echo test
+// var chart_test = echarts.init( ...
+```
 
 ### Customer attribute
+`string ECharts::render(string $id, [array] $attribute = [], [string] $theme = null)`
+ - Param `id` is your html dom ID.
+ - Param `attribute` is your html dom attribute.
+ - Param `theme` is your ECharts theme.
+ - Return html string.
 ```php
-$chart->render('simple-custom-id2', ['style' => 'height: 500px;']);
+$chart->render('simple-custom-id2', array('style' => 'height: 500px;'));
+```
+
+### Events (for 3.x+)
+`void ECharts::on(string $event, string $callback)`
+- Param `event` is event name, available: `click`, `dblclick`, `mousedown`, `mousemove`, `mouseup`, `mouseover`, `mouseout`
+- Param `callback` is event callback.
+```php
+use \Hisune\EchartsPHP\Config;
+// Recommend standard
+$chart->on('click', Config::eventMethod('console.log'));
+// Or write js directly
+$chart->on('mousedown', 'console.log(params);');
 ```
 
 ### Customer dist
@@ -114,12 +150,21 @@ Hisune\EchartsPHP\Config::$dist = 'your dist url';
 ```
 
 ### Add extra script from cdn
+`string Config::addExtraScript(string $file, [string] $dist = null)`
+ - Param `file` is your extra script filename.
+ - Param `dist` is your dist CDN uri.
 ```php
 Hisune\EchartsPHP\Config::addExtraScript('extension/dataTool.js'); // the second param is your customer dist url
 ```
+**The example for ECharts theme use `addExtraScript`:**
+```php
+use \Hisune\EchartsPHP\Config;
+Config::addExtraScript('vintage.js', 'http://echarts.baidu.com/asset/theme/');
+echo $chart->render('simple-custom-id', array(), 'vintage');
+```
 
 ### Full Echarts PHPDoc
-https://hisune.com/view/50/echarts-php-property-phpdoc-auto-generate
+For more detail visit: https://hisune.com/view/50/echarts-php-property-phpdoc-auto-generate
 
 Demos
 -----
