@@ -15,6 +15,24 @@ The recommended way to install Echarts-PHP is through  [`Composer`](http://getco
 composer require "hisune/echarts-php"
 ```
 
+## Table of Contents
+  - Class: ECharts
+    - [__construct([string] $dist = '')](#simple-recommend-using-php-property) 
+    - [setOption(array $option)](#or-you-can-set-option-array-directly) 
+    - [getOption([array] $render = null, [boolean] $jsObject = false)](#or-you-can-set-option-array-directly) 
+    - [setJsVar(string $name = null)](#customer-js-variable-name) 
+    - [getJsVar()](#customer-js-variable-name) 
+    - [render(string $id, [array] $attribute = [], [string] $theme = null)](#customer-attribute) 
+    - [on(string $event, string $callback)](#events-for-3x) 
+  - Class: Config
+    - [jsExpr(string $string)](#javascript-function)
+    - [eventMethod(string $name)](#events-for-3x)
+    - [addExtraScript(string $file, [string] $dist = null)](#add-extra-script-from-cdn)
+    - [$dist](#customer-dist)
+    - [$distType](#dist-type)
+    - [$minify](#whether-or-not-load-minify-js-file)
+    - $version
+    
 Usage
 -----
 
@@ -124,8 +142,12 @@ $chart->render('simple-custom-id2', array('style' => 'height: 500px;'));
 
 ### Events (for 3.x+)
 `void ECharts::on(string $event, string $callback)`
-- Param `event` is event name, available: `click`, `dblclick`, `mousedown`, `mousemove`, `mouseup`, `mouseover`, `mouseout`
-- Param `callback` is event callback.
+ - Param `event` is event name, available: `click`, `dblclick`, `mousedown`, `mousemove`, `mouseup`, `mouseover`, `mouseout`
+ - Param `callback` is event callback.
+
+`string Config::eventMethod(string $name)`
+ - Param `name` is your js function name which to be run in event callback.
+ - Return js string, eg: Config::eventMethod('test') => test(params);
 ```php
 use \Hisune\EchartsPHP\Config;
 // Recommend standard
