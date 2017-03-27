@@ -32,6 +32,8 @@ composer require "hisune/echarts-php"
     - [$distType](#dist-type)
     - [$minify](#whether-or-not-load-minify-js-file)
     - $version
+  - [Theme](#the-example-for-echarts-theme-use-addextrascript)
+  - [PHPDoc for property](#full-echarts-phpdoc)
     
 Usage
 -----
@@ -178,7 +180,7 @@ Hisune\EchartsPHP\Config::$dist = 'your dist url';
 ```php
 Hisune\EchartsPHP\Config::addExtraScript('extension/dataTool.js'); // the second param is your customer dist url
 ```
-**The example for ECharts theme use `addExtraScript`:**
+### The example for ECharts theme use `addExtraScript`
 ```php
 use \Hisune\EchartsPHP\Config;
 Config::addExtraScript('vintage.js', 'http://echarts.baidu.com/asset/theme/');
