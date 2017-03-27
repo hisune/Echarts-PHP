@@ -17,6 +17,7 @@ class Config
     public static $distType = ''; // Empty is full, other options: simple, common
     public static $minify = true; // Whether or not load minify js file
     public static $extraScript = array();
+    public static $jsVar = '';
 
     public static function jsExpr($string)
     {
@@ -73,7 +74,7 @@ class Config
         } else
             $js = '';
 
-        $random = uniqid();
+        $jsVar = static::$jsVar;
 
         if(version_compare(self::$version, '3.0.0') < 0){
             $dist = self::$dist;
@@ -104,7 +105,7 @@ HTML;
             $eventsHtml = '';
             if($events){
                 foreach($events as $event => $call){
-                    $eventsHtml .= 'chart_'. $random . '.on(\'' . $event . '\', function (params) {' . $call . '});';
+                    $eventsHtml .= 'chart_'. $jsVar . '.on(\'' . $event . '\', function (params) {' . $call . '});';
                 }
             }
             $option = self::jsonEncode($option);
@@ -112,8 +113,8 @@ HTML;
 <div id="$id" $attribute></div>
 $js
 <script type="text/javascript">
-    var chart_$random = echarts.init(document.getElementById('$id'), '$theme');
-    chart_$random.setOption($option);$eventsHtml
+    var chart_$jsVar = echarts.init(document.getElementById('$id'), '$theme');
+    chart_$jsVar.setOption($option);$eventsHtml
 </script>
 HTML;
         }

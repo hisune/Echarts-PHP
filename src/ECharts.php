@@ -126,14 +126,17 @@ class ECharts implements \ArrayAccess
 
     public $_options = [];
     public $_events = [];
+    protected $jsVar;
 
     /**
      * @param $dist string, dist of libraries
      */
     public function __construct($dist = '')
     {
-        if ($dist)
+        if ($dist){
             Config::$dist = $dist;
+        }
+        $this->setJsVar();
     }
 
     public function __set($offset, $value)
@@ -204,6 +207,21 @@ class ECharts implements \ArrayAccess
     public function on($event, $callback)
     {
         $this->_events[$event] = $callback;
+    }
+
+    public function setJsVar($name = null)
+    {
+        if(!$name || !is_string($name)){
+            Config::$jsVar = uniqid();
+        }else{
+            Config::$jsVar = $name;
+        }
+        $this->jsVar = Config::$jsVar;
+    }
+
+    public function getJsVar()
+    {
+        return $this->jsVar;
     }
 
 }
