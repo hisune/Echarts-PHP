@@ -5,7 +5,7 @@
 Echarts-PHP
 =============
 
-Echarts-PHP is a PHP library that works as a wrapper for the **Echarts js** library (https://github.com/ecomfe/echarts). Support echarts version from 2.2.x to 3.x.
+Echarts-PHP is a PHP library that works as a wrapper for the **Echarts js** library (https://github.com/ecomfe/echarts). Support Echarts version from 2.2.x to 3.x.
 
 Setup
 -----
@@ -68,7 +68,7 @@ echo $chart->render('simple-custom-id');
 
 `array|string ECharts::getOption([array] $render = null, [boolean] $jsObject = false);`
  - Param `render` is ECharts option array.
- - Param `jsObject` is whether or not to return json string, return PHP string by default.
+ - Param `jsObject` is whether or not to return json string, return PHP array by default.
 ```php
 $option = array (
   'tooltip' =>
