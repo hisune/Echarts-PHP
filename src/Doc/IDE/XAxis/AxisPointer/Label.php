@@ -10,66 +10,66 @@ class Label
 {            
         
     /**
-     * @var boolean Whether show label. Label will not show by default. But if tooltip.axisPointer.type is set as  cross, label will be displayed automatically.
+     * @var boolean 是否显示文本标签。如果 tooltip.axisPointer.type 设置为 cross 则默认显示标签，否则默认不显示。
      */
     public $show = false;        
         
     /**
-     * @var int|string The precision of value in label. It is auto determined by default. You can also set it as 2, which indicates that two decimal fractions are reserved.
+     * @var int|string 文本标签中数值的小数点精度。默认根据当前轴的值自动判断。也可以指定如 2 表示保留两位小数。
      */
     public $precision = 'auto';        
         
     /**
-     * @var string|callable The formatter of label.
-     * If set as string, for example it can be: formatter: some text {value} some text, where {value} will be replaced by axis value automatically.
-     * If set as function:
-     * Parameters:
-     * {Object} params: Including fields as follows:
-     * {Object} params.value: current value of this axis. If axis.type is category, it is one of the value in axis.data. If axis.type is time, it is a timestamp.
-     * {Array.&lt;Object&gt;} params.seriesData: An array, containing info of nearest points. Each item is:
+     * @var string|callable 文本标签文字的格式化器。
+     * 如果为 string，可以是例如：formatter: some text {value} some text，其中 {value} 会被自动替换为轴的值。
+     * 如果为 function，可以是例如：
+     * 参数：
+     * {Object} params: 含有：
+     * {Object} params.value: 轴当前值，如果 axis.type 为 category 时，其值为 axis.data 里的数值。如果 axis.type 为 time，其值为时间戳。
+     * {Array.&lt;Object&gt;} params.seriesData: 一个数组，是当前 axisPointer 最近的点的信息，每项内容为
      * {
      *     componentType: series,
-     *     // Series type
+     *     // 系列类型
      *     seriesType: string,
-     *     // Series index in option.series
+     *     // 系列在传入的 option.series 中的 index
      *     seriesIndex: number,
-     *     // Series name
+     *     // 系列名称
      *     seriesName: string,
-     *     // Data name, or category name
+     *     // 数据名，类目名
      *     name: string,
-     *     // Data index in input data array
+     *     // 数据在传入的 data 数组中的 index
      *     dataIndex: number,
-     *     // Original data as input
+     *     // 传入的原始数据项
      *     data: Object,
-     *     // Value of data
+     *     // 传入的数据值
      *     value: number|Array,
-     *     // Color of data
+     *     // 数据图形的颜色
      *     color: string,
      * 
      * }
      * 
-     * Each item also includes axis infomation:
+     * 每项内容还包括轴的信息：
      * {
      *     axisDim: x, // x, y, angle, radius, single
      *     axisId: xxx,
      *     axisName: xxx,
      *     axisIndex: 3,
-     *     axisValue: 121, // The current value of axisPointer
-     *     axisValueLabel: text of value
+     *     axisValue: 121, // 当前 axisPointer 对应的 value。
+     *     axisValueLabel: 文本
      * }
      * 
-     * Return:
-     * The string to be displayed.
-     * For example:
+     * 返回值：
+     * 显示的 string。
+     * 例如：
      * formatter: function (params) {
-     *     // If axis.type is time
+     *     // 假设此轴的 type 为 time。
      *     return some text + echarts.format.formatTime(params.value);
      * }
      */
     public $formatter;        
         
     /**
-     * @var boolean Distance between label and axis.
+     * @var boolean label 距离轴的距离。
      */
     public $margin = '3';        
         
@@ -79,40 +79,40 @@ class Label
     public $textStyle;        
         
     /**
-     * @var string|array axisPointer space around content. The unit is px. Default values for each position are 5. And they can be set to different values with left, right, top, and bottom.
-     * Examples: 
-     * // Set padding to be 5
+     * @var string|array axisPointer内边距，单位px，默认各方向内边距为5，接受数组分别设定上右下左边距。
+     * 使用示例：
+     * // 设置内边距为 5
      * padding: 5
-     * // Set the top and bottom paddings to be 5, and left and right paddings to be 10
+     * // 设置上下的内边距为 5，左右的内边距为 10
      * padding: [5, 10]
-     * // Set each of the four paddings seperately
+     * // 分别设置四个方向的内边距
      * padding: [
-     *     5,  // up
-     *     10, // right
-     *     5,  // down
-     *     10, // left
+     *     5,  // 上
+     *     10, // 右
+     *     5,  // 下
+     *     10, // 左
      * ]
      */
     public $padding = '[5, 7, 5, 7]';        
         
     /**
-     * @var string Background color of label, the same as axis.axisLine.lineStyle.color by default.
+     * @var string 文本标签的背景颜色，默认是和 axis.axisLine.lineStyle.color 相同。
      */
     public $backgroundColor = 'auto';        
         
     /**
-     * @var string Border color of label.
+     * @var string 文本标签的边框颜色。
      */
     public $borderColor;        
         
     /**
-     * @var string Border width of label.
+     * @var string 文本标签的边框宽度。
      */
     public $borderWidth = '0';        
         
     /**
-     * @var int Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
-     * For example:
+     * @var int 图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。
+     * 示例：
      * {
      *     shadowColor: rgba(0, 0, 0, 0.5),
      *     shadowBlur: 10
@@ -121,17 +121,17 @@ class Label
     public $shadowBlur = 3;        
         
     /**
-     * @var string Shadow color. Support same format as color.
+     * @var string 阴影颜色。支持的格式同color。
      */
     public $shadowColor = '#aaa';        
         
     /**
-     * @var int Offset distance on the horizontal direction of shadow.
+     * @var int 阴影水平方向上的偏移距离。
      */
     public $shadowOffsetX = 0;        
         
     /**
-     * @var int Offset distance on the vertical direction of shadow.
+     * @var int 阴影垂直方向上的偏移距离。
      */
     public $shadowOffsetY = 0;
 

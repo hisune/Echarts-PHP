@@ -39,14 +39,17 @@ namespace Hisune\EchartsPHP;
  * @property Doc\IDE\Radar $radar
  *   雷达图坐标系组件，只适用于雷达图。该组件等同 ECharts 2 中的 polar 组件。因为 3 中的 polar 被重构为标准的极坐标组件，为避免混淆，雷达图使用 radar 组件作为其坐标系。
  *
- * @property callable $datazoom
+ * @property Doc\IDE\DataZoom $dataZoom
  *   dataZoom 组件 用于区域缩放，从而能自由关注细节的数据信息，或者概览数据整体，或者去除离群点的影响。
  *
- * @property callable $visualmap
+ * @property Doc\IDE\VisualMap $visualMap
  *   visualMap 是视觉映射组件，用于进行『视觉编码』，也就是将数据映射到视觉元素（视觉通道）。
  *
  * @property Doc\IDE\Tooltip $tooltip
  *   提示框组件。
+ *
+ * @property Doc\IDE\AxisPointer $axisPointer
+ *   这是坐标轴指示器（axisPointer）的全局公用设置。
  *
  * @property Doc\IDE\Toolbox $toolbox
  *   工具栏。内置有导出图片，数据视图，动态类型切换，数据区域缩放，重置五个工具。
@@ -72,13 +75,16 @@ namespace Hisune\EchartsPHP;
  * @property Doc\IDE\Graphic $graphic
  *   graphic 是原生图形元素组件。可以支持的图形元素包括：
  *
- * @property callable $series
+ * @property Doc\IDE\Calendar $calendar
+ *   日历坐标系组件。
+ *
+ * @property Doc\IDE\Series $series
  *   系列列表。每个系列通过 type 决定自己的图表类型
  *
  * @property callable $color
  *   调色盘颜色列表。如果系列没有设置颜色，则会依次循环从该列表中取颜色作为系列颜色。
  *
- * @property callable $backgroundcolor
+ * @property callable $backgroundColor
  *   背景色，默认无背景。
  *
  * @property Doc\IDE\TextStyle $textStyle
@@ -87,37 +93,37 @@ namespace Hisune\EchartsPHP;
  * @property callable $animation
  *   是否开启动画。
  *
- * @property callable $animationthreshold
+ * @property callable $animationThreshold
  *   是否开启动画的阈值，当单个系列显示的图形数量大于这个阈值时会关闭动画。
  *
- * @property callable $animationduration
+ * @property callable $animationDuration
  *   初始动画的时长，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果：
  *
- * @property callable $animationeasing
+ * @property callable $animationEasing
  *   初始动画的缓动效果。不同的缓动效果可以参考 缓动示例。
  *
- * @property callable $animationdelay
+ * @property callable $animationDelay
  *   初始动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果。
  *
- * @property callable $animationdurationupdate
+ * @property callable $animationDurationUpdate
  *   数据更新动画的时长。
  *
- * @property callable $animationeasingupdate
+ * @property callable $animationEasingUpdate
  *   数据更新动画的缓动效果。
  *
- * @property callable $animationdelayupdate
+ * @property callable $animationDelayUpdate
  *   数据更新动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的更新动画效果。
  *
  * @property callable $progressive
  *   渐进式渲染时每一帧绘制图形数量，设为 0 时不启用渐进式渲染，支持每个系列单独配置。
  *
- * @property callable $progressivethreshold
+ * @property callable $progressiveThreshold
  *   启用渐进式渲染的图形数量阈值，在单个系列的图形数量超过该阈值时启用渐进式渲染。
  *
- * @property callable $blendmode
+ * @property callable $blendMode
  *   图形的混合模式，不同的混合模式见 https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation 。
  *
- * @property callable $hoverlayerthreshold
+ * @property callable $hoverLayerThreshold
  *   图形数量阈值，决定是否开启单独的 hover 层，在整个图表的图形数量大于该阈值时开启单独的 hover 层。
  *
  */

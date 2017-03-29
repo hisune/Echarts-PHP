@@ -10,7 +10,7 @@ class SplitLine
 {            
         
     /**
-     * @var boolean Whether to show the splitLine.
+     * @var boolean 是否显示分隔线。默认显示。
      */
     public $show = true;        
         

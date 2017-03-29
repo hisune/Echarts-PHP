@@ -10,6 +10,11 @@ class YAxis
 {            
         
     /**
+     * @var boolean 是否显示 y 轴。
+     */
+    public $show = true;        
+        
+    /**
      * @var int y 轴所在的 grid 的索引，默认位于第一个 grid。
      */
     public $gridIndex = 0;        
@@ -98,7 +103,7 @@ class YAxis
      * 不设置时会自动计算最小值保证坐标轴刻度的均匀分布。
      * 在类目轴中，也可以设置为类目的序数（如类目轴 data: [类A, 类B, 类C] 中，序数 2 表示 类C。也可以设置为负数，如 -3）。
      */
-    public $min = 'auto';        
+    public $min;        
         
     /**
      * @var int|string 坐标轴刻度最大值。
@@ -106,7 +111,7 @@ class YAxis
      * 不设置时会自动计算最大值保证坐标轴刻度的均匀分布。
      * 在类目轴中，也可以设置为类目的序数（如类目轴 data: [类A, 类B, 类C] 中，序数 2 表示 类C。也可以设置为负数，如 -3）。
      */
-    public $max = 'auto';        
+    public $max;        
         
     /**
      * @var boolean 只在数值轴中（type: value）有效。
@@ -205,6 +210,11 @@ class YAxis
      * }, 周二, 周三, 周四, 周五, 周六, 周日]
      */
     public $data;        
+        
+    /**
+     * @var YAxis\AxisPointer axisPointer settings on axis.
+     */
+    public $axisPointer;        
         
     /**
      * @var int Y 轴所有图形的 zlevel 值。

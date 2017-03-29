@@ -27,7 +27,7 @@ class Parallel
      * left 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 left, center, right。
      * 如果 left 的值为left, center, right，组件会根据相应的位置自动对齐。
      */
-    public $left = 'auto';        
+    public $left = 80;        
         
     /**
      * @var string|int parallel 组件离容器上侧的距离。

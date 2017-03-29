@@ -32,7 +32,7 @@ class Grid
      * left 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 left, center, right。
      * 如果 left 的值为left, center, right，组件会根据相应的位置自动对齐。
      */
-    public $left = 'auto';        
+    public $left = '10%';        
         
     /**
      * @var string|int grid 组件离容器上侧的距离。
@@ -64,7 +64,16 @@ class Grid
     public $height = 'auto';        
         
     /**
-     * @var boolean grid 区域是否包含坐标轴的刻度标签，在无法确定坐标轴标签的宽度，容器又比较小无法预留较多空间的时候，可以设为 true 防止标签溢出容器。
+     * @var boolean grid 区域是否包含坐标轴的刻度标签。
+     * 
+     * containLabel 为 false 的时候：
+     * grid.left grid.right grid.top grid.bottom grid.width grid.height 决定的是由坐标轴形成的矩形的尺寸和位置。
+     * 这比较适用于多个 grid 进行对齐的场景，因为往往多个 grid 对齐的时候，是依据坐标轴来对齐的。
+     * 
+     * 
+     * containLabel 为 true 的时候：
+     * grid.left grid.right grid.top grid.bottom grid.width grid.height 决定的是包括了坐标轴标签在内的所有内容所形成的矩形的位置。
+     * 这常用于『防止标签溢出』的场景，标签溢出指的是，标签长度动态变化时，可能会溢出容器或者覆盖其他组件。
      */
     public $containLabel = false;        
         
@@ -117,6 +126,22 @@ class Grid
      * @var int 阴影垂直方向上的偏移距离。
      * 注意：此配置项生效的前提是，设置了 show: true。
      */
-    public $shadowOffsetY = 0;
+    public $shadowOffsetY = 0;        
+        
+    /**
+     * @var Grid\Tooltip 本坐标系特定的 tooltip 设定。
+     * 
+     * 提示框组件的通用介绍：
+     * 提示框组件可以设置在多种地方：
+     * 
+     * 可以设置在全局，即 tooltip
+     * 
+     * 可以设置在坐标系中，即 grid.tooltip、polar.tooltip、single.tooltip
+     * 
+     * 可以设置在系列中，即 series.tooltip
+     * 
+     * 可以设置在系列的每个数据项中，即 series.data.tooltip
+     */
+    public $tooltip;
 
 }

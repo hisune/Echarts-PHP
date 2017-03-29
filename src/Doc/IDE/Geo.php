@@ -67,6 +67,20 @@ class Geo
     public $aspectScale = 0.75;        
         
     /**
+     * @var array 二维数组，定义定位的左上角以及右下角分别所对应的经纬度。例如
+     * // 设置为一张完整经纬度的世界地图
+     * map: world,
+     * left: 0, top: 0, right: 0, bottom: 0,
+     * boundingCoords: [
+     *     // 定位左上角经纬度
+     *     [-180, 90],
+     *     // 定位右下角经纬度
+     *     [180, -90]
+     * ],
+     */
+    public $boundingCoords;        
+        
+    /**
      * @var int 当前视角的缩放比例。
      */
     public $zoom = 1;        

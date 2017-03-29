@@ -10,21 +10,19 @@ class YearLabel
 {            
         
     /**
-     * @var boolean Whether to show yearLabel.
+     * @var boolean 是否在普通状态下显示标签。
      */
     public $show = true;        
         
     /**
-     * @var int The margin between the month label and the axis line.
+     * @var int 年份与轴线之间的距离
      */
     public $margin = 30;        
         
     /**
-     * @var string Position of year.
-     * Default:
-     * when orient is set as horizontal, position is left
-     * when orient is set as vertical, position is top
-     * Options:
+     * @var string 年份的位置
+     * 默认横向是left 竖向是top
+     * 可选：
      * 
      * top
      * bottom
@@ -34,25 +32,22 @@ class YearLabel
     public $position;        
         
     /**
-     * @var string|callable Formatter of year text label, which supports string template and callback function.
-     * By default, the current range of the year, if the interval across the year, showing the first year and the last year
-     * Examples:
-     * // Use string template; eg: [2017-10-11, 2018-01-21]
+     * @var string|callable 用来格式化年份文本，支持字符串模板和回调函数两种形式。
+     * 默认显示当前范围的年  若区间跨年 显示(start-end)
+     * 示例：
+     * // 使用字符串模板，例如：[2017-10-11, 2018-01-21]
      * 
-     *     template variables:
-     *     {nameMap} default nameMap eg：2017-2018
-     *     {start}   start year eg: 2017
-     *     {end}   end year eg: 2018
+     *     模板变量{nameMap} 年份原本名称 eg：2017-2018
+     *     模板变量{start}   开始年份 eg: 2017
+     *     模板变量{end}   结束年份 eg: 2018
      * 
      * 
      * formatter: {start}-{end}
+     * // 使用回调函数
      * 
-     * // Use callback function;
-     * 
-     *     function parameters:
-     *     param.nameMap default nameMap eg：2017-2018
-     *     param.start   start year eg: 2017
-     *     param.end   end year eg: 2018
+     *     param.nameMap 年份原本名称 eg：2017-2018
+     *     param.start   开始年份 eg: 2017
+     *     param.end   结束年份 eg: 2018
      * 
      * formatter: function (param) {
      *     // ...
@@ -62,7 +57,7 @@ class YearLabel
     public $formatter;        
         
     /**
-     * @var YearLabel\TextStyle Style of text in normal state.
+     * @var YearLabel\TextStyle 普通状态下的标签文本样式。
      */
     public $textStyle;
 

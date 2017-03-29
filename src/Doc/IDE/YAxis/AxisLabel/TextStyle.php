@@ -15,8 +15,8 @@ class TextStyle
      * 
      * 参数是标签的文本，返回颜色值，如下示例：
      * textStyle: {
-     *     color: function (val) {
-     *         return val &gt;= 0 ? green : red;
+     *     color: function (value, index) {
+     *         return value &gt;= 0 ? green : red;
      *     }
      * }
      */
@@ -52,6 +52,16 @@ class TextStyle
     /**
      * @var int 文字的字体大小
      */
-    public $fontSize = 12;
+    public $fontSize = 12;        
+        
+    /**
+     * @var string 文本水平对齐方式，默认自动选择对齐方式，可以是 left, right, center
+     */
+    public $align;        
+        
+    /**
+     * @var string 文本垂直对齐方式，默认自动选择对齐方式，可以是 top, middle, bottom
+     */
+    public $baseline;
 
 }

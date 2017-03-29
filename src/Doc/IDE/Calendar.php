@@ -10,103 +10,101 @@ class Calendar
 {            
         
     /**
-     * @var int zlevel value of all graghical elements in .
-     * zlevel is used to make layers with Canvas. Graphical elements with different zlevel values will be placed in different Canvases, which is a common optimization technique. We can put those frequently changed elements (like those with animations) to a seperate zlevel. Notice that too many Canvases will increase memory cost, and should be used carefully on mobile phones to avoid crash.
-     * Canvases with bigger zlevel will be placed on Canvases with smaller zlevel.
+     * @var int 所有图形的 zlevel 值。
+     * zlevel用于 Canvas 分层，不同zlevel值的图形会放置在不同的 Canvas 中，Canvas 分层是一种常见的优化手段。我们可以把一些图形变化频繁（例如有动画）的组件设置成一个单独的zlevel。需要注意的是过多的 Canvas 会引起内存开销的增大，在手机端上需要谨慎使用以防崩溃。
+     * zlevel 大的 Canvas 会放在 zlevel 小的 Canvas 的上面。
      */
     public $zlevel = 0;        
         
     /**
-     * @var int z value of all graghical elements in , which controls order of drawing graphical components. Components with smaller z values may be overwritten by those with larger z values.
-     * z has a lower priority to zlevel, and will not create new Canvas.
+     * @var int 组件的所有图形的z值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖。
+     * z相比zlevel优先级更低，而且不会创建新的 Canvas。
      */
     public $z = 2;        
         
     /**
-     * @var string|int Distance between calendar component and the left side of the container.
-     * left value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%; and it can also be left, center, or right.
-     * If the left value is set to be left, center, or right, then the component will be aligned automatically based on position.
+     * @var string|int calendar组件离容器左侧的距离。
+     * left 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 left, center, right。
+     * 如果 left 的值为left, center, right，组件会根据相应的位置自动对齐。
      */
     public $left = 80;        
         
     /**
-     * @var string|int Distance between calendar component and the top side of the container.
-     * top value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
-     * If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
+     * @var string|int calendar组件离容器上侧的距离。
+     * top 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 top, middle, bottom。
+     * 如果 top 的值为top, middle, bottom，组件会根据相应的位置自动对齐。
      */
     public $top = 60;        
         
     /**
-     * @var string|int Distance between calendar component and the right side of the container.
-     * right value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%.
-     * Adaptive by default.
+     * @var string|int calendar组件离容器右侧的距离。
+     * right 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
+     * 默认自适应。
      */
     public $right = 'auto';        
         
     /**
-     * @var string|int Distance between calendar component and the bottom side of the container.
-     * bottom value can be instant pixel value like 20; it can also be percentage value relative to container width like 20%.
-     * Adaptive by default.
+     * @var string|int calendar组件离容器下侧的距离。
+     * bottom 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
+     * 默认自适应。
      */
     public $bottom = 'auto';        
         
     /**
-     * @var int|string The height of calendar coordinates.
-     * Note: cellSize is 20 by default. If width is set,
-     *   cellSize[0] will be forced to auto;
+     * @var int|string 日历坐标的整体宽度
+     * 注意: 默认cellSize 为20，若设置了width的值, 则cellSize中的宽度强制转为auto;
      */
     public $width = 'auto';        
         
     /**
-     * @var int|string The height of calendar coordinates.
-     * Note: cellSize is 20 by default. If height is set,
-     *   cellSize[1] will be forced to auto;
+     * @var int|string 日历坐标的整体高度，
+     * 注意: 默认cellSize 为20，若设置了height的值, 则cellSize中的高度强制转为auto;
      */
     public $height = 'auto';        
         
     /**
-     * @var int|string|array Required, range of Calendar coordinates, support multiple formats.
-     * Examples:
+     * @var int|string|array 必填，日历坐标的范围 支持多种格式
+     * 使用示例：
      * 
-     * // one year
+     * // 某一年
      * range: 2017
      * 
-     * // one month
+     * // 某个月
      * range: 2017-02
      * 
-     * //  a range
+     * // 某个区间
      * range: [2017-01-02, 2017-02-23]
      * 
-     * // note: they will be identified as [2017-01-01, 2017-02-01]
+     * // 注意 此写法会识别为[2017-01-01, 2017-02-01]
      * range: [2017-01, 2017-02]
      */
     public $range;        
         
     /**
-     * @var int|array The size of each rect of calendar coordinates, can be set to a single value or array, the first element is width and the second element is height.
-     * Support setting self-adaptation: auto, the default width and height to be 20.
-     * Examples:
+     * @var int|array 日历每格框的大小，可设置单值 或数组  第一个元素是宽 第二个元素是高。
+     * 支持设置自适应：auto, 默认为高宽均为20
+     * 使用示例：
      * 
-     * // Set the width and height to be 20
+     * // 设置宽高均为20
      * cellSize: 20
      * 
-     * // Set the width to be 20, and height to be 40
+     * // 设置宽为20，高为40
      * cellSize: [20, 40]
      * 
-     * // Set width and height to be self-adaptation
+     * // 设置宽高均为40
      * cellSize: [40]
      * 
-     * // Set the width and height to be 20
+     * // 设置宽高均自适应
      * cellSize: auto
      * 
-     * // Set the width to be self-adaptation, and height to be 40
+     * // 设置宽自适应，高为40
      * cellSize: [auto, 40]
      */
     public $cellSize = 20;        
         
     /**
-     * @var string The layout orientation of calendar.
-     * Options:
+     * @var string 日历坐标的布局朝向。
+     * 可选：
      * 
      * horizontal
      * vertical
@@ -114,32 +112,32 @@ class Calendar
     public $orient = 'horizontal';        
         
     /**
-     * @var Calendar\SplitLine Calendar coordinates splitLine style.
+     * @var Calendar\SplitLine 设置日历坐标分隔线的样式。
      */
     public $splitLine;        
         
     /**
-     * @var Calendar\ItemStyle Every rect style in calendar coordinates.
+     * @var Calendar\ItemStyle 设置日历格的样式
      */
     public $itemStyle;        
         
     /**
-     * @var Calendar\DayLabel Day style in calendar coordinates.
+     * @var Calendar\DayLabel 设置日历坐标中 星期轴的样式
      */
     public $dayLabel;        
         
     /**
-     * @var Calendar\MonthLabel Month label in calendar coordinates.
+     * @var Calendar\MonthLabel 设置日历坐标中 月份轴的样式
      */
     public $monthLabel;        
         
     /**
-     * @var Calendar\YearLabel Year label in calendar coordinates.
+     * @var Calendar\YearLabel 设置日历坐标中 年的样式
      */
     public $yearLabel;        
         
     /**
-     * @var boolean Whether to ignore mouse events. Default value is false, for triggering and responding to mouse events.
+     * @var boolean 图形是否不响应和触发鼠标事件，默认为 false，即响应和触发鼠标事件。
      */
     public $silent = false;
 

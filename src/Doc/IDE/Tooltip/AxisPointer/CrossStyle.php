@@ -72,11 +72,6 @@ class CrossStyle
     /**
      * @var int 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。
      */
-    public $opacity;        
-        
-    /**
-     * @var CrossStyle\TextStyle 十字准星准星上的文字样式。
-     */
-    public $textStyle;
+    public $opacity;
 
 }

@@ -10,78 +10,95 @@ class AxisPointer
 {            
         
     /**
-     * @var boolean axisPointer will not be displayed by default. But iftooltip.trigger is set as axis or tooltip.axisPointer.type is set as  cross, axisPointer will be displayed automatically. Each coordinate system will automatically chose the axes whose will display its axisPointer. tooltip.axisPointer.axis can be used to change the choice.
+     * @var boolean 默认不显示。但是如果 tooltip.trigger 设置为 axis 或者 tooltip.axisPointer.type 设置为 cross，则自动显示 axisPointer。坐标系会自动选择显示显示哪个轴的 axisPointer，也可以使用 tooltip.axisPointer.axis 改变这种选择。
      */
     public $show = false;        
         
     /**
-     * @var string Indicator type.
-     * Options:
+     * @var string 指示器类型。
+     * 可选
      * 
-     * line line indicator
+     * line 直线指示器
      * 
-     * shadow shadow crosshair indicator
-     * 
-     * cross crosshair indicator, which is actually the shortcut of enable two axisPointers of two orthometric axes.
+     * shadow 阴影指示器
      */
     public $type = 'line';        
         
     /**
-     * @var boolean Whether snap to point automatically. The default value is auto determined.
-     * This feature usually makes sense in value axis and time axis, where tiny points can be seeked automatically.
+     * @var boolean 坐标轴指示器是否自动吸附到点上。默认自动判断。
+     * 这个功能在数值轴和时间轴上比较有意义，可以自动寻找细小的数值点。
      */
     public $snap;        
         
     /**
-     * @var int z value, which controls order of drawing graphical components. Components with smaller z values may be overwritten by those with larger z values.
+     * @var int 坐标轴指示器的 z 值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖。
      */
     public $z;        
         
     /**
-     * @var AxisPointer\Label label of axisPointer
+     * @var AxisPointer\Label 坐标轴指示器的文本标签。
      */
     public $label;        
         
     /**
-     * @var AxisPointer\LineStyle It is valid when axisPointer.type is line.
+     * @var AxisPointer\LineStyle axisPointer.type 为 line 时有效。
      */
     public $lineStyle;        
         
     /**
-     * @var AxisPointer\ShadowStyle It is valid when axisPointer.type is shadow.
+     * @var AxisPointer\ShadowStyle axisPointer.type 为 shadow 时有效。
      */
     public $shadowStyle;        
         
     /**
-     * @var array axisPointers can be linked to each other. The term link represents that axes are synchronized and move together. Axes are linked according to the value of axisPointer.
-     * See sampleA and sampleB。
-     * link is an array, where each item represents a link group. Axes will be linked when they are refered in the same link group. For example:
+     * @var boolean 是否触发 tooltip。如果不想触发 tooltip 可以关掉。
+     */
+    public $tiggerTooltip = true;        
+        
+    /**
+     * @var int 当前的 value。在使用 axisPointer.handle 时，可以设置此值进行初始值设定，从而决定 axisPointer 的初始位置。
+     */
+    public $value;        
+        
+    /**
+     * @var boolean 当前的状态，可取值为 show 和 hide。
+     */
+    public $status;        
+        
+    /**
+     * @var AxisPointer\Handle 拖拽手柄，适用于触屏的环境。参见 例子。
+     */
+    public $handle;        
+        
+    /**
+     * @var array 不同轴的 axisPointer 可以进行联动，在这里设置。联动表示轴能同步一起活动。轴依据他们的 axisPointer 当前对应的值来联动。
+     * 联动的效果可以看这两个例子：例子A，例子B。
+     * link 是一个数组，其中每一项表示一个 link group，一个 group 中的坐标轴互相联动。例如：
      * link: [
      *     {
-     *         // All axes with xAxisIndex 0, 3, 4 and yAxisName sameName will be linked.
+     *         // 表示所有 xAxisIndex 为 0、3、4 和 yAxisName 为 someName 的坐标轴联动。
      *         xAxisIndex: [0, 3, 4],
      *         yAxisName: someName
      *     },
      *     {
-     *         // All axes with xAxisId aa, cc and all angleAxis will be linked.
+     *         // 表示左右 xAxisId 为 aa、cc 以及所有的 angleAxis 联动。
      *         xAxisId: [aa, cc],
      *         angleAxis: all
      *     },
      *     ...
      * ]
      * 
-     * As illustrated above, axes can be refered in these approaches in a link group:
+     * 如上所示，每个 link group 中可以用这些方式引用坐标轴：
      * {
-     *     // some represent the dimension name of a axis, namely, x, y, radius, angle, single
-     *     someAxisIndex: [...], // can be an array or a value or all
-     *     someAxisName: [...],  // can be an array or a value or all
-     *     someAxisId: [...],    // can be an array or a value or all
+     *     // 以下的 some 均表示轴的维度，也就是表示 x, y, radius, angle, single
+     *     someAxisIndex: [...], // 可以是一个数组或单值或 all
+     *     someAxisName: [...],  // 可以是一个数组或单值或 all
+     *     someAxisId: [...],    // 可以是一个数组或单值或 all
      * }
      * 
      * 
-     * 
-     * How to link axes with different axis.type?
-     * For example, the type of axisA is category, and the type of axisB type is time, we can write conversion function (mapper) in link group to convert values from an axie to another axis. For example:
+     * 如何联动不同类型（axis.type）的轴？
+     * 如果 axis 的类型不同，比如 axisA type 为 category，axisB type 为 time，可以在每个 link group 中写转换函数（mapper）来进行值的转换，例如：
      * link: [{
      *     xAxisIndex: [0, 1],
      *     yAxisName: [yy],
@@ -100,29 +117,26 @@ class AxisPointer
      *     }
      * }]
      * 
-     * Input parameters of mapper:
+     * mapper 的输入参数：
      * {number} sourceVal
-     * {Object} sourceAxisInfo Including {axisDim, axisId, axisName, axisIndex, ...}
-     * {Object} targetAxisInfo Including {axisDim, axisId, axisName, axisIndex, ...}
-     * Return of mapper:
-     * {number} The result of conversion.
+     * {Object} sourceAxisInfo 里面包含 {axisDim, axisId, axisName, axisIndex} 等信息
+     * {Object} targetAxisInfo 里面包含 {axisDim, axisId, axisName, axisIndex} 等信息
+     * mapper 的返回值：
+     * {number} 转换结果
      */
     public $link;        
         
     /**
-     * @var string Conditions to trigger tooltip. Options:
+     * @var string 提示框触发的条件，可选：
      * 
      * mousemove
-     *   Trigger when mouse moves.
+     *   鼠标移动时触发。
      * 
      * click
-     *   Trigger when mouse clicks.
-     * 
-     * mousemove|click
-     *   Trigger when mouse clicks and moves.
+     *   鼠标点击时触发。
      * 
      * none
-     *   Do not triggered by mousemove and click
+     *   不在 mousemove 或 click 时触发。
      */
     public $triggerOn = 'mousemove|click';
 

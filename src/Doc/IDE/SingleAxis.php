@@ -23,38 +23,38 @@ class SingleAxis
     public $z = 2;        
         
     /**
-     * @var string|int grid 组件离容器左侧的距离。
+     * @var string|int single组件离容器左侧的距离。
      * left 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 left, center, right。
      * 如果 left 的值为left, center, right，组件会根据相应的位置自动对齐。
      */
-    public $left = 'auto';        
+    public $left = '5%';        
         
     /**
-     * @var string|int grid 组件离容器上侧的距离。
+     * @var string|int single组件离容器上侧的距离。
      * top 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 top, middle, bottom。
      * 如果 top 的值为top, middle, bottom，组件会根据相应的位置自动对齐。
      */
     public $top = '5%';        
         
     /**
-     * @var string|int grid 组件离容器右侧的距离。
+     * @var string|int single组件离容器右侧的距离。
      * right 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
      */
     public $right = '5%';        
         
     /**
-     * @var string|int grid 组件离容器下侧的距离。
+     * @var string|int single组件离容器下侧的距离。
      * bottom 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
      */
     public $bottom = '5%';        
         
     /**
-     * @var string|int grid 组件的宽度。默认自适应。
+     * @var string|int single组件的宽度。默认自适应。
      */
     public $width = 'auto';        
         
     /**
-     * @var string|int grid 组件的高度。默认自适应。
+     * @var string|int single组件的高度。默认自适应。
      */
     public $height = 'auto';        
         
@@ -131,7 +131,7 @@ class SingleAxis
      * 不设置时会自动计算最小值保证坐标轴刻度的均匀分布。
      * 在类目轴中，也可以设置为类目的序数（如类目轴 data: [类A, 类B, 类C] 中，序数 2 表示 类C。也可以设置为负数，如 -3）。
      */
-    public $min = 'auto';        
+    public $min;        
         
     /**
      * @var int|string 坐标轴刻度最大值。
@@ -139,7 +139,7 @@ class SingleAxis
      * 不设置时会自动计算最大值保证坐标轴刻度的均匀分布。
      * 在类目轴中，也可以设置为类目的序数（如类目轴 data: [类A, 类B, 类C] 中，序数 2 表示 类C。也可以设置为负数，如 -3）。
      */
-    public $max = 'auto';        
+    public $max;        
         
     /**
      * @var boolean 只在数值轴中（type: value）有效。
@@ -237,6 +237,27 @@ class SingleAxis
      *     }
      * }, 周二, 周三, 周四, 周五, 周六, 周日]
      */
-    public $data;
+    public $data;        
+        
+    /**
+     * @var SingleAxis\AxisPointer axisPointer settings on axis.
+     */
+    public $axisPointer;        
+        
+    /**
+     * @var SingleAxis\Tooltip 本坐标系特定的 tooltip 设定。
+     * 
+     * 提示框组件的通用介绍：
+     * 提示框组件可以设置在多种地方：
+     * 
+     * 可以设置在全局，即 tooltip
+     * 
+     * 可以设置在坐标系中，即 grid.tooltip、polar.tooltip、single.tooltip
+     * 
+     * 可以设置在系列中，即 series.tooltip
+     * 
+     * 可以设置在系列的每个数据项中，即 series.data.tooltip
+     */
+    public $tooltip;
 
 }

@@ -10,30 +10,30 @@ class DayLabel
 {            
         
     /**
-     * @var boolean Whether to show the dayLabel.
+     * @var boolean 是否在普通状态下显示标签。
      */
     public $show = true;        
         
     /**
-     * @var int A week from the beginning of the week, the default starting on Sunday.
-     * Examples:
+     * @var int 一周从周几开始，默认从周日开始
+     * 例如：
      * 
      * calendar: [{
      *     dayLabel: {
-     *         firstDay: 1 // start on Monday
+     *         firstDay: 1 // 从周一开始
      *     }
      * }]
      */
     public $firstDay = 0;        
         
     /**
-     * @var int The margin between the day label and the axis line.
+     * @var int 星期标签与轴线之间的距离
      */
     public $margin = 0;        
         
     /**
-     * @var string Position of week, at the beginning or end of the range.
-     * Options:
+     * @var string 星期的位置 在星期轴的开头还是结尾。
+     * 可选：
      * 
      * start
      * end
@@ -41,18 +41,15 @@ class DayLabel
     public $position = 'start';        
         
     /**
-     * @var string|array Week text content, defaults to en;
-     * It supports Chinese, English, and custom;
-     * index 0 always means Sunday;
-     * Examples:
-     * 
-     * // shortcut to English  [S, M, T, W, T, F, S],
+     * @var string|array 星期显示的效果，默认为en
+     * 可设置中英文以及自定义
+     * 下标0为对应星期天的文字显示
+     * 使用示例：
+     * // 快捷设置英文 [S, M, T, W, T, F, S],
      * nameMap: en
-     * 
-     * // shortcut to Chinese [日, 一, 二, 三, 四, 五, 六]
+     * // 快捷设置中文 [日, 一, 二, 三, 四, 五, 六]
      * nameMap: cn
-     * 
-     * // Custom settings: mixed in English and Chinese or not displayed
+     * // 自定义设置： 中英文混杂 或者不显示
      * nameMap: [S, 一, T, 三, , 五, S],
      * 
      * calendar: [{
@@ -64,7 +61,7 @@ class DayLabel
     public $nameMap = 'en';        
         
     /**
-     * @var DayLabel\TextStyle Style of text in normal state.
+     * @var DayLabel\TextStyle 普通状态下的标签文本样式。
      */
     public $textStyle;
 

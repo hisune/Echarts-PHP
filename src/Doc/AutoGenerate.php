@@ -24,6 +24,8 @@ class AutoGenerate
 
     protected $dir = __DIR__ . '/IDE';
 
+    private $anyOf = [];
+
     public function __construct($language = 'en')
     {
         $this->setLanguage($language);
@@ -73,7 +75,20 @@ class AutoGenerate
             $classPropertyString = '';
             $top = ucfirst($top);
 
-            if(isset($property['properties'])){
+            if(isset($property['items']['anyOf']) && $property['items']['anyOf']){
+                foreach ($property['items']['anyOf'] as $any){
+                    if(isset($any['properties'])){
+                        foreach ($any['properties'] as $classPropertyName => $classProperty){
+                            $anyOfKey = $dir . '/' . $top . '/' . $classPropertyName;
+                            if(!isset($this->anyOf[$anyOfKey])){
+                                $classPropertyString .= $this->_propertyTemplate($classPropertyName, $classProperty, $top);
+                                $this->anyOf[$anyOfKey] = true;
+                            }
+                        }
+                        $this->_properties($any['properties'], $dir . '/' . $top);
+                    }
+                }
+            }elseif(isset($property['properties'])){
                 foreach ($property['properties'] as $classPropertyName => $classProperty){
                     $classPropertyString .= $this->_propertyTemplate($classPropertyName, $classProperty, $top);
                 }
@@ -94,7 +109,7 @@ class AutoGenerate
                 if(file_exists($dirToWrite . '/' . $top . '.php')){
                     echo " * @property Doc\\IDE\\{$top} \$" . lcfirst($top) . "\r\n *   " . $description . "\r\n";
                 }else{
-                    echo " * @property callable \$" . strtolower($top) . "\r\n *   " . $description . "\r\n";
+                    echo " * @property callable \$" . lcfirst($top) . "\r\n *   " . $description . "\r\n";
                 }
             }
         }

@@ -56,7 +56,6 @@ class ShadowStyle
         
     /**
      * @var int 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。
-     * 麻烦沈老板在这里加一下单轴的配置，请特别说明下在主题河流里面目前只支持orient为horizontal,position为top或bottom的情况，谢谢。
      */
     public $opacity;
 

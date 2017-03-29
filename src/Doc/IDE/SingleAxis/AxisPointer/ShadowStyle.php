@@ -10,28 +10,28 @@ class ShadowStyle
 {            
         
     /**
-     * @var string Fill color. 
+     * @var string 填充的颜色。
      * 
-     * Color can be represented in RGB, for example rgb(128, 128, 128). RGBA can be used when you need alpha channel, for example rgba(128, 128, 128, 0.5). You may also use hexadecimal format, for example #ccc. Gradient color and texture are also supported besides single colors.
-     * // Linear gradient. First four parameters are x0, y0, x2, and y2, each ranged from 0 to 1, standing for percentage in the bounding box. If another parameter is passed in as `true`, then the first four parameters are in absolute pixel positions.
+     * 颜色可以使用 RGB 表示，比如 rgb(128, 128, 128)，如果想要加上 alpha 通道表示不透明度，可以使用 RGBA，比如 rgba(128, 128, 128, 0.5)，也可以使用十六进制格式，比如 #ccc。除了纯色之外颜色也支持渐变色和纹理填充
+     * // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果最后一个参数传 `true`，则该四个值是绝对的像素位置
      * color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-     *   offset: 0, color: red // color at 0% position
+     *   offset: 0, color: red // 0% 处的颜色
      * }, {
-     *   offset: 1, color: blue // color at 100% position
+     *   offset: 1, color: blue // 100% 处的颜色
      * }], false)
-     * // Radial gradient. First three parameters are x and y positions of center, and radius, similar to linear gradient.
+     * // 径向渐变，前三个参数分别是圆心 x, y 和半径，取值同线性渐变
      * color: new echarts.graphic.RadialGradient(0.5, 0.5, 0.5, [...], false)
-     * // Fill with texture
+     * // 纹理填充
      * color: new echarts.graphic.Pattern(
-     *   imageDom, // HTMLImageElement, and HTMLCanvasElement are supported, while string path is not supported
-     *   repeat // whether to repeat texture, whose value can be repeat-x, repeat-y, or no-repeat
+     *   imageDom, // 支持为 HTMLImageElement, HTMLCanvasElement，不支持路径字符串
+     *   repeat // 是否平铺, 可以是 repeat-x, repeat-y, no-repeat
      * )
      */
     public $color = 'rgba(150,150,150,0.3)';        
         
     /**
-     * @var int Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
-     * For example:
+     * @var int 图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。
+     * 示例：
      * {
      *     shadowColor: rgba(0, 0, 0, 0.5),
      *     shadowBlur: 10
@@ -40,31 +40,22 @@ class ShadowStyle
     public $shadowBlur;        
         
     /**
-     * @var string Shadow color. Support same format as color.
+     * @var string 阴影颜色。支持的格式同color。
      */
     public $shadowColor;        
         
     /**
-     * @var int Offset distance on the horizontal direction of shadow.
+     * @var int 阴影水平方向上的偏移距离。
      */
     public $shadowOffsetX = 0;        
         
     /**
-     * @var int Offset distance on the vertical direction of shadow.
+     * @var int 阴影垂直方向上的偏移距离。
      */
     public $shadowOffsetY = 0;        
         
     /**
-     * @var int Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
-     * { target: partial-axis-interval }}
-     * Interval of , which is available in category axis.  is set to be the same as axisLabel.interval by default.
-     * It uses a strategy that labels do not overlap by default.
-     * You may set it to be 0 to display all labels compulsively.
-     * If it is set to be 1, it means that labels are shown once after one label. And if it is set to be 2, it means labels are shown once after two labels, and so on.
-     * On the other hand, you can control by callback function, whose format is shown below:
-     * (index:number, value: string) =&gt; boolean
-     * 
-     * The first parameter is index of category, and the second parameter is the name of category. The return values decides whether to display label.
+     * @var int 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。
      */
     public $opacity;
 

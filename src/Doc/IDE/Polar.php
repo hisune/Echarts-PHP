@@ -37,6 +37,22 @@ class Polar
      * @var array 极坐标系的半径，数组的第一项是内半径，第二项是外半径。
      * 支持设置成百分比，相对于容器高宽中较小的一项的一半。
      */
-    public $radius;
+    public $radius;        
+        
+    /**
+     * @var Polar\Tooltip 本坐标系特定的 tooltip 设定。
+     * 
+     * 提示框组件的通用介绍：
+     * 提示框组件可以设置在多种地方：
+     * 
+     * 可以设置在全局，即 tooltip
+     * 
+     * 可以设置在坐标系中，即 grid.tooltip、polar.tooltip、single.tooltip
+     * 
+     * 可以设置在系列中，即 series.tooltip
+     * 
+     * 可以设置在系列的每个数据项中，即 series.data.tooltip
+     */
+    public $tooltip;
 
 }
