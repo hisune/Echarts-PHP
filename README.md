@@ -18,9 +18,9 @@ composer require "hisune/echarts-php"
 ## Table of Contents
   - Class: ECharts
     - [__construct([string] $dist = '')](#simple-recommend-using-php-property)
-    - [addSeries(Series $series)](#add-series-without-property) 
-    - [addXAxis(XAxis $xAxis)](#add-xaxis-without-property) 
-    - [addYAxis(YAxis $yAxis)](#add-yaxis-without-property) 
+    - [addSeries(Series $series)](#add-series-with-property) 
+    - [addXAxis(XAxis $xAxis)](#add-xaxis-with-property) 
+    - [addYAxis(YAxis $yAxis)](#add-yaxis-with-property) 
     - [setOption(array $option)](#or-you-can-set-option-array-directly) 
     - [getOption([array] $render = null, [boolean] $jsObject = false)](#or-you-can-set-option-array-directly) 
     - [setJsVar(string $name = null)](#customer-js-variable-name) 
@@ -65,7 +65,7 @@ $chart->series[] = array(
 echo $chart->render('simple-custom-id');
 ```
 
-### Add series without property
+### Add series with property
 `void ECharts::addSeries(\Hisune\EchartsPHP\Doc\IDE\Series $series)`
 ```php
 use \Hisune\EchartsPHP\Doc\IDE\Series;
@@ -88,7 +88,7 @@ $series->itemStyle->emphasis->areaColor = '#993399';
 $chart->addSeries($series);
 ```
 
-### Add XAxis without property
+### Add XAxis with property
 `void ECharts::addXAxis(\Hisune\EchartsPHP\Doc\IDE\XAxis $xAxis)`
 ```php
 use Hisune\EchartsPHP\Doc\IDE\XAxis;
@@ -98,7 +98,7 @@ $xAxis->data = array('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct'
 $chart->addXAxis($xAxis);
 ```
 
-### Add YAxis without property
+### Add YAxis with property
 `void ECharts::addYAxis(\Hisune\EchartsPHP\Doc\IDE\YAxis $yAxis)`
 ```php
 use Hisune\EchartsPHP\Doc\IDE\YAxis;
