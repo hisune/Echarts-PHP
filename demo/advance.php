@@ -6,8 +6,9 @@
  * Time: 18:26
  */
 header('Content-Type: text/html; charset=utf-8');
-require('vendor/autoload.php');
+require('../vendor/autoload.php');
 use Hisune\EchartsPHP\ECharts;
+use Hisune\EchartsPHP\Doc\IDE\XAxis;
 
 $chart = new ECharts();
 $chart->tooltip->trigger = 'axis';
@@ -85,10 +86,12 @@ $chart->xAxis[] = array(
         '7','8','9','10','11','12'
     )
 );
-$chart->xAxis[] = array(
-    'type' => 'category',
-    'data' => array('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'),
-);
+
+$xAxis = new XAxis();
+$xAxis->type = 'category';
+$xAxis->data = array('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
+$chart->addXAxis($xAxis);
+
 $chart->yAxis[] = array(
     'type' => 'value',
     'position' => 'left',

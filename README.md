@@ -17,7 +17,10 @@ composer require "hisune/echarts-php"
 
 ## Table of Contents
   - Class: ECharts
-    - [__construct([string] $dist = '')](#simple-recommend-using-php-property) 
+    - [__construct([string] $dist = '')](#simple-recommend-using-php-property)
+    - [addSeries(Series $series)](#add-series-without-property) 
+    - [addXAxis(XAxis $xAxis)](#add-xaxis-without-property) 
+    - [addYAxis(YAxis $yAxis)](#add-yaxis-without-property) 
     - [setOption(array $option)](#or-you-can-set-option-array-directly) 
     - [getOption([array] $render = null, [boolean] $jsObject = false)](#or-you-can-set-option-array-directly) 
     - [setJsVar(string $name = null)](#customer-js-variable-name) 
@@ -39,7 +42,7 @@ Usage
 -----
 
 ### Simple, recommend using PHP property
-`public ECharts::__construct([string] $dist = '');`
+`public ECharts::__construct([string] $dist = '')`
  - Param `dist` is your customer dist url.
 ```php
 // The most simple example
@@ -62,11 +65,53 @@ $chart->series[] = array(
 echo $chart->render('simple-custom-id');
 ```
 
+### Add series without property
+`void ECharts::addSeries(\Hisune\EchartsPHP\Doc\IDE\Series $series)`
+```php
+use \Hisune\EchartsPHP\Doc\IDE\Series;
+$series = new Series();
+$series->type = 'map';
+$series->map = 'world';
+$series->data = array(
+    array(
+        'name' => 'China',
+        'value' => 100,
+    )
+);
+$series->label->emphasis->textStyle->color = '#fff';
+$series->roam = true;
+$series->scaleLimit->min = 1;
+$series->scaleLimit->max = 5;
+$series->itemStyle->normal->borderColor = '#F2EFF4';
+$series->itemStyle->normal->areaColor = '#993399';
+$series->itemStyle->emphasis->areaColor = '#993399';
+$chart->addSeries($series);
+```
+
+### Add XAxis without property
+`void ECharts::addSeries(\Hisune\EchartsPHP\Doc\IDE\XAxis $XAxis)`
+```php
+use Hisune\EchartsPHP\Doc\IDE\XAxis;
+$xAxis = new XAxis();
+$xAxis->type = 'category';
+$xAxis->data = array('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
+$chart->addXAxis($xAxis);
+```
+
+### Add YAxis without property
+`void ECharts::addSeries(\Hisune\EchartsPHP\Doc\IDE\YAxis $YAxis)`
+```php
+use Hisune\EchartsPHP\Doc\IDE\YAxis;
+$yAxis = new YAxis();
+$yAxis->type = 'value';
+$chart->addYAxis($yAxis);
+```
+
 ### Or you can set option array directly
-`void ECharts::setOption(array $option);`
+`void ECharts::setOption(array $option)`
  - Param `option` is ECharts option array to be set.
 
-`array|string ECharts::getOption([array] $render = null, [boolean] $jsObject = false);`
+`array|string ECharts::getOption([array] $render = null, [boolean] $jsObject = false)`
  - Param `render` is ECharts option array.
  - Param `jsObject` is whether or not to return json string, return PHP array by default.
 ```php
