@@ -6,17 +6,15 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Parallel\ParallelAxisDefault;
 
-class AxisLine
-{            
-        
-    /**
-     * @var boolean 是否显示坐标轴轴线。
-     */
-    public $show = true;        
-        
-    /**
-     * @var AxisLine\LineStyle 
-     */
-    public $lineStyle;
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property boolean $show Default: true
+ *    是否显示坐标轴轴线。
+ *
+ * @property AxisLine\LineStyle $lineStyle
+ *    
+ *
+ * {_more_}
+ */
+class AxisLine extends Property {}

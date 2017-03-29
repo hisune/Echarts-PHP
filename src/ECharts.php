@@ -127,10 +127,9 @@ namespace Hisune\EchartsPHP;
  *   图形数量阈值，决定是否开启单独的 hover 层，在整个图表的图形数量大于该阈值时开启单独的 hover 层。
  *
  */
-class ECharts implements \ArrayAccess
+class ECharts extends Property
 {
 
-    public $_options = [];
     public $_events = [];
     protected $jsVar;
 
@@ -143,42 +142,6 @@ class ECharts implements \ArrayAccess
             Config::$dist = $dist;
         }
         $this->setJsVar();
-    }
-
-    public function __set($offset, $value)
-    {
-        return $this->offsetSet($offset, $value);
-    }
-
-    public function __get($offset)
-    {
-        return $this->offsetGet($offset);
-    }
-
-    public function offsetExists($offset)
-    {
-        return isset($this->_options[$offset]);
-    }
-
-    public function offsetGet($offset)
-    {
-        if (!$this->offsetExists($offset))
-            $this->_options[$offset] = new self;
-
-        return $this->_options[$offset];
-    }
-
-    public function offsetSet($offset, $value)
-    {
-        if (is_null($offset))
-            return $this->_options[] = $value;
-        else
-            return $this->_options[$offset] = $value;
-    }
-
-    public function offsetUnset($offset)
-    {
-        unset($this->_options[$offset]);
     }
 
     public function render($id, $attribute = array(), $theme = null)
@@ -228,6 +191,21 @@ class ECharts implements \ArrayAccess
     public function getJsVar()
     {
         return $this->jsVar;
+    }
+
+    public function addSeries(Doc\IDE\Series $series)
+    {
+        $this->series[] = $this->getOption($series->_options);
+    }
+
+    public function addXAxis(Doc\IDE\XAxis $xAxis)
+    {
+        $this->xAxis[] = $this->getOption($xAxis->_options);
+    }
+
+    public function addYAxis(Doc\IDE\YAxis $yAxis)
+    {
+        $this->yAxis[] = $this->getOption($yAxis->_options);
     }
 
 }

@@ -6,12 +6,12 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Calendar;
 
-class ItemStyle
-{            
-        
-    /**
-     * @var ItemStyle\Normal 
-     */
-    public $normal;
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property ItemStyle\Normal $normal
+ *    
+ *
+ * {_more_}
+ */
+class ItemStyle extends Property {}

@@ -6,17 +6,15 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Geo\Label;
 
-class Normal
-{            
-        
-    /**
-     * @var boolean 是否在普通状态下显示标签。
-     */
-    public $show = false;        
-        
-    /**
-     * @var Normal\TextStyle 普通状态下的标签文本样式。
-     */
-    public $textStyle;
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property boolean $show Default: false
+ *    是否在普通状态下显示标签。
+ *
+ * @property Normal\TextStyle $textStyle
+ *    普通状态下的标签文本样式。
+ *
+ * {_more_}
+ */
+class Normal extends Property {}

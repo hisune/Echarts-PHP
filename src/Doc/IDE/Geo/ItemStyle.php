@@ -6,17 +6,15 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Geo;
 
-class ItemStyle
-{            
-        
-    /**
-     * @var ItemStyle\Normal 普通状态下的多边形样式。
-     */
-    public $normal;        
-        
-    /**
-     * @var ItemStyle\Emphasis 高亮状态下的多边形样式。
-     */
-    public $emphasis;
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property ItemStyle\Normal $normal
+ *    普通状态下的多边形样式。
+ *
+ * @property ItemStyle\Emphasis $emphasis
+ *    高亮状态下的多边形样式。
+ *
+ * {_more_}
+ */
+class ItemStyle extends Property {}

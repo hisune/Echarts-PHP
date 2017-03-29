@@ -6,17 +6,15 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Geo;
 
-class Label
-{            
-        
-    /**
-     * @var Label\Normal 
-     */
-    public $normal;        
-        
-    /**
-     * @var Label\Emphasis 
-     */
-    public $emphasis;
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property Label\Normal $normal
+ *    
+ *
+ * @property Label\Emphasis $emphasis
+ *    
+ *
+ * {_more_}
+ */
+class Label extends Property {}

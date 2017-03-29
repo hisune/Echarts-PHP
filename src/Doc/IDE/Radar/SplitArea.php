@@ -6,17 +6,15 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Radar;
 
-class SplitArea
-{            
-        
-    /**
-     * @var boolean 是否显示分隔区域。
-     */
-    public $show = true;        
-        
-    /**
-     * @var SplitArea\AreaStyle 分隔区域的样式设置。
-     */
-    public $areaStyle;
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property boolean $show Default: true
+ *    是否显示分隔区域。
+ *
+ * @property SplitArea\AreaStyle $areaStyle
+ *    分隔区域的样式设置。
+ *
+ * {_more_}
+ */
+class SplitArea extends Property {}

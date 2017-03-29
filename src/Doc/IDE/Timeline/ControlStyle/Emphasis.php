@@ -6,22 +6,18 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Timeline\ControlStyle;
 
-class Emphasis
-{            
-        
-    /**
-     * @var string 按钮颜色。
-     */
-    public $color = '#c23531';        
-        
-    /**
-     * @var string 按钮边框颜色。
-     */
-    public $borderColor = '#c23531';        
-        
-    /**
-     * @var int 按钮边框线宽。
-     */
-    public $borderWidth = 2;
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property string $color Default: '#c23531'
+ *    按钮颜色。
+ *
+ * @property string $borderColor Default: '#c23531'
+ *    按钮边框颜色。
+ *
+ * @property int $borderWidth Default: 2
+ *    按钮边框线宽。
+ *
+ * {_more_}
+ */
+class Emphasis extends Property {}

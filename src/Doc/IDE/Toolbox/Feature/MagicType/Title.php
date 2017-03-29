@@ -6,27 +6,21 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Toolbox\Feature\MagicType;
 
-class Title
-{            
-        
-    /**
-     * @var string 
-     */
-    public $line = '切换为折线图';        
-        
-    /**
-     * @var string 
-     */
-    public $bar = '切换为柱状图';        
-        
-    /**
-     * @var string 
-     */
-    public $stack = '切换为堆叠';        
-        
-    /**
-     * @var string 
-     */
-    public $tiled = '切换为平铺';
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property string $line Default: '切换为折线图'
+ *    
+ *
+ * @property string $bar Default: '切换为柱状图'
+ *    
+ *
+ * @property string $stack Default: '切换为堆叠'
+ *    
+ *
+ * @property string $tiled Default: '切换为平铺'
+ *    
+ *
+ * {_more_}
+ */
+class Title extends Property {}

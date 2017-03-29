@@ -6,17 +6,18 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Series;
 
-class AreaStyle
-{            
-        
-    /**
-     * @var AreaStyle\Normal 
-     */
-    public $normal;        
-        
-    /**
-     * @var AreaStyle\Emphasis 
-     */
-    public $emphasis;
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property AreaStyle\Normal $normal
+ *    
+ *
+ *  * @property AreaStyle\Normal $normal
+ *    
+ *
+ * @property AreaStyle\Emphasis $emphasis
+ *    
+ *
+ * {_more_}
+ */
+class AreaStyle extends Property {}

@@ -6,17 +6,15 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Toolbox\Feature\DataZoom;
 
-class Title
-{            
-        
-    /**
-     * @var string 
-     */
-    public $zoom = '区域缩放';        
-        
-    /**
-     * @var string 
-     */
-    public $back = '区域缩放还原';
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property string $zoom Default: '区域缩放'
+ *    
+ *
+ * @property string $back Default: '区域缩放还原'
+ *    
+ *
+ * {_more_}
+ */
+class Title extends Property {}

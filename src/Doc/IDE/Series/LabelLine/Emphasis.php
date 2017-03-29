@@ -6,17 +6,21 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Series\LabelLine;
 
-class Emphasis
-{            
-        
-    /**
-     * @var boolean 是否显示视觉引导线。
-     */
-    public $show;        
-        
-    /**
-     * @var Emphasis\LineStyle 
-     */
-    public $lineStyle;
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property boolean $show
+ *    是否显示视觉引导线。
+ *
+ * @property Emphasis\LineStyle $lineStyle
+ *    
+ *
+ *  * @property boolean $show
+ *    是否显示视觉引导线。
+ *
+ * @property Emphasis\LineStyle $lineStyle
+ *    
+ *
+ * {_more_}
+ */
+class Emphasis extends Property {}

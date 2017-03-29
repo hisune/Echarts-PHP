@@ -6,17 +6,15 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Series\Breadcrumb;
 
-class ItemStyle
-{            
-        
-    /**
-     * @var ItemStyle\Normal 
-     */
-    public $normal;        
-        
-    /**
-     * @var ItemStyle\Emphasis 
-     */
-    public $emphasis;
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property ItemStyle\Normal $normal
+ *    
+ *
+ * @property ItemStyle\Emphasis $emphasis
+ *    
+ *
+ * {_more_}
+ */
+class ItemStyle extends Property {}

@@ -6,17 +6,15 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Series;
 
-class ScaleLimit
-{            
-        
-    /**
-     * @var int 最小的缩放值
-     */
-    public $min;        
-        
-    /**
-     * @var int 最大的缩放值
-     */
-    public $max;
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property int $min
+ *    最小的缩放值
+ *
+ * @property int $max
+ *    最大的缩放值
+ *
+ * {_more_}
+ */
+class ScaleLimit extends Property {}

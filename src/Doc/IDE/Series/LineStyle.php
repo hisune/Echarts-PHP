@@ -6,17 +6,42 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Series;
 
-class LineStyle
-{            
-        
-    /**
-     * @var LineStyle\Normal 
-     */
-    public $normal;        
-        
-    /**
-     * @var LineStyle\Emphasis 
-     */
-    public $emphasis;
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property LineStyle\Normal $normal
+ *    
+ *
+ *  * @property LineStyle\Normal $normal
+ *    
+ *
+ * @property LineStyle\Emphasis $emphasis
+ *    
+ *
+ *  * @property LineStyle\Normal $normal
+ *    
+ *
+ * @property LineStyle\Emphasis $emphasis
+ *    
+ *
+ *  * @property LineStyle\Normal $normal
+ *    
+ *
+ * @property LineStyle\Emphasis $emphasis
+ *    
+ *
+ *  * @property LineStyle\Normal $normal
+ *    
+ *
+ * @property LineStyle\Emphasis $emphasis
+ *    
+ *
+ *  * @property LineStyle\Normal $normal
+ *    
+ *
+ * @property LineStyle\Emphasis $emphasis
+ *    
+ *
+ * {_more_}
+ */
+class LineStyle extends Property {}

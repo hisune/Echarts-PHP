@@ -6,17 +6,15 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\DataZoom;
 
-class DataBackground
-{            
-        
-    /**
-     * @var DataBackground\LineStyle 阴影的线条样式
-     */
-    public $lineStyle;        
-        
-    /**
-     * @var DataBackground\AreaStyle 阴影的填充样式
-     */
-    public $areaStyle;
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property DataBackground\LineStyle $lineStyle
+ *    阴影的线条样式
+ *
+ * @property DataBackground\AreaStyle $areaStyle
+ *    阴影的填充样式
+ *
+ * {_more_}
+ */
+class DataBackground extends Property {}

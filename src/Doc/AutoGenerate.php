@@ -8,6 +8,8 @@
  * Auto generate PHPDoc for Echarts-PHP from option.json
  */
 
+namespace Hisune\EchartsPHP\Doc;
+
 if (!php_sapi_name() == 'cli') {
     exit('Not in cli mode.');
 }
@@ -28,7 +30,16 @@ class AutoGenerate
 
     public function __construct($language = 'en')
     {
+        $this->delTree($this->dir);
         $this->setLanguage($language);
+    }
+
+    private function delTree($dir) {
+        $files = array_diff(scandir($dir), array('.','..'));
+        foreach ($files as $file) {
+            (is_dir("$dir/$file") && !is_link($dir)) ? $this->delTree("$dir/$file") : unlink("$dir/$file");
+        }
+        return rmdir($dir);
     }
 
     public function getLanguage()
@@ -81,7 +92,7 @@ class AutoGenerate
                         foreach ($any['properties'] as $classPropertyName => $classProperty){
                             $anyOfKey = $dir . '/' . $top . '/' . $classPropertyName;
                             if(!isset($this->anyOf[$anyOfKey])){
-                                $classPropertyString .= $this->_propertyTemplate($classPropertyName, $classProperty, $top);
+                                $classPropertyString .= $this->_propertyTemplate($classPropertyName, $classProperty, $top, $dir);
                                 $this->anyOf[$anyOfKey] = true;
                             }
                         }
@@ -90,7 +101,7 @@ class AutoGenerate
                 }
             }elseif(isset($property['properties'])){
                 foreach ($property['properties'] as $classPropertyName => $classProperty){
-                    $classPropertyString .= $this->_propertyTemplate($classPropertyName, $classProperty, $top);
+                    $classPropertyString .= $this->_propertyTemplate($classPropertyName, $classProperty, $top, $dir);
                 }
                 $this->_properties($property['properties'], $dir . '/' . $top);
             }
@@ -98,9 +109,14 @@ class AutoGenerate
             $dirToWrite = $this->dir . $dir;
             if($classPropertyString){
                 if(!file_exists($dirToWrite)){
-                    mkdir($dirToWrite, 0777, true);
+                    mkdir($dirToWrite, 0700, true);
                 }
-                file_put_contents($dirToWrite . '/' . $top . '.php', $this->_classTemplate($top, $dir, $classPropertyString));
+                $fileToWrite = $dirToWrite . '/' . $top . '.php';
+                if(file_exists($fileToWrite)){
+                    file_put_contents($fileToWrite, str_replace('{_more_}', $classPropertyString . ' * {_more_}', file_get_contents($fileToWrite)));
+                }else{
+                    file_put_contents($fileToWrite, $this->_classTemplate($top, $dir, $classPropertyString));
+                }
             }
 
             // 输出ECharts类的property doc
@@ -132,28 +148,32 @@ class AutoGenerate
 
 namespace Hisune\EchartsPHP\Doc\IDE{$namespace};
 
-class {$name}
-{    {$property}
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+{$property} * {_more_}
+ */
+class {$name} extends Property {}
 PHP;
     }
 
-    protected function _propertyTemplate($name, $detail, $dir)
+    protected function _propertyTemplate($name, $detail, $top, $dir)
     {
         $default = '';
 
         if(isset($detail['default'])){
             if(($detail['type'] == 'boolean' || in_array('boolean', $detail['type'])) && ($detail['default'] === true || $detail['default'] === false)){
-                $default = " = " . ($detail['default'] ? 'true' : 'false');
+                $default = " Default: " . ($detail['default'] ? 'true' : 'false') . "\r\n";
             }elseif(($detail['type'] == 'number' || in_array('number', $detail['type'])) && is_numeric($detail['default'])){
-                $default = " = " . $detail['default'];
+                $default = " Default: " . $detail['default'] . "\r\n";
             }else{
-                $default = " = '" . str_replace("'", "\\'", trim($detail['default'], "'")) . "'";
+                $default = " Default: '" . str_replace("'", "\\'", trim($detail['default'], "'")) . "'\r\n";
             }
+        }else{
+            $default = "\r\n";
         }
 
-        $detail['descriptionCN'] = isset($detail['descriptionCN']) ? $this->_replaceDescription($detail['descriptionCN']) : '';
+        $detail['descriptionCN'] = isset($detail['descriptionCN']) ? $this->_replaceDescription($detail['descriptionCN'], true, 0, 4) : '';
 
         if(isset($detail['type'])){
             if(!isset($detail['properties'])){
@@ -164,21 +184,30 @@ PHP;
                 }else if(is_string($detail['type'])){
                     $detail['type'] = $this->_replacePropertyType($detail['type']);
                 }
-                $type = "/**\r\n     * @var " . (is_array($detail['type']) ? implode('|', $detail['type']) : $detail['type']) . ' ' . $detail['descriptionCN'] . "\r\n     */";
+                $line = $this->_propertyLine((is_array($detail['type']) ? implode('|', $detail['type']) : $detail['type']), $name, $default, $detail['descriptionCN'], $top, $dir);
             }else{
-                $type = "/**\r\n     * @var " . ltrim(str_replace('/', '\\', $dir) . '\\' . ucfirst($name), '\\') . ' ' . $detail['descriptionCN'] . "\r\n     */";
+                $line = $this->_propertyLine(ltrim(str_replace('/', '\\', $top) . '\\' . ucfirst($name), '\\'), $name, $default, $detail['descriptionCN'], $top, $dir);
             }
         }else{
-            $type = "/**\r\n     * @var " . $detail['descriptionCN'] . "\r\n     */";
+            $line = $this->_propertyLine('mixed', $name, $default, $detail['descriptionCN'], $top, $dir);
         }
 
-        return <<<PHP
-        
-        
-    $type
-    public \${$name}{$default};
-PHP;
+        return $line;
 
+    }
+
+    private function _propertyLine($type, $name, $default, $description, $top, $dir)
+    {
+        if($dir){
+            $file = $this->dir . $dir . '/' . $top . '.php';
+            if(file_exists($file)){
+                $contents = file_get_contents($file);
+                if(strpos($contents, ' $' . $name . ' ') > 0){
+                    return '';
+                }
+            }
+        }
+        return sprintf(" * @property %s $%s%s *    %s\r\n *\r\n", $type, $name, $default, $description);
     }
 
     protected function _replacePropertyType($type)
@@ -202,10 +231,10 @@ PHP;
         return $type;
     }
 
-    protected function _replaceDescription($description, $multiLine = true)
+    protected function _replaceDescription($description, $multiLine = true, $leftPad = 4, $rightPad = 0)
     {
         if($multiLine){
-            return str_replace("\n", "\r\n     * ", rtrim(str_replace(["&quot;", '&#39;', '/*', '*/'], '', strip_tags($description))));
+            return str_replace("\n", "\r\n" . str_repeat(' ', $leftPad) . " * " . str_repeat(' ', $rightPad), rtrim(str_replace(["&quot;", '&#39;', '/*', '*/'], '', strip_tags($description))));
         }else{
             $explode = explode("\n", $description);
             return rtrim(str_replace(["&quot;", '&#39;', '/*', '*/'], '', strip_tags($explode[0])));

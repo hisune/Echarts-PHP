@@ -6,22 +6,18 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Timeline\ControlStyle;
 
-class Normal
-{            
-        
-    /**
-     * @var string 按钮颜色。
-     */
-    public $color = '#304654';        
-        
-    /**
-     * @var string 按钮边框颜色。
-     */
-    public $borderColor = '#304654';        
-        
-    /**
-     * @var int 按钮边框线宽。
-     */
-    public $borderWidth = 1;
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property string $color Default: '#304654'
+ *    按钮颜色。
+ *
+ * @property string $borderColor Default: '#304654'
+ *    按钮边框颜色。
+ *
+ * @property int $borderWidth Default: 1
+ *    按钮边框线宽。
+ *
+ * {_more_}
+ */
+class Normal extends Property {}

@@ -6,17 +6,15 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Calendar;
 
-class SplitLine
-{            
-        
-    /**
-     * @var boolean 是否显示分隔线。默认显示。
-     */
-    public $show = true;        
-        
-    /**
-     * @var SplitLine\LineStyle 
-     */
-    public $lineStyle;
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property boolean $show Default: true
+ *    是否显示分隔线。默认显示。
+ *
+ * @property SplitLine\LineStyle $lineStyle
+ *    
+ *
+ * {_more_}
+ */
+class SplitLine extends Property {}

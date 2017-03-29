@@ -6,27 +6,21 @@
 
 namespace Hisune\EchartsPHP\Doc\IDE\Toolbox\Feature\MagicType;
 
-class SeriesIndex
-{            
-        
-    /**
-     * @var array 
-     */
-    public $line;        
-        
-    /**
-     * @var array 
-     */
-    public $bar;        
-        
-    /**
-     * @var array 
-     */
-    public $stack;        
-        
-    /**
-     * @var array 
-     */
-    public $tiled;
+use Hisune\EchartsPHP\Property;
 
-}
+/**
+ * @property array $line
+ *    
+ *
+ * @property array $bar
+ *    
+ *
+ * @property array $stack
+ *    
+ *
+ * @property array $tiled
+ *    
+ *
+ * {_more_}
+ */
+class SeriesIndex extends Property {}
