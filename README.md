@@ -89,7 +89,7 @@ $chart->addSeries($series);
 ```
 
 ### Add XAxis without property
-`void ECharts::addXAxis(\Hisune\EchartsPHP\Doc\IDE\XAxis $XAxis)`
+`void ECharts::addXAxis(\Hisune\EchartsPHP\Doc\IDE\XAxis $xAxis)`
 ```php
 use Hisune\EchartsPHP\Doc\IDE\XAxis;
 $xAxis = new XAxis();
@@ -99,7 +99,7 @@ $chart->addXAxis($xAxis);
 ```
 
 ### Add YAxis without property
-`void ECharts::addYAxis(\Hisune\EchartsPHP\Doc\IDE\YAxis $YAxis)`
+`void ECharts::addYAxis(\Hisune\EchartsPHP\Doc\IDE\YAxis $yAxis)`
 ```php
 use Hisune\EchartsPHP\Doc\IDE\YAxis;
 $yAxis = new YAxis();
