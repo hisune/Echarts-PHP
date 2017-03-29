@@ -159,8 +159,6 @@ PHP;
 
     protected function _propertyTemplate($name, $detail, $top, $dir)
     {
-        $default = '';
-
         if(isset($detail['default'])){
             if(($detail['type'] == 'boolean' || in_array('boolean', $detail['type'])) && ($detail['default'] === true || $detail['default'] === false)){
                 $default = " Default: " . ($detail['default'] ? 'true' : 'false') . "\r\n";
