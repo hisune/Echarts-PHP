@@ -13,11 +13,12 @@ class Config
     public static $dist = '//cdnjs.cloudflare.com/ajax/libs/echarts/3.4.0';
     public static $version = '3.4.0';
     public static $method = array();
-    public static $isOutputJs = false;
+    public static $renderScript = true;
     public static $distType = ''; // Empty is full, other options: simple, common
     public static $minify = true; // Whether or not load minify js file
     public static $extraScript = array();
     public static $jsVar = '';
+    public static $scripts = [];
 
     public static function jsExpr($string)
     {
@@ -63,16 +64,20 @@ class Config
     {
         $attribute = self::_renderAttribute($attribute);
         is_null($theme) && $theme = 'null';
-        if(!static::$isOutputJs){
-            $js = '<script src="' . self::$dist . '/echarts' . (self::$distType ? '.' . self::$distType : '') . (self::$minify ? '.min' : '') . '.js"></script>';
 
-            if(static::$extraScript)
-                foreach(static::$extraScript as $k => $v)
-                    $js .= '<script src="' . $v . '/' . $k . '"></script>';
+        $js = '';
+        if(static::$renderScript){
+            $src = self::$dist . '/echarts' . (self::$distType ? '.' . self::$distType : '') . (self::$minify ? '.min' : '') . '.js';
 
-            static::$isOutputJs = true;
-        } else
-            $js = '';
+            self::_renderScript($src, $js);
+
+            if(static::$extraScript){
+                foreach(static::$extraScript as $k => $v){
+                    $src = $v . '/' . $k;
+                    self::_renderScript($src, $js);
+                }
+            }
+        }
 
         $jsVar = static::$jsVar;
 
@@ -117,6 +122,14 @@ $js
     chart_$jsVar.setOption($option);$eventsHtml
 </script>
 HTML;
+        }
+    }
+
+    private static function _renderScript($src, &$js)
+    {
+        if(!isset(self::$scripts[$src])){
+            $js .= '<script type="text/javascript" src="' . $src . '"></script>';
+            self::$scripts[$src] = true;
         }
     }
 
