@@ -66,5 +66,5 @@ $series->itemStyle->normal->areaColor = '#F5F6FA';
 $series->itemStyle->emphasis->areaColor = '#441744';
 $chart->addSeries($series);
 
-Config::addExtraScript('world.js', 'http://echarts.baidu.com/asset/map/js/');
+Config::addExtraScript('world.js', 'https://cdn.rawgit.com/hisune/images/7b31b0a0/echarts');
 echo $chart->render('map', ['style' => 'height: 500px;']);
