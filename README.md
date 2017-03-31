@@ -34,6 +34,7 @@ composer require "hisune/echarts-php"
     - [$dist](#customer-dist)
     - [$distType](#dist-type)
     - [$minify](#whether-or-not-load-minify-js-file)
+    - $renderScript
     - $version
   - [Theme](#the-example-for-echarts-theme-use-addextrascript)
   - [PHPDoc for property](#full-echarts-phpdoc)
