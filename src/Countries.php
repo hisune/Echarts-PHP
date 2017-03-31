@@ -6,6 +6,7 @@
  * Time: 11:33
  *
  * data from http://echarts.baidu.com/asset/map/js/world.js
+ * 注：echart默认是用不规范的英文国家名做映射关系，这里转为标准的ISO3166-1国家短码
  */
 
 namespace Hisune\EchartsPHP;
