@@ -10,8 +10,8 @@ namespace Hisune\EchartsPHP;
 
 class Config
 {
-    public static $dist = '//cdn.bootcss.com/echarts/3.6.2';
-    public static $version = '3.6.2';
+    public static $dist = '//cdn.bootcss.com/echarts/3.7.0';
+    public static $version = '3.7.0';
     public static $method = array();
     public static $renderScript = true;
     public static $distType = ''; // Empty is full, other options: simple, common
@@ -19,6 +19,7 @@ class Config
     public static $extraScript = array();
     public static $jsVar = '';
     public static $scripts = [];
+    public static $prefix = 'chart_';
 
     public static function jsExpr($string)
     {
@@ -108,9 +109,10 @@ $js
 HTML;
         }else{
             $eventsHtml = '';
+            $prefix = self::$prefix;
             if($events){
                 foreach($events as $event => $call){
-                    $eventsHtml .= 'chart_'. $jsVar . '.on(\'' . $event . '\', function (params) {' . $call . '});';
+                    $eventsHtml .= $prefix . $jsVar . '.on(\'' . $event . '\', function (params) {' . $call . '});';
                 }
             }
             $option = self::jsonEncode($option);
@@ -118,8 +120,8 @@ HTML;
 <div id="$id" $attribute></div>
 $js
 <script type="text/javascript">
-    var chart_$jsVar = echarts.init(document.getElementById('$id'), '$theme');
-    chart_$jsVar.setOption($option);$eventsHtml
+    var $prefix$jsVar = echarts.init(document.getElementById('$id'), '$theme');
+    $prefix$jsVar.setOption($option);$eventsHtml
 </script>
 HTML;
         }
