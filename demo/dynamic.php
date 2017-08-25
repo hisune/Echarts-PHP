@@ -8,6 +8,7 @@
 
 require('../vendor/autoload.php');
 
+use Hisune\EchartsPHP\Config;
 use Hisune\EchartsPHP\ECharts;
 
 if(isset($_GET['ajax']) && $_GET['ajax'] == 'true'):
@@ -23,8 +24,6 @@ else:
     }
 
     $chart = new ECharts();
-    $chart->tooltip->show = true;
-    $chart->legend->data[] = 'legend data';
     $chart->xAxis = [
         'type' => 'category',
         'data' => $xAxisData,
@@ -33,13 +32,12 @@ else:
         'type' => 'value',
     ];
     $chart->series[] = [
-        'name' => 'series name',
         'type' => 'line',
         'data' => $data
     ];
+    Config::addExtraScript('jquery.min.js', '//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1');
     echo $chart->render('test-id');
 ?>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
         setInterval(function(){
             $.ajax({
@@ -51,11 +49,12 @@ else:
                     var echart = chart_<?=$chart->getJsVar()?>,
                         option = echart.getOption();
 
-                    // shift a item then push a new item
+                    // shift a item then push a new
                     option.series[0].data.shift();
                     option.series[0].data.push(json.num);
                     option.xAxis[0].data.shift();
                     option.xAxis[0].data.push(json.data);
+                    
                     echart.setOption({
                         series: option.series,
                         xAxis: option.xAxis
