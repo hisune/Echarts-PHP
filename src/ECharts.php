@@ -188,9 +188,9 @@ class ECharts extends Property
         $this->jsVar = Config::$jsVar;
     }
 
-    public function getJsVar()
+    public function getJsVar($full = false)
     {
-        return $this->jsVar;
+        return $full ? 'chart_' . $this->jsVar : $this->jsVar;
     }
 
     public function addSeries(Doc\IDE\Series $series)
