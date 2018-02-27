@@ -113,7 +113,7 @@ use Hisune\EchartsPHP\Property;
  *    节点是否可见。
  *
  * @property string $cursor Default: 'pointer'
- *    鼠标悬浮时鼠标的样式是什么。同 CSS 的 cursor。
+ *    鼠标悬浮时在图形元素上时鼠标的样式是什么。同 CSS 的 cursor。
  *
  * @property boolean $draggable Default: false
  *    图形元素是否可以被拖拽。

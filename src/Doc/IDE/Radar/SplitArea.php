@@ -9,7 +9,7 @@ namespace Hisune\EchartsPHP\Doc\IDE\Radar;
 use Hisune\EchartsPHP\Property;
 
 /**
- * @property boolean $show Default: true
+ * @property boolean $show Default: false
  *    是否显示分隔区域。
  *
  * @property SplitArea\AreaStyle $areaStyle

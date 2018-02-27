@@ -13,8 +13,8 @@ use Hisune\EchartsPHP\Property;
  *    timeline.checkpointStyle 标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array $symbolSize Default: 13
  *    timeline.checkpointStyle 标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。

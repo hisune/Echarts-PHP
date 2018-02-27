@@ -29,12 +29,6 @@ use Hisune\EchartsPHP\Property;
  * @property Title\TextStyle $textStyle
  *    
  *
- * @property string $textAlign
- *    标题文本水平对齐，支持 left, center, right，默认根据标题位置决定。
- *
- * @property string $textBaseline
- *    标题文本垂直对齐，支持 top, middle, bottom，默认根据标题位置决定。
- *
  * @property string $subtext Default: ''
  *    副标题文本，支持使用 \n 换行。
  *
@@ -108,6 +102,12 @@ use Hisune\EchartsPHP\Property;
  *
  * @property int $borderWidth Default: 0
  *    标题的边框线宽。
+ *
+ * @property int|array $borderRadius Default: 0
+ *    圆角半径，单位px，支持传入数组分别指定 4 个圆角半径。
+ *     如:
+ *     borderRadius: 5, // 统一设置四个角的圆角大小
+ *     borderRadius: [5, 5, 0, 0] //（顺时针左上，右上，右下，左下）
  *
  * @property int $shadowBlur
  *    图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。

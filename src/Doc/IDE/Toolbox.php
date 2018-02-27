@@ -58,6 +58,9 @@ use Hisune\EchartsPHP\Property;
  * @property Toolbox\IconStyle $iconStyle
  *    公用的 icon 样式设置。
  *
+ * @property Toolbox\Emphasis $emphasis
+ *    
+ *
  * @property int $zlevel Default: 0
  *    所有图形的 zlevel 值。
  *     zlevel用于 Canvas 分层，不同zlevel值的图形会放置在不同的 Canvas 中，Canvas 分层是一种常见的优化手段。我们可以把一些图形变化频繁（例如有动画）的组件设置成一个单独的zlevel。需要注意的是过多的 Canvas 会引起内存开销的增大，在手机端上需要谨慎使用以防崩溃。

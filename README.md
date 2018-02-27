@@ -2,13 +2,11 @@
 [![Total Downloads](https://poser.pugx.org/hisune/Echarts-PHP/downloads)](https://packagist.org/packages/hisune/Echarts-PHP) 
 [![Latest Unstable Version](https://poser.pugx.org/hisune/Echarts-PHP/v/unstable)](https://packagist.org/packages/hisune/Echarts-PHP) 
 
-Echarts-PHP
-=============
+# Echarts-PHP
 
-Echarts-PHP is a PHP library that works as a wrapper for the **Echarts js** library (https://github.com/ecomfe/echarts). Support Echarts version from 2.2.x to 3.x.
+Echarts-PHP is a PHP library that works as a wrapper for the **Echarts js** library (https://github.com/ecomfe/echarts). Support Echarts version from 2.2.x to 4.x.
 
-Setup
------
+## Setup
 
 The recommended way to install Echarts-PHP is through  [`Composer`](http://getcomposer.org). Just run the composer command to install it:
 ```sh
@@ -39,8 +37,7 @@ composer require "hisune/echarts-php"
   - [Theme](#the-example-for-echarts-theme-use-addextrascript)
   - [PHPDoc for property](#full-echarts-phpdoc)
     
-Usage
------
+## Usage
 
 ### Simple, recommend using PHP property
 `public ECharts::__construct([string] $dist = '')`
@@ -236,13 +233,13 @@ echo $chart->render('simple-custom-id', array(), 'vintage');
 ### Full Echarts PHPDoc
 For more detail visit: https://hisune.com/view/50/echarts-php-property-phpdoc-auto-generate
 
-Demos
------
+## Demos
 
 https://demo.hisune.com/echarts-php/
 
+[demo](demo)
+
 All the Echarts live demos present on http://echarts.baidu.com/.
 
-License
------
+## License
 MIT

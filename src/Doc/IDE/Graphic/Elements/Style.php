@@ -64,7 +64,7 @@ use Hisune\EchartsPHP\Property;
  *    水平对齐方式，取值：left, center, right。
  *     如果为 left，表示文本最左端在 x 值上。如果为 right，表示文本最右端在 x 值上。
  *
- * @property string $textVeticalAlign
+ * @property string $textVerticalAlign
  *    垂直对齐方式，取值：top, middle, bottom。
  *
  * @property string $stroke

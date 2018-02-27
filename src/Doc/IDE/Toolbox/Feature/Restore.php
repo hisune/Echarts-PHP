@@ -21,6 +21,9 @@ use Hisune\EchartsPHP\Property;
  * @property Restore\IconStyle $iconStyle
  *    还原 icon 样式设置。
  *
+ * @property Restore\Emphasis $emphasis
+ *    
+ *
  * {_more_}
  */
 class Restore extends Property {}

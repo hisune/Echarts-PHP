@@ -105,9 +105,13 @@ use Hisune\EchartsPHP\Property;
  *    dataZoom 的运行原理是通过 数据过滤 来达到 数据窗口缩放 的效果。数据过滤模式的设置不同，效果也不同。
  *     可选值为：
  *     
- *     filter：当前数据窗口外的数据，被 过滤掉。即会影响其他轴的数据范围。
+ *     filter：当前数据窗口外的数据，被 过滤掉。即 会 影响其他轴的数据范围。每个数据项，只要有一个维度在数据窗口外，整个数据项就会被过滤掉。
  *     
- *     empty：当前数据窗口外的数据，被 设置为空。即不会影响其他轴的数据范围。
+ *     weakFilter：当前数据窗口外的数据，被 过滤掉。即 会 影响其他轴的数据范围。每个数据项，只有当全部维度都在数据窗口同侧外部，整个数据项才会被过滤掉。
+ *     
+ *     empty：当前数据窗口外的数据，被 设置为空。即 不会 影响其他轴的数据范围。
+ *     
+ *     none: 不过滤数据，只改变数轴范围。
  *     
  *     
  *     如何设置，由用户根据场景和需求自己决定。经验来说：
@@ -196,6 +200,24 @@ use Hisune\EchartsPHP\Property;
  *     注意，如果轴的类型为 category，则 endValue 即可以设置为 axis.data 数组的 index，也可以设置为数组值本身。
  *     但是如果设置为数组值本身，会在内部自动转化为数组的 index。
  *
+ * @property int $minSpan
+ *    用于限制窗口大小的最小值（百分比值），取值范围是 0 ~ 100。
+ *     如果设置了 dataZoom-inside.minValueSpan 则 minSpan 失效。
+ *
+ * @property int $maxSpan
+ *    用于限制窗口大小的最大值（百分比值），取值范围是 0 ~ 100。
+ *     如果设置了 dataZoom-inside.maxValueSpan 则 maxSpan 失效。
+ *
+ * @property int|string|Date $minValueSpan
+ *    用于限制窗口大小的最小值（实际数值）。
+ *     如在时间轴上可以设置为：3600 * 24 * 1000 * 5 表示 5 天。
+ *     在类目轴上可以设置为 5 表示 5 个类目。
+ *
+ * @property int|string|Date $maxValueSpan
+ *    用于限制窗口大小的最大值（实际数值）。
+ *     如在时间轴上可以设置为：3600 * 24 * 1000 * 5 表示 5 天。
+ *     在类目轴上可以设置为 5 表示 5 个类目。
+ *
  * @property string $orient
  *    布局方式是横还是竖。不仅是布局方式，对于直角坐标系而言，也决定了，缺省情况控制横向数轴还是纵向数轴。
  *     可选值为：
@@ -212,6 +234,31 @@ use Hisune\EchartsPHP\Property;
  *    设置触发视图刷新的频率。单位为毫秒（ms）。
  *     如果 animation 设为 true 且 animationDurationUpdate 大于 0，可以保持 throttle 为默认值 100（或者设置为大于 0 的值），否则拖拽时有可能画面感觉卡顿。
  *     如果 animation 设为 false 或者 animationDurationUpdate 设为 0，且在数据量不大时，拖拽时画面感觉卡顿，可以把尝试把 throttle 设为 0 来改善。
+ *
+ * @property array $rangeMode
+ *    例如 rangeMode: [value, percent]，表示 start 值取绝对数值，end 取百分比。
+ *     可选值为：value, percent
+ *
+ * @property boolean $zoomOnMouseWheel Default: true
+ *    如何触发缩放。可选值为：
+ *     
+ *     true：表示不按任何功能键，鼠标滚轮能触发缩放。
+ *     false：表示鼠标滚轮不能触发缩放。
+ *     shift：表示按住 shift 和鼠标滚轮能触发缩放。
+ *     ctrl：表示按住 ctrl 和鼠标滚轮能触发缩放。
+ *     alt：表示按住 alt 和鼠标滚轮能触发缩放。
+ *
+ * @property boolean $moveOnMouseMove Default: true
+ *    如何触发数据窗口平移。可选值为：
+ *     
+ *     true：表示不按任何功能键，鼠标移动能触发数据窗口平移。
+ *     false：表示鼠标滚轮不能触发平移。
+ *     shift：表示按住 shift 和鼠标移动能触发数据窗口平移。
+ *     ctrl：表示按住 ctrl 和鼠标移动能触发数据窗口平移。
+ *     alt：表示按住 alt 和鼠标移动能触发数据窗口平移。
+ *
+ * @property boolean $preventDefaultMouseMove Default: true
+ *    是否阻止 mousemove 事件的默认行为。
  *
  * @property boolean $show Default: true
  *    是否显示  组件。如果设置为 false，不会显示，但是数据过滤的功能还存在。
@@ -232,6 +279,8 @@ use Hisune\EchartsPHP\Property;
  *    手柄的 icon 形状，支持路径字符串，默认为：
  *     M8.2,13.6V3.9H6.3v9.7H3.1v14.9h3.3v9.7h1.8v-9.7h3.3V13.6H8.2z M9.7,24.4H4.8v-1.4h4.9V24.4z M9.7,19.1H4.8v-1.4h4.9V19.1z
  *     
+ *     可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *     自定义 icon 见 示例 area-simple
  *
  * @property int $handleSize Default: '100%'

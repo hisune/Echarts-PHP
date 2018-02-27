@@ -21,6 +21,9 @@ use Hisune\EchartsPHP\Property;
  * @property DataView\IconStyle $iconStyle
  *    数据视图 icon 样式设置。
  *
+ * @property DataView\Emphasis $emphasis
+ *    
+ *
  * @property boolean $readOnly Default: false
  *    是否不可编辑（只读）。
  *

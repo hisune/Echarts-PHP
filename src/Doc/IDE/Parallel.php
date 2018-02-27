@@ -72,6 +72,12 @@ use Hisune\EchartsPHP\Property;
  *    在展开状态，轴的间距是多少，单位为像素。
  *     参见 parallel.axisExpandable
  *
+ * @property string $axisExpandTriggerOn Default: 'click'
+ *    可取值：
+ *     
+ *     click：鼠标点击的时候 expand。
+ *     mousemove：鼠标悬浮的时候 expand。
+ *
  * @property Parallel\ParallelAxisDefault $parallelAxisDefault
  *    配置多个 parallelAxis 时，有些值一样的属性，如果书写多遍则比较繁琐，那么可以放置在 parallel.parallelAxisDefault 里。在坐标轴初始化前，parallel.parallelAxisDefault 里的配置项，会分别融合进 parallelAxis，形成最终的坐标轴的配置。
  *     参见示例

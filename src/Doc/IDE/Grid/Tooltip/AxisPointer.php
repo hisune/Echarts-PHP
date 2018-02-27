@@ -21,7 +21,7 @@ use Hisune\EchartsPHP\Property;
  *
  * @property string $axis Default: 'auto'
  *    指示器的坐标轴。
- *     默认情况，坐标系会自动选择显示显示哪个轴的 axisPointer（默认取类目轴或者时间轴）。
+ *     默认情况，坐标系会自动选择显示哪个轴的 axisPointer（默认取类目轴或者时间轴）。
  *     可以是 x, y, radius, angle。
  *
  * @property boolean $snap

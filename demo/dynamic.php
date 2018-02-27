@@ -35,7 +35,7 @@ else:
         'type' => 'line',
         'data' => $data
     ];
-    Config::addExtraScript('jquery.min.js', '//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1');
+    Config::addExtraScript('jquery.min.js', '//cdn.bootcss.com/jquery/3.3.1');
     echo $chart->render('test-id');
 ?>
     <script>

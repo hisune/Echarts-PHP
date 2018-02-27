@@ -36,25 +36,32 @@ use Hisune\EchartsPHP\Property;
  *
  * @property string $playIcon
  *    『播放按钮』的『可播放状态』的图形。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property string $stopIcon
  *    『播放按钮』的『可停止状态』的图形。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property string $prevIcon
  *    『后退按钮』的图形
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property string $nextIcon
  *    『前进按钮』的图形
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
- * @property ControlStyle\Normal $normal
- *    控制按钮的『正常状态』的样式。
+ * @property string $color Default: '#304654'
+ *    按钮颜色。
  *
- * @property ControlStyle\Emphasis $emphasis
- *    控制按钮的『高亮状态』的样式（hover时）。
+ * @property string $borderColor Default: '#304654'
+ *    按钮边框颜色。
+ *
+ * @property ControlStyle\BorderWidth $borderWidth Default: 1
+ *    按钮边框线宽。
  *
  * {_more_}
  */

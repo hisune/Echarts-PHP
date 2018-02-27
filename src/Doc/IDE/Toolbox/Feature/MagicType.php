@@ -24,6 +24,9 @@ use Hisune\EchartsPHP\Property;
  * @property MagicType\IconStyle $iconStyle
  *    动态类型切换 icon 样式设置。
  *
+ * @property MagicType\Emphasis $emphasis
+ *    
+ *
  * @property MagicType\Option $option
  *    各个类型的专有配置项。在切换到某类型的时候会合并相应的配置项。
  *

@@ -39,7 +39,10 @@ use Hisune\EchartsPHP\Property;
  *    当面包屑没有内容时候，设个最小宽度。
  *
  * @property Breadcrumb\ItemStyle $itemStyle
- *     图形样式，有 normal 和 emphasis 两个状态。normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
+ *     图形样式。
+ *
+ * @property Breadcrumb\Emphasis $emphasis
+ *    
  *
  * {_more_}
  */

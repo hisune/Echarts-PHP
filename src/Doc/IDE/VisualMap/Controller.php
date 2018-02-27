@@ -123,8 +123,8 @@ use Hisune\EchartsPHP\Property;
  *     
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *     ✦ 视觉通道 -- 查表映射 ✦
  *     查表映射 表示 series.data 中的所有值（dataValue）是可枚举的，会根据给定的映射表查表得到映射结果。
  *     例如，在 visualMap-piecewise 中，我们设定了 visualMap-piecewise.categories 为 [Demon Hunter, Blademaster, Death Knight, Warden, Paladin]。我们有 series.data: [Demon Hunter, Death Knight, Warden, Paladin]。然后我们可以定立查表映射规则：color: {Warden: red, Demon Hunter: black}，于是 visualMap 组件会按照表来将 dataValue 映射到 color。
@@ -295,8 +295,8 @@ use Hisune\EchartsPHP\Property;
  *     
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *     ✦ 视觉通道 -- 查表映射 ✦
  *     查表映射 表示 series.data 中的所有值（dataValue）是可枚举的，会根据给定的映射表查表得到映射结果。
  *     例如，在 visualMap-piecewise 中，我们设定了 visualMap-piecewise.categories 为 [Demon Hunter, Blademaster, Death Knight, Warden, Paladin]。我们有 series.data: [Demon Hunter, Death Knight, Warden, Paladin]。然后我们可以定立查表映射规则：color: {Warden: red, Demon Hunter: black}，于是 visualMap 组件会按照表来将 dataValue 映射到 color。
@@ -464,8 +464,8 @@ use Hisune\EchartsPHP\Property;
  *     
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *     ✦ 视觉通道 -- 查表映射 ✦
  *     查表映射 表示 series.data 中的所有值（dataValue）是可枚举的，会根据给定的映射表查表得到映射结果。
  *     例如，在 visualMap-piecewise 中，我们设定了 visualMap-piecewise.categories 为 [Demon Hunter, Blademaster, Death Knight, Warden, Paladin]。我们有 series.data: [Demon Hunter, Death Knight, Warden, Paladin]。然后我们可以定立查表映射规则：color: {Warden: red, Demon Hunter: black}，于是 visualMap 组件会按照表来将 dataValue 映射到 color。
@@ -636,8 +636,8 @@ use Hisune\EchartsPHP\Property;
  *     
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *     ✦ 视觉通道 -- 查表映射 ✦
  *     查表映射 表示 series.data 中的所有值（dataValue）是可枚举的，会根据给定的映射表查表得到映射结果。
  *     例如，在 visualMap-piecewise 中，我们设定了 visualMap-piecewise.categories 为 [Demon Hunter, Blademaster, Death Knight, Warden, Paladin]。我们有 series.data: [Demon Hunter, Death Knight, Warden, Paladin]。然后我们可以定立查表映射规则：color: {Warden: red, Demon Hunter: black}，于是 visualMap 组件会按照表来将 dataValue 映射到 color。

@@ -19,7 +19,7 @@ use Hisune\EchartsPHP\Property;
  *     
  *     第一个参数是类目的 index，第二个值是类目名称，如果跳过则返回 false。
  *
- * @property boolean $show Default: true
+ * @property boolean $show Default: false
  *    是否显示分隔区域。
  *
  * @property SplitArea\AreaStyle $areaStyle

@@ -84,10 +84,13 @@ use Hisune\EchartsPHP\Property;
  *    选中模式，表示是否支持多个选中，默认关闭，支持布尔值和字符串，字符串取值可选single表示单选，或者multiple表示多选。
  *
  * @property Geo\Label $label
- *    图形上的文本标签，可用于说明图形的一些数据信息，比如值，名称等，label选项在 ECharts 2.x 中放置于itemStyle.normal下，在 ECharts 3 中为了让整个配置项结构更扁平合理，label 被拿出来跟 itemStyle 平级，并且跟 itemStyle 一样拥有 normal, emphasis 两个状态。
+ *    图形上的文本标签，可用于说明图形的一些数据信息，比如值，名称等，label选项在 ECharts 2.x 中放置于itemStyle下，在 ECharts 3 中为了让整个配置项结构更扁平合理，label 被拿出来跟 itemStyle 平级，并且跟 itemStyle 一样拥有 emphasis 状态。
  *
  * @property Geo\ItemStyle $itemStyle
- *    地图区域的多边形 图形样式，有 normal 和 emphasis 两个状态。normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
+ *    地图区域的多边形 图形样式。
+ *
+ * @property Geo\Emphasis $emphasis
+ *    高亮状态下的多边形和标签样式。
  *
  * @property int $zlevel Default: 0
  *    所有图形的 zlevel 值。
@@ -136,10 +139,8 @@ use Hisune\EchartsPHP\Property;
  *     regions: [{
  *         name: 广东,
  *         itemStyle: {
- *             normal: {
- *                 areaColor: red,
- *                 color: red
- *             }
+ *             areaColor: red,
+ *             color: red
  *         }
  *     }]
  *     

@@ -64,8 +64,8 @@ use Hisune\EchartsPHP\Property;
  *    终点标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array $symbolSize
  *    终点标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
@@ -83,6 +83,9 @@ use Hisune\EchartsPHP\Property;
  * @property 1\Label $label
  *    该数据项标签的样式，起点和终点项的 label会合并到一起。
  *
+ * @property 1\Emphasis $emphasis
+ *    
+ *
  *  * @property string $type
  *    特殊的标注类型，用于标注最大值最小值等。
  *     可选:
@@ -138,8 +141,8 @@ use Hisune\EchartsPHP\Property;
  *    终点标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array $symbolSize
  *    终点标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
@@ -152,6 +155,9 @@ use Hisune\EchartsPHP\Property;
  *
  * @property 1\Label $label
  *    该数据项标签的样式，起点和终点项的 label会合并到一起。
+ *
+ * @property 1\Emphasis $emphasis
+ *    
  *
  *  * @property int $x
  *    相对容器的屏幕 x 坐标，单位像素。
@@ -166,8 +172,8 @@ use Hisune\EchartsPHP\Property;
  *    终点标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array $symbolSize
  *    终点标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
@@ -180,6 +186,9 @@ use Hisune\EchartsPHP\Property;
  *
  * @property 1\Label $label
  *    该数据项标签的样式，起点和终点项的 label会合并到一起。
+ *
+ * @property 1\Emphasis $emphasis
+ *    
  *
  *  * @property string $type
  *    特殊的标注类型，用于标注最大值最小值等。
@@ -236,8 +245,8 @@ use Hisune\EchartsPHP\Property;
  *    终点标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array $symbolSize
  *    终点标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
@@ -250,6 +259,9 @@ use Hisune\EchartsPHP\Property;
  *
  * @property 1\Label $label
  *    该数据项标签的样式，起点和终点项的 label会合并到一起。
+ *
+ * @property 1\Emphasis $emphasis
+ *    
  *
  *  * @property string $type
  *    特殊的标注类型，用于标注最大值最小值等。
@@ -306,8 +318,8 @@ use Hisune\EchartsPHP\Property;
  *    终点标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array $symbolSize
  *    终点标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
@@ -320,6 +332,9 @@ use Hisune\EchartsPHP\Property;
  *
  * @property 1\Label $label
  *    该数据项标签的样式，起点和终点项的 label会合并到一起。
+ *
+ * @property 1\Emphasis $emphasis
+ *    
  *
  *  * @property string $type
  *    特殊的标注类型，用于标注最大值最小值等。
@@ -376,8 +391,8 @@ use Hisune\EchartsPHP\Property;
  *    终点标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array $symbolSize
  *    终点标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
@@ -390,6 +405,9 @@ use Hisune\EchartsPHP\Property;
  *
  * @property 1\Label $label
  *    该数据项标签的样式，起点和终点项的 label会合并到一起。
+ *
+ * @property 1\Emphasis $emphasis
+ *    
  *
  *  * @property string $type
  *    特殊的标注类型，用于标注最大值最小值等。
@@ -446,8 +464,8 @@ use Hisune\EchartsPHP\Property;
  *    终点标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array $symbolSize
  *    终点标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
@@ -460,6 +478,9 @@ use Hisune\EchartsPHP\Property;
  *
  * @property 1\Label $label
  *    该数据项标签的样式，起点和终点项的 label会合并到一起。
+ *
+ * @property 1\Emphasis $emphasis
+ *    
  *
  *  * @property int $x
  *    相对容器的屏幕 x 坐标，单位像素。
@@ -474,8 +495,8 @@ use Hisune\EchartsPHP\Property;
  *    终点标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array $symbolSize
  *    终点标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
@@ -488,6 +509,9 @@ use Hisune\EchartsPHP\Property;
  *
  * @property 1\Label $label
  *    该数据项标签的样式，起点和终点项的 label会合并到一起。
+ *
+ * @property 1\Emphasis $emphasis
+ *    
  *
  *  * @property int $valueIndex
  *    在使用 type 时有效，用于指定在哪个维度上指定最大值最小值，可以是 0（xAxis, radiusAxis），1（yAxis, angleAxis），默认使用第一个数值轴所在的维度。
@@ -536,8 +560,8 @@ use Hisune\EchartsPHP\Property;
  *    终点标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array $symbolSize
  *    终点标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
@@ -550,6 +574,9 @@ use Hisune\EchartsPHP\Property;
  *
  * @property 1\Label $label
  *    该数据项标签的样式，起点和终点项的 label会合并到一起。
+ *
+ * @property 1\Emphasis $emphasis
+ *    
  *
  *  * @property int $x
  *    相对容器的屏幕 x 坐标，单位像素。
@@ -564,8 +591,8 @@ use Hisune\EchartsPHP\Property;
  *    终点标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array $symbolSize
  *    终点标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
@@ -578,6 +605,9 @@ use Hisune\EchartsPHP\Property;
  *
  * @property 1\Label $label
  *    该数据项标签的样式，起点和终点项的 label会合并到一起。
+ *
+ * @property 1\Emphasis $emphasis
+ *    
  *
  *  * @property string $type
  *    特殊的标注类型，用于标注最大值最小值等。
@@ -634,8 +664,8 @@ use Hisune\EchartsPHP\Property;
  *    终点标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array $symbolSize
  *    终点标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
@@ -648,6 +678,9 @@ use Hisune\EchartsPHP\Property;
  *
  * @property 1\Label $label
  *    该数据项标签的样式，起点和终点项的 label会合并到一起。
+ *
+ * @property 1\Emphasis $emphasis
+ *    
  *
  *  * @property int $x
  *    相对容器的屏幕 x 坐标，单位像素。
@@ -662,8 +695,8 @@ use Hisune\EchartsPHP\Property;
  *    终点标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array $symbolSize
  *    终点标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
@@ -676,6 +709,9 @@ use Hisune\EchartsPHP\Property;
  *
  * @property 1\Label $label
  *    该数据项标签的样式，起点和终点项的 label会合并到一起。
+ *
+ * @property 1\Emphasis $emphasis
+ *    
  *
  *  * @property int $x
  *    相对容器的屏幕 x 坐标，单位像素。
@@ -690,8 +726,8 @@ use Hisune\EchartsPHP\Property;
  *    终点标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array $symbolSize
  *    终点标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
@@ -704,6 +740,9 @@ use Hisune\EchartsPHP\Property;
  *
  * @property 1\Label $label
  *    该数据项标签的样式，起点和终点项的 label会合并到一起。
+ *
+ * @property 1\Emphasis $emphasis
+ *    
  *
  *  * @property string $type
  *    特殊的标注类型，用于标注最大值最小值等。
@@ -760,8 +799,8 @@ use Hisune\EchartsPHP\Property;
  *    终点标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array $symbolSize
  *    终点标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
@@ -774,6 +813,9 @@ use Hisune\EchartsPHP\Property;
  *
  * @property 1\Label $label
  *    该数据项标签的样式，起点和终点项的 label会合并到一起。
+ *
+ * @property 1\Emphasis $emphasis
+ *    
  *
  * {_more_}
  */

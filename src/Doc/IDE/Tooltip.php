@@ -64,7 +64,7 @@ use Hisune\EchartsPHP\Property;
  *     
  *     设置轴上的 axisPointer.show（例如 xAxis.axisPointer.show）为 true，则显示此轴的 axisPointer。
  *     
- *     设置 tooltip.trigger 设置为 axis 或者 tooltip.axisPointer.type 设置为 cross，则此时坐标系会自动选择显示显示哪个轴的 axisPointer，也可以使用 tooltip.axisPointer.axis 改变这种选择。注意，轴上如果设置了 axisPointer，会覆盖此设置。
+ *     设置 tooltip.trigger 设置为 axis 或者 tooltip.axisPointer.type 设置为 cross，则此时坐标系会自动选择显示哪个轴的 axisPointer，也可以使用 tooltip.axisPointer.axis 改变这种选择。注意，轴上如果设置了 axisPointer，会覆盖此设置。
  *     
  *     
  *     
@@ -202,7 +202,7 @@ use Hisune\EchartsPHP\Property;
  *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.normal.formatter 配置项。
+ *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
  *     示例：
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     

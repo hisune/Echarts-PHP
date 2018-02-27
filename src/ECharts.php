@@ -22,7 +22,7 @@ namespace Hisune\EchartsPHP;
  *   直角坐标系内绘图网格，单个 grid 内最多可以放置上下两个 X 轴，左右两个 Y 轴。可以在网格上绘制折线图，柱状图，散点图（气泡图）。
  *
  * @property Doc\IDE\XAxis $xAxis
- *   直角坐标系 grid 中的 x 轴，一般情况下单个 grid 组件最多只能放左右两个 x 轴，多于两个 x 轴需要通过配置 offset 属性防止同个位置多个 x 轴的重叠。
+ *   直角坐标系 grid 中的 x 轴，一般情况下单个 grid 组件最多只能放上下两个 x 轴，多于两个 x 轴需要通过配置 offset 属性防止同个位置多个 x 轴的重叠。
  *
  * @property Doc\IDE\YAxis $yAxis
  *   直角坐标系 grid 中的 y 轴，一般情况下单个 grid 组件最多只能放左右两个 y 轴，多于两个 y 轴需要通过配置 offset 属性防止同个位置多个 Y 轴的重叠。
@@ -78,6 +78,12 @@ namespace Hisune\EchartsPHP;
  * @property Doc\IDE\Calendar $calendar
  *   日历坐标系组件。
  *
+ * @property Doc\IDE\Dataset $dataset
+ *   ECharts 4 开始支持了 数据集（dataset）组件用于单独的数据集声明，从而数据可以单独管理，被多个组件复用，并且可以自由指定数据到视觉的映射。这在不少场景下能带来使用上的方便。
+ *
+ * @property Doc\IDE\Aria $aria
+ *   W3C 制定了无障碍富互联网应用规范集（WAI-ARIA，the Accessible Rich Internet Applications Suite），致力于使得网页内容和网页应用能够被更多残障人士访问。ECharts 4.0 遵从这一规范，支持自动根据图表配置项智能生成描述，使得盲人可以在朗读设备的帮助下了解图表内容，让图表可以被更多人群访问。
+ *
  * @property Doc\IDE\Series $series
  *   系列列表。每个系列通过 type 决定自己的图表类型
  *
@@ -125,6 +131,9 @@ namespace Hisune\EchartsPHP;
  *
  * @property callable $hoverLayerThreshold
  *   图形数量阈值，决定是否开启单独的 hover 层，在整个图表的图形数量大于该阈值时开启单独的 hover 层。
+ *
+ * @property callable $useUTC
+ *   是否使用 UTC 时间。
  *
  */
 class ECharts extends Property

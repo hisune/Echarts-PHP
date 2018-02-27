@@ -39,8 +39,8 @@ use Hisune\EchartsPHP\Property;
  *    标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array|callable $symbolSize Default: 4
  *    标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
@@ -72,6 +72,9 @@ use Hisune\EchartsPHP\Property;
  *    数据堆叠，同个类目轴上系列配置相同的stack值后，后一个系列的值会在前一个系列的值上相加。
  *     下面示例可以通过右上角 toolbox 中的堆叠切换看效果：
  *
+ * @property string $cursor Default: 'pointer'
+ *    鼠标悬浮时在图形元素上时鼠标的样式是什么。同 CSS 的 cursor。
+ *
  * @property boolean $connectNulls Default: false
  *    是否连接空数据。
  *
@@ -83,31 +86,37 @@ use Hisune\EchartsPHP\Property;
  *     不同的配置效果如下：
  *
  * @property Series\Label $label
- *    图形上的文本标签，可用于说明图形的一些数据信息，比如值，名称等，label选项在 ECharts 2.x 中放置于itemStyle.normal下，在 ECharts 3 中为了让整个配置项结构更扁平合理，label 被拿出来跟 itemStyle 平级，并且跟 itemStyle 一样拥有 normal, emphasis 两个状态。
+ *    图形上的文本标签，可用于说明图形的一些数据信息，比如值，名称等，label选项在 ECharts 2.x 中放置于itemStyle下，在 ECharts 3 中为了让整个配置项结构更扁平合理，label 被拿出来跟 itemStyle 平级，并且跟 itemStyle 一样拥有 emphasis 状态。
  *
  * @property Series\ItemStyle $itemStyle
  *    折线拐点标志的样式。
  *
  * @property Series\LineStyle $lineStyle
  *    线条样式。
- *     注： 修改 lineStyle 中的颜色不会影响图例颜色，如果需要图例颜色和折线图颜色一致，需修改 itemStyle.normal.color，线条颜色默认也会取改颜色。
+ *     注： 修改 lineStyle 中的颜色不会影响图例颜色，如果需要图例颜色和折线图颜色一致，需修改 itemStyle.color，线条颜色默认也会取改颜色。
  *
  * @property Series\AreaStyle $areaStyle
  *    区域填充样式。
  *
- * @property false $smooth Default: ''
+ * @property Series\Emphasis $emphasis
+ *    图形的高亮样式。
+ *
+ * @property boolean|int $smooth Default: false
  *    是否平滑曲线显示。
+ *     如果是 boolean 类型，则表示是否开启平滑处理。如果是 number 类型（取值范围 0 到 1），表示平滑程度，越小表示越接近折线段，反之则反。设为 true 时相当于设为 0.5。
+ *     如果需要修改平滑算法，请参考 smoothMonotone。
  *
  * @property string $smoothMonotone
- *    折线平滑后是否在一个维度上保持单调性，可以设置成x, y来指明是在 x 轴或者 y 轴上保持单调性。
- *     通常在双数值轴上使用。
- *     下面两张图分别是双数值轴中的折线图smoothMonotone不设置以及设置为x的区别。
+ *    折线平滑后是否在一个维度上保持单调性，可以设置成x, y来指明是在 x 轴或者 y 轴上保持单调性。设置为 none 则采用不单调的平滑算法。
+ *     ECharts 4.0.3 版本起，更新了折线平滑的默认算法，原先的算法可以通过将 smoothMonotone 设为 none 实现。下图是新老算法的效果对比图：
  *     
- *     不设置smoothMonotone:
+ *     老算法存在以下问题：
  *     
+ *     老算法的控制点平行前后点组成的向量，而新算法的控制点始终是水平（如果数据的第 0 个维度上是单调递增的）或竖直的（如果数据的第 1 个维度上是单调递增的）。
  *     
+ *     但是新算法对于数据不单调的时候会产生不理想的效果。
  *     
- *     设置为 x:
+ *     因此，我们建议在默认情况下使用新算法（即不需要设置 smoothMonotone）。如果数据的 Y 坐标是单调递增的，则将其设为 y。如果数据在任何方向上都不是单调递增的，则将其设置为 none 使用老算法。
  *
  * @property string $sampling
  *    折线图在数据量远大于像素点时候的降采样策略，开启后可以有效的优化图表的绘制效率，默认关闭，也就是全部绘制不过滤数据点。
@@ -118,8 +127,110 @@ use Hisune\EchartsPHP\Property;
  *     min 取过滤点的最小值
  *     sum 取过滤点的和
  *
+ * @property array $dimensions
+ *    使用 dimensions 定义 series.data 或者 dataset.source 的每个维度的信息。
+ *     注意：如果使用了 dataset，那么可以在 dataset.source 的第一行/列中给出 dimension 名称。于是就不用在这里指定 dimension。但是，如果在这里指定了 dimensions，那么 ECharts 不再会自动从 dataset.source 的第一行/列中获取维度信息。
+ *     例如：
+ *     option = {
+ *         dataset: {
+ *             source: [
+ *                 // 有了上面 dimensions 定义后，下面这五个维度的名称分别为：
+ *                 // date, open, close, highest, lowest
+ *                 [12, 44, 55, 66, 2],
+ *                 [23, 6, 16, 23, 1],
+ *                 ...
+ *             ]
+ *         },
+ *         series: {
+ *             type: xxx,
+ *             // 定义了每个维度的名称。这个名称会被显示到默认的 tooltip 中。
+ *             dimensions: [date, open, close, highest, lowest]
+ *         }
+ *     }
+ *     
+ *     series: {
+ *         type: xxx,
+ *         dimensions: [
+ *             null,                // 如果此维度不想给出定义，则使用 null 即可
+ *             {type: ordinal},   // 只定义此维度的类型。
+ *                                  // ordinal 表示离散型，一般文本使用这种类型。
+ *                                  // 如果类型没有被定义，会自动猜测类型。
+ *             {name: good, type: number},
+ *             bad                // 等同于 {name: bad}
+ *         ]
+ *     }
+ *     
+ *     dimensions 数组中的每一项可以是：
+ *     
+ *     string，如 someName，等同于 {name: someName}
+ *     Object，属性可以有：
+ *     name: string。
+ *     type: string，支持
+ *     number，默认，表示普通数据。
+ *     ordinal，对于类目、文本这些 string 类型的数据，如果需要能在数轴上使用，须是 ordinal 类型。ECharts 默认会自动判断这个类型。但是自动判断也是不可能很完备的，所以使用者也可以手动强制指定。
+ *     float，即 Float64Array。
+ *     int，即 Int32Array。
+ *     time，表示时间类型。设置成 time 则能支持自动解析数据成时间戳（timestamp），比如该维度的数据是 2017-05-10，会自动被解析。时间类型的支持参见 data。
+ *     
+ *     
+ *     displayName: 一般用于 tooltip 中维度名的展示。string 如果没有指定，默认使用 name 来展示。
+ *     
+ *     
+ *     
+ *     值得一提的是，当定义了 dimensions 后，默认 tooltip 中对个维度的显示，会变为『竖排』，从而方便显示每个维度的名称。如果没有定义 dimensions，则默认 tooltip 会横排显示，且只显示数值没有维度名称可显示。
+ *
+ * @property array $encode
+ *    可以定义 data 的哪个维度被编码成什么。比如：
+ *     option = {
+ *         dataset: {
+ *             source: [
+ *                 // 每一列称为一个『维度』。
+ *                 // 这里分别是维度 0、1、2、3、4。
+ *                 [12, 44, 55, 66, 2],
+ *                 [23, 6, 16, 23, 1],
+ *                 ...
+ *             ]
+ *         },
+ *         series: {
+ *             type: xxx,
+ *             encode: {
+ *                 x: [3, 1, 5],      // 表示维度 3、1、5 映射到 x 轴。
+ *                 y: 2,              // 表示维度 2 映射到 y 轴。
+ *                 tooltip: [3, 2, 4] // 表示维度 3、2、4 会在 tooltip 中显示。
+ *             }
+ *         }
+ *     }
+ *     
+ *     encode 支持的属性，根据坐标系不同而不同。
+ *     对于 直角坐标系（cartesian2d），支持 x、y。
+ *     对于 极坐标系（polar），支持 radius、angle。
+ *     对于 地理坐标系（geo），支持 lng，lat。
+ *     此外，均支持 tooltip 和 itemName（用于指定 tooltip 中数据项名称）。
+ *     当使用 dimensions 给维度定义名称后，encode 中可直接引用名称，例如：
+ *     series: {
+ *         type: xxx,
+ *         dimensions: [date, open, close, highest, lowest],
+ *         encode: {
+ *             x: date,
+ *             y: [open, close, highest, lowest]
+ *         }
+ *     }
+ *
+ * @property string $seriesLayoutBy Default: 'column'
+ *    当使用 dataset 时，seriesLayoutBy 指定了 dataset 中用行还是列对应到系列上，也就是说，系列“排布”到 dataset 的行还是列上。可取值：
+ *     
+ *     column：默认，dataset 的列对应于系列，从而 dataset 中每一列是一个维度（dimension）。
+ *     row：dataset 的行对应于系列，从而 dataset 中每一行是一个维度（dimension）。
+ *     
+ *     参见这个 示例
+ *
+ * @property int $datasetIndex Default: 0
+ *    如果 series.data 没有指定，并且 dataset 存在，那么就会使用 dataset。datasetIndex 指定本系列使用那个 dataset。
+ *
  * @property array $data
  *    系列中的数据内容数组。数组项通常为具体的数据项。
+ *     注意，如果系列没有指定 data，并且 option 有 dataset，那么默认使用第一个 dataset。如果指定了 data，则不会再使用 dataset。
+ *     可以使用 series.datasetIndex 指定其他的 dataset。
  *     通常来说，数据用一个二维数组表示。如下，每一列被称为一个『维度』。
  *     series: [{
  *         data: [
@@ -137,7 +248,7 @@ use Hisune\EchartsPHP\Property;
  *     后面的其他维度是可选的，可以在别处被使用，例如：
  *     在 visualMap 中可以将一个或多个维度映射到颜色，大小等多个图形属性上。
  *     在 series.symbolSize 中可以使用回调函数，基于某个维度得到 symbolSize 值。
- *     使用 tooltip.formatter 或 series.label.normal.formatter 可以把其他维度的值展示出来。
+ *     使用 tooltip.formatter 或 series.label.formatter 可以把其他维度的值展示出来。
  *     
  *     
  *     
@@ -156,7 +267,7 @@ use Hisune\EchartsPHP\Property;
  *     『值』与 轴类型 的关系：
  *     
  *     当某维度对应于数值轴（axis.type 为 value 或者 log）的时候：
- *       其值可以为 number（例如 12）。（也可以容忍 string 形式的 number，例如 12）
+ *       其值可以为 number（例如 12）。（也可以兼容 string 形式的 number，例如 12）
  *     
  *     当某维度对应于类目轴（axis.type 为 category）的时候：
  *       其值须为类目的『序数』（从 0 开始）或者类目的『字符串值』。例如：
@@ -184,13 +295,13 @@ use Hisune\EchartsPHP\Property;
  *     
  *     一个时间戳，如 1484141700832，表示 UTC 时间。
  *     或者字符串形式的时间描述：
- *     ISO 8601 的子集，只包含这些形式（这几种格式，除非指明时区，否则均表示 UTC 时间）：
+ *     ISO 8601 的子集，只包含这些形式（这几种格式，除非指明时区，否则均表示本地时间，与 moment 一致）：
  *     部分年月日时间: 2012-03, 2012-03-01, 2012-03-01 05, 2012-03-01 05:06.
  *     使用 T 或空格分割: 2012-03-01T12:22:33.123, 2012-03-01 12:22:33.123.
  *     时区设定: 2012-03-01T12:22:33Z, 2012-03-01T12:22:33+8000, 2012-03-01T12:22:33-05:00.
  *     
  *     
- *     其他的时间字符串，包括:
+ *     其他的时间字符串，包括（均表示本地时间）:
  *     2012, 2012-3-1, 2012/3/1, 2012/03/01,
  *     2009/6/12 2:00, 2009/6/12 2:05:08, 2009/6/12 2:05:08.123
  *     
@@ -198,7 +309,7 @@ use Hisune\EchartsPHP\Property;
  *     或者用户自行初始化的 Date 实例：
  *     注意，用户自行初始化 Date 实例的时候，浏览器的行为有差异，不同字符串的表示也不同。
  *     例如：在 chrome 中，new Date(2012-01-01) 表示 UTC 时间的 2012 年 1 月 1 日，而 new Date(2012-1-1) 和 new Date(2012/01/01) 表示本地时间的 2012 年 1 月 1 日。在 safari 中，不支持 new Date(2012-1-1) 这种表示方法。
- *     所以，使用 new Date(dataString) 时，可使用第三方库解析，或者使用 echarts.number.parseDate，或者参见 这里。
+ *     所以，使用 new Date(dataString) 时，可使用第三方库解析（如 moment），或者使用 echarts.number.parseDate，或者参见 这里。
  *     
  *     
  *     
@@ -328,6 +439,9 @@ use Hisune\EchartsPHP\Property;
  *    类目间柱形距离，默认为类目间距的20%，可设固定值
  *     在同一坐标系上，此属性会被多个 bar 系列共享。此属性应设置于此坐标系中最后一个 bar 系列上才会生效，并且是对此坐标系中所有 bar 系列生效。
  *
+ * @property int $hoverOffset Default: 10
+ *    高亮扇区的偏移距离。
+ *
  * @property boolean|string $selectedMode Default: false
  *    选中模式，表示是否支持多个选中，默认关闭，支持布尔值和字符串，字符串取值可选single，multiple，分别表示单选还是多选。
  *
@@ -346,8 +460,8 @@ use Hisune\EchartsPHP\Property;
  * @property boolean|string $roseType Default: false
  *    是否展示成南丁格尔图，通过半径区分数据大小。可选择两种模式：
  *     
- *     radius 面积展现数据的百分比，半径展现数据的大小。
- *     area 所有扇区面积相同，仅通过半径展现数据大小。
+ *     radius 扇区圆心角展现数据的百分比，半径展现数据的大小。
+ *     area 所有扇区圆心角相同，仅通过半径展现数据大小。
  *
  * @property boolean $avoidLabelOverlap Default: true
  *    是否启用防止标签重叠策略，默认开启，在标签拥挤重叠的情况下会挪动各个标签的位置，防止标签间的重叠。
@@ -382,6 +496,9 @@ use Hisune\EchartsPHP\Property;
  * @property int $geoIndex Default: 0
  *    使用的地理坐标系的 index，在单个图表实例中存在多个地理坐标系的时候有用。
  *
+ * @property int $calendarIndex Default: 0
+ *    使用的日历坐标系的 index，在单个图表实例中存在多个日历坐标系的时候有用。
+ *
  * @property boolean $large Default: true
  *    是否开启大规模散点图的优化，在数据图形特别多的时候（&gt;=5k）可以开启。
  *     开启后配合 largeThreshold 在数据量大于指定阈值的时候对绘制进行优化。
@@ -406,31 +523,51 @@ use Hisune\EchartsPHP\Property;
  * @property int $radarIndex
  *    雷达图所使用的 radar 组件的 index。
  *
- * @property string|int $left Default: 'center'
- *    treemap 组件离容器左侧的距离。
+ * @property string|int $left Default: '12%'
+ *    tree组件离容器左侧的距离。
  *     left 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 left, center, right。
  *     如果 left 的值为left, center, right，组件会根据相应的位置自动对齐。
  *
- * @property string|int $top Default: 'middle'
- *    treemap 组件离容器上侧的距离。
+ * @property string|int $top Default: '12%'
+ *    tree组件离容器上侧的距离。
  *     top 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 top, middle, bottom。
  *     如果 top 的值为top, middle, bottom，组件会根据相应的位置自动对齐。
  *
- * @property string|int $right Default: 'auto'
- *    treemap 组件离容器右侧的距离。
+ * @property string|int $right Default: '12%'
+ *    tree组件离容器右侧的距离。
  *     right 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
- *     默认自适应。
  *
- * @property string|int $bottom Default: 'auto'
- *    treemap 组件离容器下侧的距离。
+ * @property string|int $bottom Default: '12%'
+ *    tree组件离容器下侧的距离。
  *     bottom 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
- *     默认自适应。
  *
- * @property string|int $width Default: '80%'
- *    treemap 组件的宽度。
+ * @property string|int $width
+ *    tree组件的宽度。
  *
- * @property string|int $height Default: '80%'
- *    treemap 组件的高度。
+ * @property string|int $height
+ *    tree组件的高度。
+ *
+ * @property string $layout Default: 'orthogonal'
+ *    树图的布局，有 正交 和 径向 两种。这里的 正交布局 就是我们通常所说的 水平 和 垂直 两个方向，对应的参数取值为 orthogonal 。而 径向布局 是指以根节点为圆心，每一层节点为环，一层层向外发散绘制而成的布局，对应的参数取值为 radial 。
+ *     正交布局示例：
+ *     
+ *     
+ *     
+ *     
+ *     径向布局示例：
+ *
+ * @property string $orient Default: 'horizontal'
+ *    树图中 正交布局 的方向 ，对应有 水平 和 垂直 两个方向，取值分别为 horizontal , vertical.
+ *
+ * @property boolean $expandAndCollapse Default: true
+ *    子树折叠和展开的交互，默认打开 。由于绘图区域是有限的，而通常一个树图的节点可能会比较多，这样就会出现节点之间相互遮盖的问题。为了避免这一问题，可以将暂时无关的子树折叠收起，等到需要时再将其展开。如上面径向布局树图示例，节点中心用蓝色填充的就是折叠收起的子树，可以点击将其展开。
+ *     注意：如果配置自定义的图片作为节点的标记，是无法通过填充色来区分当前节点是否有折叠的子树的。而目前暂不支持，上传两张图片分别表示节点折叠和展开两种状态。所以，如果想明确地显示节点的两种状态，建议使用 ECharts 常规的标记类型，如 emptyCircle 等。
+ *
+ * @property int $initialTreeDepth Default: 2
+ *    树图初始展开的层级（深度）。根节点是第 0 层，然后是第 1 层、第 2 层，... ，直到叶子节点。该配置项主要和 折叠展开 交互一起使用，目的还是为了防止一次展示过多节点，节点之间发生遮盖。如果设置为 -1 或者 null 或者 undefined，所有节点都将展开。
+ *
+ * @property Series\Leaves $leaves
+ *    叶子节点的特殊配置，如上面的树图实例中，叶子节点和非叶子节点的标签位置不同。
  *
  * @property int $squareRatio
  *    期望矩形长宽比率。布局计算时会尽量向这个比率靠近。
@@ -442,6 +579,9 @@ use Hisune\EchartsPHP\Property;
  *     例如，leafDepth 设置为 1，表示展示一层节点。
  *     默认没有开启 drill down（即 leafDepth 为 null 或 undefined）。
  *     drill down 的例子：
+ *
+ * @property string $drillDownIcon Default: '▶'
+ *    当节点可以下钻时的提示符。只能是字符。
  *
  * @property boolean|string $roam Default: true
  *    是否开启拖拽漫游（移动和缩放）。可取值有：
@@ -646,18 +786,72 @@ use Hisune\EchartsPHP\Property;
  *     
  *     存在于 series-treemap.data 的每个节点中，表示每个节点的特定设置。
  *
+ * @property Series\UpperLabel $upperLabel
+ *    upperLabel 用于显示矩形的父节点的标签。当 upperLabel.show 为 true 的时候，『显示父节点标签』功能开启。
+ *     同 series-treemap.label 一样，upperLabel 可以存在于 series-treemap 的根节点，或者 series-treemap.level 中，或者 series-treemap.data 的每个数据项中。
+ *     series-treemap.label 描述的是，当前节点为叶节点时标签的样式；upperLabel 描述的是，当前节点为非叶节点（即含有子节点）时标签的样式。（此时标签一般会被显示在节点的最上部）
+ *     参见：
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     注：treemap中 label 属性可能在多处地方存在：
+ *     
+ *     可以存在于 sereis-treemap 根下，表示本系列全局的统一设置。
+ *     
+ *     
+ *     可以存在于 series-treemap.levels 的每个数组元素中，表示树每个层级的统一设置。
+ *     
+ *     存在于 series-treemap.data 的每个节点中，表示每个节点的特定设置。
+ *
  * @property Series\Breadcrumb $breadcrumb
  *    面包屑，能够显示当前节点的路径。
  *
- * @property string $layout
- *    布局方式，可选值：
- *     
- *     horizontal：水平排布各个 box。
- *     
- *     vertical：竖直排布各个 box。
+ * @property string $highlightPolicy Default: 'descendant'
+ *    当鼠标移动到一个扇形块时，可以高亮相关的扇形块。如果其值为 descendant，则会高亮该扇形块和后代元素，其他元素将被淡化（downplay，参见 itemStyle）；如果其值为 ancestor，则会高亮该扇形块和祖先元素；如果其值为 self 则只高亮自身；none 则不会淡化其他元素。
  *     
  *     
- *     默认值根据当前坐标系状况决定：如果 category 轴为横轴，则水平排布；否则竖直排布；如果没有 category 轴则水平排布。
+ *     
+ *     上面的例子 highlightPolicy 是默认值 descendant，我们通过 dispatchAction 触发了旭日图中某个数据块的高亮操作（相当于将鼠标移动到下图中的 target 扇形块中）。目标扇形块将采用 emphasis 的样式（在本例中是为红色），和目标扇形块相关的扇形块（由 highlightPolicy 决定哪些扇形块是相关的）采用 highlight 的样式（橙色），其他扇形块采用 downplay 的样式（灰色）。而如果没有高亮对象，则所有扇形块都采用默认的样式。样式定义是类似这样的：
+ *     itemStyle: {
+ *         color: yellow,
+ *         borderWidth: 2
+ *     },
+ *     emphasis: {
+ *         itemStyle: {
+ *             color: red
+ *         }
+ *     },
+ *     highlight: {
+ *         itemStyle: {
+ *             color: orange
+ *         }
+ *     },
+ *     downplay: {
+ *         itemStyle: {
+ *             color: #ccc
+ *         }
+ *     }
+ *     
+ *     而如果将 highlightPolicy 设为 ancestor，则会得到这样的效果：
+ *
+ * @property string|callable $sort Default: 'desc'
+ *    扇形块根据数据 value 的排序方式，如果未指定 value，则其值为子元素 value 之和。默认值 desc 表示降序排序；还可以设置为 asc 表示升序排序；null 表示不排序，使用原始数据的顺序；或者用回调函数进行排列：
+ *     function(nodeA, nodeB) {
+ *         return nodeA.getValue() - nodeB.getValue();
+ *     }
+ *
+ * @property boolean $renderLabelForZeroData Default: false
+ *    如果数据没有 name，是否需要渲染文字。
+ *
+ * @property Series\Highlight $highlight
+ *    鼠标悬停后相关扇形块的配置项。参见 highlightPolicy。
+ *
+ * @property Series\Downplay $downplay
+ *    鼠标悬停后不相关扇形块的配置项。参见 highlightPolicy。
  *
  * @property array $boxWidth Default: '[7, 50]'
  *    box 的宽度的上下限。数组的意思是：[min, max]。
@@ -772,8 +966,8 @@ use Hisune\EchartsPHP\Property;
  *
  * @property boolean $polyline Default: false
  *    是否是多段线。
- *     默认为 false，只能用于绘制只有两个端点的线段，线段可以通过 lineStyle.normal.curveness 配置为曲线。
- *     如果该配置项为 true，则可以在 data.coords 中设置多于 2 个的顶点用来绘制多段线，在绘制路线轨迹的时候比较有用，见示例 北京公交路线，设置为多段线后 lineStyle.normal.curveness 无效。
+ *     默认为 false，只能用于绘制只有两个端点的线段，线段可以通过 lineStyle.curveness 配置为曲线。
+ *     如果该配置项为 true，则可以在 data.coords 中设置多于 2 个的顶点用来绘制多段线，在绘制路线轨迹的时候比较有用，见示例 北京公交路线，设置为多段线后 lineStyle.curveness 无效。
  *
  * @property Series\Effect $effect
  *    线特效的配置，见示例 模拟迁徙 和 北京公交路线
@@ -849,9 +1043,6 @@ use Hisune\EchartsPHP\Property;
  * @property string $maxSize Default: '100%'
  *    数据最大值 max 映射的宽度。
  *     可以是绝对的像素大小，也可以是相对布局宽度的百分比。
- *
- * @property string $sort Default: 'descending'
- *    数据排序， 可以取 ascending, descending。
  *
  * @property int $gap Default: 0
  *    数据图形间距。
@@ -1046,7 +1237,7 @@ use Hisune\EchartsPHP\Property;
  *         }]
  *     }]
  *
- * @property int $symbolBoundingData
+ * @property int|array $symbolBoundingData
  *    这个属性是『指定图形界限的值』。它指定了一个 data，这个 data 映射在坐标系上的位置，是图形绘制的界限。也就是说，如果设置了 symbolBoundingData，图形的尺寸则由 symbolBoundingData 决定。
  *     当柱子是水平的，symbolBoundingData 对应到 x 轴上，当柱子是竖直的，symbolBoundingData 对应到 y 轴上。
  *     规则：
@@ -1078,6 +1269,12 @@ use Hisune\EchartsPHP\Property;
  *     
  *     
  *     
+ *     symbolBoundingData 可以是一个数组，例如 [-40, 60]，表示同时指定了正值的 symbolBoundingData 和负值的 symbolBoundingData。
+ *     参见例子：
+ *     
+ *     
+ *     
+ *     
  *     
  *     
  *     此属性可以被设置在系列的 根部，表示对此系列中所有数据都生效；也可以被设置在 data 中的 每个数据项中，表示只对此数据项生效。
@@ -1105,11 +1302,9 @@ use Hisune\EchartsPHP\Property;
  *     // textureImg.src = http://xxx.xxx.xxx/xx.png; // URL
  *     ...
  *     itemStyle: {
- *         normal: {
- *             color: {
- *                 image: textureImg,
- *                 repeat: repeat
- *             }
+ *         color: {
+ *             image: textureImg,
+ *             repeat: repeat
  *         }
  *     }
  *     
@@ -1142,6 +1337,53 @@ use Hisune\EchartsPHP\Property;
  *
  * @property int $singleAxisIndex Default: 0
  *    单个时间轴的index，默认值为0，因为只有单个轴。
+ *
+ * @property Series\RenderItem $renderItem
+ *    custom 系列需要开发者自己提供图形渲染的逻辑。这个渲染逻辑一般命名为 renderItem。例如：
+ *     var option = {
+ *         ...,
+ *         series: [{
+ *             type: custom,
+ *             renderItem: function (params, api) {
+ *                 var categoryIndex = api.value(0);
+ *                 var start = api.coord([api.value(1), categoryIndex]);
+ *                 var end = api.coord([api.value(2), categoryIndex]);
+ *                 var height = api.size([0, 1])[1] * 0.6;
+ *     
+ *                 return {
+ *                     type: rect,
+ *                     shape: echarts.graphic.clipRectByRect({
+ *                         x: start[0],
+ *                         y: start[1] - height / 2,
+ *                         width: end[0] - start[0],
+ *                         height: height
+ *                     }, {
+ *                         x: params.coordSys.x,
+ *                         y: params.coordSys.y,
+ *                         width: params.coordSys.width,
+ *                         height: params.coordSys.height
+ *                     }),
+ *                     style: api.style()
+ *                 };
+ *             },
+ *             data: data
+ *         }]
+ *     }
+ *     
+ *     对于 data 中的每个数据项（为方便描述，这里称为 dataItem)，会调用此 renderItem 函数。
+ *     renderItem 函数提供了两个参数：
+ *     
+ *     params：包含了当前数据信息和坐标系的信息。
+ *     api：是一些开发者可调用的方法集合。
+ *     
+ *     renderItem 函数须返回根据此 dataItem 绘制出的图形元素的定义信息，参见 renderItem.return。
+ *     一般来说，renderItem 函数的主要逻辑，是将 dataItem 里的值映射到坐标系上的图形元素。这一般需要用到 renderItem.arguments.api 中的两个函数：
+ *     
+ *     api.value(...)，意思是取出 dataItem 中的数值。例如 api.value(0) 表示取出当前 dataItem 中第一个维度的数值。
+ *     api.coord(...)，意思是进行坐标转换计算。例如 var point = api.coord([api.value(0), api.value(1)]) 表示 dataItem 中的数值转换成坐标系上的点。
+ *     
+ *     有时候还需要用到 api.size(...) 函数，表示得到坐标系上一段数值范围对应的长度。
+ *     返回值中样式的设置可以使用 api.style(...) 函数，他能得到 series.itemStyle 中定义的样式信息，以及视觉映射的样式信息。也可以用这种方式覆盖这些样式信息：api.style({fill: green, stroke: yellow})。
  *
  * {_more_}
  */

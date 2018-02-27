@@ -84,7 +84,7 @@ use Hisune\EchartsPHP\Property;
  *    雷达图的指示器，用来指定雷达图中的多个变量（维度），如下示例。
  *     indicator: [
  *        { name: 销售（sales）, max: 6500},
- *        { name: 管理（Administration）, max: 16000},
+ *        { name: 管理（Administration）, max: 16000, color: red}, // 标签设置为红色
  *        { name: 信息技术（Information Techology）, max: 30000},
  *        { name: 客服（Customer Support）, max: 38000},
  *        { name: 研发（Development）, max: 52000},

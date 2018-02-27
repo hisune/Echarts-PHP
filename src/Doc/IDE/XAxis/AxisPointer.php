@@ -36,7 +36,7 @@ use Hisune\EchartsPHP\Property;
  * @property AxisPointer\ShadowStyle $shadowStyle
  *    axisPointer.type 为 shadow 时有效。
  *
- * @property boolean $tiggerTooltip Default: true
+ * @property boolean $triggerTooltip Default: true
  *    是否触发 tooltip。如果不想触发 tooltip 可以关掉。
  *
  * @property int $value

@@ -13,8 +13,8 @@ use Hisune\EchartsPHP\Property;
  *    标记的图形。
  *     ECharts 提供的标记类型包括 
  *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接。
- *     在 ECharts 3 里可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适（如果是 symbol 的话就是 symbolSize）的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
+ *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
  *
  * @property int|array|callable $symbolSize Default: 50
  *    标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
@@ -38,6 +38,9 @@ use Hisune\EchartsPHP\Property;
  *
  * @property MarkPoint\ItemStyle $itemStyle
  *    标注的样式。
+ *
+ * @property MarkPoint\Emphasis $emphasis
+ *    标注的高亮样式。
  *
  * @property array $data
  *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
@@ -128,70 +131,8 @@ use Hisune\EchartsPHP\Property;
  * @property MarkPoint\ItemStyle $itemStyle
  *    标注的样式。
  *
- * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
- *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
- *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
- *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 指定是在哪个维度上的最大值、最小值、平均值。或者可以使用 valueDim 指定在哪个维度上的最大值、最小值、平均值。
- *     
- *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
- *     data: [
- *         {
- *             name: 最大值,
- *             type: max
- *         }, 
- *         {
- *             name: 某个坐标,
- *             coord: [10, 20]
- *         }, {
- *             name: 固定 x 像素位置,
- *             yAxis: 10,
- *             x: 90%
- *         }, 
- *         {
- *             name: 某个屏幕坐标,
- *             x: 100,
- *             y: 100
- *         }
- *     ]
- *
- *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
- *
- * @property MarkPoint\Label $label
- *    标注的文本。
- *
- * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
- *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
- *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
- *     data: [
- *         {
- *             name: 某个屏幕坐标,
- *             x: 100,
- *             y: 100
- *         }
- *     ]
- *
- *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
- *
- * @property MarkPoint\Label $label
- *    标注的文本。
- *
- * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
+ * @property MarkPoint\Emphasis $emphasis
+ *    标注的高亮样式。
  *
  * @property array $data
  *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
@@ -234,31 +175,17 @@ use Hisune\EchartsPHP\Property;
  * @property MarkPoint\ItemStyle $itemStyle
  *    标注的样式。
  *
+ * @property MarkPoint\Emphasis $emphasis
+ *    标注的高亮样式。
+ *
  * @property array $data
  *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
  *     
  *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
- *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 指定是在哪个维度上的最大值、最小值、平均值。或者可以使用 valueDim 指定在哪个维度上的最大值、最小值、平均值。
- *     
- *     
  *     当多个属性同时存在时，优先级按上述的顺序。
  *     示例：
  *     data: [
- *         {
- *             name: 最大值,
- *             type: max
- *         }, 
- *         {
- *             name: 某个坐标,
- *             coord: [10, 20]
- *         }, {
- *             name: 固定 x 像素位置,
- *             yAxis: 10,
- *             x: 90%
- *         }, 
  *         {
  *             name: 某个屏幕坐标,
  *             x: 100,
@@ -275,46 +202,8 @@ use Hisune\EchartsPHP\Property;
  * @property MarkPoint\ItemStyle $itemStyle
  *    标注的样式。
  *
- * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
- *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
- *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
- *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 指定是在哪个维度上的最大值、最小值、平均值。或者可以使用 valueDim 指定在哪个维度上的最大值、最小值、平均值。
- *     
- *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
- *     data: [
- *         {
- *             name: 最大值,
- *             type: max
- *         }, 
- *         {
- *             name: 某个坐标,
- *             coord: [10, 20]
- *         }, {
- *             name: 固定 x 像素位置,
- *             yAxis: 10,
- *             x: 90%
- *         }, 
- *         {
- *             name: 某个屏幕坐标,
- *             x: 100,
- *             y: 100
- *         }
- *     ]
- *
- *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
- *
- * @property MarkPoint\Label $label
- *    标注的文本。
- *
- * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
+ * @property MarkPoint\Emphasis $emphasis
+ *    标注的高亮样式。
  *
  * @property array $data
  *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
@@ -357,88 +246,8 @@ use Hisune\EchartsPHP\Property;
  * @property MarkPoint\ItemStyle $itemStyle
  *    标注的样式。
  *
- * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
- *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
- *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
- *     data: [
- *         {
- *             name: 某个屏幕坐标,
- *             x: 100,
- *             y: 100
- *         }
- *     ]
- *
- *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
- *
- * @property MarkPoint\Label $label
- *    标注的文本。
- *
- * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
- *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
- *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
- *     
- *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
- *     data: [
- *         {
- *             name: 某个坐标,
- *             coord: [10, 20]
- *         }, {
- *             name: 固定 x 像素位置,
- *             yAxis: 10,
- *             x: 90%
- *         }, 
- *         {
- *             name: 某个屏幕坐标,
- *             x: 100,
- *             y: 100
- *         }
- *     ]
- *
- *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
- *
- * @property MarkPoint\Label $label
- *    标注的文本。
- *
- * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
- *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
- *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
- *     data: [
- *         {
- *             name: 某个屏幕坐标,
- *             x: 100,
- *             y: 100
- *         }
- *     ]
- *
- *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
- *
- * @property MarkPoint\Label $label
- *    标注的文本。
- *
- * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
+ * @property MarkPoint\Emphasis $emphasis
+ *    标注的高亮样式。
  *
  * @property array $data
  *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
@@ -481,6 +290,97 @@ use Hisune\EchartsPHP\Property;
  * @property MarkPoint\ItemStyle $itemStyle
  *    标注的样式。
  *
+ * @property MarkPoint\Emphasis $emphasis
+ *    标注的高亮样式。
+ *
+ * @property array $data
+ *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *     
+ *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     
+ *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     
+ *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 指定是在哪个维度上的最大值、最小值、平均值。或者可以使用 valueDim 指定在哪个维度上的最大值、最小值、平均值。
+ *     
+ *     
+ *     当多个属性同时存在时，优先级按上述的顺序。
+ *     示例：
+ *     data: [
+ *         {
+ *             name: 最大值,
+ *             type: max
+ *         }, 
+ *         {
+ *             name: 某个坐标,
+ *             coord: [10, 20]
+ *         }, {
+ *             name: 固定 x 像素位置,
+ *             yAxis: 10,
+ *             x: 90%
+ *         }, 
+ *         {
+ *             name: 某个屏幕坐标,
+ *             x: 100,
+ *             y: 100
+ *         }
+ *     ]
+ *
+ *  * @property int $symbolRotate
+ *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *
+ * @property MarkPoint\Label $label
+ *    标注的文本。
+ *
+ * @property MarkPoint\ItemStyle $itemStyle
+ *    标注的样式。
+ *
+ * @property MarkPoint\Emphasis $emphasis
+ *    标注的高亮样式。
+ *
+ * @property array $data
+ *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *     
+ *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     
+ *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     
+ *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 指定是在哪个维度上的最大值、最小值、平均值。或者可以使用 valueDim 指定在哪个维度上的最大值、最小值、平均值。
+ *     
+ *     
+ *     当多个属性同时存在时，优先级按上述的顺序。
+ *     示例：
+ *     data: [
+ *         {
+ *             name: 最大值,
+ *             type: max
+ *         }, 
+ *         {
+ *             name: 某个坐标,
+ *             coord: [10, 20]
+ *         }, {
+ *             name: 固定 x 像素位置,
+ *             yAxis: 10,
+ *             x: 90%
+ *         }, 
+ *         {
+ *             name: 某个屏幕坐标,
+ *             x: 100,
+ *             y: 100
+ *         }
+ *     ]
+ *
+ *  * @property int $symbolRotate
+ *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *
+ * @property MarkPoint\Label $label
+ *    标注的文本。
+ *
+ * @property MarkPoint\ItemStyle $itemStyle
+ *    标注的样式。
+ *
+ * @property MarkPoint\Emphasis $emphasis
+ *    标注的高亮样式。
+ *
  * @property array $data
  *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
  *     
@@ -505,6 +405,47 @@ use Hisune\EchartsPHP\Property;
  * @property MarkPoint\ItemStyle $itemStyle
  *    标注的样式。
  *
+ * @property MarkPoint\Emphasis $emphasis
+ *    标注的高亮样式。
+ *
+ * @property array $data
+ *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *     
+ *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     
+ *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     
+ *     
+ *     当多个属性同时存在时，优先级按上述的顺序。
+ *     示例：
+ *     data: [
+ *         {
+ *             name: 某个坐标,
+ *             coord: [10, 20]
+ *         }, {
+ *             name: 固定 x 像素位置,
+ *             yAxis: 10,
+ *             x: 90%
+ *         }, 
+ *         {
+ *             name: 某个屏幕坐标,
+ *             x: 100,
+ *             y: 100
+ *         }
+ *     ]
+ *
+ *  * @property int $symbolRotate
+ *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *
+ * @property MarkPoint\Label $label
+ *    标注的文本。
+ *
+ * @property MarkPoint\ItemStyle $itemStyle
+ *    标注的样式。
+ *
+ * @property MarkPoint\Emphasis $emphasis
+ *    标注的高亮样式。
+ *
  * @property array $data
  *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
  *     
@@ -528,6 +469,107 @@ use Hisune\EchartsPHP\Property;
  *
  * @property MarkPoint\ItemStyle $itemStyle
  *    标注的样式。
+ *
+ * @property MarkPoint\Emphasis $emphasis
+ *    标注的高亮样式。
+ *
+ * @property array $data
+ *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *     
+ *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     
+ *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     
+ *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 指定是在哪个维度上的最大值、最小值、平均值。或者可以使用 valueDim 指定在哪个维度上的最大值、最小值、平均值。
+ *     
+ *     
+ *     当多个属性同时存在时，优先级按上述的顺序。
+ *     示例：
+ *     data: [
+ *         {
+ *             name: 最大值,
+ *             type: max
+ *         }, 
+ *         {
+ *             name: 某个坐标,
+ *             coord: [10, 20]
+ *         }, {
+ *             name: 固定 x 像素位置,
+ *             yAxis: 10,
+ *             x: 90%
+ *         }, 
+ *         {
+ *             name: 某个屏幕坐标,
+ *             x: 100,
+ *             y: 100
+ *         }
+ *     ]
+ *
+ *  * @property int $symbolRotate
+ *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *
+ * @property MarkPoint\Label $label
+ *    标注的文本。
+ *
+ * @property MarkPoint\ItemStyle $itemStyle
+ *    标注的样式。
+ *
+ * @property MarkPoint\Emphasis $emphasis
+ *    标注的高亮样式。
+ *
+ * @property array $data
+ *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *     
+ *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     
+ *     当多个属性同时存在时，优先级按上述的顺序。
+ *     示例：
+ *     data: [
+ *         {
+ *             name: 某个屏幕坐标,
+ *             x: 100,
+ *             y: 100
+ *         }
+ *     ]
+ *
+ *  * @property int $symbolRotate
+ *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *
+ * @property MarkPoint\Label $label
+ *    标注的文本。
+ *
+ * @property MarkPoint\ItemStyle $itemStyle
+ *    标注的样式。
+ *
+ * @property MarkPoint\Emphasis $emphasis
+ *    标注的高亮样式。
+ *
+ * @property array $data
+ *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *     
+ *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     
+ *     当多个属性同时存在时，优先级按上述的顺序。
+ *     示例：
+ *     data: [
+ *         {
+ *             name: 某个屏幕坐标,
+ *             x: 100,
+ *             y: 100
+ *         }
+ *     ]
+ *
+ *  * @property int $symbolRotate
+ *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *
+ * @property MarkPoint\Label $label
+ *    标注的文本。
+ *
+ * @property MarkPoint\ItemStyle $itemStyle
+ *    标注的样式。
+ *
+ * @property MarkPoint\Emphasis $emphasis
+ *    标注的高亮样式。
  *
  * @property array $data
  *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。

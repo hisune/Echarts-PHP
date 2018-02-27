@@ -33,6 +33,9 @@ use Hisune\EchartsPHP\Property;
  * @property SaveAsImage\IconStyle $iconStyle
  *    保存为图片 icon 样式设置。
  *
+ * @property SaveAsImage\Emphasis $emphasis
+ *    
+ *
  * @property int $pixelRatio Default: 1
  *    保存图片的分辨率比例，默认跟容器相同大小，如果需要保存更高分辨率的，可以设置为大于 1 的值，例如 2。
  *
