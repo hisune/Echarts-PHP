@@ -54,19 +54,19 @@ class AutoGenerate
         }else{
             $this->language = $language;
         }
-        echo "init as {$this->language}\r\n";
+        echo "init as {$this->language}\n";
     }
 
     public function generate()
     {
         $url = $this->optionJson[$this->language];
-        echo "start generate\r\n";
+        echo "start generate\n";
         try{
-            echo "get json from {$url}\r\n";
+            echo "get json from {$url}\n";
             $json = json_decode(file_get_contents($url), true);
 
             if($json && is_array($json) && isset($json['option']['properties'])){
-                echo "start auto generate PHPDoc\r\n";
+                echo "start auto generate PHPDoc\n";
                 $this->_properties($json['option']['properties']);
             }else{
                 throw new \Exception('Unknown option format.');
@@ -79,10 +79,12 @@ class AutoGenerate
     protected function _properties($properties, $dir = '')
     {
         if(!$dir){
-            echo "/**\r\n * Class ECharts\r\n * Created by Hisune EchartsPHP AutoGenerate.\r\n * @package Hisune\\EchartsPHP\r\n * \r\n";
+            echo "/**\n * Class ECharts\n * Created by Hisune EchartsPHP AutoGenerate.\n * @package Hisune\\EchartsPHP\n * \n";
         }
 
         foreach($properties as $top => $property){
+            if(!preg_match('/^[A-Za-z]+$/', $top)) continue;
+
             $classPropertyString = '';
             $top = ucfirst($top);
 
@@ -121,17 +123,17 @@ class AutoGenerate
 
             // 输出ECharts类的property doc
             if(!$dir){
-                $description = isset($property['descriptionCN']) ? $this->_replaceDescription($property['descriptionCN'], false) . "\r\n *" : '';
+                $description = isset($property['descriptionCN']) ? $this->_replaceDescription($property['descriptionCN'], false) . "\n *" : '';
                 if(file_exists($dirToWrite . '/' . $top . '.php')){
-                    echo " * @property Doc\\IDE\\{$top} \$" . lcfirst($top) . "\r\n *   " . $description . "\r\n";
+                    echo " * @property Doc\\IDE\\{$top} \$" . lcfirst($top) . "\n *   " . $description . "\n";
                 }else{
-                    echo " * @property callable \$" . lcfirst($top) . "\r\n *   " . $description . "\r\n";
+                    echo " * @property callable \$" . lcfirst($top) . "\n *   " . $description . "\n";
                 }
             }
         }
 
         if(!$dir){
-            echo " */\r\n";
+            echo " */\n";
         }
     }
 
@@ -161,14 +163,14 @@ PHP;
     {
         if(isset($detail['default'])){
             if(($detail['type'] == 'boolean' || in_array('boolean', $detail['type'])) && ($detail['default'] === true || $detail['default'] === false)){
-                $default = " Default: " . ($detail['default'] ? 'true' : 'false') . "\r\n";
+                $default = " Default: " . ($detail['default'] ? 'true' : 'false') . "\n";
             }elseif(($detail['type'] == 'number' || in_array('number', $detail['type'])) && is_numeric($detail['default'])){
-                $default = " Default: " . $detail['default'] . "\r\n";
+                $default = " Default: " . $detail['default'] . "\n";
             }else{
-                $default = " Default: '" . str_replace("'", "\\'", trim($detail['default'], "'")) . "'\r\n";
+                $default = " Default: '" . str_replace("'", "\\'", trim($detail['default'], "'")) . "'\n";
             }
         }else{
-            $default = "\r\n";
+            $default = "\n";
         }
 
         $detail['descriptionCN'] = isset($detail['descriptionCN']) ? $this->_replaceDescription($detail['descriptionCN'], true, 0, 4) : '';
@@ -205,7 +207,7 @@ PHP;
                 }
             }
         }
-        return sprintf(" * @property %s $%s%s *    %s\r\n *\r\n", $type, $name, $default, $description);
+        return sprintf(" * @property %s $%s%s *    %s\n *\n", $type, $name, $default, $description);
     }
 
     protected function _replacePropertyType($type)
@@ -232,7 +234,7 @@ PHP;
     protected function _replaceDescription($description, $multiLine = true, $leftPad = 4, $rightPad = 0)
     {
         if($multiLine){
-            return str_replace("\n", "\r\n" . str_repeat(' ', $leftPad) . " * " . str_repeat(' ', $rightPad), rtrim(str_replace(["&quot;", '&#39;', '/*', '*/'], '', strip_tags($description))));
+            return str_replace("\n", "\n" . str_repeat(' ', $leftPad) . " * " . str_repeat(' ', $rightPad), rtrim(str_replace(["&quot;", '&#39;', '/*', '*/'], '', strip_tags($description))));
         }else{
             $explode = explode("\n", $description);
             return rtrim(str_replace(["&quot;", '&#39;', '/*', '*/'], '', strip_tags($explode[0])));
