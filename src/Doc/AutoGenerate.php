@@ -83,7 +83,7 @@ class AutoGenerate
         }
 
         foreach($properties as $top => $property){
-            if(!preg_match('/^[A-Za-z]+$/', $top)) continue;
+            if(!preg_match('/^[A-Za-z]+$/', $top)) continue; // option.json mistake
 
             $classPropertyString = '';
             $top = ucfirst($top);
@@ -212,18 +212,21 @@ PHP;
 
     protected function _replacePropertyType($type)
     {
+        $type = strtolower($type);
         switch ($type){
+            case 'numbr': // option.json mistake
             case 'number':
                 $type = 'int';
                 break;
-            case 'Object':
-            case 'Array':
+            case 'object':
+            case 'array':
                 $type = 'array';
                 break;
-            case 'Color':
+            case 'date':
+            case 'color':
                 $type = 'string';
                 break;
-            case 'Function':
+            case 'function':
                 $type = 'callable';
                 break;
         }

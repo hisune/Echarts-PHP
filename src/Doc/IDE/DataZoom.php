@@ -188,13 +188,13 @@ use Hisune\EchartsPHP\Property;
  *    数据窗口范围的结束百分比。范围是：0 ~ 100。
  *     dataZoom-inside.start 和 dataZoom-inside.end 共同用 百分比 的形式定义了数据窗口范围。
  *
- * @property int|string|Date $startValue
+ * @property int|string|string $startValue
  *    数据窗口范围的起始数值。如果设置了 dataZoom-inside.start 则 startValue 失效。
  *     dataZoom-inside.startValue 和 dataZoom-inside.endValue 共同用 绝对数值 的形式定义了数据窗口范围。
  *     注意，如果轴的类型为 category，则 startValue 既可以设置为 axis.data 数组的 index，也可以设置为数组值本身。
  *     但是如果设置为数组值本身，会在内部自动转化为数组的 index。
  *
- * @property int|string|Date $endValue
+ * @property int|string|string $endValue
  *    数据窗口范围的结束数值。如果设置了 dataZoom-inside.end 则 endValue 失效。
  *     dataZoom-inside.startValue 和 dataZoom-inside.endValue 共同用 绝对数值 的形式定义了数据窗口范围。
  *     注意，如果轴的类型为 category，则 endValue 即可以设置为 axis.data 数组的 index，也可以设置为数组值本身。
@@ -208,12 +208,12 @@ use Hisune\EchartsPHP\Property;
  *    用于限制窗口大小的最大值（百分比值），取值范围是 0 ~ 100。
  *     如果设置了 dataZoom-inside.maxValueSpan 则 maxSpan 失效。
  *
- * @property int|string|Date $minValueSpan
+ * @property int|string|string $minValueSpan
  *    用于限制窗口大小的最小值（实际数值）。
  *     如在时间轴上可以设置为：3600 * 24 * 1000 * 5 表示 5 天。
  *     在类目轴上可以设置为 5 表示 5 个类目。
  *
- * @property int|string|Date $maxValueSpan
+ * @property int|string|string $maxValueSpan
  *    用于限制窗口大小的最大值（实际数值）。
  *     如在时间轴上可以设置为：3600 * 24 * 1000 * 5 表示 5 天。
  *     在类目轴上可以设置为 5 表示 5 个类目。

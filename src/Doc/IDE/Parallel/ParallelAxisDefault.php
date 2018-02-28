@@ -55,7 +55,7 @@ use Hisune\EchartsPHP\Property;
  *     示例：
  *     boundaryGap: [20%, 20%]
  *
- * @property int|string|function $min
+ * @property int|string|callable $min
  *    坐标轴刻度最小值。
  *     可以设置成特殊值 dataMin，此时取数据在该轴上的最小值作为最小刻度。
  *     不设置时会自动计算最小值保证坐标轴刻度的均匀分布。

@@ -15,13 +15,13 @@ use Hisune\EchartsPHP\Property;
  * @property int $x Default: 0
  *    图形元素的左上角在父节点坐标系（以父节点左上角为原点）中的横坐标值。
  *
- * @property numbr $y Default: '0'
+ * @property int $y Default: '0'
  *    图形元素的左上角在父节点坐标系（以父节点左上角为原点）中的纵坐标值。
  *
  * @property int $width Default: 0
  *    图形元素的宽度。
  *
- * @property numbr $height Default: '0'
+ * @property int $height Default: '0'
  *    图形元素的高度。
  *
  * @property string $fill Default: '#000'
