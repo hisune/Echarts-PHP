@@ -153,9 +153,11 @@ class ECharts extends Property
         $this->setJsVar();
     }
 
-    public function render($id, $attribute = array(), $theme = null)
+    public function render($id, $attribute = null, $theme = null, $renderer = null)
     {
-        return Config::render($id, $this->getOption(), $theme, $attribute, $this->_events);
+    	$attribute = $attribute?:array();
+
+        return Config::render($id, $this->getOption(), $theme, $attribute, $this->_events, $renderer);
     }
 
     public function getOption($render = null, $jsObject = false)

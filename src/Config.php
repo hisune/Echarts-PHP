@@ -61,8 +61,12 @@ class Config
         return $option;
     }
 
-    public static function render($id, $option, $theme = null, array $attribute = array(), array $events = array())
+    public static function render($id, $option, $theme = null, array $attribute = null, array $events = null, $renderer = null)
     {
+    	$attribute = $attribute?:array();
+    	$events = $events?:array();
+    	$renderer = $renderer?:'canvas';
+
         $attribute = self::_renderAttribute($attribute);
         is_null($theme) && $theme = 'null';
 
@@ -120,7 +124,7 @@ HTML;
 <div id="$id" $attribute></div>
 $js
 <script type="text/javascript">
-    var $prefix$jsVar = echarts.init(document.getElementById('$id'), '$theme');
+    var $prefix$jsVar = echarts.init(document.getElementById('$id'), '$theme', {renderer: '{$renderer}'});
     $prefix$jsVar.setOption($option);$eventsHtml
 </script>
 HTML;
