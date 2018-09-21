@@ -45,7 +45,7 @@ function chartLine($xAxisData, $seriesData, $title = '')
 
     $chart->initOptions->renderer = 'svg';
     $chart->initOptions->width = '800px';
-    return $chart->render(uniqid(), null, null);
+    return $chart->render(uniqid());
 }
 
 echo chartLine(
