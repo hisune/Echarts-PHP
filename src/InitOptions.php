@@ -9,7 +9,7 @@
 namespace Hisune\EchartsPHP;
 
 class InitOptions{
-	public $devicePixelRatio = 'window.devicePixelRatio';
+	public $devicePixelRatio = null;
 	public $renderer = 'canvas';
 	public $width = null;
 	public $height = null;
