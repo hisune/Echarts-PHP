@@ -138,7 +138,7 @@ namespace Hisune\EchartsPHP;
  */
 class ECharts extends Property
 {
-
+	public $initOptions;
     public $_events = [];
     protected $jsVar;
 
@@ -150,12 +150,15 @@ class ECharts extends Property
         if ($dist){
             Config::$dist = $dist;
         }
+        $this->initOptions = new InitOptions();
         $this->setJsVar();
     }
 
-    public function render($id, $attribute = array(), $theme = null)
+    public function render($id, $attribute = null, $theme = null)
     {
-        return Config::render($id, $this->getOption(), $theme, $attribute, $this->_events);
+    	$attribute = $attribute?:array();
+
+        return Config::render($id, $this->getOption(), $theme, $attribute, $this->_events, $this->initOptions);
     }
 
     public function getOption($render = null, $jsObject = false)
@@ -216,7 +219,6 @@ class ECharts extends Property
     {
         $this->yAxis[] = $this->getOption($yAxis->_options);
     }
-
 }
 
 

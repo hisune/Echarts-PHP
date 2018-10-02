@@ -61,8 +61,11 @@ class Config
         return $option;
     }
 
-    public static function render($id, $option, $theme = null, array $attribute = array(), array $events = array())
+    public static function render($id, $option, $theme = null, array $attribute = null, array $events = null, $initOptions = null)
     {
+    	$attribute = $attribute?:array();
+    	$events = $events?:array();
+
         $attribute = self::_renderAttribute($attribute);
         is_null($theme) && $theme = 'null';
 
@@ -116,11 +119,13 @@ HTML;
                 }
             }
             $option = self::jsonEncode($option);
+            $initOptions = self::jsonEncode($initOptions);
             return <<<HTML
 <div id="$id" $attribute></div>
 $js
 <script type="text/javascript">
-    var $prefix$jsVar = echarts.init(document.getElementById('$id'), '$theme');
+	var initOptions = {$initOptions};
+    var $prefix$jsVar = echarts.init(document.getElementById('$id'), '$theme', initOptions);
     $prefix$jsVar.setOption($option);$eventsHtml
 </script>
 HTML;
