@@ -426,7 +426,7 @@ HTML;
 		{
 			if(!$jsSuffix || !is_string($jsSuffix))
 			{
-				$jsSuffix = uniqid();
+				$jsSuffix = 'chart_'.microtime(true);
 			}
 			$this->jsVar = $jsSuffix;
 		}
