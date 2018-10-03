@@ -53,11 +53,13 @@ Due to major changes to the `Config` class, there are some backward incompatibil
     - `jsonEncode`
     - `render`
     - `addExtraScript`
+  - properties removed:
+    - `$prefix`
   - properties relocated to `ECharts`:
     - `$scripts` - is now protected to `ECharts`
     - `$method`
     - `$extraScript`
-    - `$prefix` and `$jsVar` - now possible to define javascript variable name per instance - both protected in  `ECharts`
+    - `$jsVar` - now possible to define javascript variable name per instance - protected in `ECharts`
     - `$_events` - is now protected in `ECharts`
   - **overrideable parameters:** following parameters can now be defined globally in `Config` or be overridden per instance:
     - `$dist` (override using `setDist()`)
@@ -65,7 +67,7 @@ Due to major changes to the `Config` class, there are some backward incompatibil
     - `$distType` (override using `setDistType()`)
     - `$minify` (override using `setMinify()`)
   - other issues:
-    - it's not possible to change `$prefix` or `$jsVar` after `getJsVar(true)` function (and as a consequence of that `renderEvents`, `preRender` or `render`) has been called. this ensures that further js-related functions will always return the created name.
+    - it's not possible to change `$jsVar` after `getJsVar(true)` function (and as a consequence of that `renderEvents`, `preRender` or `render`) has been called. this ensures that further js-related functions will always return the created name.
   - new features:
     - echarts library and extra scripts can now be rendered using `renderScripts()`
     - echarts\ instance events can now be rendered using `renderEvents()`
@@ -176,8 +178,7 @@ $chart->yAxis[0] = array('type' => 'value');
 // With 'function' letter startup
 'axisLabel' => array(
     // this array value will automatic conversion to js callback function
-    'formatter' => "
-        function (value)
+    'formatter' => "function (value)
         {
             return value + ' °C'
         }
@@ -186,8 +187,8 @@ $chart->yAxis[0] = array('type' => 'value');
 ```
 ```php
 // Or you can add any js expr with jsExpr
-use \Hisune\EchartsPHP\Config;
-'backgroundColor' => $this->jsExpr('
+use \Hisune\EchartsPHP\ECharts;
+'backgroundColor' => ECharts::jsExpr('
     new echarts.graphic.RadialGradient(0.5, 0.5, 0.4, [{
         offset: 0,
         color: "#4b5769"
@@ -198,13 +199,9 @@ use \Hisune\EchartsPHP\Config;
 ');
 ```
 ### Customer JS variable name
-`void ECharts::setJsVar(string $name = null)`
- - Param `name` is your customer js variable name. By default, js variable name will generate by random.  
-
-`string ECharts::getJsVar()`
 ```php
-$chart->setJsVar('test');
-echo $chart->getJsVar(); // echo test
+$chart->setJsVar('chart_test');
+echo $chart->getJsVar(); // echo 'chart_test'
 // var chart_test = echarts.init( ...
 ```
 

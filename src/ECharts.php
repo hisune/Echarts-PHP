@@ -144,11 +144,11 @@ class ECharts extends Property{
 	protected $jsVar;
 
 	/* relocated from Config */
-	public $method = array();
+	public static $method = array();
+	protected static $scripts = [];
+
 	public $extraScript = array();
 	protected $_events = [];
-	protected static $scripts = [];
-	protected $prefix = 'chart_';
 
 
 	/* Overrideable Parameters for Config */
@@ -184,7 +184,7 @@ class ECharts extends Property{
 
 		$js = $this->renderScripts();
 
-		$jsVar = $this->getJsVar(true);
+		$jsVar = $this->getJsVar();
 		$option = $this->jsonEncode($option);
 		$initOptions = $this->jsonEncode($initOptions);
 
@@ -297,15 +297,15 @@ HTML;
 		$this->yAxis[] = $this->getOption($yAxis->_options);
 	}
 
-	public function jsExpr($string)
+	public static function jsExpr($string)
 	{
 		return self::_jsMethod($string);
 	}
 
-	private function _jsMethod($value)
+	private static function _jsMethod($value)
 	{
 		$md5 = '{%'.md5($value).'%}';
-		$this->method['"'.$md5.'"'] = $value;
+		static::$method['"'.$md5.'"'] = $value;
 		return $md5;
 	}
 
@@ -333,9 +333,9 @@ HTML;
 	public function jsonEncode($option)
 	{
 		$option = json_encode($option);
-		if($this->method)
+		if(static::$method)
 		{
-			$option = str_replace(array_keys($this->method), array_values($this->method), $option);
+			$option = str_replace(array_keys(static::$method), array_values(static::$method), $option);
 		}
 		return $option;
 	}
@@ -436,14 +436,10 @@ HTML;
 		}
 	}
 
-	public function getJsVar($full = false)
+	public function getJsVar()
 	{
-		if ($full)
-		{
-			$this->isJsNameAlreadyUsed = true;
-		}
-
-		return ($full? $this->prefix:'').$this->jsVar;
+		$this->isJsNameAlreadyUsed = true;
+		return $this->jsVar;
 	}
 
 	/**
@@ -518,31 +514,6 @@ HTML;
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getPrefix()
-	{
-		return $this->prefix;
-	}
-
-	/**
-	 * @param string $prefix
-	 *
-	 * @throws \Exception
-	 */
-	public function setPrefix($prefix)
-	{
-		if (!$this->isJsNameAlreadyUsed)
-		{
-			$this->prefix = $prefix;
-		}
-		else
-		{
-			$this->throwPreRenderedException();
-		}
-	}
-
-	/**
 	 * @throws \Exception
 	 */
 	private function throwPreRenderedException(){
@@ -577,7 +548,7 @@ HTML;
 		{
 			foreach($this->_events as $event => $call)
 			{
-				$eventsHtml .= "{$this->getJsVar(true)}.on(\'{$event}\', function (params) {{$call}});";
+				$eventsHtml .= "{$this->getJsVar()}.on(\'{$event}\', function (params) {{$call}});";
 			}
 		}
 
