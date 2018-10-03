@@ -27,7 +27,6 @@ composer require "hisune/echarts-php"
     - [render(string $id, [array] $attribute = [], [string] $theme = null)](#customer-attribute) 
     - [addEvent(string $event, string $callback)](#events-for-3x) 
     - [jsExpr(string $string)](#javascript-function)
-    - [eventMethod(string $name)](#events-for-3x)
     - [addExtraScript(string $file, [string] $dist = null)](#add-extra-script-from-cdn)
   - Class: Config
     - [$dist](#customer-dist)
@@ -35,7 +34,6 @@ composer require "hisune/echarts-php"
     - [$version](#dist-version)
     - [$minify](#whether-or-not-load-minify-js-file)
     - [$renderScript](#render-scripts)
-    - [addExtraScript](#add-extra-script-from-cdn)
   - Class: InitOptions
     - [$devicePixelRatio](#initoptionsdevicepixelratio)
     - [$renderer](#initoptionsrenderer)
