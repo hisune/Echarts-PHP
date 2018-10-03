@@ -16,7 +16,7 @@ composer require "hisune/echarts-php"
 ## Table of Contents
   - [Backward Incompatibility Warning](#backward-incompatibility-warning)
   - Class: ECharts
-    - [__construct([string] $dist = '')](#simple-recommend-using-php-property)
+    - [__construct([string] $dist = '', $jsSuffix = null)](#simple-recommend-using-php-property)
     - [addSeries(Series $series)](#add-series-with-property) 
     - [addXAxis(XAxis $xAxis)](#add-xaxis-with-property) 
     - [addYAxis(YAxis $yAxis)](#add-yaxis-with-property) 
