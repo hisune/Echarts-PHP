@@ -249,20 +249,31 @@ HTML;
 		$_options = [];
 		is_null($options) && $options = $this->_options;
 
-		foreach($options as $k => $v)
+		if (is_array($options))
 		{
-			if($v instanceof Property)
+			foreach($options as $k => $v)
 			{
-				$_options[$k] = $v->_options;
-				if(is_array($_options[$k]))
+				if (is_array($v))
 				{
-					$_options[$k] = $this->getOption($_options[$k]);
+					$_options[$k] = $this->getOption($v);
+				}
+				elseif($v instanceof Property)
+				{
+					$_options[$k] = $v->_options;
+					if(is_array($_options[$k]))
+					{
+						$_options[$k] = $this->getOption($_options[$k]);
+					}
+				}
+				else
+				{
+					$_options[$k] = $v;
 				}
 			}
-			else
-			{
-				$_options[$k] = $v;
-			}
+		}
+		else
+		{
+			$_options = $options;
 		}
 		$this->optionMethod($_options);
 
