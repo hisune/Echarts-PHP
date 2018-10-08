@@ -180,7 +180,7 @@ class ECharts extends Property{
 		$attribute = $attribute?:array();
 		$attribute = self::_renderAttribute($attribute);
 
-		is_null($theme) && $theme = 'null';
+		$theme = $this->jsonEncode($theme);
 
 		$js = $this->renderScripts();
 
@@ -204,7 +204,7 @@ require(
 		{$require}
 	],
 	function (ec) {
-		{$jsVar} = ec.init(document.getElementById('{$id}'), '{$theme}');
+		{$jsVar} = ec.init(document.getElementById('{$id}'), {$theme});
 		var option = {$option};
 		{$jsVar}.setOption(option);
 	}
@@ -217,7 +217,7 @@ HTML;
 
 			$loader = <<<HTML
 var initOptions = {$initOptions};
-var {$jsVar} = echarts.init(document.getElementById('{$id}'), '{$theme}', initOptions);
+var {$jsVar} = echarts.init(document.getElementById('{$id}'), {$theme}, initOptions);
 {$jsVar}.setOption($option);
 $eventsHtml
 HTML;
