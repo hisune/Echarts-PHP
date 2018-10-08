@@ -232,8 +232,11 @@ HTML;
 
 	public function render($id, $attribute = null, $theme = null)
 	{
+		$preRender = $this->preRender($id, $attribute, $theme);
 
-		list($scripts, $placeholder, $loader) = $this->preRender($id, $attribute, $theme);
+		$scripts = $preRender["scripts"];
+		$placeholder = $preRender["placeholder"];
+		$loader = $preRender["loader"];
 
 		return <<<HTML
 {$scripts}
