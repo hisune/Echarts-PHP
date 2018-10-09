@@ -11,129 +11,130 @@ namespace Hisune\EchartsPHP;
 /**
  * Class ECharts
  * Created by Hisune EchartsPHP AutoGenerate.
+ *
  * @package Hisune\EchartsPHP
  *
- * @property  Doc\IDE\Title $title
+ * @property  Doc\IDE\Title       $title
  * The title component, which contains the main title and subtitle.
  *
- * @property Doc\IDE\Legend $legend
+ * @property Doc\IDE\Legend       $legend
  * Legend component.
  *
- * @property Doc\IDE\Grid $grid
+ * @property Doc\IDE\Grid         $grid
  * Drawing grid in Cartesian coordinate system. Up to two X-axis and two Y-axis can be placed in a single grid. You can draw a line chart, a histogram, and a scatter chart (bubble chart) on the grid.
  *
- * @property Doc\IDE\XAxis $xAxis
+ * @property Doc\IDE\XAxis        $xAxis
  * Cartesian coordinate system The x-axis in the grid. In general, a single grid component can only have up to two x-axises. More than two x-axes need to be configured to prevent overlap of multiple x-axes in the same position.
  *
- * @property Doc\IDE\YAxis $yAxis
+ * @property Doc\IDE\YAxis        $yAxis
  * Cartesian coordinate system The y-axis in the grid. In general, a single grid component can only have up to two left and right y-axis. More than two y-axis need to be configured to prevent overlap of multiple Y-axes in the same position.
  *
- * @property Doc\IDE\Polar $polar
+ * @property Doc\IDE\Polar        $polar
  * Polar coordinate system, can be used for scatter plots and line graphs. Each polar coordinate system has an angular axis and a radius axis.
  *
- * @property Doc\IDE\RadiusAxis $radiusAxis
+ * @property Doc\IDE\RadiusAxis   $radiusAxis
  * Radial axis of the polar coordinate system.
  *
- * @property Doc\IDE\AngleAxis $angleAxis
+ * @property Doc\IDE\AngleAxis    $angleAxis
  * The angular axis of the polar coordinate system.
  *
- * @property Doc\IDE\Radar $radar
+ * @property Doc\IDE\Radar        $radar
  * Radar chart coordinate system component, only for radar chart. This component is equivalent to the polar component in ECharts 2. Because the polar in 3 is refactored to the standard polar component, to avoid confusion, the radar image uses the radar component as its coordinate system.
  *
- * @property Doc\IDE\DataZoom $dataZoom
+ * @property Doc\IDE\DataZoom     $dataZoom
  * The dataZoom component is used for area scaling so that you can freely focus on the details of the data, or overview the data as a whole, or remove the effects of outliers.
  *
- * @property Doc\IDE\VisualMap $visualMap
+ * @property Doc\IDE\VisualMap    $visualMap
  * visualMap is a visual mapping component for visual coding, that is, mapping data to visual elements (visual channels).
  *
- * @property Doc\IDE\Tooltip $tooltip
+ * @property Doc\IDE\Tooltip      $tooltip
  * Prompt box component.
  *
- * @property Doc\IDE\AxisPointer $axisPointer
+ * @property Doc\IDE\AxisPointer  $axisPointer
  * This is the global common setting for the axis indicator (axisPointer).
  *
- * @property Doc\IDE\Toolbox $toolbox
+ * @property Doc\IDE\Toolbox      $toolbox
  * toolbar. Built-in export pictures, data view, dynamic type switching, data area scaling, reset five tools.
  *
- * @property Doc\IDE\Brush $brush
+ * @property Doc\IDE\Brush        $brush
  * brush is the area selection component, the user can select a part of the data in the figure, which is convenient for showing the selected data to the user, or some statistical calculation results of them.
  *
- * @property Doc\IDE\Geo $geo
+ * @property Doc\IDE\Geo          $geo
  * Geographic coordinate system components.
  *
- * @property Doc\IDE\Parallel $parallel
+ * @property Doc\IDE\Parallel     $parallel
  *
  *
  * @property Doc\IDE\ParallelAxis $parallelAxis
  * This component is the coordinate axis in the parallel coordinate system.
  *
- * @property Doc\IDE\SingleAxis $singleAxis
+ * @property Doc\IDE\SingleAxis   $singleAxis
  * Single axis. Can be applied to scatter plots to display one-dimensional data, as in the following example
  *
- * @property Doc\IDE\Timeline $timeline
+ * @property Doc\IDE\Timeline     $timeline
  * The timeline component provides the ability to switch, play, and more between multiple ECharts options.
  *
- * @property Doc\IDE\Graphic $graphic
+ * @property Doc\IDE\Graphic      $graphic
  * graphic is a native graphic element component. Graphic elements that can be supported include:
  *
- * @property Doc\IDE\Calendar $calendar
+ * @property Doc\IDE\Calendar     $calendar
  * Calendar coordinate system component.
  *
- * @property Doc\IDE\Dataset $dataset
+ * @property Doc\IDE\Dataset      $dataset
  * ECharts 4 began to support the dataset component for separate dataset declarations, so that data can be managed separately, reused by multiple components, and free to specify data to visual mapping. This can bring convenience in use in many scenarios.
  *
- * @property Doc\IDE\Aria $aria
+ * @property Doc\IDE\Aria         $aria
  * W3C has developed the Accessible Rich Internet Applications Suite (WAI-ARIA), which is dedicated to making web content and web applications accessible to more people with disabilities. ECharts 4.0 complies with this specification and supports automatic generation of descriptions based on chart configuration items, enabling blind people to understand the contents of the chart with the help of reading devices, so that the chart can be accessed by more people.
  *
- * @property Doc\IDE\Series $series
+ * @property Doc\IDE\Series       $series
  * Series list. Each series determines its own chart type by type
  *
- * @property callable $color
+ * @property callable             $color
  * Palette color list. If the series does not have a color set, it will cycle through the list to get the color as the series color.
  *
- * @property callable $backgroundColor
+ * @property callable             $backgroundColor
  * Background color, no background by default.
  *
- * @property Doc\IDE\TextStyle $textStyle
+ * @property Doc\IDE\TextStyle    $textStyle
  * Global font style.
  *
- * @property callable $animation
+ * @property callable             $animation
  * Whether to start the animation.
  *
- * @property callable $animationThreshold
+ * @property callable             $animationThreshold
  * Whether to turn on the threshold of the animation, the animation will be turned off when the number of graphics displayed in a single series is greater than this threshold.
  *
- * @property callable $animationDuration
+ * @property callable             $animationDuration
  * The length of the initial animation, support callback function, can achieve a more dramatic initial animation effect by returning different delay time for each data:
  *
- * @property callable $animationEasing
+ * @property callable             $animationEasing
  * The easing effect of the initial animation. For different easing effects, refer to the easing example.
  *
- * @property callable $animationDelay
+ * @property callable             $animationDelay
  * The initial animation delay, support callback function, can achieve a more dramatic initial animation effect by returning different delay time for each data.
  *
- * @property callable $animationDurationUpdate
+ * @property callable             $animationDurationUpdate
  * The length of time the data is updated.
  *
- * @property callable $animationEasingUpdate
+ * @property callable             $animationEasingUpdate
  * The easing effect of the data update animation.
  *
- * @property callable $animationDelayUpdate
+ * @property callable             $animationDelayUpdate
  * Data update animation delay, support callback function, can achieve more dramatic update animation effect by returning different delay time for each data.
  *
- * @property callable $progressive
+ * @property callable             $progressive
  * The number of graphics is drawn per frame during progressive rendering. When set to 0, progressive rendering is not enabled, allowing separate configuration for each series.
  *
- * @property callable $progressiveThreshold
+ * @property callable             $progressiveThreshold
  * Enables the graph number threshold for progressive rendering, enabling progressive rendering when the number of graphs in a single series exceeds this threshold.
  *
- * @property callable $blendMode
+ * @property callable             $blendMode
  * Mixed mode of graphics, different blend modes can be found at https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation .
  *
- * @property callable $hoverLayerThreshold
+ * @property callable             $hoverLayerThreshold
  * The number of graph thresholds determines whether a separate hover layer is turned on, and a separate hover layer is turned on when the number of graphs for the entire graph is greater than the threshold.
  *
- * @property callable $useUTC
+ * @property callable             $useUTC
  * Whether to use UTC time.
  *
  */
@@ -149,7 +150,6 @@ class ECharts extends Property{
 
 	public $extraScript = array();
 	protected $_events = [];
-
 
 	/* Overrideable Parameters for Config */
 	protected $dist = '';
@@ -252,11 +252,11 @@ HTML;
 		$_options = [];
 		is_null($options) && $options = $this->_options;
 
-		if (is_array($options))
+		if(is_array($options))
 		{
 			foreach($options as $k => $v)
 			{
-				if (is_array($v))
+				if(is_array($v))
 				{
 					$_options[$k] = $this->getOption($v);
 				}
@@ -278,7 +278,7 @@ HTML;
 		{
 			$_options = $options;
 		}
-		$this->optionMethod($_options);
+		$_options = $this->optionMethod($_options);
 
 		return $asJson? $this->jsonEncode($_options):$_options;
 	}
@@ -324,23 +324,36 @@ HTML;
 	}
 
 	// 替换js的function
-	protected function optionMethod(&$option)
+	protected function optionMethod($option)
 	{
-		foreach($option as $k => $v)
+		if(!($option instanceof Property))
 		{
-			if(is_string($v))
+			foreach($option as $k => $v)
 			{
-				$replace = str_replace(array("\t", "\r", "\n", "\0", "\x0B", ' '), '', $v);
-				if(strpos($replace, 'function(') === 0)
+				if(is_string($v))
 				{
-					$option[$k] = $this->_jsMethod($v);
+					$replace = str_replace(array("\t", "\r", "\n", "\0", "\x0B", ' '), '', $v);
+					if(strpos($replace, 'function(') === 0)
+					{
+						$option[$k] = $this->_jsMethod($v);
+					}
+				}
+				elseif(is_array($v))
+				{
+					$option[$k] = $this->optionMethod($option[$k]);
+				}
+				elseif($v instanceof Property)
+				{
+					$option[$k] = $this->optionMethod($v);
 				}
 			}
-			elseif(is_array($v))
-			{
-				$this->optionMethod($option[$k]);
-			}
 		}
+		else
+		{
+			$option = $this->optionMethod($option->_options);
+		}
+
+		return $option;
 	}
 
 	// 替换回js的函数
@@ -418,7 +431,7 @@ HTML;
 	 */
 	public function getRenderScript()
 	{
-		return !is_null($this->renderScript)?$this->renderScript:Config::$renderScript;
+		return !is_null($this->renderScript)? $this->renderScript:Config::$renderScript;
 	}
 
 	/**
@@ -436,7 +449,7 @@ HTML;
 	 */
 	private function setJsVar($jsSuffix = null)
 	{
-		if (!$this->isJsNameAlreadyUsed)
+		if(!$this->isJsNameAlreadyUsed)
 		{
 			if(!$jsSuffix || !is_string($jsSuffix))
 			{
@@ -461,7 +474,7 @@ HTML;
 	 */
 	public function isMinify()
 	{
-		return !is_null($this->minify)?$this->minify:Config::$minify;
+		return !is_null($this->minify)? $this->minify:Config::$minify;
 	}
 
 	/**
@@ -489,7 +502,7 @@ HTML;
 	 */
 	public function getDist()
 	{
-		return !is_null($this->dist)?$this->dist:Config::$dist;
+		return !is_null($this->dist)? $this->dist:Config::$dist;
 	}
 
 	/**
@@ -499,8 +512,8 @@ HTML;
 	 */
 	public function getDistType($withDot = false)
 	{
-		$distType = !is_null($this->distType)?$this->distType:Config::$distType;
-		return (($withDot && $distType)?'.':'').$distType;
+		$distType = !is_null($this->distType)? $this->distType:Config::$distType;
+		return (($withDot && $distType)? '.':'').$distType;
 	}
 
 	/**
@@ -516,7 +529,7 @@ HTML;
 	 */
 	public function getVersion()
 	{
-		return !is_null($this->version)?$this->version:Config::$version;
+		return !is_null($this->version)? $this->version:Config::$version;
 	}
 
 	/**
@@ -530,11 +543,13 @@ HTML;
 	/**
 	 * @throws \Exception
 	 */
-	private function throwPreRenderedException(){
+	private function throwPreRenderedException()
+	{
 		throw new \Exception('$jsVar is already defined. In order to prevent incompatibilities with already printed scripts, it is not allowed to change $prefix or $jsVar after preRender phase.');
 	}
 
-	function renderScripts(){
+	function renderScripts()
+	{
 		$js = '';
 		if($this->getRenderScript())
 		{
