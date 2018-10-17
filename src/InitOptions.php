@@ -9,8 +9,11 @@
 namespace Hisune\EchartsPHP;
 
 class InitOptions{
+	const RENDERER_CANVAS = 'canvas';
+	const RENDERER_SVG = 'svg';
+
 	public $devicePixelRatio = null;
-	public $renderer = 'canvas';
+	public $renderer = self::RENDERER_CANVAS;
 	public $width = null;
 	public $height = null;
 }

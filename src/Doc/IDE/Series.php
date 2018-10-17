@@ -12,6 +12,8 @@ use Hisune\EchartsPHP\Property;
  * @property string $type Default: 'line'
  *    
  *
+ * @property string $id
+ *
  * @property string $name
  *    系列名称，用于tooltip的显示，legend 的图例筛选，在 setOption 更新数据和配置项时用于指定对应的系列。
  *

@@ -5,221 +5,582 @@
  * Date: 2015/7/3
  * Time: 14:01
  */
+
 namespace Hisune\EchartsPHP;
 
 /**
  * Class ECharts
  * Created by Hisune EchartsPHP AutoGenerate.
+ *
  * @package Hisune\EchartsPHP
  *
- * @property Doc\IDE\Title $title
- *   标题组件，包含主标题和副标题。
+ * @property  Doc\IDE\Title       $title
+ * The title component, which contains the main title and subtitle.
  *
- * @property Doc\IDE\Legend $legend
- *   图例组件。
+ * @property Doc\IDE\Legend       $legend
+ * Legend component.
  *
- * @property Doc\IDE\Grid $grid
- *   直角坐标系内绘图网格，单个 grid 内最多可以放置上下两个 X 轴，左右两个 Y 轴。可以在网格上绘制折线图，柱状图，散点图（气泡图）。
+ * @property Doc\IDE\Grid         $grid
+ * Drawing grid in Cartesian coordinate system. Up to two X-axis and two Y-axis can be placed in a single grid. You can draw a line chart, a histogram, and a scatter chart (bubble chart) on the grid.
  *
- * @property Doc\IDE\XAxis $xAxis
- *   直角坐标系 grid 中的 x 轴，一般情况下单个 grid 组件最多只能放上下两个 x 轴，多于两个 x 轴需要通过配置 offset 属性防止同个位置多个 x 轴的重叠。
+ * @property Doc\IDE\XAxis        $xAxis
+ * Cartesian coordinate system The x-axis in the grid. In general, a single grid component can only have up to two x-axises. More than two x-axes need to be configured to prevent overlap of multiple x-axes in the same position.
  *
- * @property Doc\IDE\YAxis $yAxis
- *   直角坐标系 grid 中的 y 轴，一般情况下单个 grid 组件最多只能放左右两个 y 轴，多于两个 y 轴需要通过配置 offset 属性防止同个位置多个 Y 轴的重叠。
+ * @property Doc\IDE\YAxis        $yAxis
+ * Cartesian coordinate system The y-axis in the grid. In general, a single grid component can only have up to two left and right y-axis. More than two y-axis need to be configured to prevent overlap of multiple Y-axes in the same position.
  *
- * @property Doc\IDE\Polar $polar
- *   极坐标系，可以用于散点图和折线图。每个极坐标系拥有一个角度轴和一个半径轴。
+ * @property Doc\IDE\Polar        $polar
+ * Polar coordinate system, can be used for scatter plots and line graphs. Each polar coordinate system has an angular axis and a radius axis.
  *
- * @property Doc\IDE\RadiusAxis $radiusAxis
- *   极坐标系的径向轴。
+ * @property Doc\IDE\RadiusAxis   $radiusAxis
+ * Radial axis of the polar coordinate system.
  *
- * @property Doc\IDE\AngleAxis $angleAxis
- *   极坐标系的角度轴。
+ * @property Doc\IDE\AngleAxis    $angleAxis
+ * The angular axis of the polar coordinate system.
  *
- * @property Doc\IDE\Radar $radar
- *   雷达图坐标系组件，只适用于雷达图。该组件等同 ECharts 2 中的 polar 组件。因为 3 中的 polar 被重构为标准的极坐标组件，为避免混淆，雷达图使用 radar 组件作为其坐标系。
+ * @property Doc\IDE\Radar        $radar
+ * Radar chart coordinate system component, only for radar chart. This component is equivalent to the polar component in ECharts 2. Because the polar in 3 is refactored to the standard polar component, to avoid confusion, the radar image uses the radar component as its coordinate system.
  *
- * @property Doc\IDE\DataZoom $dataZoom
- *   dataZoom 组件 用于区域缩放，从而能自由关注细节的数据信息，或者概览数据整体，或者去除离群点的影响。
+ * @property Doc\IDE\DataZoom     $dataZoom
+ * The dataZoom component is used for area scaling so that you can freely focus on the details of the data, or overview the data as a whole, or remove the effects of outliers.
  *
- * @property Doc\IDE\VisualMap $visualMap
- *   visualMap 是视觉映射组件，用于进行『视觉编码』，也就是将数据映射到视觉元素（视觉通道）。
+ * @property Doc\IDE\VisualMap    $visualMap
+ * visualMap is a visual mapping component for visual coding, that is, mapping data to visual elements (visual channels).
  *
- * @property Doc\IDE\Tooltip $tooltip
- *   提示框组件。
+ * @property Doc\IDE\Tooltip      $tooltip
+ * Prompt box component.
  *
- * @property Doc\IDE\AxisPointer $axisPointer
- *   这是坐标轴指示器（axisPointer）的全局公用设置。
+ * @property Doc\IDE\AxisPointer  $axisPointer
+ * This is the global common setting for the axis indicator (axisPointer).
  *
- * @property Doc\IDE\Toolbox $toolbox
- *   工具栏。内置有导出图片，数据视图，动态类型切换，数据区域缩放，重置五个工具。
+ * @property Doc\IDE\Toolbox      $toolbox
+ * toolbar. Built-in export pictures, data view, dynamic type switching, data area scaling, reset five tools.
  *
- * @property Doc\IDE\Brush $brush
- *   brush 是区域选择组件，用户可以选择图中一部分数据，从而便于向用户展示被选中数据，或者他们的一些统计计算结果。
+ * @property Doc\IDE\Brush        $brush
+ * brush is the area selection component, the user can select a part of the data in the figure, which is convenient for showing the selected data to the user, or some statistical calculation results of them.
  *
- * @property Doc\IDE\Geo $geo
- *   地理坐标系组件。
+ * @property Doc\IDE\Geo          $geo
+ * Geographic coordinate system components.
  *
- * @property Doc\IDE\Parallel $parallel
+ * @property Doc\IDE\Parallel     $parallel
  *
  *
  * @property Doc\IDE\ParallelAxis $parallelAxis
- *   这个组件是平行坐标系中的坐标轴。
+ * This component is the coordinate axis in the parallel coordinate system.
  *
- * @property Doc\IDE\SingleAxis $singleAxis
- *   单轴。可以被应用到散点图中展现一维数据，如下示例
+ * @property Doc\IDE\SingleAxis   $singleAxis
+ * Single axis. Can be applied to scatter plots to display one-dimensional data, as in the following example
  *
- * @property Doc\IDE\Timeline $timeline
- *   timeline 组件，提供了在多个 ECharts option 间进行切换、播放等操作的功能。
+ * @property Doc\IDE\Timeline     $timeline
+ * The timeline component provides the ability to switch, play, and more between multiple ECharts options.
  *
- * @property Doc\IDE\Graphic $graphic
- *   graphic 是原生图形元素组件。可以支持的图形元素包括：
+ * @property Doc\IDE\Graphic      $graphic
+ * graphic is a native graphic element component. Graphic elements that can be supported include:
  *
- * @property Doc\IDE\Calendar $calendar
- *   日历坐标系组件。
+ * @property Doc\IDE\Calendar     $calendar
+ * Calendar coordinate system component.
  *
- * @property Doc\IDE\Dataset $dataset
- *   ECharts 4 开始支持了 数据集（dataset）组件用于单独的数据集声明，从而数据可以单独管理，被多个组件复用，并且可以自由指定数据到视觉的映射。这在不少场景下能带来使用上的方便。
+ * @property Doc\IDE\Dataset      $dataset
+ * ECharts 4 began to support the dataset component for separate dataset declarations, so that data can be managed separately, reused by multiple components, and free to specify data to visual mapping. This can bring convenience in use in many scenarios.
  *
- * @property Doc\IDE\Aria $aria
- *   W3C 制定了无障碍富互联网应用规范集（WAI-ARIA，the Accessible Rich Internet Applications Suite），致力于使得网页内容和网页应用能够被更多残障人士访问。ECharts 4.0 遵从这一规范，支持自动根据图表配置项智能生成描述，使得盲人可以在朗读设备的帮助下了解图表内容，让图表可以被更多人群访问。
+ * @property Doc\IDE\Aria         $aria
+ * W3C has developed the Accessible Rich Internet Applications Suite (WAI-ARIA), which is dedicated to making web content and web applications accessible to more people with disabilities. ECharts 4.0 complies with this specification and supports automatic generation of descriptions based on chart configuration items, enabling blind people to understand the contents of the chart with the help of reading devices, so that the chart can be accessed by more people.
  *
- * @property Doc\IDE\Series $series
- *   系列列表。每个系列通过 type 决定自己的图表类型
+ * @property Doc\IDE\Series       $series
+ * Series list. Each series determines its own chart type by type
  *
- * @property callable $color
- *   调色盘颜色列表。如果系列没有设置颜色，则会依次循环从该列表中取颜色作为系列颜色。
+ * @property callable             $color
+ * Palette color list. If the series does not have a color set, it will cycle through the list to get the color as the series color.
  *
- * @property callable $backgroundColor
- *   背景色，默认无背景。
+ * @property callable             $backgroundColor
+ * Background color, no background by default.
  *
- * @property Doc\IDE\TextStyle $textStyle
- *   全局的字体样式。
+ * @property Doc\IDE\TextStyle    $textStyle
+ * Global font style.
  *
- * @property callable $animation
- *   是否开启动画。
+ * @property callable             $animation
+ * Whether to start the animation.
  *
- * @property callable $animationThreshold
- *   是否开启动画的阈值，当单个系列显示的图形数量大于这个阈值时会关闭动画。
+ * @property callable             $animationThreshold
+ * Whether to turn on the threshold of the animation, the animation will be turned off when the number of graphics displayed in a single series is greater than this threshold.
  *
- * @property callable $animationDuration
- *   初始动画的时长，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果：
+ * @property callable             $animationDuration
+ * The length of the initial animation, support callback function, can achieve a more dramatic initial animation effect by returning different delay time for each data:
  *
- * @property callable $animationEasing
- *   初始动画的缓动效果。不同的缓动效果可以参考 缓动示例。
+ * @property callable             $animationEasing
+ * The easing effect of the initial animation. For different easing effects, refer to the easing example.
  *
- * @property callable $animationDelay
- *   初始动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果。
+ * @property callable             $animationDelay
+ * The initial animation delay, support callback function, can achieve a more dramatic initial animation effect by returning different delay time for each data.
  *
- * @property callable $animationDurationUpdate
- *   数据更新动画的时长。
+ * @property callable             $animationDurationUpdate
+ * The length of time the data is updated.
  *
- * @property callable $animationEasingUpdate
- *   数据更新动画的缓动效果。
+ * @property callable             $animationEasingUpdate
+ * The easing effect of the data update animation.
  *
- * @property callable $animationDelayUpdate
- *   数据更新动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的更新动画效果。
+ * @property callable             $animationDelayUpdate
+ * Data update animation delay, support callback function, can achieve more dramatic update animation effect by returning different delay time for each data.
  *
- * @property callable $progressive
- *   渐进式渲染时每一帧绘制图形数量，设为 0 时不启用渐进式渲染，支持每个系列单独配置。
+ * @property callable             $progressive
+ * The number of graphics is drawn per frame during progressive rendering. When set to 0, progressive rendering is not enabled, allowing separate configuration for each series.
  *
- * @property callable $progressiveThreshold
- *   启用渐进式渲染的图形数量阈值，在单个系列的图形数量超过该阈值时启用渐进式渲染。
+ * @property callable             $progressiveThreshold
+ * Enables the graph number threshold for progressive rendering, enabling progressive rendering when the number of graphs in a single series exceeds this threshold.
  *
- * @property callable $blendMode
- *   图形的混合模式，不同的混合模式见 https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation 。
+ * @property callable             $blendMode
+ * Mixed mode of graphics, different blend modes can be found at https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation .
  *
- * @property callable $hoverLayerThreshold
- *   图形数量阈值，决定是否开启单独的 hover 层，在整个图表的图形数量大于该阈值时开启单独的 hover 层。
+ * @property callable             $hoverLayerThreshold
+ * The number of graph thresholds determines whether a separate hover layer is turned on, and a separate hover layer is turned on when the number of graphs for the entire graph is greater than the threshold.
  *
- * @property callable $useUTC
- *   是否使用 UTC 时间。
+ * @property callable             $useUTC
+ * Whether to use UTC time.
  *
  */
-class ECharts extends Property
-{
+class ECharts extends Property{
 	public $initOptions;
-    public $_events = [];
-    protected $jsVar;
 
-    /**
-     * @param $dist string, dist of libraries
-     */
-    public function __construct($dist = '')
-    {
-        if ($dist){
-            Config::$dist = $dist;
-        }
-        $this->initOptions = new InitOptions();
-        $this->setJsVar();
-    }
+	protected $isJsNameAlreadyUsed = false;
+	protected $jsVar;
 
-    public function render($id, $attribute = null, $theme = null)
-    {
-    	$attribute = $attribute?:array();
+	/* relocated from Config */
+	public static $method = array();
+	protected static $scripts = [];
 
-        return Config::render($id, $this->getOption(), $theme, $attribute, $this->_events, $this->initOptions);
-    }
+	public $extraScript = array();
+	protected $_events = [];
 
-    public function getOption($render = null, $jsObject = false)
-    {
-        $options = [];
-        is_null($render) && $render = $this->_options;
+	/* Overrideable Parameters for Config */
+	protected $dist = '';
+	protected $version = null;
+	protected $renderScript = null;
+	protected $distType = null;
+	protected $minify = null;
 
-        foreach ($render as $k => $v) {
-            if (is_object($v)) {
-                $options[$k] = $v->_options;
-                if (is_array($options[$k]))
-                    $options[$k] = $this->getOption($options[$k]);
-            } else
-                $options[$k] = $v;
-        }
-        Config::optionMethod($options);
+	/**
+	 * @param      $dist string, dist of libraries
+	 * @param null $jsSuffix
+	 *
+	 * @throws \Exception
+	 */
+	public function __construct($dist = '', $jsSuffix = null)
+	{
+		$this->setDist($dist);
+		$this->initOptions = new InitOptions();
+		$this->setJsVar($jsSuffix);
+	}
 
-        return $jsObject ? Config::jsonEncode($options) : $options;
-    }
+	public function preRender($id, $attribute = null, $theme = null)
+	{
+		$initOptions = $this->initOptions;
 
-    public function setOption(array $options = array())
-    {
-        foreach ($options as $k => $v)
-            $this->offsetSet($k, $v);
-    }
+		$option = $this->getOption();
 
-    public function on($event, $callback)
-    {
-        $this->_events[$event] = $callback;
-    }
+		$attribute = $attribute?:array();
+		$attribute = self::_renderAttribute($attribute);
 
-    public function setJsVar($name = null)
-    {
-        if(!$name || !is_string($name)){
-            Config::$jsVar = uniqid();
-        }else{
-            Config::$jsVar = $name;
-        }
-        $this->jsVar = Config::$jsVar;
-    }
+		$theme = $this->jsonEncode($theme);
 
-    public function getJsVar($full = false)
-    {
-        return $full ? 'chart_' . $this->jsVar : $this->jsVar;
-    }
+		$js = $this->renderScripts();
 
-    public function addSeries(Doc\IDE\Series $series)
-    {
-        $this->series[] = $this->getOption($series->_options);
-    }
+		$jsVar = $this->getJsVar();
+		$option = $this->jsonEncode($option);
+		$initOptions = $this->jsonEncode($initOptions);
 
-    public function addXAxis(Doc\IDE\XAxis $xAxis)
-    {
-        $this->xAxis[] = $this->getOption($xAxis->_options);
-    }
+		if(version_compare($this->getVersion(), '3.0.0') < 0)
+		{
+			$dist = $this->getDist();
+			$require = self::_require($option);
+			$loader = <<<HTML
+var {$jsVar} = null;
+require.config({
+	paths: {
+		echarts: '{$dist}'
+	}
+});
+require(
+	[
+		{$require}
+	],
+	function (ec) {
+		{$jsVar} = ec.init(document.getElementById('{$id}'), {$theme});
+		var option = {$option};
+		{$jsVar}.setOption(option);
+	}
+);
+HTML;
+		}
+		else
+		{
+			$eventsHtml = $this->renderEvents();
 
-    public function addYAxis(Doc\IDE\YAxis $yAxis)
-    {
-        $this->yAxis[] = $this->getOption($yAxis->_options);
-    }
+			$loader = <<<HTML
+var initOptions = {$initOptions};
+var {$jsVar} = echarts.init(document.getElementById('{$id}'), {$theme}, initOptions);
+{$jsVar}.setOption($option);
+$eventsHtml
+HTML;
+		}
+
+		return array(
+			"scripts" => $js,
+			"placeholder" => "<div id=\"{$id}\" {$attribute}></div>",
+			"loader" => $loader,
+		);
+	}
+
+	public function render($id, $attribute = null, $theme = null)
+	{
+		$preRender = $this->preRender($id, $attribute, $theme);
+
+		$scripts = $preRender["scripts"];
+		$placeholder = $preRender["placeholder"];
+		$loader = $preRender["loader"];
+
+		return <<<HTML
+{$scripts}
+{$placeholder}
+<script type="text/javascript">
+	{$loader}
+</script>
+HTML;
+	}
+
+	public function getOption($options = null, $asJson = false)
+	{
+		$_options = [];
+		is_null($options) && $options = $this->_options;
+
+		if(is_array($options))
+		{
+			foreach($options as $k => $v)
+			{
+				if(is_array($v))
+				{
+					$_options[$k] = $this->getOption($v);
+				}
+				elseif($v instanceof Property)
+				{
+					$_options[$k] = $v->_options;
+					if(is_array($_options[$k]))
+					{
+						$_options[$k] = $this->getOption($_options[$k]);
+					}
+				}
+				else
+				{
+					$_options[$k] = $v;
+				}
+			}
+		}
+		else
+		{
+			$_options = $options;
+		}
+		$_options = $this->optionMethod($_options);
+
+		return $asJson? $this->jsonEncode($_options):$_options;
+	}
+
+	public function setOption(array $options = array())
+	{
+		foreach($options as $k => $v)
+		{
+			$this->offsetSet($k, $v);
+		}
+	}
+
+	public function addEvent($event, $callback)
+	{
+		$this->_events[$event] = $callback;
+	}
+
+	public function addSeries(Doc\IDE\Series $series)
+	{
+		$this->series[] = $this->getOption($series->_options);
+	}
+
+	public function addXAxis(Doc\IDE\XAxis $xAxis)
+	{
+		$this->xAxis[] = $this->getOption($xAxis->_options);
+	}
+
+	public function addYAxis(Doc\IDE\YAxis $yAxis)
+	{
+		$this->yAxis[] = $this->getOption($yAxis->_options);
+	}
+
+	public static function jsExpr($string)
+	{
+		return self::_jsMethod($string);
+	}
+
+	private static function _jsMethod($value)
+	{
+		$md5 = '{%'.md5($value).'%}';
+		static::$method['"'.$md5.'"'] = $value;
+		return $md5;
+	}
+
+	// 替换js的function
+	protected function optionMethod($option)
+	{
+		if(!($option instanceof Property))
+		{
+			foreach($option as $k => $v)
+			{
+				if(is_string($v))
+				{
+					$replace = str_replace(array("\t", "\r", "\n", "\0", "\x0B", ' '), '', $v);
+					if(strpos($replace, 'function(') === 0)
+					{
+						$option[$k] = $this->_jsMethod($v);
+					}
+				}
+				elseif(is_array($v))
+				{
+					$option[$k] = $this->optionMethod($option[$k]);
+				}
+				elseif($v instanceof Property)
+				{
+					$option[$k] = $this->optionMethod($v);
+				}
+			}
+		}
+		else
+		{
+			$option = $this->optionMethod($option->_options);
+		}
+
+		return $option;
+	}
+
+	// 替换回js的函数
+	public function jsonEncode($option)
+	{
+		$option = json_encode($option);
+		if(static::$method)
+		{
+			$option = str_replace(array_keys(static::$method), array_values(static::$method), $option);
+		}
+		return $option;
+	}
+
+	public function addExtraScript($file, $dist = null)
+	{
+		!$dist && $dist = $this->getDist();
+		$this->extraScript[$file] = $dist;
+	}
+
+	private static function _renderScript($src)
+	{
+		$js = '';
+		if(!isset(self::$scripts[$src]))
+		{
+			$js .= '<script type="text/javascript" src="'.$src.'"></script>';
+			self::$scripts[$src] = true;
+		}
+
+		return $js;
+	}
+
+	private static function _require($option)
+	{
+		$requireString = "'echarts',";
+
+		if(isset($option['series']))
+		{
+			foreach($option['series'] as $v)
+			{
+				if(isset($v['type']))
+				{
+					$requireString .= "'echarts/chart/".$v['type']."',";
+				}
+			}
+
+			$requireString = rtrim($requireString, ',');
+		}
+
+		return $requireString;
+	}
+
+	private static function _renderAttribute(array $attribute = array())
+	{
+		$attributeString = '';
+
+		if(!isset($attribute['style']))
+		{
+			$attribute['style'] = 'height:400px';
+		}
+		foreach($attribute as $k => $v)
+		{
+			$attributeString .= " $k=\"".self::_h($v).'"';
+		}
+
+		return $attributeString;
+	}
+
+	private static function _h($string)
+	{
+		return htmlspecialchars($string, ENT_QUOTES, 'utf-8');
+	}
+
+	/**
+	 * @return null
+	 */
+	public function getRenderScript()
+	{
+		return !is_null($this->renderScript)? $this->renderScript:Config::$renderScript;
+	}
+
+	/**
+	 * @param null $renderScript
+	 */
+	public function setRenderScript($renderScript)
+	{
+		$this->renderScript = $renderScript;
+	}
+
+	/**
+	 * @param null $jsSuffix
+	 *
+	 * @throws \Exception
+	 */
+	private function setJsVar($jsSuffix = null)
+	{
+		if(!$this->isJsNameAlreadyUsed)
+		{
+			if(!$jsSuffix || !is_string($jsSuffix))
+			{
+				$jsSuffix = 'chart_'.time().uniqid();
+			}
+			$this->jsVar = $jsSuffix;
+		}
+		else
+		{
+			$this->throwPreRenderedException();
+		}
+	}
+
+	public function getJsVar()
+	{
+		$this->isJsNameAlreadyUsed = true;
+		return $this->jsVar;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isMinify()
+	{
+		return !is_null($this->minify)? $this->minify:Config::$minify;
+	}
+
+	/**
+	 * @param bool $minify
+	 */
+	public function setMinify($minify)
+	{
+		$this->minify = $minify;
+	}
+
+	/**
+	 * @param string $dist
+	 *
+	 * @return $this
+	 */
+	public function setDist($dist = null)
+	{
+		$this->dist = $dist;
+
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDist()
+	{
+		return !is_null($this->dist)? $this->dist:Config::$dist;
+	}
+
+	/**
+	 * @param bool $withDot
+	 *
+	 * @return null
+	 */
+	public function getDistType($withDot = false)
+	{
+		$distType = !is_null($this->distType)? $this->distType:Config::$distType;
+		return (($withDot && $distType)? '.':'').$distType;
+	}
+
+	/**
+	 * @param null $distType
+	 */
+	public function setDistType($distType)
+	{
+		$this->distType = $distType;
+	}
+
+	/**
+	 * @return null
+	 */
+	public function getVersion()
+	{
+		return !is_null($this->version)? $this->version:Config::$version;
+	}
+
+	/**
+	 * @param null $version
+	 */
+	public function setVersion($version)
+	{
+		$this->version = $version;
+	}
+
+	/**
+	 * @throws \Exception
+	 */
+	private function throwPreRenderedException()
+	{
+		throw new \Exception('$jsVar is already defined. In order to prevent incompatibilities with already printed scripts, it is not allowed to change $prefix or $jsVar after preRender phase.');
+	}
+
+	function renderScripts()
+	{
+		$js = '';
+		if($this->getRenderScript())
+		{
+			$src = $this->getDist().'/echarts'.($this->getDistType(true)).($this->isMinify()? '.min':'').'.js';
+
+			$js .= self::_renderScript($src);
+
+			if($this->extraScript)
+			{
+				foreach($this->extraScript as $k => $v)
+				{
+					$src = $v.'/'.$k;
+					$js .= self::_renderScript($src);
+				}
+			}
+		}
+
+		return $js;
+	}
+
+	public function renderEvents()
+	{
+		$eventsHtml = '';
+		if($this->_events)
+		{
+			foreach($this->_events as $event => $call)
+			{
+				$eventsHtml .= "{$this->getJsVar()}.on(\'{$event}\', function (params) {{$call}});";
+			}
+		}
+
+		return $eventsHtml;
+	}
 }
-
-
-
