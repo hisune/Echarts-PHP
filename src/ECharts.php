@@ -194,10 +194,7 @@ class ECharts extends Property{
 				$attribute["style"]["height"] = "400px";
 			}
 		}
-		else
-		{
-			$this->initOptions->height = null;
-		}
+
 		$attribute = self::_renderAttribute($attribute);
 
 		$theme = $this->jsonEncode($theme);
