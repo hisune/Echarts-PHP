@@ -24,7 +24,8 @@ composer require "hisune/echarts-php"
     - [getOption([array] $render = null, [boolean] $jsObject = false)](#or-you-can-set-option-array-directly) 
     - [setJsVar(string $name = null)](#customer-js-variable-name) 
     - [getJsVar()](#customer-js-variable-name) 
-    - [render(string $id, [array] $attribute = [], [string] $theme = null)](#customer-attribute) 
+    - [render(string $id, [array] $attributes = [], [string] $theme = null)](#render-functions) 
+    - [preRender(string $id, [array] $attributes = [], [string] $theme = null)](#render-functions) 
     - [addEvent(string $event, string $callback)](#events-for-3x) 
     - [jsExpr(string $string)](#javascript-function)
     - [addExtraScript(string $file, [string] $dist = null)](#add-extra-script-from-cdn)
@@ -205,15 +206,64 @@ echo $chart->getJsVar(); // echo 'chart_test'
 // var chart_test = echarts.init( ...
 ```
 
-### Customer attribute
-`string render(string $id, [array] $attribute = [], [string] $theme = null)`
- - Param `id` is your html dom ID.
- - Param `attribute` is your html dom attribute.
- - Param `theme` is your ECharts theme.
- - Return html string.
+#### Render functions
+ 
+
 ```php
-$chart->render('simple-custom-id2', array('style' => 'height: 500px;'));
+/**
+ * array preRender($id, [array] $attributes = [], [string] theme = null)`
+ * string render(string $id, [array] $attributes = [], [string] $theme = null)`
+ */
+echo $chart->render('simple-custom-id2', array('style' => 'height: 500px;'));
+// or alternatively
+
+$chunks = $chart->preRender('id3');
+
+echo <<<HTML
+<table>
+	<tr>
+		<td id="id3"></td>
+	</tr>
+</table>
+<script type="text/javascript">
+$("#id3").html('loading');
+$.ajax({
+	...,
+	success:function(result){
+		$chart["loader"]
+	}
+});
+</script>
+HTML;
 ```
+#### Parameters
+  - Param `id` is your html dom ID.
+  - Param `attributes` is your html dom attribute.
+  - Param `theme` is your ECharts theme.
+  
+#### Examples
+
+`render` function returns a string of all the necessary scripts and initiations needed to draw the chart.
+
+`preRender` prepares an array with following indices:
+
+```php
+array(
+	"scripts" => $js,
+	"placeholder" => "<div id=\"{$id}\" {$attribute}></div>",
+	"loader" => $loader,
+)
+``` 
+where:
+ - `scripts` contains all the `<script src="..."></script>` of the (still not loaded) dependencies
+ - `placeholder` contains the placeholder's `<div></div>`
+ - `loader` contains the javascript snippet which will create the echarts' instance and set its options. please note that this has to be later enclosed in a `<script></script>` tag.
+ 
+ The goal of `preRender` function is to make the usage more flexible, for example, if the `loader` script needs to be enclosed in AJAX calls or the placeholder is defined previously etc. 
+ 
+ 
+ Please refer to [`InitOptions::$height`](#initoptionsheight) for more details about conflicting `$attributes` and `initOptions` properties. 
+
 
 ### Events (for 3.x+)
 `void addEvent(string $event, string $callback)`
@@ -314,6 +364,10 @@ please refer to [opts.width|opts.height](https://ecomfe.github.io/echarts-doc/pu
 $chart->initOptions->width = '500px';
 $chart->initOptions->height = '300px';
 ```
+
+> Note1: `InitOptions::$height` and `InitOptions::$width` properties are used to define the attributes of the `svg` or `canvas` object created; where the `$attributes` parameter of the [render functions](#render-functions) define the attributes of the chart's placeholder. if `$attribute`'s `width` and `height` are less than those of the object, the object will overflow. 
+
+> Note2: if no render-time `height` (e.g. `$attributes["style"]["height"] = 'XXXX'` or `$attibutes["style"] = "...;height:XXXX;...";`) is provided, `InitOptions::$height` is used to define chart's height. if that is also not defined, chart's height is set to `400px` by default so that the placeholder is shown in browser.
 
 
 ### Full Echarts PHPDoc
