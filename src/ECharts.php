@@ -676,7 +676,9 @@ HTML;
 		{
 			foreach($this->_events as $event => $call)
 			{
-				$eventsHtml .= "{$this->getJsVar()}.on(\'{$event}\', function (params) {{$call}});";
+				$eventsHtml .= "{$this->getJsVar()}.on('{$event}', function (params) {
+					$call
+				});";
 			}
 		}
 
