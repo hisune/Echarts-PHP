@@ -178,6 +178,23 @@ class ECharts extends Property{
 		$option = $this->getOption();
 
 		$attribute = $attribute?:array();
+
+		if (
+			!$attribute["style"] ||
+			(is_array($attribute["style"] && !key_exists("height", $attribute["style"]))) ||
+			(is_string($attribute["style"]) && strpos($attribute["style"], "height:") === false)
+		)
+		{
+			if ($attribute["style"])
+			{
+				$attribute["style"][] = $attribute["style"];
+			}
+			if (!$this->initOptions->height)
+			{
+				$attribute["style"]["height"] = "400px";
+			}
+		}
+
 		$attribute = self::_renderAttribute($attribute);
 
 		$theme = $this->jsonEncode($theme);
@@ -409,13 +426,28 @@ HTML;
 	{
 		$attributeString = '';
 
-		if(!isset($attribute['style']))
-		{
-			$attribute['style'] = 'height:400px';
-		}
 		foreach($attribute as $k => $v)
 		{
-			$attributeString .= " $k=\"".self::_h($v).'"';
+			if (is_array($v))
+			{
+				$temp = array();
+				foreach($v as $vK => $vV)
+				{
+					if (!is_numeric($vK))
+					{
+						$temp[] = "$vK:$vV";
+					}
+					else
+					{
+						$temp = $vK;
+					}
+				}
+
+				$v = join(";", $temp);
+			}
+
+			$v = self::_h($v);
+			$attributeString .= " $k=\"{$v}\"";
 		}
 
 		return $attributeString;
