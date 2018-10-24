@@ -247,9 +247,30 @@ HTML;
 		);
 	}
 
+	/**
+	 * @param string|array $id - if $id is an array with ('scripts', 'placeholder', 'loader') as keys, preRender() will not happen and $id is used as $preRender
+	 *                         - this allows manipulation and extra preparation of `preRender()` result.
+	 * @param null $attribute
+	 * @param null $theme
+	 *
+	 * @return string
+	 */
 	public function render($id, $attribute = null, $theme = null)
 	{
-		$preRender = $this->preRender($id, $attribute, $theme);
+		$preRender = null;
+
+		if (is_array($id))
+		{
+			if (isset($id["scripts"]) && isset($id["placeholder"]) && isset($id["loader"]))
+			{
+				$preRender = $id;
+			}
+		}
+
+		if (!$preRender)
+		{
+			$preRender = $this->preRender($id, $attribute, $theme);
+		}
 
 		$scripts = $preRender["scripts"];
 		$placeholder = $preRender["placeholder"];
@@ -384,19 +405,50 @@ HTML;
 		return $option;
 	}
 
-	public function addExtraScript($file, $dist = null)
+	/**
+	 * @param      $file
+	 * @param null|string|bool $distOrIsContent - possible values:
+	 *                               null|empty string - determine $dist automatically based on provided $this->getDist()
+	 *                               false - don't use $dist; provided $file is a valid URL
+	 *                               true - $file is not a location, but rather the contents to be written inside <script> tags
+	 *                               string - (non-empty) use given $dist as $dist
+	 */
+	public function addExtraScript($file, $distOrIsContent = null)
 	{
-		!$dist && $dist = $this->getDist();
-		$this->extraScript[$file] = $dist;
+		!$distOrIsContent && $distOrIsContent !== false && $distOrIsContent = $this->getDist();
+		$this->extraScript[$file] = $distOrIsContent;
 	}
 
-	private static function _renderScript($src)
+	/**
+	 * @param      $src
+	 * @param bool $isContent
+	 *
+	 * @return string
+	 */
+	private static function _renderScript($src, $isContent = false)
 	{
 		$js = '';
-		if(!isset(self::$scripts[$src]))
+		$content = null;
+		if (!$isContent)
 		{
-			$js .= '<script type="text/javascript" src="'.$src.'"></script>';
-			self::$scripts[$src] = true;
+			if(!isset(self::$scripts[$src]))
+			{
+				self::$scripts[$src] = true;
+				$src = "src=\"{$src}\"";
+			}
+			else
+			{
+				$src = "";
+			}
+		}
+		else
+		{
+			$content = $src;
+		}
+
+		if ($src || $content)
+		{
+			$js = "<script type=\"text/javascript\" {$src}>{$content}</script>";
 		}
 
 		return $js;
@@ -593,8 +645,23 @@ HTML;
 			{
 				foreach($this->extraScript as $k => $v)
 				{
-					$src = $v.'/'.$k;
-					$js .= self::_renderScript($src);
+					$isContent = false;
+					if ($v === true)
+					{
+						$isContent = true;
+					}
+					else
+					{
+						$src = '';
+
+						if ($v)
+						{
+							$src .= "$v/";
+						}
+
+						$src .= $k;
+					}
+					$js .= self::_renderScript($src, $isContent);
 				}
 			}
 		}
