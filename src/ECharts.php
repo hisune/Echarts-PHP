@@ -185,10 +185,11 @@ class ECharts extends Property{
 			(is_string($attribute["style"]) && strpos($attribute["style"], "height:") === false)
 		)
 		{
-			if ($attribute["style"])
+			if (!is_array($attribute["style"]))
 			{
 				$attribute["style"][] = $attribute["style"];
 			}
+
 			if (!$this->initOptions->height)
 			{
 				$attribute["style"]["height"] = "400px";
@@ -444,6 +445,7 @@ HTML;
 		else
 		{
 			$content = $src;
+			$src = '';
 		}
 
 		if ($src || $content)
@@ -646,9 +648,11 @@ HTML;
 				foreach($this->extraScript as $k => $v)
 				{
 					$isContent = false;
+					$src = null;
 					if ($v === true)
 					{
 						$isContent = true;
+						$src = $k;
 					}
 					else
 					{
