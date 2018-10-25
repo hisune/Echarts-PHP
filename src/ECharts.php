@@ -234,8 +234,7 @@ HTML;
 			$eventsHtml = $this->renderEvents();
 
 			$loader = <<<HTML
-var initOptions = {$initOptions};
-var {$jsVar} = echarts.init(document.getElementById('{$id}'), {$theme}, initOptions);
+var {$jsVar} = echarts.init(document.getElementById('{$id}'), {$theme}, {$initOptions});
 {$jsVar}.setOption($option);
 $eventsHtml
 HTML;
@@ -279,9 +278,27 @@ HTML;
 
 		return <<<HTML
 {$scripts}
-{$placeholder}
 <script type="text/javascript">
-	{$loader}
+if (! window['addEChartPlaceholder'])
+{
+	window['addEChartPlaceholder'] = function(id, placeholder){
+		if (!document.getElementById(id))
+		{
+			var scripts = document.getElementsByTagName( 'script' );
+			var me = scripts[ scripts.length - 1];
+			var parent = me.parentNode;
+			var node = document.createElement("div");
+			node.innerHTML = placeholder;
+			parent.insertBefore(node.firstChild, me);
+		}
+		else
+		{
+			console.log('<div> with id ' + id + ' already exists');
+		}
+	}
+}
+window['addEChartPlaceholder']('$id', '{$placeholder}');
+{$loader}
 </script>
 HTML;
 	}
