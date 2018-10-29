@@ -185,7 +185,7 @@ class ECharts extends Property{
 			(is_string($attribute["style"]) && strpos($attribute["style"], "height:") === false)
 		)
 		{
-			if (!is_array($attribute["style"]))
+			if ($attribute["style"] && !is_array($attribute["style"]))
 			{
 				$attribute["style"][] = $attribute["style"];
 			}
