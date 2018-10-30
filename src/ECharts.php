@@ -187,7 +187,7 @@ class ECharts extends Property{
 		{
 			if ($attribute["style"] && !is_array($attribute["style"]))
 			{
-				$attribute["style"][] = $attribute["style"];
+				$attribute["style"] = array($attribute["style"]);
 			}
 
 			if (!$this->initOptions->height)
@@ -199,6 +199,26 @@ class ECharts extends Property{
 		$attribute = self::_renderAttribute($attribute);
 
 		$theme = $this->jsonEncode($theme);
+
+		$this->addExtraScript("if (! window['addEChartPlaceholder'])
+{
+	window['addEChartPlaceholder'] = function(id, placeholder){
+		if (!document.getElementById(id))
+		{
+			var scripts = document.getElementsByTagName( 'script' );
+			var me = scripts[ scripts.length - 1];
+			var parent = me.parentNode;
+			var node = document.createElement(\"div\");
+			node.innerHTML = placeholder;
+			parent.insertBefore(node.firstChild, me);
+		}
+		else
+		{
+			console.log('<div> with id ' + id + ' already exists');
+		}
+	}
+}
+", true);
 
 		$js = $this->renderScripts();
 
@@ -240,11 +260,17 @@ $eventsHtml
 HTML;
 		}
 
-		return array(
+		$result = array(
 			"scripts" => $js,
 			"placeholder" => "<div id=\"{$id}\" {$attribute}></div>",
 			"loader" => $loader,
 		);
+
+		$result["placeholderLoader"] = <<<PL_LOADER
+window['addEChartPlaceholder']('$id', '{$result["placeholder"]}');
+PL_LOADER;
+
+		return $result;
 	}
 
 	/**
@@ -261,10 +287,14 @@ HTML;
 
 		if (is_array($id))
 		{
-			if (isset($id["scripts"]) && isset($id["placeholder"]) && isset($id["loader"]))
+			if (isset($id["scripts"]) && isset($id["placeholder"]) && isset($id["placeholderLoader"]) && isset($id["loader"]))
 			{
 				$preRender = $id;
 			}
+		}
+		else
+		{
+			$id = (string)$id;
 		}
 
 		if (!$preRender)
@@ -273,31 +303,13 @@ HTML;
 		}
 
 		$scripts = $preRender["scripts"];
-		$placeholder = $preRender["placeholder"];
+		$placeholderLoader = $preRender["placeholderLoader"];
 		$loader = $preRender["loader"];
 
 		return <<<HTML
 {$scripts}
 <script type="text/javascript">
-if (! window['addEChartPlaceholder'])
-{
-	window['addEChartPlaceholder'] = function(id, placeholder){
-		if (!document.getElementById(id))
-		{
-			var scripts = document.getElementsByTagName( 'script' );
-			var me = scripts[ scripts.length - 1];
-			var parent = me.parentNode;
-			var node = document.createElement("div");
-			node.innerHTML = placeholder;
-			parent.insertBefore(node.firstChild, me);
-		}
-		else
-		{
-			console.log('<div> with id ' + id + ' already exists');
-		}
-	}
-}
-window['addEChartPlaceholder']('$id', '{$placeholder}');
+{$placeholderLoader}
 {$loader}
 </script>
 HTML;
@@ -434,7 +446,15 @@ HTML;
 	public function addExtraScript($file, $distOrIsContent = null)
 	{
 		!$distOrIsContent && $distOrIsContent !== false && $distOrIsContent = $this->getDist();
-		$this->extraScript[$file] = $distOrIsContent;
+		$md5 = md5($file);
+
+		if (!isset($this->extraScript[$md5]))
+		{
+			$this->extraScript[$md5] = array(
+				"script" => $file,
+				"type_or_dist" => $distOrIsContent,
+			);
+		}
 	}
 
 	/**
@@ -447,26 +467,21 @@ HTML;
 	{
 		$js = '';
 		$content = null;
-		if (!$isContent)
+		$md5 = md5($src);
+		if(!isset(self::$scripts[$md5]))
 		{
-			if(!isset(self::$scripts[$src]))
+			self::$scripts[$md5] = true;
+
+			if (!$isContent)
 			{
-				self::$scripts[$src] = true;
 				$src = "src=\"{$src}\"";
 			}
 			else
 			{
-				$src = "";
+				$content = $src;
+				$src = '';
 			}
-		}
-		else
-		{
-			$content = $src;
-			$src = '';
-		}
 
-		if ($src || $content)
-		{
 			$js = "<script type=\"text/javascript\" {$src}>{$content}</script>";
 		}
 
@@ -662,25 +677,25 @@ HTML;
 
 			if($this->extraScript)
 			{
-				foreach($this->extraScript as $k => $v)
+				foreach($this->extraScript as $script)
 				{
 					$isContent = false;
 					$src = null;
-					if ($v === true)
+					if ($script["type_or_dist"] === true)
 					{
 						$isContent = true;
-						$src = $k;
+						$src = $script["script"];
 					}
 					else
 					{
 						$src = '';
 
-						if ($v)
+						if ($script["script"])
 						{
-							$src .= "$v/";
+							$src .= "{$script["type_or_dist"]}/";
 						}
 
-						$src .= $k;
+						$src .= $script["script"];
 					}
 					$js .= self::_renderScript($src, $isContent);
 				}
