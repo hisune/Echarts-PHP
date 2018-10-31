@@ -690,7 +690,7 @@ HTML;
 					{
 						$src = '';
 
-						if ($script["script"])
+						if ($script["type_or_dist"])
 						{
 							$src .= "{$script["type_or_dist"]}/";
 						}
