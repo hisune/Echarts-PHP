@@ -255,8 +255,8 @@ HTML;
 
 			$loader = <<<HTML
 var {$jsVar} = echarts.init(document.getElementById('{$id}'), {$theme}, {$initOptions});
-{$jsVar}.setOption($option);
 $eventsHtml
+{$jsVar}.setOption($option);
 HTML;
 		}
 
