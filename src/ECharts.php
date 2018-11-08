@@ -565,7 +565,7 @@ HTML;
 	 *
 	 * @throws \Exception
 	 */
-	private function setJsVar($jsSuffix = null)
+	public function setJsVar($jsSuffix = null)
 	{
 		if(!$this->isJsNameAlreadyUsed)
 		{
