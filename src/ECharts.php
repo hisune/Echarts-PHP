@@ -181,14 +181,15 @@ class ECharts extends Property{
 
 		if (
 			!$attribute["style"] ||
-			(is_array($attribute["style"] && !key_exists("height", $attribute["style"]))) ||
+			(is_array($attribute["style"]) && !key_exists("height", $attribute["style"])) ||
 			(is_string($attribute["style"]) && strpos($attribute["style"], "height:") === false)
 		)
 		{
-			if ($attribute["style"])
+			if ($attribute["style"] && !is_array($attribute["style"]))
 			{
-				$attribute["style"][] = $attribute["style"];
+				$attribute["style"] = array($attribute["style"]);
 			}
+
 			if (!$this->initOptions->height)
 			{
 				$attribute["style"]["height"] = "400px";
@@ -198,6 +199,26 @@ class ECharts extends Property{
 		$attribute = self::_renderAttribute($attribute);
 
 		$theme = $this->jsonEncode($theme);
+
+		$this->addExtraScript("if (! window['addEChartPlaceholder'])
+{
+	window['addEChartPlaceholder'] = function(id, placeholder){
+		if (!document.getElementById(id))
+		{
+			var scripts = document.getElementsByTagName( 'script' );
+			var me = scripts[ scripts.length - 1];
+			var parent = me.parentNode;
+			var node = document.createElement(\"div\");
+			node.innerHTML = placeholder;
+			parent.insertBefore(node.firstChild, me);
+		}
+		else
+		{
+			console.log('<div> with id ' + id + ' already exists');
+		}
+	}
+}
+", true);
 
 		$js = $this->renderScripts();
 
@@ -233,33 +254,63 @@ HTML;
 			$eventsHtml = $this->renderEvents();
 
 			$loader = <<<HTML
-var initOptions = {$initOptions};
-var {$jsVar} = echarts.init(document.getElementById('{$id}'), {$theme}, initOptions);
-{$jsVar}.setOption($option);
+var {$jsVar} = echarts.init(document.getElementById('{$id}'), {$theme}, {$initOptions});
 $eventsHtml
+{$jsVar}.setOption($option);
 HTML;
 		}
 
-		return array(
+		$result = array(
 			"scripts" => $js,
 			"placeholder" => "<div id=\"{$id}\" {$attribute}></div>",
 			"loader" => $loader,
 		);
+
+		$result["placeholderLoader"] = <<<PL_LOADER
+window['addEChartPlaceholder']('$id', '{$result["placeholder"]}');
+PL_LOADER;
+
+		return $result;
 	}
 
+	/**
+	 * @param string|array $id - if $id is an array with ('scripts', 'placeholder', 'loader') as keys, preRender() will not happen and $id is used as $preRender
+	 *                         - this allows manipulation and extra preparation of `preRender()` result.
+	 * @param null $attribute
+	 * @param null $theme
+	 *
+	 * @return string
+	 */
 	public function render($id, $attribute = null, $theme = null)
 	{
-		$preRender = $this->preRender($id, $attribute, $theme);
+		$preRender = null;
+
+		if (is_array($id))
+		{
+			if (isset($id["scripts"]) && isset($id["placeholder"]) && isset($id["placeholderLoader"]) && isset($id["loader"]))
+			{
+				$preRender = $id;
+			}
+		}
+		else
+		{
+			$id = (string)$id;
+		}
+
+		if (!$preRender)
+		{
+			$preRender = $this->preRender($id, $attribute, $theme);
+		}
 
 		$scripts = $preRender["scripts"];
-		$placeholder = $preRender["placeholder"];
+		$placeholderLoader = $preRender["placeholderLoader"];
 		$loader = $preRender["loader"];
 
 		return <<<HTML
 {$scripts}
-{$placeholder}
 <script type="text/javascript">
-	{$loader}
+{$placeholderLoader}
+{$loader}
 </script>
 HTML;
 	}
@@ -384,19 +435,54 @@ HTML;
 		return $option;
 	}
 
-	public function addExtraScript($file, $dist = null)
+	/**
+	 * @param      $file
+	 * @param null|string|bool $distOrIsContent - possible values:
+	 *                               null|empty string - determine $dist automatically based on provided $this->getDist()
+	 *                               false - don't use $dist; provided $file is a valid URL
+	 *                               true - $file is not a location, but rather the contents to be written inside <script> tags
+	 *                               string - (non-empty) use given $dist as $dist
+	 */
+	public function addExtraScript($file, $distOrIsContent = null)
 	{
-		!$dist && $dist = $this->getDist();
-		$this->extraScript[$file] = $dist;
+		!$distOrIsContent && $distOrIsContent !== false && $distOrIsContent = $this->getDist();
+		$md5 = md5($file);
+
+		if (!isset($this->extraScript[$md5]))
+		{
+			$this->extraScript[$md5] = array(
+				"script" => $file,
+				"type_or_dist" => $distOrIsContent,
+			);
+		}
 	}
 
-	private static function _renderScript($src)
+	/**
+	 * @param      $src
+	 * @param bool $isContent
+	 *
+	 * @return string
+	 */
+	private static function _renderScript($src, $isContent = false)
 	{
 		$js = '';
-		if(!isset(self::$scripts[$src]))
+		$content = null;
+		$md5 = md5($src);
+		if(!isset(self::$scripts[$md5]))
 		{
-			$js .= '<script type="text/javascript" src="'.$src.'"></script>';
-			self::$scripts[$src] = true;
+			self::$scripts[$md5] = true;
+
+			if (!$isContent)
+			{
+				$src = "src=\"{$src}\"";
+			}
+			else
+			{
+				$content = $src;
+				$src = '';
+			}
+
+			$js = "<script type=\"text/javascript\" {$src}>{$content}</script>";
 		}
 
 		return $js;
@@ -479,7 +565,7 @@ HTML;
 	 *
 	 * @throws \Exception
 	 */
-	private function setJsVar($jsSuffix = null)
+	public function setJsVar($jsSuffix = null)
 	{
 		if(!$this->isJsNameAlreadyUsed)
 		{
@@ -591,10 +677,27 @@ HTML;
 
 			if($this->extraScript)
 			{
-				foreach($this->extraScript as $k => $v)
+				foreach($this->extraScript as $script)
 				{
-					$src = $v.'/'.$k;
-					$js .= self::_renderScript($src);
+					$isContent = false;
+					$src = null;
+					if ($script["type_or_dist"] === true)
+					{
+						$isContent = true;
+						$src = $script["script"];
+					}
+					else
+					{
+						$src = '';
+
+						if ($script["type_or_dist"])
+						{
+							$src .= "{$script["type_or_dist"]}/";
+						}
+
+						$src .= $script["script"];
+					}
+					$js .= self::_renderScript($src, $isContent);
 				}
 			}
 		}
@@ -609,7 +712,9 @@ HTML;
 		{
 			foreach($this->_events as $event => $call)
 			{
-				$eventsHtml .= "{$this->getJsVar()}.on(\'{$event}\', function (params) {{$call}});";
+				$eventsHtml .= "{$this->getJsVar()}.on('{$event}', function (params) {
+					$call
+				});";
 			}
 		}
 
