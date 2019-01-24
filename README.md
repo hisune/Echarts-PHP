@@ -14,9 +14,8 @@ composer require "hisune/echarts-php"
 ```
 
 ## Table of Contents
-  - [Backward Incompatibility Warning](#backward-incompatibility-warning)
   - Class: ECharts
-    - [__construct([string] $dist = '', $jsSuffix = null)](#simple-recommend-using-php-property)
+    - [__construct([string] $dist = '')](#simple-recommend-using-php-property)
     - [addSeries(Series $series)](#add-series-with-property) 
     - [addXAxis(XAxis $xAxis)](#add-xaxis-with-property) 
     - [addYAxis(YAxis $yAxis)](#add-yaxis-with-property) 
@@ -24,55 +23,20 @@ composer require "hisune/echarts-php"
     - [getOption([array] $render = null, [boolean] $jsObject = false)](#or-you-can-set-option-array-directly) 
     - [setJsVar(string $name = null)](#customer-js-variable-name) 
     - [getJsVar()](#customer-js-variable-name) 
-    - [render(string $id, [array] $attributes = [], [string] $theme = null)](#render-functions) 
-    - [preRender(string $id, [array] $attributes = [], [string] $theme = null)](#render-functions) 
-    - [addEvent(string $event, string $callback)](#events-for-3x) 
-    - [jsExpr(string $string)](#javascript-function)
-    - [addExtraScript(string $file, [string] $dist = null)](#add-extra-script-from-cdn)
+    - [render(string $id, [array] $attribute = [], [string] $theme = null)](#customer-attribute) 
+    - [on(string $event, string $callback)](#events-for-3x) 
   - Class: Config
+    - [jsExpr(string $string)](#javascript-function)
+    - [eventMethod(string $name)](#events-for-3x)
+    - [addExtraScript(string $file, [string] $dist = null)](#add-extra-script-from-cdn)
     - [$dist](#customer-dist)
     - [$distType](#dist-type)
-    - [$version](#dist-version)
     - [$minify](#whether-or-not-load-minify-js-file)
-    - [$renderScript](#render-scripts)
-  - Class: InitOptions
-    - [$devicePixelRatio](#initoptionsdevicepixelratio)
-    - [$renderer](#initoptionsrenderer)
-    - [$width](#initoptionswidth)
-    - [$height](#initoptionsheight)
+    - $renderScript
+    - $version
   - [Theme](#the-example-for-echarts-theme-use-addextrascript)
   - [PHPDoc for property](#full-echarts-phpdoc)
-  
-## Backward Incompatibility Warning
-Due to major changes to the `Config` class, there are some backward incompatibilities between version 1.0.12 and >= 1.0.13.
-  - functions removed: 
-    - `eventMethod` does not exist anymore
-    - `on` - now relocated to `ECharts` and renamed to `addEvent`
-  - functions relocated to `ECharts` and are not static anymore: 
-    - `jsExpr` 
-    - `optionMethod` - is now protected to `ECharts`
-    - `jsonEncode`
-    - `render`
-    - `addExtraScript`
-  - properties removed:
-    - `$prefix`
-  - properties relocated to `ECharts`:
-    - `$scripts` - is now protected to `ECharts`
-    - `$method`
-    - `$extraScript`
-    - `$jsVar` - now possible to define javascript variable name per instance - protected in `ECharts`
-    - `$_events` - is now protected in `ECharts`
-  - **overrideable parameters:** following parameters can now be defined globally in `Config` or be overridden per instance:
-    - `$dist` (override using `setDist()`)
-    - `$version` (override using `setVersion()`)
-    - `$distType` (override using `setDistType()`)
-    - `$minify` (override using `setMinify()`)
-  - other issues:
-    - it's not possible to change `$jsVar` after `getJsVar(true)` function (and as a consequence of that `renderEvents`, `preRender` or `render`) has been called. this ensures that further js-related functions will always return the created name.
-  - new features:
-    - echarts library and extra scripts can now be rendered using `renderScripts()`
-    - echarts\ instance events can now be rendered using `renderEvents()`
-
+    
 ## Usage
 
 ### Simple, recommend using PHP property
@@ -174,12 +138,13 @@ $chart->yAxis[0] = array('type' => 'value');
 ```
 
 ### Javascript function
-`string $chart->jsExpr(string $string)`
+`string Config::jsExpr(string $string)`
 ```php
 // With 'function' letter startup
 'axisLabel' => array(
     // this array value will automatic conversion to js callback function
-    'formatter' => "function (value)
+    'formatter' => "
+        function (value)
         {
             return value + ' °C'
         }
@@ -188,8 +153,8 @@ $chart->yAxis[0] = array('type' => 'value');
 ```
 ```php
 // Or you can add any js expr with jsExpr
-use \Hisune\EchartsPHP\ECharts;
-'backgroundColor' => ECharts::jsExpr('
+use \Hisune\EchartsPHP\Config;
+'backgroundColor' => Config::jsExpr('
     new echarts.graphic.RadialGradient(0.5, 0.5, 0.4, [{
         offset: 0,
         color: "#4b5769"
@@ -200,175 +165,70 @@ use \Hisune\EchartsPHP\ECharts;
 ');
 ```
 ### Customer JS variable name
+`void ECharts::setJsVar(string $name = null)`
+ - Param `name` is your customer js variable name. By default, js variable name will generate by random.  
+
+`string ECharts::getJsVar()`
 ```php
-$chart->setJsVar('chart_test');
-echo $chart->getJsVar(); // echo 'chart_test'
+$chart->setJsVar('test');
+echo $chart->getJsVar(); // echo test
 // var chart_test = echarts.init( ...
 ```
 
-#### Render functions
- 
-
+### Customer attribute
+`string ECharts::render(string $id, [array] $attribute = [], [string] $theme = null)`
+ - Param `id` is your html dom ID.
+ - Param `attribute` is your html dom attribute.
+ - Param `theme` is your ECharts theme.
+ - Return html string.
 ```php
-/**
- * array preRender($id, [array] $attributes = [], [string] theme = null)`
- * string render(string $id, [array] $attributes = [], [string] $theme = null)`
- */
-echo $chart->render('simple-custom-id2', array('style' => 'height: 500px;'));
-// or alternatively
-
-$chunks = $chart->preRender('id3');
-
-echo <<<HTML
-<table>
-	<tr>
-		<td id="id3"></td>
-	</tr>
-</table>
-<script type="text/javascript">
-$("#id3").html('loading');
-$.ajax({
-	...,
-	success:function(result){
-		$chart["loader"]
-	}
-});
-</script>
-HTML;
+$chart->render('simple-custom-id2', array('style' => 'height: 500px;'));
 ```
-#### Parameters
-  - Param `id` is your html dom ID.
-  - Param `attributes` is your html dom attribute.
-  - Param `theme` is your ECharts theme.
-  
-#### Examples
-
-`render` function returns a string of all the necessary scripts and initiations needed to draw the chart.
-
-`preRender` prepares an array with following indices:
-
-```php
-array(
-	"scripts" => $js,
-	"placeholder" => "<div id=\"{$id}\" {$attribute}></div>",
-	"loader" => $loader,
-)
-``` 
-where:
- - `scripts` contains all the `<script src="..."></script>` of the (still not loaded) dependencies
- - `placeholder` contains the placeholder's `<div></div>`
- - `loader` contains the javascript snippet which will create the echarts' instance and set its options. please note that this has to be later enclosed in a `<script></script>` tag.
- 
- The goal of `preRender` function is to make the usage more flexible, for example, if the `loader` script needs to be enclosed in AJAX calls or the placeholder is defined previously etc. 
- 
- 
- Please refer to [`InitOptions::$height`](#initoptionsheight) for more details about conflicting `$attributes` and `initOptions` properties. 
-
 
 ### Events (for 3.x+)
-`void addEvent(string $event, string $callback)`
+`void ECharts::on(string $event, string $callback)`
  - Param `event` is event name, available: `click`, `dblclick`, `mousedown`, `mousemove`, `mouseup`, `mouseover`, `mouseout`
  - Param `callback` is event callback.
- ```php
- $chart->addEvent('mousemove', function(param){console.log(param);});
- ```
+
+`string Config::eventMethod(string $name)`
+ - Param `name` is your js function name which to be run in event callback.
+ - Return js string, eg: Config::eventMethod('test') => test(params);
+```php
+use \Hisune\EchartsPHP\Config;
+// Recommend standard
+$chart->on('click', Config::eventMethod('console.log'));
+// Or write js directly
+$chart->on('mousedown', 'console.log(params);');
+```
 
 ### Customer dist
-defines where to access the echarts library. it is also used by `addExtraScript` in case the script's dist url is not defined 
 ```php
-// for all instances
-
 Hisune\EchartsPHP\Config::$dist = 'your dist url';
-
-//or per instance
-$chart->setDist('your dist url');
 ```
 
 ### Dist type
-defines the dist-type of the echarts library.
 ```php
-// for all instances
 \Hisune\EchartsPHP\Config::$distType = 'common'; // '' or 'common' or 'simple'
-
-//or per instance
-$chart->setDistType('common');
-```
-
-### Dist Version
-defines the dist-version of the echarts library.
-```php
-// for all instances
-\Hisune\EchartsPHP\Config::$version = '4.0.4'; //
-
-//or per instance
-$chart->setVersion('4.0.4');
 ```
 
 ### Whether or not load minify js file
-if set to true, loads the minified version of echarts library; otherwise the normal version is loaded. 
-
-> if the desired version is not available, nothing will be done. please ensure that the minified/full file exist in the dist-url.
 ```php
-// for all instances
 \Hisune\EchartsPHP\Config::$minify = false; // default is true
-
-//or per instance
-$chart->setMinify(false);
 ```
-
-### Render Scripts
-controls whether to prepare \<script> tags for charts or not. if set to false, `echarts`-javascript as well as scripts defined using `addExtraScript` will not be automatically loaded when rendering the chart.
- ```php
- // for all instances
-\Hisune\EchartsPHP\Config::$renderScript = false; // default is true
-
-//or per instance
-$chart->setRenderScript(false);
- ```
 
 ### Add extra script from cdn
+`string Config::addExtraScript(string $file, [string] $dist = null)`
+ - Param `file` is your extra script filename.
+ - Param `dist` is your dist CDN uri.
 ```php
-/**
- * @param $file - is your extra script filename.
- * @Param $dist - is your dist CDN uri - if left empty, value from $chart->getDist() will be used.
- */
-$chart->addExtraScript('extension/dataTool.js'); // the second param is your customer dist url
+Hisune\EchartsPHP\Config::addExtraScript('extension/dataTool.js'); // the second param is your customer dist url
 ```
-
 ### The example for ECharts theme use `addExtraScript`
 ```php
-$chart->addExtraScript('vintage.js', 'http://echarts.baidu.com/asset/theme/');
+use \Hisune\EchartsPHP\Config;
+Config::addExtraScript('vintage.js', 'http://echarts.baidu.com/asset/theme/');
 echo $chart->render('simple-custom-id', array(), 'vintage');
 ```
-
-### `InitOptions::$devicePixelRatio`
-please refer to [opts.devicePixelRatio](https://ecomfe.github.io/echarts-doc/public/en/api.html#echarts.init) for details.
-
-```php
-$chart->initOptions->devicePixelRatio = 1;
-```
-
-### `InitOptions::$renderer`
-please refer to [opts.renderer](https://ecomfe.github.io/echarts-doc/public/en/api.html#echarts.init) for details.
-
-```php
-$chart->initOptions->renderer = 'svg'; // 'svg' or 'canvas'
-```
-
-
-### `InitOptions::$width` 
-### `InitOptions::$height`
-please refer to [opts.width|opts.height](https://ecomfe.github.io/echarts-doc/public/en/api.html#echarts.init) for details.
-
-```php
-$chart->initOptions->width = '500px';
-$chart->initOptions->height = '300px';
-```
-
-> Note1: `InitOptions::$height` and `InitOptions::$width` properties are used to define the attributes of the `svg` or `canvas` object created; where the `$attributes` parameter of the [render functions](#render-functions) define the attributes of the chart's placeholder. if `$attribute`'s `width` and `height` are less than those of the object, the object will overflow. 
-
-> Note2: if no render-time `height` (e.g. `$attributes["style"]["height"] = 'XXXX'` or `$attibutes["style"] = "...;height:XXXX;...";`) is provided, `InitOptions::$height` is used to define chart's height. if that is also not defined, chart's height is set to `400px` by default so that the placeholder is shown in browser.
-
 
 ### Full Echarts PHPDoc
 For more detail visit: https://hisune.com/view/50/echarts-php-property-phpdoc-auto-generate
