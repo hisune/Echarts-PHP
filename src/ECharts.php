@@ -446,6 +446,13 @@ HTML;
 	public function addExtraScript($file, $distOrIsContent = null)
 	{
 		!$distOrIsContent && $distOrIsContent !== false && $distOrIsContent = $this->getDist();
+
+		if (is_string($distOrIsContent))
+		{
+			$file = $distOrIsContent.$file;
+			$distOrIsContent = false;
+		}
+
 		$md5 = md5($file);
 
 		if (!isset($this->extraScript[$md5]))
@@ -671,7 +678,7 @@ HTML;
 		$js = '';
 		if($this->getRenderScript())
 		{
-			$src = $this->getDist().'/echarts'.($this->getDistType(true)).($this->isMinify()? '.min':'').'.js';
+			$src = $this->getDist().'echarts'.($this->getDistType(true)).($this->isMinify()? '.min':'').'.js';
 
 			$js .= self::_renderScript($src);
 
