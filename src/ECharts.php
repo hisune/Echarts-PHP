@@ -8,6 +8,8 @@
 
 namespace Hisune\EchartsPHP;
 
+use Exception;
+
 /**
  * Class ECharts
  * Created by Hisune EchartsPHP AutoGenerate.
@@ -162,13 +164,17 @@ class ECharts extends Property{
 	 * @param      $dist string, dist of libraries
 	 * @param null $jsSuffix
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function __construct($dist = '', $jsSuffix = null)
 	{
 		$this->setDist($dist);
 		$this->initOptions = new InitOptions();
 		$this->setJsVar($jsSuffix);
+	}
+
+	public function __clone(){
+		$this->initOptions = clone $this->initOptions;
 	}
 
 	public function preRender($id, $attribute = null, $theme = null)
@@ -570,7 +576,7 @@ HTML;
 	/**
 	 * @param null $jsSuffix
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function setJsVar($jsSuffix = null)
 	{
@@ -666,11 +672,11 @@ HTML;
 	}
 
 	/**
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	private function throwPreRenderedException()
 	{
-		throw new \Exception('$jsVar is already defined. In order to prevent incompatibilities with already printed scripts, it is not allowed to change $prefix or $jsVar after preRender phase.');
+		throw new Exception('$jsVar is already defined. In order to prevent incompatibilities with already printed scripts, it is not allowed to change $prefix or $jsVar after preRender phase.');
 	}
 
 	function renderScripts()
