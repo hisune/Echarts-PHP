@@ -558,7 +558,7 @@ HTML;
 
 	private static function _renderAttribute(array $attribute = array())
 	{
-		$rendered = '';
+		$rendered = array();
 
 		foreach($attribute as $k => $v)
 		{
