@@ -18,8 +18,8 @@ class AutoGenerate
 {
 
     public $optionJson = [
-        'cn' => 'http://echarts.baidu.com/documents/cn/option.json',
-        'en' => 'https://ecomfe.github.io/echarts-doc/public/en/documents/en/option.json',
+        'cn' => 'https://www.echartsjs.com/documents/zh/option.json',
+        'en' => 'https://echarts.apache.org/documents/en/option.json',
     ];
 
     protected $language;
