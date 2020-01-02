@@ -9,74 +9,80 @@ namespace Hisune\EchartsPHP\Doc\IDE;
 use Hisune\EchartsPHP\Property;
 
 /**
+ * @property string $id
+ *    Component ID, not specified by default. If specified, it can be used to refer the component in option or API.
+ *
  * @property boolean $show Default: false
- *    默认不显示。但是如果 tooltip.trigger 设置为 axis 或者 tooltip.axisPointer.type 设置为 cross，则自动显示 axisPointer。坐标系会自动选择显示显示哪个轴的 axisPointer，也可以使用 tooltip.axisPointer.axis 改变这种选择。
+ *    axisPointer will not be displayed by default. But if tooltip.trigger is set as axis or tooltip.axisPointer.type is set as  cross, axisPointer will be displayed automatically. Each coordinate system will automatically chose the axes whose will display its axisPointer. tooltip.axisPointer.axis can be used to change the choice.
  *
  * @property string $type Default: 'line'
- *    指示器类型。
- *     可选
+ *    Indicator type.
+ *     Options:
  *     
- *     line 直线指示器
+ *     line line indicator.
  *     
- *     shadow 阴影指示器
+ *     shadow shadow crosshair indicator.
+ *     
+ *     none no indicator displayed.
  *
  * @property boolean $snap
- *    坐标轴指示器是否自动吸附到点上。默认自动判断。
- *     这个功能在数值轴和时间轴上比较有意义，可以自动寻找细小的数值点。
+ *    Whether snap to point automatically. The default value is auto determined.
+ *     This feature usually makes sense in value axis and time axis, where tiny points can be seeked automatically.
  *
  * @property int $z
- *    坐标轴指示器的 z 值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖。
+ *    z value, which controls order of drawing graphical components. Components with smaller z values may be overwritten by those with larger z values.
  *
  * @property AxisPointer\Label $label
- *    坐标轴指示器的文本标签。
+ *    label of axisPointer
  *
  * @property AxisPointer\LineStyle $lineStyle
- *    axisPointer.type 为 line 时有效。
+ *    It is valid when axisPointer.type is line.
  *
  * @property AxisPointer\ShadowStyle $shadowStyle
- *    axisPointer.type 为 shadow 时有效。
+ *    It is valid when axisPointer.type is shadow.
  *
  * @property boolean $triggerTooltip Default: true
- *    是否触发 tooltip。如果不想触发 tooltip 可以关掉。
+ *    Whether to trigger tooltip.
  *
  * @property int $value
- *    当前的 value。在使用 axisPointer.handle 时，可以设置此值进行初始值设定，从而决定 axisPointer 的初始位置。
+ *    current value. When using axisPointer.handle, value can be set to define the initail position of axisPointer.
  *
  * @property boolean $status
- *    当前的状态，可取值为 show 和 hide。
+ *    Current status, can be show 和 hide.
  *
  * @property AxisPointer\Handle $handle
- *    拖拽手柄，适用于触屏的环境。参见 例子。
+ *    A button used to drag axisPointer. This feature is applicable in touch device. See example.
  *
  * @property array $link
- *    不同轴的 axisPointer 可以进行联动，在这里设置。联动表示轴能同步一起活动。轴依据他们的 axisPointer 当前对应的值来联动。
- *     联动的效果可以看这两个例子：例子A，例子B。
- *     link 是一个数组，其中每一项表示一个 link group，一个 group 中的坐标轴互相联动。例如：
+ *    axisPointers can be linked to each other. The term link represents that axes are synchronized and move together. Axes are linked according to the value of axisPointer.
+ *     See sampleA and sampleB.
+ *     link is an array, where each item represents a link group. Axes will be linked when they are refered in the same link group. For example:
  *     link: [
  *         {
- *             // 表示所有 xAxisIndex 为 0、3、4 和 yAxisName 为 someName 的坐标轴联动。
+ *             // All axes with xAxisIndex 0, 3, 4 and yAxisName sameName will be linked.
  *             xAxisIndex: [0, 3, 4],
  *             yAxisName: someName
  *         },
  *         {
- *             // 表示左右 xAxisId 为 aa、cc 以及所有的 angleAxis 联动。
+ *             // All axes with xAxisId aa, cc and all angleAxis will be linked.
  *             xAxisId: [aa, cc],
  *             angleAxis: all
  *         },
  *         ...
  *     ]
  *     
- *     如上所示，每个 link group 中可以用这些方式引用坐标轴：
+ *     As illustrated above, axes can be refered in these approaches in a link group:
  *     {
- *         // 以下的 some 均表示轴的维度，也就是表示 x, y, radius, angle, single
- *         someAxisIndex: [...], // 可以是一个数组或单值或 all
- *         someAxisName: [...],  // 可以是一个数组或单值或 all
- *         someAxisId: [...],    // 可以是一个数组或单值或 all
+ *         // some represent the dimension name of a axis, namely, x, y, radius, angle, single
+ *         someAxisIndex: [...], // can be an array or a value or all
+ *         someAxisName: [...],  // can be an array or a value or all
+ *         someAxisId: [...],    // can be an array or a value or all
  *     }
  *     
  *     
- *     如何联动不同类型（axis.type）的轴？
- *     如果 axis 的类型不同，比如 axisA type 为 category，axisB type 为 time，可以在每个 link group 中写转换函数（mapper）来进行值的转换，例如：
+ *     
+ *     How to link axes with different axis.type?
+ *     For example, the type of axisA is category, and the type of axisB type is time, we can write conversion function (mapper) in link group to convert values from an axie to another axis. For example:
  *     link: [{
  *         xAxisIndex: [0, 1],
  *         yAxisName: [yy],
@@ -95,24 +101,27 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }]
  *     
- *     mapper 的输入参数：
+ *     Input parameters of mapper:
  *     {number} sourceVal
- *     {Object} sourceAxisInfo 里面包含 {axisDim, axisId, axisName, axisIndex} 等信息
- *     {Object} targetAxisInfo 里面包含 {axisDim, axisId, axisName, axisIndex} 等信息
- *     mapper 的返回值：
- *     {number} 转换结果
+ *     {Object} sourceAxisInfo Including {axisDim, axisId, axisName, axisIndex, ...}
+ *     {Object} targetAxisInfo Including {axisDim, axisId, axisName, axisIndex, ...}
+ *     Return of mapper:
+ *     {number} The result of conversion.
  *
  * @property string $triggerOn Default: 'mousemove|click'
- *    提示框触发的条件，可选：
+ *    Conditions to trigger tooltip. Options:
  *     
  *     mousemove
- *       鼠标移动时触发。
+ *       Trigger when mouse moves.
  *     
  *     click
- *       鼠标点击时触发。
+ *       Trigger when mouse clicks.
+ *     
+ *     mousemove|click
+ *       Trigger when mouse clicks and moves.
  *     
  *     none
- *       不在 mousemove 或 click 时触发。
+ *       Do not triggered by mousemove and click
  *
  * {_more_}
  */

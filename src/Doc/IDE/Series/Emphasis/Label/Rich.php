@@ -57,9 +57,6 @@ use Hisune\EchartsPHP\Property;
  *  * @property Rich\<user defined style name> $<user defined style name>
  *    
  *
- *  * @property Rich\<user defined style name> $<user defined style name>
- *    
- *
  * {_more_}
  */
 class Rich extends Property {}

@@ -10,55 +10,52 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $silent Default: false
- *    图形是否不响应和触发鼠标事件，默认为 false，即响应和触发鼠标事件。
+ *    Whether to ignore mouse events. Default value is false, for triggering and responding to mouse events.
  *
  * @property string|array $symbol
- *    标线两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定，具体格式见 data.symbol。
+ *    Symbol type at the two ends of the mark line. It can be an array for two ends, or assigned seperately. See data.symbol for more format information.
  *
  * @property int|array $symbolSize
- *    标线两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定。
- *     注意： 这里无法像一般的 symbolSize 那样通过数组分别指定高宽。
+ *    Symbol size at the two ends of the mark line. It can be an array for two ends, or assigned seperately.
+ *     Attention:  You cannot assgin width and height seperately as normal symbolSize.
  *
  * @property int $precision Default: 2
- *    标线数值的精度，在显示平均值线的时候有用。
+ *    Precison of marking line value, which is useful when displaying average value mark line.
  *
  * @property MarkLine\Label $label
- *    标线的文本。
+ *    Mark line text.
  *
  * @property MarkLine\LineStyle $lineStyle
- *    标线的样式
- *
- * @property MarkLine\Emphasis $emphasis
- *    标线的高亮样式。
+ *    Mark line style.
  *
  * @property MarkLine\Data $data
- *    标线的数据数组。每个数组项可以是一个两个值的数组，分别表示线的起点和终点，每一项是一个对象，有下面几种方式指定起点或终点的位置。
+ *    Data array of marking line. Every array item can be an array of one or two values, representing starting and ending point of the line, and every item is an object. Here are several ways to assign the positions of starting and ending point.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 或者 valueDim 指定是在哪个维度上的最大值、最小值、平均值。
+ *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
  *     
- *     如果是笛卡尔坐标系的话，也可以通过只指定 xAxis 或者 yAxis 来实现 X 轴或者 Y 轴为某值的标线，见示例 scatter-weight
+ *     You may also create a mark line in Cartesian coordinate at a specific position in X or Y axis by assigning xAxis or yAxis. See scatter-weight for example.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     也可以是直接通过 type 设置该标线的类型，是最大值的线还是平均线。同样的，这时候可以通过使用 valueIndex 指定维度。
+ *     When multiple attributes exist, priority is as the above order.
+ *     You may also set the type of mark line through type, stating whether it is for the maximum value or average value. Likewise, dimensions can be assigned through valueIndex.
  *     data: [
  *         {
- *             name: 平均线,
- *             // 支持 average, min, max
+ *             name: average line,
+ *             // average, min, and max are supported
  *             type: average
  *         },
  *         {
- *             name: Y 轴值为 100 的水平线,
+ *             name: Horizontal line with Y value at 100,
  *             yAxis: 100
  *         },
  *         [
  *             {
- *                 // 起点和终点的项会共用一个 name
- *                 name: 最小值到最大值,
+ *                 // Use the same name with starting and ending point
+ *                 name: Minimum to Maximum,
  *                 type: min
  *             },
  *             {
@@ -67,14 +64,14 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个坐标之间的标线,
+ *                 name: Markline between two points,
  *                 coord: [10, 20]
  *             },
  *             {
  *                 coord: [20, 30]
  *             }
  *         ], [{
- *             // 固定起点的 x 像素位置，用于模拟一条指向最大值的水平线
+ *             // Mark line with a fixed X position in starting point. This is used to generate an arrow pointing to maximum line.
  *             yAxis: max,
  *             x: 90%
  *         }, {
@@ -82,7 +79,7 @@ use Hisune\EchartsPHP\Property;
  *         }],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标线,
+ *                 name: Mark line between two points,
  *                 x: 100,
  *                 y: 100
  *             },
@@ -94,96 +91,92 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  * @property boolean $animation Default: true
- *    是否开启动画。
+ *    Whether to enable animation.
  *
  * @property int $animationThreshold Default: 2000
- *    是否开启动画的阈值，当单个系列显示的图形数量大于这个阈值时会关闭动画。
+ *    Whether to set graphic number threshold to animation. Animation will be disabled when graphic number is larger than threshold.
  *
- * @property int $animationDuration Default: 1000
- *    初始动画的时长，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果：
+ * @property int|callable $animationDuration Default: 1000
+ *    Duration of the first animation, which supports callback function for different data to have different animation effect:
  *     animationDuration: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *
  * @property string $animationEasing Default: 'cubicOut'
- *    初始动画的缓动效果。不同的缓动效果可以参考 缓动示例。
+ *    Easing method used for the first animation. Varied easing effects can be found at easing effect example.
  *
  * @property int|callable $animationDelay Default: 0
- *    初始动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果。
- *     如下示例：
+ *    Delay before updating the first animation, which supports callback function for different data to have different animation effect.
+ *     For example:
  *     animationDelay: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *     
- *     也可以看该示例
+ *     See this example for more information.
  *
  * @property int|callable $animationDurationUpdate Default: 300
- *    数据更新动画的时长。
- *     支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的更新动画效果：
+ *    Time for animation to complete, which supports callback function for different data to have different animation effect:
  *     animationDurationUpdate: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *
  * @property string $animationEasingUpdate Default: 'cubicOut'
- *    数据更新动画的缓动效果。
+ *    Easing method used for animation.
  *
  * @property int|callable $animationDelayUpdate Default: 0
- *    数据更新动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的更新动画效果。
- *     如下示例：
+ *    Delay before updating animation, which supports callback function for different data to have different animation effects.
+ *     For example:
  *     animationDelayUpdate: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *     
- *     也可以看该示例
+ *     See this example for more information.
  *
  *  * @property string|array $symbol
- *    标线两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定，具体格式见 data.symbol。
+ *    Symbol type at the two ends of the mark line. It can be an array for two ends, or assigned seperately. See data.symbol for more format information.
  *
  * @property int|array $symbolSize
- *    标线两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定。
- *     注意： 这里无法像一般的 symbolSize 那样通过数组分别指定高宽。
+ *    Symbol size at the two ends of the mark line. It can be an array for two ends, or assigned seperately.
+ *     Attention:  You cannot assgin width and height seperately as normal symbolSize.
  *
  * @property MarkLine\Label $label
- *    标线的文本。
+ *    Mark line text.
  *
  * @property MarkLine\LineStyle $lineStyle
- *    标线的样式
- *
- * @property MarkLine\Emphasis $emphasis
- *    标线的高亮样式。
+ *    Mark line style.
  *
  * @property MarkLine\Data $data
- *    标线的数据数组。每个数组项可以是一个两个值的数组，分别表示线的起点和终点，每一项是一个对象，有下面几种方式指定起点或终点的位置。
+ *    Data array of marking line. Every array item can be an array of one or two values, representing starting and ending point of the line, and every item is an object. Here are several ways to assign the positions of starting and ending point.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 或者 valueDim 指定是在哪个维度上的最大值、最小值、平均值。
+ *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
  *     
- *     如果是笛卡尔坐标系的话，也可以通过只指定 xAxis 或者 yAxis 来实现 X 轴或者 Y 轴为某值的标线，见示例 scatter-weight
+ *     You may also create a mark line in Cartesian coordinate at a specific position in X or Y axis by assigning xAxis or yAxis. See scatter-weight for example.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     也可以是直接通过 type 设置该标线的类型，是最大值的线还是平均线。同样的，这时候可以通过使用 valueIndex 指定维度。
+ *     When multiple attributes exist, priority is as the above order.
+ *     You may also set the type of mark line through type, stating whether it is for the maximum value or average value. Likewise, dimensions can be assigned through valueIndex.
  *     data: [
  *         {
- *             name: 平均线,
- *             // 支持 average, min, max
+ *             name: average line,
+ *             // average, min, and max are supported
  *             type: average
  *         },
  *         {
- *             name: Y 轴值为 100 的水平线,
+ *             name: Horizontal line with Y value at 100,
  *             yAxis: 100
  *         },
  *         [
  *             {
- *                 // 起点和终点的项会共用一个 name
- *                 name: 最小值到最大值,
+ *                 // Use the same name with starting and ending point
+ *                 name: Minimum to Maximum,
  *                 type: min
  *             },
  *             {
@@ -192,14 +185,14 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个坐标之间的标线,
+ *                 name: Markline between two points,
  *                 coord: [10, 20]
  *             },
  *             {
  *                 coord: [20, 30]
  *             }
  *         ], [{
- *             // 固定起点的 x 像素位置，用于模拟一条指向最大值的水平线
+ *             // Mark line with a fixed X position in starting point. This is used to generate an arrow pointing to maximum line.
  *             yAxis: max,
  *             x: 90%
  *         }, {
@@ -207,7 +200,7 @@ use Hisune\EchartsPHP\Property;
  *         }],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标线,
+ *                 name: Mark line between two points,
  *                 x: 100,
  *                 y: 100
  *             },
@@ -219,31 +212,28 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property string|array $symbol
- *    标线两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定，具体格式见 data.symbol。
+ *    Symbol type at the two ends of the mark line. It can be an array for two ends, or assigned seperately. See data.symbol for more format information.
  *
  * @property int|array $symbolSize
- *    标线两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定。
- *     注意： 这里无法像一般的 symbolSize 那样通过数组分别指定高宽。
+ *    Symbol size at the two ends of the mark line. It can be an array for two ends, or assigned seperately.
+ *     Attention:  You cannot assgin width and height seperately as normal symbolSize.
  *
  * @property MarkLine\Label $label
- *    标线的文本。
+ *    Mark line text.
  *
  * @property MarkLine\LineStyle $lineStyle
- *    标线的样式
- *
- * @property MarkLine\Emphasis $emphasis
- *    标线的高亮样式。
+ *    Mark line style.
  *
  * @property MarkLine\Data $data
- *    标线的数据数组。每个数组项可以是一个两个值的数组，分别表示线的起点和终点，每一项是一个对象，有下面几种方式指定起点或终点的位置。
+ *    Data array of marking line. Every array item can be an array of one or two values, representing starting and ending point of the line, and every item is an object. Here are several ways to assign the positions of starting and ending point.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     When multiple attributes exist, priority is as the above order.
  *     data: [
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标线,
+ *                 name: Mark line between two points,
  *                 x: 100,
  *                 y: 100
  *             },
@@ -255,49 +245,46 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property string|array $symbol
- *    标线两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定，具体格式见 data.symbol。
+ *    Symbol type at the two ends of the mark line. It can be an array for two ends, or assigned seperately. See data.symbol for more format information.
  *
  * @property int|array $symbolSize
- *    标线两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定。
- *     注意： 这里无法像一般的 symbolSize 那样通过数组分别指定高宽。
+ *    Symbol size at the two ends of the mark line. It can be an array for two ends, or assigned seperately.
+ *     Attention:  You cannot assgin width and height seperately as normal symbolSize.
  *
  * @property MarkLine\Label $label
- *    标线的文本。
+ *    Mark line text.
  *
  * @property MarkLine\LineStyle $lineStyle
- *    标线的样式
- *
- * @property MarkLine\Emphasis $emphasis
- *    标线的高亮样式。
+ *    Mark line style.
  *
  * @property MarkLine\Data $data
- *    标线的数据数组。每个数组项可以是一个两个值的数组，分别表示线的起点和终点，每一项是一个对象，有下面几种方式指定起点或终点的位置。
+ *    Data array of marking line. Every array item can be an array of one or two values, representing starting and ending point of the line, and every item is an object. Here are several ways to assign the positions of starting and ending point.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 或者 valueDim 指定是在哪个维度上的最大值、最小值、平均值。
+ *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
  *     
- *     如果是笛卡尔坐标系的话，也可以通过只指定 xAxis 或者 yAxis 来实现 X 轴或者 Y 轴为某值的标线，见示例 scatter-weight
+ *     You may also create a mark line in Cartesian coordinate at a specific position in X or Y axis by assigning xAxis or yAxis. See scatter-weight for example.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     也可以是直接通过 type 设置该标线的类型，是最大值的线还是平均线。同样的，这时候可以通过使用 valueIndex 指定维度。
+ *     When multiple attributes exist, priority is as the above order.
+ *     You may also set the type of mark line through type, stating whether it is for the maximum value or average value. Likewise, dimensions can be assigned through valueIndex.
  *     data: [
  *         {
- *             name: 平均线,
- *             // 支持 average, min, max
+ *             name: average line,
+ *             // average, min, and max are supported
  *             type: average
  *         },
  *         {
- *             name: Y 轴值为 100 的水平线,
+ *             name: Horizontal line with Y value at 100,
  *             yAxis: 100
  *         },
  *         [
  *             {
- *                 // 起点和终点的项会共用一个 name
- *                 name: 最小值到最大值,
+ *                 // Use the same name with starting and ending point
+ *                 name: Minimum to Maximum,
  *                 type: min
  *             },
  *             {
@@ -306,14 +293,14 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个坐标之间的标线,
+ *                 name: Markline between two points,
  *                 coord: [10, 20]
  *             },
  *             {
  *                 coord: [20, 30]
  *             }
  *         ], [{
- *             // 固定起点的 x 像素位置，用于模拟一条指向最大值的水平线
+ *             // Mark line with a fixed X position in starting point. This is used to generate an arrow pointing to maximum line.
  *             yAxis: max,
  *             x: 90%
  *         }, {
@@ -321,7 +308,7 @@ use Hisune\EchartsPHP\Property;
  *         }],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标线,
+ *                 name: Mark line between two points,
  *                 x: 100,
  *                 y: 100
  *             },
@@ -333,49 +320,46 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property string|array $symbol
- *    标线两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定，具体格式见 data.symbol。
+ *    Symbol type at the two ends of the mark line. It can be an array for two ends, or assigned seperately. See data.symbol for more format information.
  *
  * @property int|array $symbolSize
- *    标线两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定。
- *     注意： 这里无法像一般的 symbolSize 那样通过数组分别指定高宽。
+ *    Symbol size at the two ends of the mark line. It can be an array for two ends, or assigned seperately.
+ *     Attention:  You cannot assgin width and height seperately as normal symbolSize.
  *
  * @property MarkLine\Label $label
- *    标线的文本。
+ *    Mark line text.
  *
  * @property MarkLine\LineStyle $lineStyle
- *    标线的样式
- *
- * @property MarkLine\Emphasis $emphasis
- *    标线的高亮样式。
+ *    Mark line style.
  *
  * @property MarkLine\Data $data
- *    标线的数据数组。每个数组项可以是一个两个值的数组，分别表示线的起点和终点，每一项是一个对象，有下面几种方式指定起点或终点的位置。
+ *    Data array of marking line. Every array item can be an array of one or two values, representing starting and ending point of the line, and every item is an object. Here are several ways to assign the positions of starting and ending point.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 或者 valueDim 指定是在哪个维度上的最大值、最小值、平均值。
+ *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
  *     
- *     如果是笛卡尔坐标系的话，也可以通过只指定 xAxis 或者 yAxis 来实现 X 轴或者 Y 轴为某值的标线，见示例 scatter-weight
+ *     You may also create a mark line in Cartesian coordinate at a specific position in X or Y axis by assigning xAxis or yAxis. See scatter-weight for example.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     也可以是直接通过 type 设置该标线的类型，是最大值的线还是平均线。同样的，这时候可以通过使用 valueIndex 指定维度。
+ *     When multiple attributes exist, priority is as the above order.
+ *     You may also set the type of mark line through type, stating whether it is for the maximum value or average value. Likewise, dimensions can be assigned through valueIndex.
  *     data: [
  *         {
- *             name: 平均线,
- *             // 支持 average, min, max
+ *             name: average line,
+ *             // average, min, and max are supported
  *             type: average
  *         },
  *         {
- *             name: Y 轴值为 100 的水平线,
+ *             name: Horizontal line with Y value at 100,
  *             yAxis: 100
  *         },
  *         [
  *             {
- *                 // 起点和终点的项会共用一个 name
- *                 name: 最小值到最大值,
+ *                 // Use the same name with starting and ending point
+ *                 name: Minimum to Maximum,
  *                 type: min
  *             },
  *             {
@@ -384,14 +368,14 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个坐标之间的标线,
+ *                 name: Markline between two points,
  *                 coord: [10, 20]
  *             },
  *             {
  *                 coord: [20, 30]
  *             }
  *         ], [{
- *             // 固定起点的 x 像素位置，用于模拟一条指向最大值的水平线
+ *             // Mark line with a fixed X position in starting point. This is used to generate an arrow pointing to maximum line.
  *             yAxis: max,
  *             x: 90%
  *         }, {
@@ -399,7 +383,7 @@ use Hisune\EchartsPHP\Property;
  *         }],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标线,
+ *                 name: Mark line between two points,
  *                 x: 100,
  *                 y: 100
  *             },
@@ -411,49 +395,46 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property string|array $symbol
- *    标线两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定，具体格式见 data.symbol。
+ *    Symbol type at the two ends of the mark line. It can be an array for two ends, or assigned seperately. See data.symbol for more format information.
  *
  * @property int|array $symbolSize
- *    标线两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定。
- *     注意： 这里无法像一般的 symbolSize 那样通过数组分别指定高宽。
+ *    Symbol size at the two ends of the mark line. It can be an array for two ends, or assigned seperately.
+ *     Attention:  You cannot assgin width and height seperately as normal symbolSize.
  *
  * @property MarkLine\Label $label
- *    标线的文本。
+ *    Mark line text.
  *
  * @property MarkLine\LineStyle $lineStyle
- *    标线的样式
- *
- * @property MarkLine\Emphasis $emphasis
- *    标线的高亮样式。
+ *    Mark line style.
  *
  * @property MarkLine\Data $data
- *    标线的数据数组。每个数组项可以是一个两个值的数组，分别表示线的起点和终点，每一项是一个对象，有下面几种方式指定起点或终点的位置。
+ *    Data array of marking line. Every array item can be an array of one or two values, representing starting and ending point of the line, and every item is an object. Here are several ways to assign the positions of starting and ending point.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 或者 valueDim 指定是在哪个维度上的最大值、最小值、平均值。
+ *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
  *     
- *     如果是笛卡尔坐标系的话，也可以通过只指定 xAxis 或者 yAxis 来实现 X 轴或者 Y 轴为某值的标线，见示例 scatter-weight
+ *     You may also create a mark line in Cartesian coordinate at a specific position in X or Y axis by assigning xAxis or yAxis. See scatter-weight for example.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     也可以是直接通过 type 设置该标线的类型，是最大值的线还是平均线。同样的，这时候可以通过使用 valueIndex 指定维度。
+ *     When multiple attributes exist, priority is as the above order.
+ *     You may also set the type of mark line through type, stating whether it is for the maximum value or average value. Likewise, dimensions can be assigned through valueIndex.
  *     data: [
  *         {
- *             name: 平均线,
- *             // 支持 average, min, max
+ *             name: average line,
+ *             // average, min, and max are supported
  *             type: average
  *         },
  *         {
- *             name: Y 轴值为 100 的水平线,
+ *             name: Horizontal line with Y value at 100,
  *             yAxis: 100
  *         },
  *         [
  *             {
- *                 // 起点和终点的项会共用一个 name
- *                 name: 最小值到最大值,
+ *                 // Use the same name with starting and ending point
+ *                 name: Minimum to Maximum,
  *                 type: min
  *             },
  *             {
@@ -462,14 +443,14 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个坐标之间的标线,
+ *                 name: Markline between two points,
  *                 coord: [10, 20]
  *             },
  *             {
  *                 coord: [20, 30]
  *             }
  *         ], [{
- *             // 固定起点的 x 像素位置，用于模拟一条指向最大值的水平线
+ *             // Mark line with a fixed X position in starting point. This is used to generate an arrow pointing to maximum line.
  *             yAxis: max,
  *             x: 90%
  *         }, {
@@ -477,7 +458,7 @@ use Hisune\EchartsPHP\Property;
  *         }],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标线,
+ *                 name: Mark line between two points,
  *                 x: 100,
  *                 y: 100
  *             },
@@ -489,49 +470,46 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property string|array $symbol
- *    标线两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定，具体格式见 data.symbol。
+ *    Symbol type at the two ends of the mark line. It can be an array for two ends, or assigned seperately. See data.symbol for more format information.
  *
  * @property int|array $symbolSize
- *    标线两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定。
- *     注意： 这里无法像一般的 symbolSize 那样通过数组分别指定高宽。
+ *    Symbol size at the two ends of the mark line. It can be an array for two ends, or assigned seperately.
+ *     Attention:  You cannot assgin width and height seperately as normal symbolSize.
  *
  * @property MarkLine\Label $label
- *    标线的文本。
+ *    Mark line text.
  *
  * @property MarkLine\LineStyle $lineStyle
- *    标线的样式
- *
- * @property MarkLine\Emphasis $emphasis
- *    标线的高亮样式。
+ *    Mark line style.
  *
  * @property MarkLine\Data $data
- *    标线的数据数组。每个数组项可以是一个两个值的数组，分别表示线的起点和终点，每一项是一个对象，有下面几种方式指定起点或终点的位置。
+ *    Data array of marking line. Every array item can be an array of one or two values, representing starting and ending point of the line, and every item is an object. Here are several ways to assign the positions of starting and ending point.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 或者 valueDim 指定是在哪个维度上的最大值、最小值、平均值。
+ *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
  *     
- *     如果是笛卡尔坐标系的话，也可以通过只指定 xAxis 或者 yAxis 来实现 X 轴或者 Y 轴为某值的标线，见示例 scatter-weight
+ *     You may also create a mark line in Cartesian coordinate at a specific position in X or Y axis by assigning xAxis or yAxis. See scatter-weight for example.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     也可以是直接通过 type 设置该标线的类型，是最大值的线还是平均线。同样的，这时候可以通过使用 valueIndex 指定维度。
+ *     When multiple attributes exist, priority is as the above order.
+ *     You may also set the type of mark line through type, stating whether it is for the maximum value or average value. Likewise, dimensions can be assigned through valueIndex.
  *     data: [
  *         {
- *             name: 平均线,
- *             // 支持 average, min, max
+ *             name: average line,
+ *             // average, min, and max are supported
  *             type: average
  *         },
  *         {
- *             name: Y 轴值为 100 的水平线,
+ *             name: Horizontal line with Y value at 100,
  *             yAxis: 100
  *         },
  *         [
  *             {
- *                 // 起点和终点的项会共用一个 name
- *                 name: 最小值到最大值,
+ *                 // Use the same name with starting and ending point
+ *                 name: Minimum to Maximum,
  *                 type: min
  *             },
  *             {
@@ -540,14 +518,14 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个坐标之间的标线,
+ *                 name: Markline between two points,
  *                 coord: [10, 20]
  *             },
  *             {
  *                 coord: [20, 30]
  *             }
  *         ], [{
- *             // 固定起点的 x 像素位置，用于模拟一条指向最大值的水平线
+ *             // Mark line with a fixed X position in starting point. This is used to generate an arrow pointing to maximum line.
  *             yAxis: max,
  *             x: 90%
  *         }, {
@@ -555,7 +533,7 @@ use Hisune\EchartsPHP\Property;
  *         }],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标线,
+ *                 name: Mark line between two points,
  *                 x: 100,
  *                 y: 100
  *             },
@@ -567,31 +545,28 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property string|array $symbol
- *    标线两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定，具体格式见 data.symbol。
+ *    Symbol type at the two ends of the mark line. It can be an array for two ends, or assigned seperately. See data.symbol for more format information.
  *
  * @property int|array $symbolSize
- *    标线两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定。
- *     注意： 这里无法像一般的 symbolSize 那样通过数组分别指定高宽。
+ *    Symbol size at the two ends of the mark line. It can be an array for two ends, or assigned seperately.
+ *     Attention:  You cannot assgin width and height seperately as normal symbolSize.
  *
  * @property MarkLine\Label $label
- *    标线的文本。
+ *    Mark line text.
  *
  * @property MarkLine\LineStyle $lineStyle
- *    标线的样式
- *
- * @property MarkLine\Emphasis $emphasis
- *    标线的高亮样式。
+ *    Mark line style.
  *
  * @property MarkLine\Data $data
- *    标线的数据数组。每个数组项可以是一个两个值的数组，分别表示线的起点和终点，每一项是一个对象，有下面几种方式指定起点或终点的位置。
+ *    Data array of marking line. Every array item can be an array of one or two values, representing starting and ending point of the line, and every item is an object. Here are several ways to assign the positions of starting and ending point.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     When multiple attributes exist, priority is as the above order.
  *     data: [
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标线,
+ *                 name: Mark line between two points,
  *                 x: 100,
  *                 y: 100
  *             },
@@ -603,41 +578,38 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property string|array $symbol
- *    标线两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定，具体格式见 data.symbol。
+ *    Symbol type at the two ends of the mark line. It can be an array for two ends, or assigned seperately. See data.symbol for more format information.
  *
  * @property int|array $symbolSize
- *    标线两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定。
- *     注意： 这里无法像一般的 symbolSize 那样通过数组分别指定高宽。
+ *    Symbol size at the two ends of the mark line. It can be an array for two ends, or assigned seperately.
+ *     Attention:  You cannot assgin width and height seperately as normal symbolSize.
  *
  * @property MarkLine\Label $label
- *    标线的文本。
+ *    Mark line text.
  *
  * @property MarkLine\LineStyle $lineStyle
- *    标线的样式
- *
- * @property MarkLine\Emphasis $emphasis
- *    标线的高亮样式。
+ *    Mark line style.
  *
  * @property MarkLine\Data $data
- *    标线的数据数组。每个数组项可以是一个两个值的数组，分别表示线的起点和终点，每一项是一个对象，有下面几种方式指定起点或终点的位置。
+ *    Data array of marking line. Every array item can be an array of one or two values, representing starting and ending point of the line, and every item is an object. Here are several ways to assign the positions of starting and ending point.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     When multiple attributes exist, priority is as the above order.
  *     data: [
  *         [
  *             {
- *                 name: 两个坐标之间的标线,
+ *                 name: Markline between two points,
  *                 coord: [10, 20]
  *             },
  *             {
  *                 coord: [20, 30]
  *             }
  *         ], [{
- *             // 固定起点的 x 像素位置，用于模拟一条指向最大值的水平线
+ *             // Mark line with a fixed X position in starting point. This is used to generate an arrow pointing to maximum line.
  *             yAxis: max,
  *             x: 90%
  *         }, {
@@ -645,7 +617,7 @@ use Hisune\EchartsPHP\Property;
  *         }],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标线,
+ *                 name: Mark line between two points,
  *                 x: 100,
  *                 y: 100
  *             },
@@ -657,31 +629,28 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property string|array $symbol
- *    标线两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定，具体格式见 data.symbol。
+ *    Symbol type at the two ends of the mark line. It can be an array for two ends, or assigned seperately. See data.symbol for more format information.
  *
  * @property int|array $symbolSize
- *    标线两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定。
- *     注意： 这里无法像一般的 symbolSize 那样通过数组分别指定高宽。
+ *    Symbol size at the two ends of the mark line. It can be an array for two ends, or assigned seperately.
+ *     Attention:  You cannot assgin width and height seperately as normal symbolSize.
  *
  * @property MarkLine\Label $label
- *    标线的文本。
+ *    Mark line text.
  *
  * @property MarkLine\LineStyle $lineStyle
- *    标线的样式
- *
- * @property MarkLine\Emphasis $emphasis
- *    标线的高亮样式。
+ *    Mark line style.
  *
  * @property MarkLine\Data $data
- *    标线的数据数组。每个数组项可以是一个两个值的数组，分别表示线的起点和终点，每一项是一个对象，有下面几种方式指定起点或终点的位置。
+ *    Data array of marking line. Every array item can be an array of one or two values, representing starting and ending point of the line, and every item is an object. Here are several ways to assign the positions of starting and ending point.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     When multiple attributes exist, priority is as the above order.
  *     data: [
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标线,
+ *                 name: Mark line between two points,
  *                 x: 100,
  *                 y: 100
  *             },
@@ -693,49 +662,46 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property string|array $symbol
- *    标线两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定，具体格式见 data.symbol。
+ *    Symbol type at the two ends of the mark line. It can be an array for two ends, or assigned seperately. See data.symbol for more format information.
  *
  * @property int|array $symbolSize
- *    标线两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定。
- *     注意： 这里无法像一般的 symbolSize 那样通过数组分别指定高宽。
+ *    Symbol size at the two ends of the mark line. It can be an array for two ends, or assigned seperately.
+ *     Attention:  You cannot assgin width and height seperately as normal symbolSize.
  *
  * @property MarkLine\Label $label
- *    标线的文本。
+ *    Mark line text.
  *
  * @property MarkLine\LineStyle $lineStyle
- *    标线的样式
- *
- * @property MarkLine\Emphasis $emphasis
- *    标线的高亮样式。
+ *    Mark line style.
  *
  * @property MarkLine\Data $data
- *    标线的数据数组。每个数组项可以是一个两个值的数组，分别表示线的起点和终点，每一项是一个对象，有下面几种方式指定起点或终点的位置。
+ *    Data array of marking line. Every array item can be an array of one or two values, representing starting and ending point of the line, and every item is an object. Here are several ways to assign the positions of starting and ending point.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 或者 valueDim 指定是在哪个维度上的最大值、最小值、平均值。
+ *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
  *     
- *     如果是笛卡尔坐标系的话，也可以通过只指定 xAxis 或者 yAxis 来实现 X 轴或者 Y 轴为某值的标线，见示例 scatter-weight
+ *     You may also create a mark line in Cartesian coordinate at a specific position in X or Y axis by assigning xAxis or yAxis. See scatter-weight for example.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     也可以是直接通过 type 设置该标线的类型，是最大值的线还是平均线。同样的，这时候可以通过使用 valueIndex 指定维度。
+ *     When multiple attributes exist, priority is as the above order.
+ *     You may also set the type of mark line through type, stating whether it is for the maximum value or average value. Likewise, dimensions can be assigned through valueIndex.
  *     data: [
  *         {
- *             name: 平均线,
- *             // 支持 average, min, max
+ *             name: average line,
+ *             // average, min, and max are supported
  *             type: average
  *         },
  *         {
- *             name: Y 轴值为 100 的水平线,
+ *             name: Horizontal line with Y value at 100,
  *             yAxis: 100
  *         },
  *         [
  *             {
- *                 // 起点和终点的项会共用一个 name
- *                 name: 最小值到最大值,
+ *                 // Use the same name with starting and ending point
+ *                 name: Minimum to Maximum,
  *                 type: min
  *             },
  *             {
@@ -744,14 +710,14 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个坐标之间的标线,
+ *                 name: Markline between two points,
  *                 coord: [10, 20]
  *             },
  *             {
  *                 coord: [20, 30]
  *             }
  *         ], [{
- *             // 固定起点的 x 像素位置，用于模拟一条指向最大值的水平线
+ *             // Mark line with a fixed X position in starting point. This is used to generate an arrow pointing to maximum line.
  *             yAxis: max,
  *             x: 90%
  *         }, {
@@ -759,7 +725,7 @@ use Hisune\EchartsPHP\Property;
  *         }],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标线,
+ *                 name: Mark line between two points,
  *                 x: 100,
  *                 y: 100
  *             },
@@ -771,31 +737,28 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property string|array $symbol
- *    标线两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定，具体格式见 data.symbol。
+ *    Symbol type at the two ends of the mark line. It can be an array for two ends, or assigned seperately. See data.symbol for more format information.
  *
  * @property int|array $symbolSize
- *    标线两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定。
- *     注意： 这里无法像一般的 symbolSize 那样通过数组分别指定高宽。
+ *    Symbol size at the two ends of the mark line. It can be an array for two ends, or assigned seperately.
+ *     Attention:  You cannot assgin width and height seperately as normal symbolSize.
  *
  * @property MarkLine\Label $label
- *    标线的文本。
+ *    Mark line text.
  *
  * @property MarkLine\LineStyle $lineStyle
- *    标线的样式
- *
- * @property MarkLine\Emphasis $emphasis
- *    标线的高亮样式。
+ *    Mark line style.
  *
  * @property MarkLine\Data $data
- *    标线的数据数组。每个数组项可以是一个两个值的数组，分别表示线的起点和终点，每一项是一个对象，有下面几种方式指定起点或终点的位置。
+ *    Data array of marking line. Every array item can be an array of one or two values, representing starting and ending point of the line, and every item is an object. Here are several ways to assign the positions of starting and ending point.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     When multiple attributes exist, priority is as the above order.
  *     data: [
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标线,
+ *                 name: Mark line between two points,
  *                 x: 100,
  *                 y: 100
  *             },
@@ -807,31 +770,28 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property string|array $symbol
- *    标线两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定，具体格式见 data.symbol。
+ *    Symbol type at the two ends of the mark line. It can be an array for two ends, or assigned seperately. See data.symbol for more format information.
  *
  * @property int|array $symbolSize
- *    标线两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定。
- *     注意： 这里无法像一般的 symbolSize 那样通过数组分别指定高宽。
+ *    Symbol size at the two ends of the mark line. It can be an array for two ends, or assigned seperately.
+ *     Attention:  You cannot assgin width and height seperately as normal symbolSize.
  *
  * @property MarkLine\Label $label
- *    标线的文本。
+ *    Mark line text.
  *
  * @property MarkLine\LineStyle $lineStyle
- *    标线的样式
- *
- * @property MarkLine\Emphasis $emphasis
- *    标线的高亮样式。
+ *    Mark line style.
  *
  * @property MarkLine\Data $data
- *    标线的数据数组。每个数组项可以是一个两个值的数组，分别表示线的起点和终点，每一项是一个对象，有下面几种方式指定起点或终点的位置。
+ *    Data array of marking line. Every array item can be an array of one or two values, representing starting and ending point of the line, and every item is an object. Here are several ways to assign the positions of starting and ending point.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     When multiple attributes exist, priority is as the above order.
  *     data: [
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标线,
+ *                 name: Mark line between two points,
  *                 x: 100,
  *                 y: 100
  *             },
@@ -843,49 +803,46 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property string|array $symbol
- *    标线两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定，具体格式见 data.symbol。
+ *    Symbol type at the two ends of the mark line. It can be an array for two ends, or assigned seperately. See data.symbol for more format information.
  *
  * @property int|array $symbolSize
- *    标线两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定。
- *     注意： 这里无法像一般的 symbolSize 那样通过数组分别指定高宽。
+ *    Symbol size at the two ends of the mark line. It can be an array for two ends, or assigned seperately.
+ *     Attention:  You cannot assgin width and height seperately as normal symbolSize.
  *
  * @property MarkLine\Label $label
- *    标线的文本。
+ *    Mark line text.
  *
  * @property MarkLine\LineStyle $lineStyle
- *    标线的样式
- *
- * @property MarkLine\Emphasis $emphasis
- *    标线的高亮样式。
+ *    Mark line style.
  *
  * @property MarkLine\Data $data
- *    标线的数据数组。每个数组项可以是一个两个值的数组，分别表示线的起点和终点，每一项是一个对象，有下面几种方式指定起点或终点的位置。
+ *    Data array of marking line. Every array item can be an array of one or two values, representing starting and ending point of the line, and every item is an object. Here are several ways to assign the positions of starting and ending point.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 或者 valueDim 指定是在哪个维度上的最大值、最小值、平均值。
+ *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
  *     
- *     如果是笛卡尔坐标系的话，也可以通过只指定 xAxis 或者 yAxis 来实现 X 轴或者 Y 轴为某值的标线，见示例 scatter-weight
+ *     You may also create a mark line in Cartesian coordinate at a specific position in X or Y axis by assigning xAxis or yAxis. See scatter-weight for example.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     也可以是直接通过 type 设置该标线的类型，是最大值的线还是平均线。同样的，这时候可以通过使用 valueIndex 指定维度。
+ *     When multiple attributes exist, priority is as the above order.
+ *     You may also set the type of mark line through type, stating whether it is for the maximum value or average value. Likewise, dimensions can be assigned through valueIndex.
  *     data: [
  *         {
- *             name: 平均线,
- *             // 支持 average, min, max
+ *             name: average line,
+ *             // average, min, and max are supported
  *             type: average
  *         },
  *         {
- *             name: Y 轴值为 100 的水平线,
+ *             name: Horizontal line with Y value at 100,
  *             yAxis: 100
  *         },
  *         [
  *             {
- *                 // 起点和终点的项会共用一个 name
- *                 name: 最小值到最大值,
+ *                 // Use the same name with starting and ending point
+ *                 name: Minimum to Maximum,
  *                 type: min
  *             },
  *             {
@@ -894,14 +851,14 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个坐标之间的标线,
+ *                 name: Markline between two points,
  *                 coord: [10, 20]
  *             },
  *             {
  *                 coord: [20, 30]
  *             }
  *         ], [{
- *             // 固定起点的 x 像素位置，用于模拟一条指向最大值的水平线
+ *             // Mark line with a fixed X position in starting point. This is used to generate an arrow pointing to maximum line.
  *             yAxis: max,
  *             x: 90%
  *         }, {
@@ -909,7 +866,7 @@ use Hisune\EchartsPHP\Property;
  *         }],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标线,
+ *                 name: Mark line between two points,
  *                 x: 100,
  *                 y: 100
  *             },

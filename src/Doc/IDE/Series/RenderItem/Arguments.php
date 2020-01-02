@@ -10,70 +10,72 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property array $params
- *    renderItem 函数的第一个参数，含有：
+ *    The first parameter of renderItem, including:
  *     {
- *         context: // {Object} 一个可供开发者暂存东西的对象。
- *         seriesId: // {string} 本系列 id。
- *         seriesName: // {string} 本系列 name。
- *         seriesIndex: // {number} 本系列 index。
- *         dataIndex: // {number} 数据项的 index。
- *         dataIndexInside: // {number} 数据项在当前坐标系中可见的数据的 index（即 dataZoom 当前窗口中的数据的 index）。
- *         dataInsideLength: // {number} 当前坐标系中可见的数据长度（即 dataZoom 当前窗口中的数据数量）。
- *         coordSys: // 不同的坐标系中，coordSys 里的信息不一样，含有如下这些可能：
+ *         context: // {string} An object that developers can store something temporarily here. Life cycle: current round of rendering.
+ *         seriesId: // {string} The id of this series.
+ *         seriesName: // {string} The name of this series.
+ *         seriesIndex: // {number} The index of this series.
+ *         dataIndex: // {number} The index of this data item.
+ *         dataIndexInside: // {number} The index of this data item in the current data window (see dataZoom).
+ *         dataInsideLength: // {number} The count of data in the current data window (see dataZoom).
+ *         actionType: // {string} The type of action that trigger this render.
+ *         coordSys: // coordSys is variable by different types of coordinate systems:
  *         coordSys: {
  *             type: cartesian2d,
- *             x: // {number} grid rect 的 x
- *             y: // {number} grid rect 的 y
- *             width: // {number} grid rect 的 width
- *             height: // {number} grid rect 的 height
+ *             x: // {number} x of grid rect
+ *             y: // {number} y of grid rect
+ *             width: // {number} width of grid rect
+ *             height: // {number} height of grid rect
  *         },
  *         coordSys: {
  *             type: calendar,
- *             x: // {number} calendar rect 的 x
- *             y: // {number} calendar rect 的 y
- *             width: // {number} calendar rect 的 width
- *             height: // {number} calendar rect 的 height
+ *             x: // {number} x of calendar rect
+ *             y: // {number} y of calendar rect
+ *             width: // {number} width of calendar rect
+ *             height: // {number} height of calendar rect
  *             cellWidth: // {number} calendar cellWidth
  *             cellHeight: // {number} calendar cellHeight
  *             rangeInfo: {
- *                 start: // calendar 日期开端
- *                 end: // calendar 日期结尾
- *                 weeks: // calendar 周数
- *                 dayCount: // calendar 日数
+ *                 start: // date start of calendar.
+ *                 end: // date end of calendar.
+ *                 weeks: // number of weeks in calendar.
+ *                 dayCount: // day count in calendar.
  *             }
  *         },
  *         coordSys: {
  *             type: geo,
- *             x: // {number} geo rect 的 x
- *             y: // {number} geo rect 的 y
- *             width: // {number} geo rect 的 width
- *             height: // {number} geo rect 的 height
+ *             x: // {number} x of geo rect
+ *             y: // {number} y of geo rect
+ *             width: // {number} width of geo rect
+ *             height: // {number} height of geo rect
+ *             zoom: // {number} zoom ratio, 1 if no zoom, 0.5 means shrink to 50%.
  *         },
  *         coordSys: {
  *             type: polar,
- *             cx: // {number} polar 的中心坐标
- *             cy: // {number} polar 的中心坐标
- *             r: // {number} polar 的外半径
- *             r0: // {number} polar 的内半径
+ *             cx: // {number} x of polar center.
+ *             cy: // {number} y of polar center.
+ *             r: // {number} outer radius of polar.
+ *             r0: // {number} inner radius of polar.
  *         },
  *         coordSys: {
  *             type: singleAxis,
- *             x: // {number} singleAxis rect 的 x
- *             y: // {number} singleAxis rect 的 y
- *             width: // {number} singleAxis rect 的 width
- *             height: // {number} singleAxis rect 的 height
+ *             x: // {number} x of singleAxis rect
+ *             y: // {number} y of singleAxis rect
+ *             width: // {number} width of singleAxis rect
+ *             height: // {number} height of singleAxis rect
  *         }
  *     }
  *     
- *     其中，关于 dataIndex 和 dataIndexInside 的区别：
+ *     Difference between dataIndex and dataIndexInside:
  *     
- *     dataIndex 指的 dataItem 在原始数据中的 index。
- *     dataIndexInside 指的是 dataItem 在当前数据窗口（参见 dataZoom）中的 index。
+ *     dataIndex is the index of a dataItem in the original data.
+ *     dataIndexInside is the index of a dataItem in the current data window (see dataZoom.
  *     
- *     renderItem.arguments.api 中使用的参数都是 dataIndexInside 而非 dataIndex，因为从 dataIndex 转换成 dataIndexInside 需要时间开销。
+ *     renderItem.arguments.api uses dataIndexInside as the input parameter but not dataIndex, because conversion from dataIndex to dataIndexInside is time-consuming.
  *
  * @property Arguments\Api $api
- *    renderItem 函数的第二个参数。
+ *    The second parameter of renderItem.
  *
  * {_more_}
  */

@@ -10,38 +10,84 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property string $type Default: 'line'
- *    指示器类型。
- *     可选
+ *    Indicator type.
+ *     Options:
  *     
- *     line 直线指示器
+ *     line line indicator.
  *     
- *     shadow 阴影指示器
+ *     shadow shadow crosshair indicator.
  *     
- *     cross 十字准星指示器。其实是种简写，表示启用两个正交的轴的 axisPointer。
+ *     none no indicator displayed.
+ *     
+ *     cross crosshair indicator, which is actually the shortcut of enable two axisPointers of two orthometric axes.
  *
  * @property string $axis Default: 'auto'
- *    指示器的坐标轴。
- *     默认情况，坐标系会自动选择显示哪个轴的 axisPointer（默认取类目轴或者时间轴）。
- *     可以是 x, y, radius, angle。
+ *    The coordinate axis, which could be x, y, radius, or angle. By default, each coordinate system will automatically chose the axes whose will display its axisPointer (category axis or time axis is used by default).
  *
  * @property boolean $snap
- *    坐标轴指示器是否自动吸附到点上。默认自动判断。
- *     这个功能在数值轴和时间轴上比较有意义，可以自动寻找细小的数值点。
+ *    Whether snap to point automatically. The default value is auto determined.
+ *     This feature usually makes sense in value axis and time axis, where tiny points can be seeked automatically.
  *
  * @property int $z
- *    坐标轴指示器的 z 值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖。
+ *    z value, which controls order of drawing graphical components. Components with smaller z values may be overwritten by those with larger z values.
  *
  * @property AxisPointer\Label $label
- *    坐标轴指示器的文本标签。
+ *    label of axisPointer
  *
  * @property AxisPointer\LineStyle $lineStyle
- *    axisPointer.type 为 line 时有效。
+ *    It is valid when axisPointer.type is line.
  *
  * @property AxisPointer\ShadowStyle $shadowStyle
- *    axisPointer.type 为 shadow 时有效。
+ *    It is valid when axisPointer.type is shadow.
  *
  * @property AxisPointer\CrossStyle $crossStyle
- *    axisPointer.type 为 cross 时有效。
+ *    It is valid when axisPointer.type is cross.
+ *
+ * @property boolean $animation Default: true
+ *    Whether to enable animation.
+ *
+ * @property int $animationThreshold Default: 2000
+ *    Whether to set graphic number threshold to animation. Animation will be disabled when graphic number is larger than threshold.
+ *
+ * @property int|callable $animationDuration Default: 1000
+ *    Duration of the first animation, which supports callback function for different data to have different animation effect:
+ *     animationDuration: function (idx) {
+ *         // delay for later data is larger
+ *         return idx * 100;
+ *     }
+ *
+ * @property string $animationEasing Default: 'cubicOut'
+ *    Easing method used for the first animation. Varied easing effects can be found at easing effect example.
+ *
+ * @property int|callable $animationDelay Default: 0
+ *    Delay before updating the first animation, which supports callback function for different data to have different animation effect.
+ *     For example:
+ *     animationDelay: function (idx) {
+ *         // delay for later data is larger
+ *         return idx * 100;
+ *     }
+ *     
+ *     See this example for more information.
+ *
+ * @property int|callable $animationDurationUpdate Default: 200
+ *    Time for animation to complete, which supports callback function for different data to have different animation effect:
+ *     animationDurationUpdate: function (idx) {
+ *         // delay for later data is larger
+ *         return idx * 100;
+ *     }
+ *
+ * @property string $animationEasingUpdate Default: 'exponentialOut'
+ *    Easing method used for animation.
+ *
+ * @property int|callable $animationDelayUpdate Default: 0
+ *    Delay before updating animation, which supports callback function for different data to have different animation effects.
+ *     For example:
+ *     animationDelayUpdate: function (idx) {
+ *         // delay for later data is larger
+ *         return idx * 100;
+ *     }
+ *     
+ *     See this example for more information.
  *
  * {_more_}
  */

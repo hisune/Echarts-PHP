@@ -10,75 +10,119 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: false
- *    是否显示文本标签。如果 tooltip.axisPointer.type 设置为 cross 则默认显示标签，否则默认不显示。
+ *    Whether show label. Label will not show by default. But if tooltip.axisPointer.type is set as  cross, label will be displayed automatically.
  *
  * @property int|string $precision Default: 'auto'
- *    文本标签中数值的小数点精度。默认根据当前轴的值自动判断。也可以指定如 2 表示保留两位小数。
+ *    The precision of value in label. It is auto determined by default. You can also set it as 2, which indicates that two decimal fractions are reserved.
  *
  * @property string|callable $formatter
- *    文本标签文字的格式化器。
- *     如果为 string，可以是例如：formatter: some text {value} some text，其中 {value} 会被自动替换为轴的值。
- *     如果为 function，可以是例如：
- *     参数：
- *     {Object} params: 含有：
- *     {Object} params.value: 轴当前值，如果 axis.type 为 category 时，其值为 axis.data 里的数值。如果 axis.type 为 time，其值为时间戳。
- *     {Array.&lt;Object&gt;} params.seriesData: 一个数组，是当前 axisPointer 最近的点的信息，每项内容为
+ *    The formatter of label.
+ *     If set as string, for example it can be: formatter: some text {value} some text, where {value} will be replaced by axis value automatically.
+ *     If set as function:
+ *     Parameters:
+ *     {Object} params: Including fields as follows:
+ *     {Object} params.value: current value of this axis. If axis.type is category, it is one of the value in axis.data. If axis.type is time, it is a timestamp.
+ *     {Array.&lt;Object&gt;} params.seriesData: An array, containing info of nearest points. Each item is:
+ *     {string} params.axisDimension: The dimension name of the axis. For example, in catesian it will be x, y, and in polar it will be radius, angle.
+ *     {number} params.axisIndex: The index of the axis, for example, 0,1, 2, ...
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     每项内容还包括轴的信息：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Each item also includes axis infomation:
  *     {
  *         axisDim: x, // x, y, angle, radius, single
  *         axisId: xxx,
  *         axisName: xxx,
  *         axisIndex: 3,
- *         axisValue: 121, // 当前 axisPointer 对应的 value。
- *         axisValueLabel: 文本
+ *         axisValue: 121, // The current value of axisPointer
+ *         axisValueLabel: text of value
  *     }
  *     
- *     返回值：
- *     显示的 string。
- *     例如：
+ *     Return:
+ *     The string to be displayed.
+ *     For example:
  *     formatter: function (params) {
- *         // 假设此轴的 type 为 time。
+ *         // If axis.type is time
  *         return some text + echarts.format.formatTime(params.value);
  *     }
  *
  * @property boolean $margin Default: '3'
- *    label 距离轴的距离。
+ *    Distance between label and axis.
  *
  * @property string $color Default: '#fff'
- *    文字的颜色。
+ *     text color.
  *
  * @property string $fontStyle Default: 'normal'
- *    文字字体的风格
- *     可选：
+ *     font style
+ *     Options are:
  *     
  *     normal
  *     italic
  *     oblique
  *
  * @property string $fontWeight Default: 'normal'
- *    文字字体的粗细
- *     可选：
+ *     font thick weight
+ *     Options are:
  *     
  *     normal
  *     bold
@@ -87,93 +131,93 @@ use Hisune\EchartsPHP\Property;
  *     100 | 200 | 300 | 400...
  *
  * @property string $fontFamily Default: 'sans-serif'
- *    文字的字体系列
- *     还可以是 serif , monospace, Arial, Courier New, Microsoft YaHei, ...
+ *     font family
+ *     Can also be serif , monospace, ...
  *
  * @property int $fontSize Default: 12
- *    文字的字体大小
+ *     font size
  *
  * @property int $lineHeight
- *    行高。
- *     rich 中如果没有设置 lineHeight，则会取父层级的 lineHeight。例如：
+ *    Line height of the text fregment.
+ *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
  *         rich: {
  *             a: {
- *                 // 没有设置 `lineHeight`，则 `lineHeight` 为 56
+ *                 // `lineHeight` is not set, then it will be 56
  *             }
  *         }
  *     }
  *
  * @property int|string $width
- *    文字块的宽度。一般不用指定，不指定则自动是文字的宽度。在想做表格项或者使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     width 也可以是百分比字符串，如 100%。表示的是所在文本块的 contentWidth（即不包含文本块的 padding）的百分之多少。之所以以 contentWidth 做基数，因为每个文本片段只能基于 content box 布局。如果以 outerWidth 做基数，则百分比的计算在实用中不具有意义，可能会超出。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
+ *     Notice, width and height only work when rich specified.
  *
  * @property int|string $height
- *    文字块的高度。一般不用指定，不指定则自动是文字的高度。在使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     Notice, width and height only work when rich specified.
  *
  * @property string $textBorderColor Default: 'transparent'
- *    文字本身的描边颜色。
+ *    Storke color of the text.
  *
  * @property int $textBorderWidth Default: 0
- *    文字本身的描边宽度。
+ *    Storke line width of the text.
  *
  * @property string $textShadowColor Default: 'transparent'
- *    文字本身的阴影颜色。
+ *    Shadow color of the text itself.
  *
  * @property int $textShadowBlur Default: 0
- *    文字本身的阴影长度。
+ *    Shadow blue of the text itself.
  *
  * @property int $textShadowOffsetX Default: 0
- *    文字本身的阴影 X 偏移。
+ *    Shadow X offset of the text itself.
  *
  * @property int $textShadowOffsetY Default: 0
- *    文字本身的阴影 Y 偏移。
+ *    Shadow Y offset of the text itself.
  *
  * @property string|array $padding Default: '[5, 7, 5, 7]'
- *    axisPointer内边距，单位px，默认各方向内边距为5，接受数组分别设定上右下左边距。
- *     使用示例：
- *     // 设置内边距为 5
+ *    axisPointer space around content. The unit is px. Default values for each position are 5. And they can be set to different values with left, right, top, and bottom.
+ *     Examples: 
+ *     // Set padding to be 5
  *     padding: 5
- *     // 设置上下的内边距为 5，左右的内边距为 10
+ *     // Set the top and bottom paddings to be 5, and left and right paddings to be 10
  *     padding: [5, 10]
- *     // 分别设置四个方向的内边距
+ *     // Set each of the four paddings seperately
  *     padding: [
- *         5,  // 上
- *         10, // 右
- *         5,  // 下
- *         10, // 左
+ *         5,  // up
+ *         10, // right
+ *         5,  // down
+ *         10, // left
  *     ]
  *
  * @property string $backgroundColor Default: 'auto'
- *    文本标签的背景颜色，默认是和 axis.axisLine.lineStyle.color 相同。
+ *    Background color of label, the same as axis.axisLine.lineStyle.color by default.
  *
  * @property string $borderColor
- *    文本标签的边框颜色。
+ *    Border color of label.
  *
  * @property string $borderWidth Default: '0'
- *    文本标签的边框宽度。
+ *    Border width of label.
  *
  * @property int $shadowBlur Default: 3
- *    图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。
- *     示例：
+ *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
  *         shadowBlur: 10
  *     }
  *
  * @property string $shadowColor Default: '#aaa'
- *    阴影颜色。支持的格式同color。
+ *    Shadow color. Support same format as color.
  *
  * @property int $shadowOffsetX Default: 0
- *    阴影水平方向上的偏移距离。
+ *    Offset distance on the horizontal direction of shadow.
  *
  * @property int $shadowOffsetY Default: 0
- *    阴影垂直方向上的偏移距离。
+ *    Offset distance on the vertical direction of shadow.
  *
  * {_more_}
  */

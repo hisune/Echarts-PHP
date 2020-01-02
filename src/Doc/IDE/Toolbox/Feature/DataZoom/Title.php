@@ -9,10 +9,10 @@ namespace Hisune\EchartsPHP\Doc\IDE\Toolbox\Feature\DataZoom;
 use Hisune\EchartsPHP\Property;
 
 /**
- * @property string $zoom Default: '区域缩放'
+ * @property string $zoom Default: 'area zooming'
  *    
  *
- * @property string $back Default: '区域缩放还原'
+ * @property string $back Default: 'restore area zooming'
  *    
  *
  * {_more_}

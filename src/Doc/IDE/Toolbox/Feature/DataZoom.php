@@ -10,25 +10,25 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: true
- *    是否显示该工具。
+ *    Whether to show the tool.
  *
  * @property DataZoom\Title $title
- *    缩放和还原的标题文本。
+ *    Restored and zoomed title text.
  *
  * @property DataZoom\Icon $icon
- *    缩放和还原的 icon path。
+ *    Zooming and restore icon path.
  *
  * @property DataZoom\IconStyle $iconStyle
- *    数据区域缩放 icon 样式设置。
+ *    The style setting of data area zooming icon. Since icon label is displayed only when hovering on the icon, the label configuration options are available under emphasis.
  *
  * @property DataZoom\Emphasis $emphasis
  *    
  *
  * @property int|array|boolean $xAxisIndex
- *    指定哪些 xAxis 被控制。如果缺省则控制所有的x轴。如果设置为 false 则不控制任何x轴。如果设置成 3 则控制 axisIndex 为 3 的x轴。如果设置为 [0, 3] 则控制 axisIndex 为 0 和 3 的x轴。
+ *    Defines which xAxis should be controlled. By default, it controls all x axes. If it is set to be false, then no x axis is controlled. If it is set to be then it controls axis with axisIndex of 3. If it is set to be [0, 3], it controls the x-axes with axisIndex of 0 and 3.
  *
  * @property int|array|boolean $yAxisIndex
- *    指定哪些 yAxis 被控制。如果缺省则控制所有的y轴。如果设置为 false 则不控制任何y轴。如果设置成 3 则控制 axisIndex 为 3 的y轴。如果设置为 [0, 3] 则控制 axisIndex 为 0 和 3 的y轴。
+ *    Defines which yAxis should be controlled. By default, it controls all y axes. If it is set to be false, then no y axis is controlled. If it is set to be then it controls axis with axisIndex of 3. If it is set to be [0, 3], it controls the x-axes with axisIndex of 0 and 3.
  *
  * {_more_}
  */

@@ -10,10 +10,10 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: true
- *    是否显示仪表盘轴线。
+ *    Whether to show the axis line of gauge chart.
  *
  * @property AxisLine\LineStyle $lineStyle
- *    仪表盘轴线样式。
+ *    The style of the axis line of gauge chart.
  *
  * {_more_}
  */

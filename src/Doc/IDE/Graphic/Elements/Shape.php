@@ -10,79 +10,92 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property int $x Default: 0
- *    图形元素的左上角在父节点坐标系（以父节点左上角为原点）中的横坐标值。
+ *    The x value of the left-top corner of the element in the coordinate system of its parent.
  *
  * @property int $y Default: '0'
- *    图形元素的左上角在父节点坐标系（以父节点左上角为原点）中的纵坐标值。
+ *    The y value of the left-top corner of the element in the coordinate system of its parent.
  *
  * @property int $width Default: 0
- *    图形元素的宽度。
+ *    The width of the shape of the element.
  *
  * @property int $height Default: '0'
- *    图形元素的高度。
+ *    The height of the shape of the element.
+ *
+ * @property array $r
+ *    Specify border radius of the rectangular here. Generally, r should be [topLeftRadius, topRightRadius, BottomRightRadius, bottomLeftRadius], where each item is a number.
+ *     Abbreviation is enabled, for example:
+ *     
+ *     r: 1         means [1, 1, 1, 1]
+ *     r: [1]       means [1, 1, 1, 1]
+ *     r: [1, 2]    means [1, 2, 1, 2]
+ *     r: [1, 2, 3] means [1, 2, 3, 2]
  *
  *  * @property int $cx Default: 0
- *    图形元素的中心在父节点坐标系（以父节点左上角为原点）中的横坐标值。
+ *    The x value of the center of the element in the coordinate system of its parent.
  *
  * @property int $cy Default: '0'
- *    图形元素的中心在父节点坐标系（以父节点左上角为原点）中的纵坐标值。
+ *    The y value of the center of the element in the coordinate system of its parent.
  *
  * @property int $r Default: 0
- *    外半径。
+ *    Outside radius.
  *
  *  * @property int $r0 Default: 0
- *    内半径。
+ *    Inside radius.
  *
  *  * @property int $startAngle Default: 0
- *    开始弧度。
+ *    start angle, in radian.
  *
  * @property int $endAngle Default: 'Math.PI * 2'
- *    结束弧度。
+ *    end anble, in radian.
  *
  * @property boolean $clockwise Default: true
- *    是否顺时针。
+ *    Whether draw clockwise.
  *
  *  * @property array $points
- *    点列表，用于定义形状，如 [[22, 44], [44, 55], [11, 44], ...]
+ *    A list of points, which defines the shape, like [[22, 44], [44, 55], [11, 44], ...].
  *
  * @property int|string $smooth Default: 'undefined'
- *    是否平滑曲线。
+ *    Whether smooth the line.
  *     
- *     如果为 number：表示贝塞尔 (bezier) 差值平滑，smooth 指定了平滑等级，范围 [0, 1]。
- *     如果为 spline：表示 Catmull-Rom spline 差值平滑。
+ *     If the value is number, bezier interpolation is used, and the value specified the level of smooth, which is in the range of [0, 1].
+ *     If the value is spline, Catmull-Rom spline interpolation is used.
  *
  * @property boolean $smoothConstraint Default: false
- *    是否将平滑曲线约束在包围盒中。smooth 为 number（bezier）时生效。
+ *    Whether prevent the smooth process cause the line out of the bounding box.
+ *     Only works when smooth is number (bezier smooth).
  *
  *  * @property array $points
- *    点列表，用于定义形状，如 [[22, 44], [44, 55], [11, 44], ...]
+ *    A list of points, which defines the shape, like [[22, 44], [44, 55], [11, 44], ...].
  *
  *  * @property int $x1 Default: 0
- *    开始点的 x 值。
+ *    x value of the start point.
  *
  * @property int $y1 Default: 0
- *    开始点的 y 值。
+ *    y value of the start point.
  *
  * @property int $x2 Default: 0
- *    结束点的 x 值。
+ *    x value of the end point.
  *
  * @property int $y2 Default: 0
- *    结束点的 y 值。
+ *    y value of the end point.
  *
  * @property int $percent Default: 1
- *    线画到百分之多少就不画了。值的范围：[0, 1]。
+ *    Specify the percentage of drawing, useful in animation.
+ *     Value range: [0, 1].
  *
  *  * @property int $cpx1 Default: 0
- *    控制点 x 值。
+ *    x of control point.
  *
  * @property int $cpy1 Default: 0
- *    控制点 y 值。
+ *    y of control point.
  *
  * @property int $cpx2
- *    第二个控制点 x 值。如果设置则开启三阶贝塞尔曲线。
+ *    x of the second control point. If specified, cubic bezier is used.
+ *     If both cpx2 and cpy2 are not set, quatratic bezier is used.
  *
  * @property int $cpy2
- *    第二个控制点 y 值。如果设置则开启三阶贝塞尔曲线。
+ *    y of the second control point. If specified, cubic bezier is used.
+ *     If both cpx2 and cpy2 are not set, quatratic bezier is used.
  *
  * {_more_}
  */

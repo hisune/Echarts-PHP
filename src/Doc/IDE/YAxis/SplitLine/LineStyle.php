@@ -10,46 +10,46 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property array|string $color Default: '[\'#ccc\']'
- *    分隔线颜色，可以设置成单个颜色。
- *     也可以设置成颜色数组，分隔线会按数组中颜色的顺序依次循环设置颜色。
- *     示例
+ *    The color of the splitLine, which could be set separately.
+ *     SplitLine color could also be set in color array, which the split lines would take as their colors in turns.
+ *     Example:
  *     splitLine: {
  *         lineStyle: {
- *             // 使用深浅的间隔色
+ *             // Dark and light colors will be used in turns
  *             color: [#aaa, #ddd]
  *         }
  *     }
  *
  * @property int $width Default: 1
- *    分隔线线宽。
+ *    splitLine line width.
  *
  * @property string $type Default: 'solid'
- *    分隔线线的类型。
- *     可选：
+ *    splitLine line type.
+ *     Options are: 
  *     
  *     solid
  *     dashed
  *     dotted
  *
  * @property int $shadowBlur
- *    图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。
- *     示例：
+ *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
  *         shadowBlur: 10
  *     }
  *
  * @property string $shadowColor
- *    阴影颜色。支持的格式同color。
+ *    Shadow color. Support same format as color.
  *
  * @property int $shadowOffsetX Default: 0
- *    阴影水平方向上的偏移距离。
+ *    Offset distance on the horizontal direction of shadow.
  *
  * @property int $shadowOffsetY Default: 0
- *    阴影垂直方向上的偏移距离。
+ *    Offset distance on the vertical direction of shadow.
  *
  * @property int $opacity
- *    图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。
+ *    Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
  *
  * {_more_}
  */

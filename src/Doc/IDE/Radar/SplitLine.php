@@ -9,11 +9,9 @@ namespace Hisune\EchartsPHP\Doc\IDE\Radar;
 use Hisune\EchartsPHP\Property;
 
 /**
- * @property boolean $show Default: true
- *    是否显示分隔线。默认数值轴显示，类目轴不显示。
- *
- * @property SplitLine\LineStyle $lineStyle
- *    
+ * @property SplitLine\Show $show Default: true
+ *    Set this to false to prevent the splitLine from showing.
+ *     value type axes are shown by default, while category type axes are hidden.
  *
  * {_more_}
  */

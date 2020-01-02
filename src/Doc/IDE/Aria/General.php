@@ -9,13 +9,13 @@ namespace Hisune\EchartsPHP\Doc\IDE\Aria;
 use Hisune\EchartsPHP\Property;
 
 /**
- * @property string $withTitle Default: '这是一个关于“{title}”的图表。'
- *    如果图表存在 title.text，则采用 withTitle。其中包括模板变量：
+ * @property string $withTitle Default: 'This is a chart about "{title}".'
+ *    If title.text exists, then this is used. Template variable:
  *     
- *     {title}：将被替换为图表的 title.text。
+ *     {title}: will be replaced by title.text.
  *
- * @property string $withoutTitle Default: '这是一个图表，'
- *    如果图表不存在 title.text，则采用 withoutTitle。
+ * @property string $withoutTitle Default: 'This is a chart'
+ *    If title.text does not exist, then this is used.
  *
  * {_more_}
  */

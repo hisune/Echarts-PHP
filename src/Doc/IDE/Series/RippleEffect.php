@@ -9,14 +9,17 @@ namespace Hisune\EchartsPHP\Doc\IDE\Series;
 use Hisune\EchartsPHP\Property;
 
 /**
+ * @property string $color
+ *    Color of the ripple rings. The default value is the color of scatter.
+ *
  * @property int $period Default: 4
- *    动画的时间。
+ *    The period duration of animation, in seconds.
  *
  * @property int $scale Default: 2.5
- *    动画中波纹的最大缩放比例。
+ *    The maximum zooming scale of ripples in animation.
  *
  * @property string $brushType Default: 'fill'
- *    波纹的绘制方式，可选 stroke 和 fill。
+ *    The brush type for ripples. options: stroke and fill.
  *
  * {_more_}
  */

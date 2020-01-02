@@ -10,13 +10,13 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property Leaves\Label $label
- *    描述了叶子节点所对应的文本标签的样式。
+ *    Describes the style of the text label corresponding to the leaf node.
  *
  * @property Leaves\ItemStyle $itemStyle
- *    树图中叶子节点的样式。
+ *    The style of the leaf node in the tree.
  *
  * @property Leaves\Emphasis $emphasis
- *    叶子节点高亮的样式。
+ *    
  *
  * {_more_}
  */

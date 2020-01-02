@@ -10,10 +10,10 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property int $min
- *    最小的缩放值
+ *    Minimum scaling
  *
  * @property int $max
- *    最大的缩放值
+ *    Maximum scaling
  *
  * {_more_}
  */

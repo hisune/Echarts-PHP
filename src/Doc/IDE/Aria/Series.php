@@ -10,13 +10,13 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property int $maxCount Default: 10
- *    描述中最多出现的系列个数。
+ *    Maximum series number.
  *
  * @property Series\Single $single
- *    当图表只包含一个系列时，采用的描述。
+ *    Description used when there is only one chart.
  *
  * @property Series\Multiple $multiple
- *    当图表只包含多个系列时，采用的描述。
+ *    Description used when there are more than one chart.
  *
  * {_more_}
  */

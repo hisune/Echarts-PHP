@@ -9,24 +9,24 @@ namespace Hisune\EchartsPHP\Doc\IDE\Aria\Series;
 use Hisune\EchartsPHP\Property;
 
 /**
- * @property string $prefix Default: '它由{seriesCount}个图表系列组成。'
- *    对于所有系列的整体性描述，显示在每个系列描述之前。其中包括模板变量：
+ * @property string $prefix Default: 'It consists of {seriesCount} chart series. '
+ *    General description for all series. This displays before all series descriptions. Template variable:
  *     
- *     {seriesCount}：将被替换为系列个数。
+ *     {seriesCount}: will be replaced by series count.
  *
- * @property string $withName Default: '图表类型是{seriesType}，表示{seriesName}。'
- *    如果系列有 name 属性，则采用该描述。其中包括模板变量：
+ * @property string $withName Default: 'The chart type is {seriesType}, which means {seriesName}. '
+ *    If series contains name attribute, then this is used. Template variable:
  *     
- *     {seriesName}：将被替换为系列的 name；
- *     {seriesType}：将被替换为系列的类型名称，如：柱状图、 折线图 等等。
+ *     {seriesName}: will be replaced by series name;
+ *     {seriesType}: will be replaced by series type name.
  *
- * @property string $withoutName Default: '图表类型是{seriesType}。'
- *    如果系列没有 name 属性，则采用该描述。其中包括模板变量：
+ * @property string $withoutName Default: 'The chart type is {seriesType}.'
+ *    If series doesnt contain name attribute, then this is used. Template variable:
  *     
- *     {seriesType}：将被替换为系列的类型名称，如：柱状图、 折线图 等等。
+ *     {seriesType}: will be replaced by series type name.
  *
  * @property Multiple\Separator $separator
- *    系列与系列之间描述的分隔符。
+ *    Separators between series and series.
  *
  * {_more_}
  */

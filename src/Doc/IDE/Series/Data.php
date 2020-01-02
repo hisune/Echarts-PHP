@@ -10,69 +10,68 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property string $name
- *    树节点的名称，用来标识每一个节点。
+ *    The name of the tree node, used to identify each node.
  *
  * @property int $value
- *    节点的值，在 tooltip 中显示。
+ *    The value of the node, displayed in the tooltip.
  *
  * @property Data\ItemStyle $itemStyle
- *    该节点的样式。
+ *    The style of the node.
  *
  * @property Data\Label $label
- *    该节点的标签。
+ *    The label of the node.
  *
  * @property Data\Emphasis $emphasis
- *    高亮的节点样式
+ *    
  *
  * @property Data\Tooltip $tooltip
- *    本系列每个数据项中特定的 tooltip 设定。
+ *    tooltip settings in this series data.
  *
  * @property boolean $animation Default: true
- *    是否开启动画。
+ *    Whether to enable animation.
  *
  * @property int $animationThreshold Default: 2000
- *    是否开启动画的阈值，当单个系列显示的图形数量大于这个阈值时会关闭动画。
+ *    Whether to set graphic number threshold to animation. Animation will be disabled when graphic number is larger than threshold.
  *
- * @property int $animationDuration Default: 1000
- *    初始动画的时长，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果：
+ * @property int|callable $animationDuration Default: 1000
+ *    Duration of the first animation, which supports callback function for different data to have different animation effect:
  *     animationDuration: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *
  * @property string $animationEasing Default: 'linear'
- *    初始动画的缓动效果。不同的缓动效果可以参考 缓动示例。
+ *    Easing method used for the first animation. Varied easing effects can be found at easing effect example.
  *
  * @property int|callable $animationDelay Default: 0
- *    初始动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果。
- *     如下示例：
+ *    Delay before updating the first animation, which supports callback function for different data to have different animation effect.
+ *     For example:
  *     animationDelay: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *     
- *     也可以看该示例
+ *     See this example for more information.
  *
  * @property int|callable $animationDurationUpdate Default: 300
- *    数据更新动画的时长。
- *     支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的更新动画效果：
+ *    Time for animation to complete, which supports callback function for different data to have different animation effect:
  *     animationDurationUpdate: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *
  * @property string $animationEasingUpdate Default: 'cubicOut'
- *    数据更新动画的缓动效果。
+ *    Easing method used for animation.
  *
  * @property int|callable $animationDelayUpdate Default: 0
- *    数据更新动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的更新动画效果。
- *     如下示例：
+ *    Delay before updating animation, which supports callback function for different data to have different animation effects.
+ *     For example:
  *     animationDelayUpdate: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *     
- *     也可以看该示例
+ *     See this example for more information.
  *
  * {_more_}
  */

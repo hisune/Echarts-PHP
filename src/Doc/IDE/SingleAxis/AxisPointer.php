@@ -10,43 +10,45 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: false
- *    默认不显示。但是如果 tooltip.trigger 设置为 axis 或者 tooltip.axisPointer.type 设置为 cross，则自动显示 axisPointer。坐标系会自动选择显示显示哪个轴的 axisPointer，也可以使用 tooltip.axisPointer.axis 改变这种选择。
+ *    axisPointer will not be displayed by default. But if tooltip.trigger is set as axis or tooltip.axisPointer.type is set as  cross, axisPointer will be displayed automatically. Each coordinate system will automatically chose the axes whose will display its axisPointer. tooltip.axisPointer.axis can be used to change the choice.
  *
  * @property string $type Default: 'line'
- *    指示器类型。
- *     可选
+ *    Indicator type.
+ *     Options:
  *     
- *     line 直线指示器
+ *     line line indicator.
  *     
- *     shadow 阴影指示器
+ *     shadow shadow crosshair indicator.
+ *     
+ *     none no indicator displayed.
  *
  * @property boolean $snap
- *    坐标轴指示器是否自动吸附到点上。默认自动判断。
- *     这个功能在数值轴和时间轴上比较有意义，可以自动寻找细小的数值点。
+ *    Whether snap to point automatically. The default value is auto determined.
+ *     This feature usually makes sense in value axis and time axis, where tiny points can be seeked automatically.
  *
  * @property int $z
- *    坐标轴指示器的 z 值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖。
+ *    z value, which controls order of drawing graphical components. Components with smaller z values may be overwritten by those with larger z values.
  *
  * @property AxisPointer\Label $label
- *    坐标轴指示器的文本标签。
+ *    label of axisPointer
  *
  * @property AxisPointer\LineStyle $lineStyle
- *    axisPointer.type 为 line 时有效。
+ *    It is valid when axisPointer.type is line.
  *
  * @property AxisPointer\ShadowStyle $shadowStyle
- *    axisPointer.type 为 shadow 时有效。
+ *    It is valid when axisPointer.type is shadow.
  *
  * @property boolean $triggerTooltip Default: true
- *    是否触发 tooltip。如果不想触发 tooltip 可以关掉。
+ *    Whether to trigger tooltip.
  *
  * @property int $value
- *    当前的 value。在使用 axisPointer.handle 时，可以设置此值进行初始值设定，从而决定 axisPointer 的初始位置。
+ *    current value. When using axisPointer.handle, value can be set to define the initail position of axisPointer.
  *
  * @property boolean $status
- *    当前的状态，可取值为 show 和 hide。
+ *    Current status, can be show 和 hide.
  *
  * @property AxisPointer\Handle $handle
- *    拖拽手柄，适用于触屏的环境。参见 例子。
+ *    A button used to drag axisPointer. This feature is applicable in touch device. See example.
  *
  * {_more_}
  */

@@ -10,22 +10,22 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: true
- *    是否显示坐标轴轴线。
+ *    Set this to false to prevent the axis line from showing.
  *
  * @property boolean $onZero Default: true
- *    X 轴或者 Y 轴的轴线是否在另一个轴的 0 刻度上，只有在另一个轴为数值轴且包含 0 刻度时有效。
+ *    Specifies whether X or Y axis lies on the others origin position, where value is 0 on axis. Valid only if the other axis is of value type, and contains 0 value.
  *
  * @property int $onZeroAxisIndex
- *    当有双轴时，可以用这个属性手动指定，在哪个轴的 0 刻度上。
+ *    When mutiple axes exists, this option can be used to specify which axis can be onZero to.
  *
  * @property string|array $symbol Default: 'none'
- *    轴线两边的箭头。可以是字符串，表示两端使用同样的箭头；或者长度为 2 的字符串数组，分别表示两端的箭头。默认不显示箭头，即 none。两端都显示箭头可以设置为 arrow，只在末端显示箭头可以设置为 [none, arrow]。
+ *    Symbol of the two ends of the axis. It could be a string, representing the same symbol for two ends; or an array with two string elements, representing the two ends separately. Its set to be none by default, meaning no arrow for either end. If it is set to be arrow, there shall be two arrows. If there should only one arrow at the end, it should set to be [none, arrow].
  *
  * @property array $symbolSize Default: '[10, 15]'
- *    轴线两边的箭头的大小，第一个数字表示宽度（垂直坐标轴方向），第二个数字表示高度（平行坐标轴方向）。
+ *    Size of the arrows at two ends. The first is the width perpendicular to the axis, the next is the width parallel to the axis.
  *
  * @property array|int $symbolOffset Default: '[0, 0]'
- *    轴线两边的箭头的偏移，如果是数组，第一个数字表示起始箭头的偏移，第二个数字表示末端箭头的偏移；如果是数字，表示这两个箭头使用同样的偏移。
+ *    Arrow offset of axis. If is array, the first number is the offset of the arrow at the beginning, and the second number is the offset of the arrow at the end. If is number, it means the arrows have the same offset.
  *
  * @property AxisLine\LineStyle $lineStyle
  *    

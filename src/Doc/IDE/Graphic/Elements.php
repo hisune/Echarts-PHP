@@ -10,8 +10,8 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property string $type Default: 'group'
- *    用 setOption 首次设定图形元素时必须指定。
- *     可取值：
+ *    Must be specified when define a graphic element at the first time.
+ *     Optional values:
  *     image,
  *     text,
  *     circle,
@@ -26,113 +26,183 @@ use Hisune\EchartsPHP\Property;
  *     group,
  *
  * @property string $id Default: 'undefined'
- *    id 用于在更新或删除图形元素时指定更新哪个图形元素，如果不需要用可以忽略。
+ *    id is used to specifying element when willing to update it.
+ *     id can be ignored if you do not need it.
  *
  * @property string $$action Default: 'merge'
- *    setOption 时指定本次对该图形元素的操作行为。
- *     可取值：
+ *    Specify the operation should be performed to the element when calling setOption.
+ *     Default value is merge, other values can be replace or remove.
+ *     Optional values:
  *     
- *     merge：如果已有元素，则新的配置项和已有的设定进行 merge。如果没有则新建。
- *     replace：如果已有元素，删除之，新建元素替代之。
- *     remove：删除元素。
+ *     merge: merge the given option to existing element (if any), otherwise create a new element.
+ *     replace: create a new element according to the given option and replace the existing element (if any).
+ *     remove: delete the existing element (if any).
+ *
+ * @property array $position Default: '[0, 0]'
+ *    2D transform can be applied to graphic elements, including:
+ *     
+ *     position: [horizontal translate offset, vertical translate offset], [0, 0] by default. Positive value means translate towards right or bottom.
+ *     rotation: Rotation in radian, 0 by default. Positive when anticlockwise.
+ *     scale: [horizontal scale factor, vertical scale factor], [1, 1] by default.
+ *     
+ *     origin specifies the origin point of rotation and scaling, [0, 0] by default.
+ *     Notice:
+ *     
+ *     The coordinates specified in the transform attribute above are relative to the [0, 0] of the parent element (that is, group or the root canvas). Thus we are able to group multiple elements, and groups can be nested.
+ *     The order that the transform attributes are applied to a single graphic element is: Firstly, rotation, then, scale, finally, position.
+ *
+ * @property int $rotation Default: 0
+ *    2D transform can be applied to graphic elements, including:
+ *     
+ *     position: [horizontal translate offset, vertical translate offset], [0, 0] by default. Positive value means translate towards right or bottom.
+ *     rotation: Rotation in radian, 0 by default. Positive when anticlockwise.
+ *     scale: [horizontal scale factor, vertical scale factor], [1, 1] by default.
+ *     
+ *     origin specifies the origin point of rotation and scaling, [0, 0] by default.
+ *     Notice:
+ *     
+ *     The coordinates specified in the transform attribute above are relative to the [0, 0] of the parent element (that is, group or the root canvas). Thus we are able to group multiple elements, and groups can be nested.
+ *     The order that the transform attributes are applied to a single graphic element is: Firstly, rotation, then, scale, finally, position.
+ *
+ * @property array $scale Default: '[1, 1]'
+ *    2D transform can be applied to graphic elements, including:
+ *     
+ *     position: [horizontal translate offset, vertical translate offset], [0, 0] by default. Positive value means translate towards right or bottom.
+ *     rotation: Rotation in radian, 0 by default. Positive when anticlockwise.
+ *     scale: [horizontal scale factor, vertical scale factor], [1, 1] by default.
+ *     
+ *     origin specifies the origin point of rotation and scaling, [0, 0] by default.
+ *     Notice:
+ *     
+ *     The coordinates specified in the transform attribute above are relative to the [0, 0] of the parent element (that is, group or the root canvas). Thus we are able to group multiple elements, and groups can be nested.
+ *     The order that the transform attributes are applied to a single graphic element is: Firstly, rotation, then, scale, finally, position.
+ *
+ * @property int $origin Default: '[0, 0]'
+ *    2D transform can be applied to graphic elements, including:
+ *     
+ *     position: [horizontal translate offset, vertical translate offset], [0, 0] by default. Positive value means translate towards right or bottom.
+ *     rotation: Rotation in radian, 0 by default. Positive when anticlockwise.
+ *     scale: [horizontal scale factor, vertical scale factor], [1, 1] by default.
+ *     
+ *     origin specifies the origin point of rotation and scaling, [0, 0] by default.
+ *     Notice:
+ *     
+ *     The coordinates specified in the transform attribute above are relative to the [0, 0] of the parent element (that is, group or the root canvas). Thus we are able to group multiple elements, and groups can be nested.
+ *     The order that the transform attributes are applied to a single graphic element is: Firstly, rotation, then, scale, finally, position.
  *
  * @property int|string $left Default: 'undefined'
- *    描述怎么根据父元素进行定位。
- *     『父元素』是指：如果是顶层元素，父元素是 echarts 图表容器。如果是 group 的子元素，父元素就是 group 元素。
- *     值的类型可以是：
+ *    Specify how to be positioned in its parent.
+ *     When the element is at the top level, the parent is the contianer of the chart instance.
+ *     Otherwise, the parent is a group element.
+ *     Optional values:
  *     
- *     number：表示像素值。
- *     百分比值：如 33%，用父元素的高和此百分比计算出最终值。
- *     center：表示自动居中。
+ *     Pixel value: For example, can be a number 30, means 30px.
+ *     Percent value: For example, can be a string 33%, means the final result should be calculated by this value and the height of its parent.
+ *     center: means position the element in the middle of according to its parent.
  *     
- *     left 和 right 只有一个可以生效。
- *     如果指定 left 或 right，则 shape 里的 x、cx 等定位属性不再生效。
+ *     Only one between left and right can work.
+ *     If left or right is specified, positioning attributes in shape (like x, cx) will not work.
  *
  * @property int|string $right Default: 'undefined'
- *    描述怎么根据父元素进行定位。
- *     『父元素』是指：如果是顶层元素，父元素是 echarts 图表容器。如果是 group 的子元素，父元素就是 group 元素。
- *     值的类型可以是：
+ *    Specify how to be positioned in its parent.
+ *     When the element is at the top level, the parent is the contianer of the chart instance.
+ *     Otherwise, the parent is a group element.
+ *     Optional values:
  *     
- *     number：表示像素值。
- *     百分比值：如 33%，用父元素的高和此百分比计算出最终值。
- *     center：表示自动居中。
+ *     Pixel value: For example, can be a number 30, means 30px.
+ *     Percent value: For example, can be a string 33%, means the final result should be calculated by this value and the height of its parent.
+ *     center: means position the element in the middle of according to its parent.
  *     
- *     left 和 right 只有一个可以生效。
- *     如果指定 left 或 right，则 shape 里的 x、cx 等定位属性不再生效。
+ *     Only one between left and right can work.
+ *     If left or right is specified, positioning attributes in shape (like x, cx) will not work.
  *
  * @property int|string $top Default: 'undefined'
- *    描述怎么根据父元素进行定位。
- *     『父元素』是指：如果是顶层元素，父元素是 echarts 图表容器。如果是 group 的子元素，父元素就是 group 元素。
- *     值的类型可以是：
+ *    Specify how to be positioned in its parent.
+ *     When the element is at the top level, the parent is the contianer of the chart instance.
+ *     Otherwise, the parent is a group element.
+ *     Optional values:
  *     
- *     number：表示像素值。
- *     百分比值：如 33%，用父元素的宽和此百分比计算出最终值。
- *     middle：表示自动居中。
+ *     Pixel value: For example, can be a number 30, means 30px.
+ *     Percent value: For example, can be a string 33%, means the final result should be calculated by this value and the width of its parent.
+ *     middle: means position the element in the middle of according to its parent.
  *     
- *     top 和 bottom 只有一个可以生效。
- *     如果指定 top 或 bottom，则 shape 里的 y、cy 等定位属性不再生效。
+ *     Only one between top and bottom can work.
+ *     If top or bottom is specified, positioning attributes in shape (like y, cy) will not work.
  *
  * @property int|string $bottom Default: 'undefined'
- *    描述怎么根据父元素进行定位。
- *     『父元素』是指：如果是顶层元素，父元素是 echarts 图表容器。如果是 group 的子元素，父元素就是 group 元素。
- *     值的类型可以是：
+ *    Specify how to be positioned in its parent.
+ *     When the element is at the top level, the parent is the contianer of the chart instance.
+ *     Otherwise, the parent is a group element.
+ *     Optional values:
  *     
- *     number：表示像素值。
- *     百分比值：如 33%，用父元素的宽和此百分比计算出最终值。
- *     middle：表示自动居中。
+ *     Pixel value: For example, can be a number 30, means 30px.
+ *     Percent value: For example, can be a string 33%, means the final result should be calculated by this value and the width of its parent.
+ *     middle: means position the element in the middle of according to its parent.
  *     
- *     top 和 bottom 只有一个可以生效。
- *     如果指定 top 或 bottom，则 shape 里的 y、cy 等定位属性不再生效。
+ *     Only one between top and bottom can work.
+ *     If top or bottom is specified, positioning attributes in shape (like y, cy) will not work.
  *
  * @property strin $bounding Default: 'all'
- *    决定此图形元素在定位时，对自身的包围盒计算方式。
- *     参见例子：
+ *    Used to specify whether the entire transformed element (containing children if is group) is confined in its container.
+ *     See sample:
  *     
  *     
  *     
- *     可取值：
+ *     Optional values:
  *     
- *     all：（默认）
- *       表示用自身以及子节点整体的经过 transform 后的包围盒进行定位。
- *       这种方式易于使整体都限制在父元素范围中。
+ *     all: (default)
+ *       Use the transformed bounding box of itself and its descentants to perform position calculation, which confine the entire body in the boundary of its parent.
  *     
- *     raw：
- *       表示仅仅用自身（不包括子节点）的没经过 tranform 的包围盒进行定位。
- *       这种方式易于内容超出父元素范围的定位方式。
+ *     raw:
+ *       Only use the untransformed bounding box of itself (without its descentant) to perform position calculation, which is suitable when the content in the element need to be overflow its parent.
  *
  * @property int $z Default: 0
- *    z 方向的高度，决定层叠关系。
+ *    z value of the elements, determine the overlap order.
  *
  * @property int $zlevel Default: 0
- *    决定此元素绘制在哪个 canvas 层中。注意，越多 canvas 层会占用越多资源。
+ *    Determine which canvas layer this element should be in.
+ *     Notice: Multiple canvas layer may affect performance.
+ *
+ * @property * $info
+ *    User defined data, can be visited in event listeners.
+ *     chart.on(click, function (params) {
+ *         console.log(params.info);
+ *     });
  *
  * @property boolean $silent Default: false
- *    是否不响应鼠标以及触摸事件。
+ *    Whether response to mouse events / touch events.
  *
  * @property boolean $invisible Default: false
- *    节点是否可见。
+ *    Whether the element is visible.
+ *
+ * @property boolean $ignore Default: false
+ *    Whether the element is totally ignored (neither render nor listen events).
  *
  * @property string $cursor Default: 'pointer'
- *    鼠标悬浮时在图形元素上时鼠标的样式是什么。同 CSS 的 cursor。
+ *    The mouse style when mouse hovers on an element, the same as cursor property in CSS.
  *
  * @property boolean $draggable Default: false
- *    图形元素是否可以被拖拽。
+ *    Can be dragged or not.
  *
  * @property boolean $progressive Default: false
- *    是否渐进式渲染。当图形元素过多时才使用。
+ *    Whether use progressive render to improve performance. Usually used when number of element is too large.
  *
  * @property int $width Default: 0
- *    用于描述此 group 的宽。
- *     这个宽只用于给子节点定位。
- *     即便当宽度为零的时候，子节点也可以使用 left: center 相对于父节点水平居中。
+ *    Specify width of this group.
+ *     This width is only used for the positioning of its children.
+ *     When width is 0, children can also be positioned according to its parent using left: center.
  *
  * @property int $height Default: 0
- *    用于描述此 group 的高。
- *     这个高只用于给子节点定位。
- *     即便当高度为零的时候，子节点也可以使用 top: middle 相对于父节点垂直居中。
+ *    Specify height of this group.
+ *     This height is only used for the positioning of its children.
+ *     When height is 0, children can also be positioned according to its parent using top: middle.
+ *
+ * @property boolean $diffChildrenByName Default: false
+ *    In custom series, when diffChildrenByName is set as true, for each group returned from renderItem, diff will be performed to its children according to the name attribute of each graphic elements. Here diff means that map the coming graphic elements to the existing graphic elements when repainting according to name, which enables the transition animation if data is modified.
+ *     But notice that the operation is performance consuming, do not use it for large data amount.
  *
  * @property array $children
- *    子节点列表，其中项都是一个图形元素定义。
+ *    A list of children, each item is a declaration of an element.
  *
  * @property callable $onclick
  *    

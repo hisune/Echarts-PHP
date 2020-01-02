@@ -10,33 +10,40 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: true
- *    是否显示该工具。
+ *    Whether to show the tool.
  *
- * @property boolean $title Default: '数据视图'
+ * @property string $title Default: 'data view'
  *    
  *
  * @property * $icon
- *    Icon 的 path 字符串，ECharts 3 中支持使用自定义的 svg path 作为 icon，格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ *    It can be set to an image with image://url , in which URL is the link to an image, or dataURI of an image.
+ *     An image URL example:
+ *     image://http://xxx.xxx.xxx/a/b.png
+ *     A dataURI example:
+ *     image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7
+ *     Icons can be set to arbitrary vector path via path:// in ECharts. As compared with a raster image, vector paths prevent jagging and blurring when scaled, and have better control over changing colors. The size of the vector icon will be adapted automatically. Refer to SVG PathData for more information about the format of the path. You may export vector paths from tools like Adobe 
+ *     For example:
+ *     path://M30.9,53.2C16.8,53.2,5.3,41.7,5.3,27.6S16.8,2,30.9,2C45,2,56.4,13.5,56.4,27.6S45,53.2,30.9,53.2z M30.9,3.5C17.6,3.5,6.8,14.4,6.8,27.6c0,13.3,10.8,24.1,24.101,24.1C44.2,51.7,55,40.9,55,27.6C54.9,14.4,44.1,3.5,30.9,3.5z M36.9,35.8c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H36c0.5,0,0.9,0.4,0.9,1V35.8z M27.8,35.8 c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H27c0.5,0,0.9,0.4,0.9,1L27.8,35.8L27.8,35.8z
  *
  * @property DataView\IconStyle $iconStyle
- *    数据视图 icon 样式设置。
+ *    The style setting of data view icon. Since icon label is displayed only when hovering on the icon, the label configuration options are available under emphasis.
  *
  * @property DataView\Emphasis $emphasis
  *    
  *
  * @property boolean $readOnly Default: false
- *    是否不可编辑（只读）。
+ *    Whether it is read-only.
  *
  * @property callable $optionToContent
  *    (option:Object) =&gt; HTMLDomElement|string
  *     
- *     自定义 dataView 展现函数，用以取代默认的 textarea 使用更丰富的数据编辑。可以返回 dom 对象或者 html 字符串。
- *     如下示例使用表格展现数据值：
+ *     Define a function to present dataView. It is used to replace default textarea for richer data editing. It can return a DOM object, or an HTML string.
+ *     For example:
  *     optionToContent: function(opt) {
  *         var axisData = opt.xAxis[0].data;
  *         var series = opt.series;
  *         var table = &lt;table style=width:100%;text-align:center&gt;&lt;tbody&gt;&lt;tr&gt;
- *                      + &lt;td&gt;时间&lt;/td&gt;
+ *                      + &lt;td&gt;Time:&lt;/td&gt;
  *                      + &lt;td&gt; + series[0].name + &lt;/td&gt;
  *                      + &lt;td&gt; + series[1].name + &lt;/td&gt;
  *                      + &lt;/tr&gt;;
@@ -54,28 +61,28 @@ use Hisune\EchartsPHP\Property;
  * @property callable $contentToOption
  *    (container:HTMLDomElement, option:Object) =&gt; Object
  *     
- *     在使用 optionToContent 的情况下，如果支持数据编辑后的刷新，需要自行通过该函数实现组装 option 的逻辑。
+ *     When optionToContent is used, if you want to support refreshing chart after data changes, you need to implement the logic to merge options in this function.
  *
- * @property array $lang Default: '[\'数据视图\', \'关闭\', \'刷新\']'
- *    数据视图上有三个话术，默认是[数据视图, 关闭, 刷新]。
+ * @property array $lang Default: '[\'data view\', \'turn off\', \'refresh\']'
+ *    There are 3 names in data view, which are [data view, turn off and refresh].
  *
  * @property string $backgroundColor Default: '#fff'
- *    数据视图浮层背景色。
+ *    Background color of the floating layer in data view.
  *
  * @property string $textareaColor Default: '#fff'
- *    数据视图浮层文本输入区背景色。
+ *    Background color of input area of the floating layer in data view.
  *
  * @property string $textareaBorderColor Default: '#333'
- *    数据视图浮层文本输入区边框颜色。
+ *    Border color of input area of the floating layer in data view.
  *
  * @property string $textColor Default: '#000'
- *    文本颜色。
+ *    Text color.
  *
  * @property string $buttonColor Default: '#c23531'
- *    按钮颜色。
+ *    Button color.
  *
  * @property string $buttonTextColor Default: '#fff'
- *    按钮文本颜色。
+ *    Color of button text.
  *
  * {_more_}
  */

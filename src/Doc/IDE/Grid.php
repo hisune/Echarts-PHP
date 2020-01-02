@@ -9,104 +9,107 @@ namespace Hisune\EchartsPHP\Doc\IDE;
 use Hisune\EchartsPHP\Property;
 
 /**
+ * @property string $id
+ *    Component ID, not specified by default. If specified, it can be used to refer the component in option or API.
+ *
  * @property boolean $show Default: false
- *    是否显示直角坐标系网格。
+ *    Whether to show the grid in rectangular coordinate.
  *
  * @property int $zlevel Default: 0
- *    所有图形的 zlevel 值。
- *     zlevel用于 Canvas 分层，不同zlevel值的图形会放置在不同的 Canvas 中，Canvas 分层是一种常见的优化手段。我们可以把一些图形变化频繁（例如有动画）的组件设置成一个单独的zlevel。需要注意的是过多的 Canvas 会引起内存开销的增大，在手机端上需要谨慎使用以防崩溃。
- *     zlevel 大的 Canvas 会放在 zlevel 小的 Canvas 的上面。
+ *    zlevel value of all graphical elements in .
+ *     zlevel is used to make layers with Canvas. Graphical elements with different zlevel values will be placed in different Canvases, which is a common optimization technique. We can put those frequently changed elements (like those with animations) to a separate zlevel. Notice that too many Canvases will increase memory cost, and should be used carefully on mobile phones to avoid crash.
+ *     Canvases with bigger zlevel will be placed on Canvases with smaller zlevel.
  *
  * @property int $z Default: 2
- *    组件的所有图形的z值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖。
- *     z相比zlevel优先级更低，而且不会创建新的 Canvas。
+ *    z value of all graphical elements in , which controls order of drawing graphical components. Components with smaller z values may be overwritten by those with larger z values.
+ *     z has a lower priority to zlevel, and will not create new Canvas.
  *
  * @property string|int $left Default: '10%'
- *    grid 组件离容器左侧的距离。
- *     left 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 left, center, right。
- *     如果 left 的值为left, center, right，组件会根据相应的位置自动对齐。
+ *    Distance between grid  component and the left side of the container.
+ *     left value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be left, center, or right.
+ *     If the left value is set to be left, center, or right, then the component will be aligned automatically based on position.
  *
  * @property string|int $top Default: 60
- *    grid 组件离容器上侧的距离。
- *     top 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 top, middle, bottom。
- *     如果 top 的值为top, middle, bottom，组件会根据相应的位置自动对齐。
+ *    Distance between grid  component and the top side of the container.
+ *     top value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
+ *     If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
  *
  * @property string|int $right Default: '10%'
- *    grid 组件离容器右侧的距离。
- *     right 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
+ *    Distance between grid  component and the right side of the container.
+ *     right value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%.
  *
  * @property string|int $bottom Default: 60
- *    grid 组件离容器下侧的距离。
- *     bottom 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
+ *    Distance between grid  component and the bottom side of the container.
+ *     bottom value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%.
  *
  * @property string|int $width Default: 'auto'
- *    grid 组件的宽度。默认自适应。
+ *    Width of grid  component. Adaptive by default.
  *
  * @property string|int $height Default: 'auto'
- *    grid 组件的高度。默认自适应。
+ *    Height of grid  component. Adaptive by default.
  *
  * @property boolean $containLabel Default: false
- *    grid 区域是否包含坐标轴的刻度标签。
+ *    Whether the grid region contains axis tick label of axis.
  *     
- *     containLabel 为 false 的时候：
- *     grid.left grid.right grid.top grid.bottom grid.width grid.height 决定的是由坐标轴形成的矩形的尺寸和位置。
- *     这比较适用于多个 grid 进行对齐的场景，因为往往多个 grid 对齐的时候，是依据坐标轴来对齐的。
+ *     When containLabel is false:
+ *     grid.left grid.right grid.top grid.bottom grid.width grid.height decide the location and size of the rectangle that is made of by xAxis and yAxis.
+ *     Setting to false will help when multiple grids need to be aligned at their axes.
  *     
  *     
- *     containLabel 为 true 的时候：
- *     grid.left grid.right grid.top grid.bottom grid.width grid.height 决定的是包括了坐标轴标签在内的所有内容所形成的矩形的位置。
- *     这常用于『防止标签溢出』的场景，标签溢出指的是，标签长度动态变化时，可能会溢出容器或者覆盖其他组件。
+ *     When containLabel is true:
+ *     grid.left grid.right grid.top grid.bottom grid.width grid.height decide the location and size of the rectangle that contains the axes and the labels of the axes.
+ *     Setting to true will help when the length of axis labels is dynamic and is hard to approximate. This will avoid labels from overflowing the container or overlapping other components.
  *
  * @property string $backgroundColor Default: 'transparent'
- *    网格背景色，默认透明。
+ *    Background color of grid, which is transparent by default.
  *     
- *     颜色可以使用 RGB 表示，比如 rgb(128, 128, 128)   ，如果想要加上 alpha 通道，可以使用 RGBA，比如 rgba(128, 128, 128, 0.5)，也可以使用十六进制格式，比如 #ccc
+ *     Color can be represented in RGB, for example rgb(128, 128, 128). RGBA can be used when you need alpha channel, for example rgba(128, 128, 128, 0.5). You may also use hexadecimal format, for example #ccc.
  *     
- *     注意：此配置项生效的前提是，设置了 show: true。
+ *     Attention: Works only if show: true is set.
  *
  * @property string $borderColor Default: '#ccc'
- *    网格的边框颜色。支持的颜色格式同 backgroundColor。
- *     注意：此配置项生效的前提是，设置了 show: true。
+ *    Border color of grid. Support the same color format as backgroundColor.
+ *     Attention: Works only if show: true is set.
  *
  * @property int $borderWidth Default: 1
- *    网格的边框线宽。
- *     注意：此配置项生效的前提是，设置了 show: true。
+ *    Border width of grid.
+ *     Attention: Works only if show: true is set.
  *
  * @property int $shadowBlur
- *    图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。
- *     示例：
+ *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
  *         shadowBlur: 10
  *     }
  *     
- *     注意：此配置项生效的前提是，设置了 show: true 以及值不为 tranparent 的背景色 backgroundColor。
+ *     Attention: This property works only if show: true is configured and backgroundColor is defined other than transparent.
  *
  * @property string $shadowColor
- *    阴影颜色。支持的格式同color。
- *     注意：此配置项生效的前提是，设置了 show: true。
+ *    Shadow color. Support same format as color.
+ *     Attention: This property works only if show: true configured.
  *
  * @property int $shadowOffsetX Default: 0
- *    阴影水平方向上的偏移距离。
- *     注意：此配置项生效的前提是，设置了 show: true。
+ *    Offset distance on the horizontal direction of shadow.
+ *     Attention: This property works only if show: true configured.
  *
  * @property int $shadowOffsetY Default: 0
- *    阴影垂直方向上的偏移距离。
- *     注意：此配置项生效的前提是，设置了 show: true。
+ *    Offset distance on the vertical direction of shadow.
+ *     Attention: This property works only if show: true configured.
  *
  * @property Grid\Tooltip $tooltip
- *    本坐标系特定的 tooltip 设定。
+ *    tooltip settings in the coordinate system component.
  *     
- *     提示框组件的通用介绍：
- *     提示框组件可以设置在多种地方：
+ *     General Introduction:
+ *     tooltip can be configured on different places:
  *     
- *     可以设置在全局，即 tooltip
+ *     Configured on global: tooltip
  *     
- *     可以设置在坐标系中，即 grid.tooltip、polar.tooltip、single.tooltip
+ *     Configured in a coordinate system: grid.tooltip, polar.tooltip, single.tooltip
  *     
- *     可以设置在系列中，即 series.tooltip
+ *     Configured in a series: series.tooltip
  *     
- *     可以设置在系列的每个数据项中，即 series.data.tooltip
+ *     Configured in each item of series.data: series.data.tooltip
  *
  * {_more_}
  */

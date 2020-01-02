@@ -10,602 +10,1218 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: true
- *    是否显示标签。
+ *    Whether show label or not.
  *
  * @property string $position Default: 'end'
- *    标签位置，可选：
+ *    Positions of labels can be:
  *     
- *     start 线的起始点。
- *     middle 线的中点。
- *     end   线的结束点。
+ *     start starting point of the line.
+ *     middle middle point of the line.
+ *     end ending point of the line.
  *
  * @property string|callable $formatter
- *    标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
- *     字符串模板
- *     字符串模板
- *     模板变量有：
+ *    Data label formatter, which supports string template and callback function. In either form, \n is supported to represent a new line.
+ *     String template
+ *     Model variation includes:
  *     
- *     {a}：系列名。
- *     {b}：数据名。
- *     {c}：数据值。
- *     {d}：百分比。
- *     {@xxx}：数据中名为xxx的维度的值，如{@product}表示名为product` 的维度的值。
- *     {@[n]}：数据中维度n的值，如{@[3]}` 表示维度 3 的值，从 0 开始计数。
+ *     {a}: series name.
+ *     {b}: the name of a data item.
+ *     {c}: the value of a data item.
+ *     {d}: the percent.
+ *     {@xxx}: the value of a dimension namedxxx, for example,{@product}refers the value ofproduct` dimension.
+ *     {@[n]}: the value of a dimension at the index ofn, for example,{@[3]}` refers the value at dimensions[3].
  *     
- *     示例：
+ *     example: 
  *     formatter: {b}: {d}
  *     
- *     回调函数
- *     回调函数格式：
+ *     Callback function
+ *     Callback function is in form of:
  *     (params: Object|Array) =&gt; string
  *     
- *     参数 params 是 formatter 需要的单个数据集。格式如下：
+ *     where params is the single dataset needed by formatter, which is formed as:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
+ *     
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|callable $formatter
- *    标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
- *     字符串模板
- *     字符串模板
- *     模板变量有：
+ *    Data label formatter, which supports string template and callback function. In either form, \n is supported to represent a new line.
+ *     String template
+ *     Model variation includes:
  *     
- *     {a}：系列名。
- *     {b}：数据名。
- *     {c}：数据值。
- *     {d}：百分比。
- *     {@xxx}：数据中名为xxx的维度的值，如{@product}表示名为product` 的维度的值。
- *     {@[n]}：数据中维度n的值，如{@[3]}` 表示维度 3 的值，从 0 开始计数。
+ *     {a}: series name.
+ *     {b}: the name of a data item.
+ *     {c}: the value of a data item.
+ *     {d}: the percent.
+ *     {@xxx}: the value of a dimension namedxxx, for example,{@product}refers the value ofproduct` dimension.
+ *     {@[n]}: the value of a dimension at the index ofn, for example,{@[3]}` refers the value at dimensions[3].
  *     
- *     示例：
+ *     example: 
  *     formatter: {b}: {d}
  *     
- *     回调函数
- *     回调函数格式：
+ *     Callback function
+ *     Callback function is in form of:
  *     (params: Object|Array) =&gt; string
  *     
- *     参数 params 是 formatter 需要的单个数据集。格式如下：
+ *     where params is the single dataset needed by formatter, which is formed as:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
+ *     
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|callable $formatter
- *    标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
- *     字符串模板
- *     字符串模板
- *     模板变量有：
+ *    Data label formatter, which supports string template and callback function. In either form, \n is supported to represent a new line.
+ *     String template
+ *     Model variation includes:
  *     
- *     {a}：系列名。
- *     {b}：数据名。
- *     {c}：数据值。
- *     {d}：百分比。
- *     {@xxx}：数据中名为xxx的维度的值，如{@product}表示名为product` 的维度的值。
- *     {@[n]}：数据中维度n的值，如{@[3]}` 表示维度 3 的值，从 0 开始计数。
+ *     {a}: series name.
+ *     {b}: the name of a data item.
+ *     {c}: the value of a data item.
+ *     {d}: the percent.
+ *     {@xxx}: the value of a dimension namedxxx, for example,{@product}refers the value ofproduct` dimension.
+ *     {@[n]}: the value of a dimension at the index ofn, for example,{@[3]}` refers the value at dimensions[3].
  *     
- *     示例：
+ *     example: 
  *     formatter: {b}: {d}
  *     
- *     回调函数
- *     回调函数格式：
+ *     Callback function
+ *     Callback function is in form of:
  *     (params: Object|Array) =&gt; string
  *     
- *     参数 params 是 formatter 需要的单个数据集。格式如下：
+ *     where params is the single dataset needed by formatter, which is formed as:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
+ *     
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|callable $formatter
- *    标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
- *     字符串模板
- *     字符串模板
- *     模板变量有：
+ *    Data label formatter, which supports string template and callback function. In either form, \n is supported to represent a new line.
+ *     String template
+ *     Model variation includes:
  *     
- *     {a}：系列名。
- *     {b}：数据名。
- *     {c}：数据值。
- *     {d}：百分比。
- *     {@xxx}：数据中名为xxx的维度的值，如{@product}表示名为product` 的维度的值。
- *     {@[n]}：数据中维度n的值，如{@[3]}` 表示维度 3 的值，从 0 开始计数。
+ *     {a}: series name.
+ *     {b}: the name of a data item.
+ *     {c}: the value of a data item.
+ *     {d}: the percent.
+ *     {@xxx}: the value of a dimension namedxxx, for example,{@product}refers the value ofproduct` dimension.
+ *     {@[n]}: the value of a dimension at the index ofn, for example,{@[3]}` refers the value at dimensions[3].
  *     
- *     示例：
+ *     example: 
  *     formatter: {b}: {d}
  *     
- *     回调函数
- *     回调函数格式：
+ *     Callback function
+ *     Callback function is in form of:
  *     (params: Object|Array) =&gt; string
  *     
- *     参数 params 是 formatter 需要的单个数据集。格式如下：
+ *     where params is the single dataset needed by formatter, which is formed as:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
+ *     
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|callable $formatter
- *    标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
- *     字符串模板
- *     字符串模板
- *     模板变量有：
+ *    Data label formatter, which supports string template and callback function. In either form, \n is supported to represent a new line.
+ *     String template
+ *     Model variation includes:
  *     
- *     {a}：系列名。
- *     {b}：数据名。
- *     {c}：数据值。
- *     {d}：百分比。
- *     {@xxx}：数据中名为xxx的维度的值，如{@product}表示名为product` 的维度的值。
- *     {@[n]}：数据中维度n的值，如{@[3]}` 表示维度 3 的值，从 0 开始计数。
+ *     {a}: series name.
+ *     {b}: the name of a data item.
+ *     {c}: the value of a data item.
+ *     {d}: the percent.
+ *     {@xxx}: the value of a dimension namedxxx, for example,{@product}refers the value ofproduct` dimension.
+ *     {@[n]}: the value of a dimension at the index ofn, for example,{@[3]}` refers the value at dimensions[3].
  *     
- *     示例：
+ *     example: 
  *     formatter: {b}: {d}
  *     
- *     回调函数
- *     回调函数格式：
+ *     Callback function
+ *     Callback function is in form of:
  *     (params: Object|Array) =&gt; string
  *     
- *     参数 params 是 formatter 需要的单个数据集。格式如下：
+ *     where params is the single dataset needed by formatter, which is formed as:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
+ *     
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|callable $formatter
- *    标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
- *     字符串模板
- *     字符串模板
- *     模板变量有：
+ *    Data label formatter, which supports string template and callback function. In either form, \n is supported to represent a new line.
+ *     String template
+ *     Model variation includes:
  *     
- *     {a}：系列名。
- *     {b}：数据名。
- *     {c}：数据值。
- *     {d}：百分比。
- *     {@xxx}：数据中名为xxx的维度的值，如{@product}表示名为product` 的维度的值。
- *     {@[n]}：数据中维度n的值，如{@[3]}` 表示维度 3 的值，从 0 开始计数。
+ *     {a}: series name.
+ *     {b}: the name of a data item.
+ *     {c}: the value of a data item.
+ *     {d}: the percent.
+ *     {@xxx}: the value of a dimension namedxxx, for example,{@product}refers the value ofproduct` dimension.
+ *     {@[n]}: the value of a dimension at the index ofn, for example,{@[3]}` refers the value at dimensions[3].
  *     
- *     示例：
+ *     example: 
  *     formatter: {b}: {d}
  *     
- *     回调函数
- *     回调函数格式：
+ *     Callback function
+ *     Callback function is in form of:
  *     (params: Object|Array) =&gt; string
  *     
- *     参数 params 是 formatter 需要的单个数据集。格式如下：
+ *     where params is the single dataset needed by formatter, which is formed as:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
+ *     
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|callable $formatter
- *    标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
- *     字符串模板
- *     字符串模板
- *     模板变量有：
+ *    Data label formatter, which supports string template and callback function. In either form, \n is supported to represent a new line.
+ *     String template
+ *     Model variation includes:
  *     
- *     {a}：系列名。
- *     {b}：数据名。
- *     {c}：数据值。
- *     {d}：百分比。
- *     {@xxx}：数据中名为xxx的维度的值，如{@product}表示名为product` 的维度的值。
- *     {@[n]}：数据中维度n的值，如{@[3]}` 表示维度 3 的值，从 0 开始计数。
+ *     {a}: series name.
+ *     {b}: the name of a data item.
+ *     {c}: the value of a data item.
+ *     {d}: the percent.
+ *     {@xxx}: the value of a dimension namedxxx, for example,{@product}refers the value ofproduct` dimension.
+ *     {@[n]}: the value of a dimension at the index ofn, for example,{@[3]}` refers the value at dimensions[3].
  *     
- *     示例：
+ *     example: 
  *     formatter: {b}: {d}
  *     
- *     回调函数
- *     回调函数格式：
+ *     Callback function
+ *     Callback function is in form of:
  *     (params: Object|Array) =&gt; string
  *     
- *     参数 params 是 formatter 需要的单个数据集。格式如下：
+ *     where params is the single dataset needed by formatter, which is formed as:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
+ *     
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|callable $formatter
- *    标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
- *     字符串模板
- *     字符串模板
- *     模板变量有：
+ *    Data label formatter, which supports string template and callback function. In either form, \n is supported to represent a new line.
+ *     String template
+ *     Model variation includes:
  *     
- *     {a}：系列名。
- *     {b}：数据名。
- *     {c}：数据值。
- *     {d}：百分比。
- *     {@xxx}：数据中名为xxx的维度的值，如{@product}表示名为product` 的维度的值。
- *     {@[n]}：数据中维度n的值，如{@[3]}` 表示维度 3 的值，从 0 开始计数。
+ *     {a}: series name.
+ *     {b}: the name of a data item.
+ *     {c}: the value of a data item.
+ *     {d}: the percent.
+ *     {@xxx}: the value of a dimension namedxxx, for example,{@product}refers the value ofproduct` dimension.
+ *     {@[n]}: the value of a dimension at the index ofn, for example,{@[3]}` refers the value at dimensions[3].
  *     
- *     示例：
+ *     example: 
  *     formatter: {b}: {d}
  *     
- *     回调函数
- *     回调函数格式：
+ *     Callback function
+ *     Callback function is in form of:
  *     (params: Object|Array) =&gt; string
  *     
- *     参数 params 是 formatter 需要的单个数据集。格式如下：
+ *     where params is the single dataset needed by formatter, which is formed as:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
+ *     
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|callable $formatter
- *    标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
- *     字符串模板
- *     字符串模板
- *     模板变量有：
+ *    Data label formatter, which supports string template and callback function. In either form, \n is supported to represent a new line.
+ *     String template
+ *     Model variation includes:
  *     
- *     {a}：系列名。
- *     {b}：数据名。
- *     {c}：数据值。
- *     {d}：百分比。
- *     {@xxx}：数据中名为xxx的维度的值，如{@product}表示名为product` 的维度的值。
- *     {@[n]}：数据中维度n的值，如{@[3]}` 表示维度 3 的值，从 0 开始计数。
+ *     {a}: series name.
+ *     {b}: the name of a data item.
+ *     {c}: the value of a data item.
+ *     {d}: the percent.
+ *     {@xxx}: the value of a dimension namedxxx, for example,{@product}refers the value ofproduct` dimension.
+ *     {@[n]}: the value of a dimension at the index ofn, for example,{@[3]}` refers the value at dimensions[3].
  *     
- *     示例：
+ *     example: 
  *     formatter: {b}: {d}
  *     
- *     回调函数
- *     回调函数格式：
+ *     Callback function
+ *     Callback function is in form of:
  *     (params: Object|Array) =&gt; string
  *     
- *     参数 params 是 formatter 需要的单个数据集。格式如下：
+ *     where params is the single dataset needed by formatter, which is formed as:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
+ *     
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|callable $formatter
- *    标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
- *     字符串模板
- *     字符串模板
- *     模板变量有：
+ *    Data label formatter, which supports string template and callback function. In either form, \n is supported to represent a new line.
+ *     String template
+ *     Model variation includes:
  *     
- *     {a}：系列名。
- *     {b}：数据名。
- *     {c}：数据值。
- *     {d}：百分比。
- *     {@xxx}：数据中名为xxx的维度的值，如{@product}表示名为product` 的维度的值。
- *     {@[n]}：数据中维度n的值，如{@[3]}` 表示维度 3 的值，从 0 开始计数。
+ *     {a}: series name.
+ *     {b}: the name of a data item.
+ *     {c}: the value of a data item.
+ *     {d}: the percent.
+ *     {@xxx}: the value of a dimension namedxxx, for example,{@product}refers the value ofproduct` dimension.
+ *     {@[n]}: the value of a dimension at the index ofn, for example,{@[3]}` refers the value at dimensions[3].
  *     
- *     示例：
+ *     example: 
  *     formatter: {b}: {d}
  *     
- *     回调函数
- *     回调函数格式：
+ *     Callback function
+ *     Callback function is in form of:
  *     (params: Object|Array) =&gt; string
  *     
- *     参数 params 是 formatter 需要的单个数据集。格式如下：
+ *     where params is the single dataset needed by formatter, which is formed as:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
+ *     
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|callable $formatter
- *    标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
- *     字符串模板
- *     字符串模板
- *     模板变量有：
+ *    Data label formatter, which supports string template and callback function. In either form, \n is supported to represent a new line.
+ *     String template
+ *     Model variation includes:
  *     
- *     {a}：系列名。
- *     {b}：数据名。
- *     {c}：数据值。
- *     {d}：百分比。
- *     {@xxx}：数据中名为xxx的维度的值，如{@product}表示名为product` 的维度的值。
- *     {@[n]}：数据中维度n的值，如{@[3]}` 表示维度 3 的值，从 0 开始计数。
+ *     {a}: series name.
+ *     {b}: the name of a data item.
+ *     {c}: the value of a data item.
+ *     {d}: the percent.
+ *     {@xxx}: the value of a dimension namedxxx, for example,{@product}refers the value ofproduct` dimension.
+ *     {@[n]}: the value of a dimension at the index ofn, for example,{@[3]}` refers the value at dimensions[3].
  *     
- *     示例：
+ *     example: 
  *     formatter: {b}: {d}
  *     
- *     回调函数
- *     回调函数格式：
+ *     Callback function
+ *     Callback function is in form of:
  *     (params: Object|Array) =&gt; string
  *     
- *     参数 params 是 formatter 需要的单个数据集。格式如下：
+ *     where params is the single dataset needed by formatter, which is formed as:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
+ *     
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|callable $formatter
- *    标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
- *     字符串模板
- *     字符串模板
- *     模板变量有：
+ *    Data label formatter, which supports string template and callback function. In either form, \n is supported to represent a new line.
+ *     String template
+ *     Model variation includes:
  *     
- *     {a}：系列名。
- *     {b}：数据名。
- *     {c}：数据值。
- *     {d}：百分比。
- *     {@xxx}：数据中名为xxx的维度的值，如{@product}表示名为product` 的维度的值。
- *     {@[n]}：数据中维度n的值，如{@[3]}` 表示维度 3 的值，从 0 开始计数。
+ *     {a}: series name.
+ *     {b}: the name of a data item.
+ *     {c}: the value of a data item.
+ *     {d}: the percent.
+ *     {@xxx}: the value of a dimension namedxxx, for example,{@product}refers the value ofproduct` dimension.
+ *     {@[n]}: the value of a dimension at the index ofn, for example,{@[3]}` refers the value at dimensions[3].
  *     
- *     示例：
+ *     example: 
  *     formatter: {b}: {d}
  *     
- *     回调函数
- *     回调函数格式：
+ *     Callback function
+ *     Callback function is in form of:
  *     (params: Object|Array) =&gt; string
  *     
- *     参数 params 是 formatter 需要的单个数据集。格式如下：
+ *     where params is the single dataset needed by formatter, which is formed as:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
+ *     
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|callable $formatter
- *    标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
- *     字符串模板
- *     字符串模板
- *     模板变量有：
+ *    Data label formatter, which supports string template and callback function. In either form, \n is supported to represent a new line.
+ *     String template
+ *     Model variation includes:
  *     
- *     {a}：系列名。
- *     {b}：数据名。
- *     {c}：数据值。
- *     {d}：百分比。
- *     {@xxx}：数据中名为xxx的维度的值，如{@product}表示名为product` 的维度的值。
- *     {@[n]}：数据中维度n的值，如{@[3]}` 表示维度 3 的值，从 0 开始计数。
+ *     {a}: series name.
+ *     {b}: the name of a data item.
+ *     {c}: the value of a data item.
+ *     {d}: the percent.
+ *     {@xxx}: the value of a dimension namedxxx, for example,{@product}refers the value ofproduct` dimension.
+ *     {@[n]}: the value of a dimension at the index ofn, for example,{@[3]}` refers the value at dimensions[3].
  *     
- *     示例：
+ *     example: 
  *     formatter: {b}: {d}
  *     
- *     回调函数
- *     回调函数格式：
+ *     Callback function
+ *     Callback function is in form of:
  *     (params: Object|Array) =&gt; string
  *     
- *     参数 params 是 formatter 需要的单个数据集。格式如下：
+ *     where params is the single dataset needed by formatter, which is formed as:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
+ *     
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|callable $formatter
- *    标签内容格式器，支持字符串模板和回调函数两种形式，字符串模板与回调函数返回的字符串均支持用 \n 换行。
- *     字符串模板
- *     字符串模板
- *     模板变量有：
+ *    Data label formatter, which supports string template and callback function. In either form, \n is supported to represent a new line.
+ *     String template
+ *     Model variation includes:
  *     
- *     {a}：系列名。
- *     {b}：数据名。
- *     {c}：数据值。
- *     {d}：百分比。
- *     {@xxx}：数据中名为xxx的维度的值，如{@product}表示名为product` 的维度的值。
- *     {@[n]}：数据中维度n的值，如{@[3]}` 表示维度 3 的值，从 0 开始计数。
+ *     {a}: series name.
+ *     {b}: the name of a data item.
+ *     {c}: the value of a data item.
+ *     {d}: the percent.
+ *     {@xxx}: the value of a dimension namedxxx, for example,{@product}refers the value ofproduct` dimension.
+ *     {@[n]}: the value of a dimension at the index ofn, for example,{@[3]}` refers the value at dimensions[3].
  *     
- *     示例：
+ *     example: 
  *     formatter: {b}: {d}
  *     
- *     回调函数
- *     回调函数格式：
+ *     Callback function
+ *     Callback function is in form of:
  *     (params: Object|Array) =&gt; string
  *     
- *     参数 params 是 formatter 需要的单个数据集。格式如下：
+ *     where params is the single dataset needed by formatter, which is formed as:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
+ *     
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  * {_more_}
  */
