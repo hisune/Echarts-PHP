@@ -231,7 +231,7 @@ echo $chart->render('simple-custom-id', array(), 'vintage');
 ```
 
 ### Full Echarts PHPDoc
-For more detail visit: https://hisune.com/view/50/echarts-php-property-phpdoc-auto-generate
+~~For more detail visit: https://hisune.com/view/50/echarts-php-property-phpdoc-auto-generate~~
 
 ## Demos
 
