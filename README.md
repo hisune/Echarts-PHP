@@ -4,7 +4,7 @@
 
 # Echarts-PHP
 
-Echarts-PHP is a PHP library that works as a wrapper for the **Echarts js** library (https://github.com/ecomfe/echarts). Support Echarts version from 2.2.x to 4.x.
+Echarts-PHP is a PHP library that works as a wrapper for the **Echarts js** library (https://github.com/ecomfe/echarts). Support [Apache ECharts (incubating)](https://github.com/apache/incubator-echarts) from version 2.2.x to 4.x.
 
 ## Setup
 
