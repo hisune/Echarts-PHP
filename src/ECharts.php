@@ -274,6 +274,7 @@ ECHART_PLACEHOLDER
 		$js .= $this->renderScripts();
 
 		$jsVar = $this->getJsVar();
+		$optionVar = $this->getOptionVar();
 		$option = $this->jsonEncode($option);
 		$initOptions = $this->jsonEncode($initOptions);
 
@@ -309,9 +310,10 @@ HTML;
 
 			$loader = <<<HTML
 var {$jsVar} = echarts.init(document.getElementById('{$id}'), {$theme}, {$initOptions});
+var {$optionVar} = {$option};
 $eventsHtml
 $preLoadJS
-{$jsVar}.setOption($option);
+{$jsVar}.setOption({$optionVar});
 $postLoadJs
 HTML;
 		}
@@ -669,6 +671,12 @@ HTML;
 	{
 		$this->isJsNameAlreadyUsed = true;
 		return $this->jsVar;
+	}
+
+	public function getOptionVar()
+	{
+		$var_name = $this->getJsVar();
+		return $var_name . '_option';
 	}
 
 	/**
