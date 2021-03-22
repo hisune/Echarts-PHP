@@ -141,6 +141,10 @@ use Exception;
  *
  */
 class ECharts extends Property{
+	const SCRIPT_EXTRAS = 'extra_scripts';
+	const SCRIPT_PRE_LOAD = "pre_load_scripts";
+	const SCRIPT_POST_LOAD = "post_load_scripts";
+
 	public $initOptions;
 
 	protected $isJsNameAlreadyUsed = false;
@@ -150,7 +154,7 @@ class ECharts extends Property{
 	public static $method = array();
 	protected static $scripts = [];
 
-	public $extraScript = array();
+	public $scriptSets = array();
 	protected $_events = [];
 
 	/* Overrideable Parameters for Config */
@@ -293,10 +297,15 @@ HTML;
 		{
 			$eventsHtml = $this->renderEvents();
 
+			$preLoadJS = $this->renderScripts(static::SCRIPT_PRE_LOAD);
+			$postLoadJs = $this->renderScripts(static::SCRIPT_POST_LOAD);
+
 			$loader = <<<HTML
 var {$jsVar} = echarts.init(document.getElementById('{$id}'), {$theme}, {$initOptions});
 $eventsHtml
+$preLoadJS
 {$jsVar}.setOption($option);
+$postLoadJs
 HTML;
 		}
 
@@ -484,6 +493,15 @@ HTML;
 	 */
 	public function addExtraScript($file, $distOrIsContent = null)
 	{
+		$this->addScript(static::SCRIPT_EXTRAS, $file, $distOrIsContent);
+	}
+
+	public function addPreLoadScript($file, $distOrIsContent = null)
+	{
+		$this->addScript(static::SCRIPT_PRE_LOAD, $file, $distOrIsContent);
+	}
+
+	protected function addScript($type, $file, $distOrIsContent = null){
 		!$distOrIsContent && $distOrIsContent !== false && $distOrIsContent = $this->getDist();
 
 		if(is_string($distOrIsContent))
@@ -494,9 +512,11 @@ HTML;
 
 		$md5 = md5($file);
 
-		if(!isset($this->extraScript[$md5]))
+		$base = $this->getScriptSet($type);
+
+		if(!isset($base[$md5]))
 		{
-			$this->extraScript[$md5] = array(
+			$base[$md5] = array(
 				"script" => $file,
 				"type_or_dist" => $distOrIsContent,
 			);
@@ -714,8 +734,10 @@ HTML;
 		throw new Exception('$jsVar is already defined. In order to prevent incompatibilities with already printed scripts, it is not allowed to change $prefix or $jsVar after preRender phase.');
 	}
 
-	function renderScripts()
+	function renderScripts($scriptSet = self::SCRIPT_EXTRAS)
 	{
+		$scriptSet = $this->getScriptSet($scriptSet);
+
 		$js = '';
 		if($this->getRenderScript())
 		{
@@ -723,9 +745,9 @@ HTML;
 
 			$js .= self::_renderScript($src);
 
-			if($this->extraScript)
+			if($scriptSet)
 			{
-				foreach($this->extraScript as $script)
+				foreach($scriptSet as $script)
 				{
 					$isContent = false;
 					$src = null;
@@ -767,5 +789,9 @@ HTML;
 		}
 
 		return $eventsHtml;
+	}
+
+	public function &getScriptSet($type){
+		return $this->scriptSets[$type];
 	}
 }
