@@ -264,7 +264,14 @@ if (! window['addEChartPlaceholder'])
 ECHART_PLACEHOLDER
 			, true);
 
-		$js = $this->renderScripts();
+		$this->addScript(
+			"init",
+			'echarts'.($this->getDistType(true)).($this->isMinify()? '.min':'').'.js',
+			$this->getDist()
+		);
+
+		$js = $this->renderScripts("init");
+		$js .= $this->renderScripts();
 
 		$jsVar = $this->getJsVar();
 		$option = $this->jsonEncode($option);
@@ -297,8 +304,8 @@ HTML;
 		{
 			$eventsHtml = $this->renderEvents();
 
-			$preLoadJS = $this->renderScripts(static::SCRIPT_PRE_LOAD);
-			$postLoadJs = $this->renderScripts(static::SCRIPT_POST_LOAD);
+			$preLoadJS = $this->renderScripts(static::SCRIPT_PRE_LOAD, false);
+			$postLoadJs = $this->renderScripts(static::SCRIPT_POST_LOAD, false);
 
 			$loader = <<<HTML
 var {$jsVar} = echarts.init(document.getElementById('{$id}'), {$theme}, {$initOptions});
@@ -501,7 +508,8 @@ HTML;
 		$this->addScript(static::SCRIPT_PRE_LOAD, $file, $distOrIsContent);
 	}
 
-	public function addScript($type, $file, $distOrIsContent = null){
+	public function addScript($type, $file, $distOrIsContent = null)
+	{
 		!$distOrIsContent && $distOrIsContent !== false && $distOrIsContent = $this->getDist();
 
 		if(is_string($distOrIsContent))
@@ -512,7 +520,7 @@ HTML;
 
 		$md5 = md5($file);
 
-		$base = $this->getScriptSet($type);
+		$base = &$this->getScriptSet($type);
 
 		if(!isset($base[$md5]))
 		{
@@ -526,10 +534,11 @@ HTML;
 	/**
 	 * @param      $src
 	 * @param bool $isContent
+	 * @param bool $as_html_tag - default = true - only effective if $isContent == true
 	 *
 	 * @return string
 	 */
-	private static function _renderScript($src, $isContent = false)
+	private static function _renderScript($src, $isContent = false, $as_html_tag = true)
 	{
 		$js = '';
 		$content = null;
@@ -550,7 +559,14 @@ HTML;
 
 			$class = self::scriptClass();
 
-			$js = "<script type=\"text/javascript\" class=\"{$class}\" {$src}>{$content}</script>";
+			if(!$isContent || $as_html_tag)
+			{
+				$js = "<script type=\"text/javascript\" class=\"{$class}\" {$src}>{$content}</script>";
+			}
+			else
+			{
+				$js = $content;
+			}
 		}
 
 		return $js;
@@ -734,17 +750,13 @@ HTML;
 		throw new Exception('$jsVar is already defined. In order to prevent incompatibilities with already printed scripts, it is not allowed to change $prefix or $jsVar after preRender phase.');
 	}
 
-	function renderScripts($scriptSet = self::SCRIPT_EXTRAS)
+	function renderScripts($scriptSet = self::SCRIPT_EXTRAS, $as_html_tag = true)
 	{
 		$scriptSet = $this->getScriptSet($scriptSet);
 
 		$js = '';
 		if($this->getRenderScript())
 		{
-			$src = $this->getDist().'echarts'.($this->getDistType(true)).($this->isMinify()? '.min':'').'.js';
-
-			$js .= self::_renderScript($src);
-
 			if($scriptSet)
 			{
 				foreach($scriptSet as $script)
@@ -767,7 +779,7 @@ HTML;
 
 						$src .= $script["script"];
 					}
-					$js .= self::_renderScript($src, $isContent);
+					$js .= self::_renderScript($src, $isContent, $as_html_tag);
 				}
 			}
 		}
@@ -791,7 +803,8 @@ HTML;
 		return $eventsHtml;
 	}
 
-	public function &getScriptSet($type){
+	public function &getScriptSet($type)
+	{
 		return $this->scriptSets[$type];
 	}
 }
