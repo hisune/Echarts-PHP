@@ -501,7 +501,7 @@ HTML;
 		$this->addScript(static::SCRIPT_PRE_LOAD, $file, $distOrIsContent);
 	}
 
-	protected function addScript($type, $file, $distOrIsContent = null){
+	public function addScript($type, $file, $distOrIsContent = null){
 		!$distOrIsContent && $distOrIsContent !== false && $distOrIsContent = $this->getDist();
 
 		if(is_string($distOrIsContent))
