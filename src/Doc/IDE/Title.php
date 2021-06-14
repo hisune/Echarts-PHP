@@ -9,127 +9,141 @@ namespace Hisune\EchartsPHP\Doc\IDE;
 use Hisune\EchartsPHP\Property;
 
 /**
+ * @property string $id
+ *    Component ID, not specified by default. If specified, it can be used to refer the component in option or API.
+ *
  * @property boolean $show Default: true
- *    是否显示标题组件。
+ *    Set this to false to prevent the title from showing
  *
  * @property string $text Default: ''
- *    主标题文本，支持使用 \n 换行。
+ *    The main title text, supporting for \n for newlines.
  *
  * @property string $link Default: ''
- *    主标题文本超链接。
+ *    The hyper link of main title text.
  *
  * @property string $target Default: 'blank'
- *    指定窗口打开主标题超链接。
- *     可选：
+ *    Open the hyper link of main title in specified tab.
+ *     options: 
  *     
- *     self 当前窗口打开
+ *     self opening it in current tab
  *     
- *     blank 新窗口打开
+ *     blank opening it in a new tab
  *
  * @property Title\TextStyle $textStyle
  *    
  *
  * @property string $subtext Default: ''
- *    副标题文本，支持使用 \n 换行。
+ *    Subtitle text, supporting for \n for newlines.
  *
  * @property string $sublink Default: ''
- *    副标题文本超链接。
+ *    The hyper link of subtitle text.
  *
  * @property string $subtarget Default: 'blank'
- *    指定窗口打开副标题超链接，可选：
+ *     Open the hyper link of subtitle in specified tab, options:
  *     
- *     self 当前窗口打开
+ *     self opening it in current tab
  *     
- *     blank 新窗口打开
+ *     blank opening it in a new tab
  *
  * @property Title\SubtextStyle $subtextStyle
  *    
  *
+ * @property string $textAlign Default: 'auto'
+ *    The horizontal align of the component (including text and subtext).
+ *     Optional values: auto, left, right, center.
+ *
+ * @property string $textVerticalAlign Default: 'auto'
+ *    The vertical align of the component (including text and subtext).
+ *     Optional values: auto, top, bottom, middle.
+ *
+ * @property boolean $triggerEvent Default: false
+ *    Set this to true to enable triggering events
+ *
  * @property int $padding Default: 5
- *    标题内边距，单位px，默认各方向内边距为5，接受数组分别设定上右下左边距。
- *     使用示例：
- *     // 设置内边距为 5
+ *    title space around content. The unit is px. Default values for each position are 5. And they can be set to different values with left, right, top, and bottom.
+ *     Examples: 
+ *     // Set padding to be 5
  *     padding: 5
- *     // 设置上下的内边距为 5，左右的内边距为 10
+ *     // Set the top and bottom paddings to be 5, and left and right paddings to be 10
  *     padding: [5, 10]
- *     // 分别设置四个方向的内边距
+ *     // Set each of the four paddings seperately
  *     padding: [
- *         5,  // 上
- *         10, // 右
- *         5,  // 下
- *         10, // 左
+ *         5,  // up
+ *         10, // right
+ *         5,  // down
+ *         10, // left
  *     ]
  *
  * @property int $itemGap Default: 10
- *    主副标题之间的间距。
+ *    The gap between the main title and subtitle.
  *
  * @property int $zlevel Default: 0
- *    所有图形的 zlevel 值。
- *     zlevel用于 Canvas 分层，不同zlevel值的图形会放置在不同的 Canvas 中，Canvas 分层是一种常见的优化手段。我们可以把一些图形变化频繁（例如有动画）的组件设置成一个单独的zlevel。需要注意的是过多的 Canvas 会引起内存开销的增大，在手机端上需要谨慎使用以防崩溃。
- *     zlevel 大的 Canvas 会放在 zlevel 小的 Canvas 的上面。
+ *    zlevel value of all graphical elements in .
+ *     zlevel is used to make layers with Canvas. Graphical elements with different zlevel values will be placed in different Canvases, which is a common optimization technique. We can put those frequently changed elements (like those with animations) to a separate zlevel. Notice that too many Canvases will increase memory cost, and should be used carefully on mobile phones to avoid crash.
+ *     Canvases with bigger zlevel will be placed on Canvases with smaller zlevel.
  *
  * @property int $z Default: 2
- *    组件的所有图形的z值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖。
- *     z相比zlevel优先级更低，而且不会创建新的 Canvas。
+ *    z value of all graphical elements in , which controls order of drawing graphical components. Components with smaller z values may be overwritten by those with larger z values.
+ *     z has a lower priority to zlevel, and will not create new Canvas.
  *
  * @property string|int $left Default: 'auto'
- *    grid 组件离容器左侧的距离。
- *     left 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 left, center, right。
- *     如果 left 的值为left, center, right，组件会根据相应的位置自动对齐。
+ *    Distance between grid  component and the left side of the container.
+ *     left value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be left, center, or right.
+ *     If the left value is set to be left, center, or right, then the component will be aligned automatically based on position.
  *
  * @property string|int $top Default: 'auto'
- *    grid 组件离容器上侧的距离。
- *     top 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 top, middle, bottom。
- *     如果 top 的值为top, middle, bottom，组件会根据相应的位置自动对齐。
+ *    Distance between grid  component and the top side of the container.
+ *     top value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
+ *     If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
  *
  * @property string|int $right Default: 'auto'
- *    grid 组件离容器右侧的距离。
- *     right 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
- *     默认自适应。
+ *    Distance between grid  component and the right side of the container.
+ *     right value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%.
+ *     Adaptive by default.
  *
  * @property string|int $bottom Default: 'auto'
- *    grid 组件离容器下侧的距离。
- *     bottom 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
- *     默认自适应。
+ *    Distance between grid  component and the bottom side of the container.
+ *     bottom value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%.
+ *     Adaptive by default.
  *
  * @property string $backgroundColor Default: 'transparent'
- *    标题背景色，默认透明。
+ *    Background color of title, which is transparent by default.
  *     
- *     颜色可以使用 RGB 表示，比如 rgb(128, 128, 128)   ，如果想要加上 alpha 通道，可以使用 RGBA，比如 rgba(128, 128, 128, 0.5)，也可以使用十六进制格式，比如 #ccc
+ *     Color can be represented in RGB, for example rgb(128, 128, 128). RGBA can be used when you need alpha channel, for example rgba(128, 128, 128, 0.5). You may also use hexadecimal format, for example #ccc.
  *
  * @property string $borderColor Default: '#ccc'
- *    标题的边框颜色。支持的颜色格式同 backgroundColor。
+ *    Border color of title. Support the same color format as backgroundColor.
  *
- * @property int $borderWidth Default: 0
- *    标题的边框线宽。
+ * @property int $borderWidth Default: 1
+ *    Border width of title.
  *
  * @property int|array $borderRadius Default: 0
- *    圆角半径，单位px，支持传入数组分别指定 4 个圆角半径。
- *     如:
- *     borderRadius: 5, // 统一设置四个角的圆角大小
- *     borderRadius: [5, 5, 0, 0] //（顺时针左上，右上，右下，左下）
+ *    The radius of rounded corner. Its unit is px. And it supports use array to respectively specify the 4 corner radiuses.
+ *     For example:
+ *     borderRadius: 5, // consistently set the size of 4 rounded corners
+ *     borderRadius: [5, 5, 0, 0] // (clockwise upper left, upper right, bottom right and bottom left)
  *
  * @property int $shadowBlur
- *    图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。
- *     示例：
+ *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
  *         shadowBlur: 10
  *     }
  *     
- *     注意：此配置项生效的前提是，设置了 show: true 以及值不为 tranparent 的背景色 backgroundColor。
+ *     Attention: This property works only if show: true is configured and backgroundColor is defined other than transparent.
  *
  * @property string $shadowColor
- *    阴影颜色。支持的格式同color。
- *     注意：此配置项生效的前提是，设置了 show: true。
+ *    Shadow color. Support same format as color.
+ *     Attention: This property works only if show: true configured.
  *
  * @property int $shadowOffsetX Default: 0
- *    阴影水平方向上的偏移距离。
- *     注意：此配置项生效的前提是，设置了 show: true。
+ *    Offset distance on the horizontal direction of shadow.
+ *     Attention: This property works only if show: true configured.
  *
  * @property int $shadowOffsetY Default: 0
- *    阴影垂直方向上的偏移距离。
- *     注意：此配置项生效的前提是，设置了 show: true。
+ *    Offset distance on the vertical direction of shadow.
+ *     Attention: This property works only if show: true configured.
  *
  * {_more_}
  */

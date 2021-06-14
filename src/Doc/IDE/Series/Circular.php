@@ -10,7 +10,7 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $rotateLabel Default: false
- *    是否旋转标签，默认不旋转
+ *    Whether to rotate the label automatically.
  *
  * {_more_}
  */

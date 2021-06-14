@@ -10,13 +10,13 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: true
- *    是否显示刻度。
+ *    Whether to show the scale.
  *
  * @property int $splitNumber Default: 5
- *    分隔线之间分割的刻度数。
+ *    The split scale number between split line.
  *
  * @property int|string $length Default: 8
- *    刻度线长。支持相对半径的百分比。
+ *    The length of tick line, can be a pecentage value relative to radius.
  *
  * @property AxisTick\LineStyle $lineStyle
  *    

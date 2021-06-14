@@ -9,22 +9,22 @@ namespace Hisune\EchartsPHP\Doc\IDE\Toolbox\Feature\Brush;
 use Hisune\EchartsPHP\Property;
 
 /**
- * @property string $rect Default: '矩形选择'
+ * @property string $rect Default: 'Rectangle selection'
  *    
  *
- * @property string $polygon Default: '圈选'
+ * @property string $polygon Default: 'Polygon selection'
  *    
  *
- * @property string $lineX Default: '横向选择'
+ * @property string $lineX Default: 'Horizontal selection'
  *    
  *
- * @property string $lineY Default: '纵向选择'
+ * @property string $lineY Default: 'Vertical selection'
  *    
  *
- * @property string $keep Default: '保持选择'
+ * @property string $keep Default: 'Keep previous selection'
  *    
  *
- * @property string $clear Default: '清除选择'
+ * @property string $clear Default: 'Clear selection'
  *    
  *
  * {_more_}

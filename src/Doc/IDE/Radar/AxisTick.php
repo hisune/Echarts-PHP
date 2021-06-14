@@ -9,17 +9,11 @@ namespace Hisune\EchartsPHP\Doc\IDE\Radar;
 use Hisune\EchartsPHP\Property;
 
 /**
- * @property boolean $show Default: false
- *    是否显示坐标轴刻度。
- *
- * @property boolean $alignWithLabel Default: false
- *    类目轴中在 boundaryGap 为 true 的时候有效，可以保证刻度线和标签对齐。如下图：
- *
- * @property boolean $inside Default: false
- *    坐标轴刻度是否朝内，默认朝外。
+ * @property boolean $show Default: true
+ *    Set this to false to prevent the axis tick from showing.
  *
  * @property int $length Default: 5
- *    坐标轴刻度的长度。
+ *    The length of the axis tick.
  *
  * @property AxisTick\LineStyle $lineStyle
  *    

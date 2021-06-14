@@ -13,130 +13,156 @@ use Hisune\EchartsPHP\Property;
  *    
  *
  * @property string $id
+ *    Component ID, not specified by default. If specified, it can be used to refer the component in option or API.
  *
  * @property string $name
- *    系列名称，用于tooltip的显示，legend 的图例筛选，在 setOption 更新数据和配置项时用于指定对应的系列。
+ *    Series name used for displaying in tooltip and filtering with legend, or updating data and configuration with setOption.
  *
  * @property string $coordinateSystem Default: 'cartesian2d'
- *    该系列使用的坐标系，可选：
+ *    The coordinate used in the series, whose options are:
  *     
  *     cartesian2d
- *       使用二维的直角坐标系（也称笛卡尔坐标系），通过 xAxisIndex, yAxisIndex指定相应的坐标轴组件。
+ *       Use a two-dimensional rectangular coordinate (also known as Cartesian coordinate), with xAxisIndex and yAxisIndex to assign the corresponding axis component.
  *     
  *     
  *     
  *     polar
- *       使用极坐标系，通过 polarIndex 指定相应的极坐标组件
+ *       Use polar coordinates, with polarIndex to assign the corresponding polar coordinate component.
  *
  * @property int $xAxisIndex Default: 0
- *    使用的 x 轴的 index，在单个图表实例中存在多个 x 轴的时候有用。
+ *    Index of x axis to combine with, which is  useful for multiple x axes in one chart.
  *
  * @property int $yAxisIndex Default: 0
- *    使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用。
+ *    Index of y axis to combine with, which is  useful for multiple y axes in one chart.
  *
  * @property int $polarIndex Default: 0
- *    使用的极坐标系的 index，在单个图表实例中存在多个极坐标系的时候有用。
+ *    Index of polar coordinate to combine with, which is useful for multiple polar axes in one chart.
  *
- * @property string $symbol Default: 'emptyCircle'
- *    标记的图形。
- *     ECharts 提供的标记类型包括 
- *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
- *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ * @property string|callable $symbol Default: 'circle'
+ *    Symbol of .
+ *     Icon types provided by ECharts includes 
+ *     circle, rect, roundRect, triangle, diamond, pin, arrow, none
+ *     It can be set to an image with image://url , in which URL is the link to an image, or dataURI of an image.
+ *     An image URL example:
+ *     image://http://xxx.xxx.xxx/a/b.png
+ *     A dataURI example:
+ *     image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7
+ *     Icons can be set to arbitrary vector path via path:// in ECharts. As compared with a raster image, vector paths prevent jagging and blurring when scaled, and have better control over changing colors. The size of the vector icon will be adapted automatically. Refer to SVG PathData for more information about the format of the path. You may export vector paths from tools like Adobe 
+ *     For example:
+ *     path://M30.9,53.2C16.8,53.2,5.3,41.7,5.3,27.6S16.8,2,30.9,2C45,2,56.4,13.5,56.4,27.6S45,53.2,30.9,53.2z M30.9,3.5C17.6,3.5,6.8,14.4,6.8,27.6c0,13.3,10.8,24.1,24.101,24.1C44.2,51.7,55,40.9,55,27.6C54.9,14.4,44.1,3.5,30.9,3.5z M36.9,35.8c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H36c0.5,0,0.9,0.4,0.9,1V35.8z M27.8,35.8 c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H27c0.5,0,0.9,0.4,0.9,1L27.8,35.8L27.8,35.8z
+ *     If symbols needs to be different, you can set with callback function in the following format:
+ *     (value: Array|number, params: Object) =&gt; string
+ *     
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
  *
  * @property int|array|callable $symbolSize Default: 4
- *    标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
- *     如果需要每个数据的图形大小不一样，可以设置为如下格式的回调函数：
+ *     symbol size. It can be set to single numbers like 10, or use an array to represent width and height. For example, [20, 10] means symbol width is 20, and height is10.
+ *     If size of symbols needs to be different, you can set with callback function in the following format:
  *     (value: Array|number, params: Object) =&gt; number|Array
  *     
- *     其中第一个参数 value 为 data 中的数据值。第二个参数params 是其它的数据项参数。
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
  *
  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *
+ * @property boolean $symbolKeepAspect Default: false
+ *    Whether to keep aspect for symbols in the form of path://.
  *
  * @property array $symbolOffset Default: '[0, 0]'
- *    标记相对于原本位置的偏移。默认情况下，标记会居中置放在数据对应的位置，但是如果 symbol 是自定义的矢量路径或者图片，就有可能不希望 symbol 居中。这时候可以使用该配置项配置 symbol 相对于原本居中的偏移，可以是绝对的像素值，也可以是相对的百分比。
- *     例如 [0, 50%] 就是把自己向上移动了一半的位置，在 symbol 图形是气泡的时候可以让图形下端的箭头对准数据点。
+ *    Offset of  symbol relative to original position. By default, symbol will be put in the center position of data. But if symbol is from user-defined vector path or image, you may not expect symbol to be in center. In this case, you may use this attribute to set offset to default position. It can be in absolute pixel value, or in relative percentage value.
+ *     For example, [0, 50%] means to move upside side position of symbol height. It can be used to make the arrow in the bottom to be at data position when symbol is pin.
  *
  * @property boolean $showSymbol Default: true
- *    是否显示 symbol, 如果 false 则只有在 tooltip hover 的时候显示。
+ *    Whether to show symbol. It would be shown during tooltip hover.
  *
- * @property boolean $showAllSymbol Default: false
- *    标志图形默认只有主轴显示（随主轴标签间隔隐藏策略），如需全部显示可把 showAllSymbol 设为 true。
+ * @property boolean $showAllSymbol Default: 'auto'
+ *    Only work when main axis is category axis (axis.type is category). Optional values:
+ *     
+ *     auto: Default value. Show all symbols if there is enough space. Otherwise follow the interval strategy with with axisLabel.interval.
+ *     true: Show all symbols.
+ *     false: Follow the interval strategy with axisLabel.interval.
  *
  * @property boolean $hoverAnimation Default: true
- *    是否开启 hover 在拐点标志上的提示动画效果。
+ *    Set this to false to prevent the animation effect when the mouse is hovering over a symbol
  *
  * @property boolean $legendHoverLink Default: true
- *    是否启用图例 hover 时的联动高亮。
+ *    Whether to enable highlighting chart when legend is being hovered.
  *
  * @property string $stack
- *    数据堆叠，同个类目轴上系列配置相同的stack值后，后一个系列的值会在前一个系列的值上相加。
- *     下面示例可以通过右上角 toolbox 中的堆叠切换看效果：
+ *    If stack the value. On the same category axis, the series with the same stack name would be put on top of each other.
+ *     The effect of the below example could be seen through stack switching of toolbox on the top right corner:
  *
  * @property string $cursor Default: 'pointer'
- *    鼠标悬浮时在图形元素上时鼠标的样式是什么。同 CSS 的 cursor。
+ *    The mouse style when mouse hovers on an element, the same as cursor property in CSS.
  *
  * @property boolean $connectNulls Default: false
- *    是否连接空数据。
+ *    Whether to connect the line across null points.
  *
- * @property boolean $clipOverflow Default: true
- *    是否对超出部分裁剪，默认裁剪。
+ * @property boolean $clip Default: true
+ *    
+ *     Since 4.4.0
+ *     
+ *     If clip the overflow on the coordinate system. Clip results varies between series:
+ *     
+ *     Scatter：Ignore the symbols exceeds the coordinate system. Not clip the graphics.
+ *     Bar：Clip all the overflowed. With bar width kept.
+ *     Line：Clip the overflowed line.
+ *     Lines: Clip all the overflowed.
+ *     Custom: Clip all the olverflowed.
+ *     
+ *     All these series have default value true except custom series. Set it to false if you dont want to clip.
  *
  * @property string|boolean $step Default: false
- *    是否是阶梯线图。可以设置为 true 显示成阶梯线图，也支持设置成 start, middle, end 分别配置在当前点，当前点与下个点的中间点，下个点拐弯。
- *     不同的配置效果如下：
+ *    Whether to show as a step line. It can be true, false. Or start, middle, end. Which will configure the turn point of step line.
+ *     See the example using different step options:
  *
  * @property Series\Label $label
- *    图形上的文本标签，可用于说明图形的一些数据信息，比如值，名称等，label选项在 ECharts 2.x 中放置于itemStyle下，在 ECharts 3 中为了让整个配置项结构更扁平合理，label 被拿出来跟 itemStyle 平级，并且跟 itemStyle 一样拥有 emphasis 状态。
+ *    Text label of , to explain some data information about graphic item like value, name and so on. label is placed under itemStyle in ECharts 2.x. In ECharts 3, to make the configuration structure flatter, labelis taken to be at the same level with itemStyle, and has emphasis as itemStyle does.
  *
  * @property Series\ItemStyle $itemStyle
- *    折线拐点标志的样式。
+ *    The style of the symbol point of broken line.
  *
  * @property Series\LineStyle $lineStyle
- *    线条样式。
- *     注： 修改 lineStyle 中的颜色不会影响图例颜色，如果需要图例颜色和折线图颜色一致，需修改 itemStyle.color，线条颜色默认也会取改颜色。
+ *    Line style.
  *
  * @property Series\AreaStyle $areaStyle
- *    区域填充样式。
+ *    The style of area.
  *
  * @property Series\Emphasis $emphasis
- *    图形的高亮样式。
+ *    Highlight style of the graphic.
  *
  * @property boolean|int $smooth Default: false
- *    是否平滑曲线显示。
- *     如果是 boolean 类型，则表示是否开启平滑处理。如果是 number 类型（取值范围 0 到 1），表示平滑程度，越小表示越接近折线段，反之则反。设为 true 时相当于设为 0.5。
- *     如果需要修改平滑算法，请参考 smoothMonotone。
+ *    Whether to show as smooth curve.
+ *     If is typed in boolean, then it means whether to enable smoothing. If is typed in number, valued from 0 to 1, then it means smoothness. A smaller value makes it less smooth.
+ *     Please refer to smoothMonotone to change smoothing algorithm.
  *
  * @property string $smoothMonotone
- *    折线平滑后是否在一个维度上保持单调性，可以设置成x, y来指明是在 x 轴或者 y 轴上保持单调性。设置为 none 则采用不单调的平滑算法。
- *     ECharts 4.0.3 版本起，更新了折线平滑的默认算法，原先的算法可以通过将 smoothMonotone 设为 none 实现。下图是新老算法的效果对比图：
+ *    Whether the broken line keep the monotonicity when it is smoothed. It can be set as x, y to keep the monotonicity on x axis or y axis.
+ *     It is usually used on dual value axis.
+ *     Here are 2 examples of broken line chart with dual value axis, showing the differences when smoothMonotone is without any setting, and smoothMonotone is set as x.
  *     
- *     老算法存在以下问题：
+ *     No setting about smoothMonotone:
  *     
- *     老算法的控制点平行前后点组成的向量，而新算法的控制点始终是水平（如果数据的第 0 个维度上是单调递增的）或竖直的（如果数据的第 1 个维度上是单调递增的）。
  *     
- *     但是新算法对于数据不单调的时候会产生不理想的效果。
  *     
- *     因此，我们建议在默认情况下使用新算法（即不需要设置 smoothMonotone）。如果数据的 Y 坐标是单调递增的，则将其设为 y。如果数据在任何方向上都不是单调递增的，则将其设置为 none 使用老算法。
+ *     It is set as x:
  *
  * @property string $sampling
- *    折线图在数据量远大于像素点时候的降采样策略，开启后可以有效的优化图表的绘制效率，默认关闭，也就是全部绘制不过滤数据点。
- *     可选：
+ *    The dowmsampling strategy used when the data size is much larger than pixel size. It will improve the performance when turned on. Defaults to be turned off, indicating that all the data points will be drawn.
+ *     Options:
  *     
- *     average 取过滤点的平均值
- *     max 取过滤点的最大值
- *     min 取过滤点的最小值
- *     sum 取过滤点的和
+ *     average Use average value of filter points
+ *     max Use maximum value of filter points
+ *     min Use minimum value of filter points
+ *     sum Use sum of filter points
  *
  * @property array $dimensions
- *    使用 dimensions 定义 series.data 或者 dataset.source 的每个维度的信息。
- *     注意：如果使用了 dataset，那么可以在 dataset.source 的第一行/列中给出 dimension 名称。于是就不用在这里指定 dimension。但是，如果在这里指定了 dimensions，那么 ECharts 不再会自动从 dataset.source 的第一行/列中获取维度信息。
- *     例如：
+ *    dimensions can be used to define dimension info for series.data or dataset.source.
+ *     Notice: if dataset is used, we can provide dimension names in the first column/row of dataset.source, and not need to specify dimensions here. But if dimensions is specified here, echarts will not retrieve dimension names from the first row/column of dataset.source any more.
+ *     For example:
  *     option = {
  *         dataset: {
  *             source: [
- *                 // 有了上面 dimensions 定义后，下面这五个维度的名称分别为：
  *                 // date, open, close, highest, lowest
  *                 [12, 44, 55, 66, 2],
  *                 [23, 6, 16, 23, 1],
@@ -145,7 +171,7 @@ use Hisune\EchartsPHP\Property;
  *         },
  *         series: {
  *             type: xxx,
- *             // 定义了每个维度的名称。这个名称会被显示到默认的 tooltip 中。
+ *             // Specify name for each dimesions, which will be displayed in tooltip.
  *             dimensions: [date, open, close, highest, lowest]
  *         }
  *     }
@@ -153,41 +179,41 @@ use Hisune\EchartsPHP\Property;
  *     series: {
  *         type: xxx,
  *         dimensions: [
- *             null,                // 如果此维度不想给出定义，则使用 null 即可
- *             {type: ordinal},   // 只定义此维度的类型。
- *                                  // ordinal 表示离散型，一般文本使用这种类型。
- *                                  // 如果类型没有被定义，会自动猜测类型。
+ *             null,                // If you do not intent to defined this dimension, use null is fine.
+ *             {type: ordinal},   // Specify type of this dimension.
+ *                                  // ordinal is always used in string.
+ *                                  // If type is not specified, echarts will guess type by data.
  *             {name: good, type: number},
- *             bad                // 等同于 {name: bad}
+ *             bad                // Equals to {name: bad}.
  *         ]
  *     }
  *     
- *     dimensions 数组中的每一项可以是：
+ *     Each data item of dimensions can be:
  *     
- *     string，如 someName，等同于 {name: someName}
- *     Object，属性可以有：
- *     name: string。
- *     type: string，支持
- *     number，默认，表示普通数据。
- *     ordinal，对于类目、文本这些 string 类型的数据，如果需要能在数轴上使用，须是 ordinal 类型。ECharts 默认会自动判断这个类型。但是自动判断也是不可能很完备的，所以使用者也可以手动强制指定。
- *     float，即 Float64Array。
- *     int，即 Int32Array。
- *     time，表示时间类型。设置成 time 则能支持自动解析数据成时间戳（timestamp），比如该维度的数据是 2017-05-10，会自动被解析。时间类型的支持参见 data。
- *     
- *     
- *     displayName: 一般用于 tooltip 中维度名的展示。string 如果没有指定，默认使用 name 来展示。
+ *     string, for example, someName, which equals to {name: someName}.
+ *     Object, where the attributes can be:
+ *     name: string.
+ *     type: string, supports:
+ *     number
+ *     float, that is, Float64Array
+ *     int, that is, Int32Array
+ *     ordinal, discrete value, which represents string generally.
+ *     time, time value, see data to check the format of time value.
  *     
  *     
+ *     displayName: string, generally used in tooltip for dimension display. If not specified, use name by default.
  *     
- *     值得一提的是，当定义了 dimensions 后，默认 tooltip 中对个维度的显示，会变为『竖排』，从而方便显示每个维度的名称。如果没有定义 dimensions，则默认 tooltip 会横排显示，且只显示数值没有维度名称可显示。
+ *     
+ *     
+ *     When dimensions is specified, the default tooltip will be displayed vertically, which is better to show diemsion names. Otherwise, tooltip will displayed only value horizontally.
  *
  * @property array $encode
- *    可以定义 data 的哪个维度被编码成什么。比如：
+ *    Define what is encoded to for each dimension of data. For example:
  *     option = {
  *         dataset: {
  *             source: [
- *                 // 每一列称为一个『维度』。
- *                 // 这里分别是维度 0、1、2、3、4。
+ *                 // Each column is called a dimension.
+ *                 // There are five dimensions: 0, 1, 2, 3, 4.
  *                 [12, 44, 55, 66, 2],
  *                 [23, 6, 16, 23, 1],
  *                 ...
@@ -196,19 +222,14 @@ use Hisune\EchartsPHP\Property;
  *         series: {
  *             type: xxx,
  *             encode: {
- *                 x: [3, 1, 5],      // 表示维度 3、1、5 映射到 x 轴。
- *                 y: 2,              // 表示维度 2 映射到 y 轴。
- *                 tooltip: [3, 2, 4] // 表示维度 3、2、4 会在 tooltip 中显示。
+ *                 x: [3, 1, 5],      // Dimension 3, 1, 5 is mapped to x axis.
+ *                 y: 2,              // Dimension 2 is mapped to y axis.
+ *                 tooltip: [3, 2, 4] // Dimension 3, 2, 4 will be displayed in tooltip.
  *             }
  *         }
  *     }
  *     
- *     encode 支持的属性，根据坐标系不同而不同。
- *     对于 直角坐标系（cartesian2d），支持 x、y。
- *     对于 极坐标系（polar），支持 radius、angle。
- *     对于 地理坐标系（geo），支持 lng，lat。
- *     此外，均支持 tooltip 和 itemName（用于指定 tooltip 中数据项名称）。
- *     当使用 dimensions 给维度定义名称后，encode 中可直接引用名称，例如：
+ *     When dimensions is used to defined name for a certain dimension, encode can refer the name directly. For example:
  *     series: {
  *         type: xxx,
  *         dimensions: [date, open, close, highest, lowest],
@@ -217,26 +238,107 @@ use Hisune\EchartsPHP\Property;
  *             y: [open, close, highest, lowest]
  *         }
  *     }
+ *     
+ *     The basic structure of encode is illustrated as follows, where the left part of colon is the name of axis like x, y, radius, angle or some special reserved names like tooltip, itemName etc., and the right part of the colon is the dimension names or dimension indices (based on 0). One or more dimensions can be specified. Usually not all of mappings need to be specified, only specify needed ones.
+ *     The properties available in encode listed as follows:
+ *     // In any of the series and coordinate systems,
+ *     // these properties are available:
+ *     encode: {
+ *         // Display dimension product and score in the tooltip.
+ *         tooltip: [product, score]
+ *         // Set the series name as the concat of the names of dimensions[1] and dimensions[3].
+ *         // (sometimes the dimension names are too long to type in series.name manually).
+ *         seriesName: [1, 3],
+ *         // Using dimensions[2] as the id of each data item. This is useful when dynamically
+ *         // update data by `chart.setOption()`, where the new and old data item can be
+ *         // corresponded by id, by which the appropriate animation can be performed when updating.
+ *         itemId: 2,
+ *         // Using dimensions[3] as the name of each data item. This is useful in charts like
+ *         // pie, funnel, where data item name can be displayed in legend.
+ *         itemName: 3
+ *     }
+ *     
+ *     // These properties only work in cartesian(grid) coordinate system:
+ *     encode: {
+ *         // Map dimensions[1], dimensions[5] and dimension score to the X axis.
+ *         x: [1, 5, score],
+ *         // Map dimensions[0] to the Y axis.
+ *         y: 0
+ *     }
+ *     
+ *     // These properties only work in polar coordinate system:
+ *     encode: {
+ *         radius: 3,
+ *         angle: 2,
+ *         ...
+ *     }
+ *     
+ *     // These properties only work in geo coordinate system:
+ *     encode: {
+ *         lng: 3,
+ *         lat: 2
+ *     }
+ *     
+ *     // For some type of series that are not in any coordinate system,
+ *     // like pie, funnel etc.:
+ *     encode: {
+ *         value: 3
+ *     }
+ *     
+ *     This is an example for encode.
+ *     Specially, in [custom series(~series-custom), some property in encode, corresponding to axis, can be set as null to make the series not controlled by the axis, that is, the series data will not be count in the extent of the axis, and the dataZoom on the axis will not filter the series.
+ *     var option = {
+ *         xAxis: {},
+ *         yAxis: {},
+ *         dataZoom: [{
+ *             xAxisIndex: 0
+ *         }, {
+ *             yAxisIndex: 0
+ *         }],
+ *         series: {
+ *             type: custom,
+ *             renderItem: function (params, api) {
+ *                 return {
+ *                     type: circle,
+ *                     shape: {
+ *                         cx: 100, // x position is always 100
+ *                         cy: api.coord([0, api.value(0)])[1],
+ *                         r: 30
+ *                     },
+ *                     style: {
+ *                         fill: blue
+ *                     }
+ *                 };
+ *             },
+ *             encode: {
+ *                 // Then the series will not be controlled
+ *                 // by x axis and corresponding dataZoom.
+ *                 x: -1,
+ *                 y: 1
+ *             },
+ *             data: [ ... ]
+ *         }
+ *     };
  *
  * @property string $seriesLayoutBy Default: 'column'
- *    当使用 dataset 时，seriesLayoutBy 指定了 dataset 中用行还是列对应到系列上，也就是说，系列“排布”到 dataset 的行还是列上。可取值：
+ *    When dataset is used, seriesLayoutBy specifies whether the column or the row of dataset is mapped to the series, namely, the series is layout on columns or rows. Optional values:
  *     
- *     column：默认，dataset 的列对应于系列，从而 dataset 中每一列是一个维度（dimension）。
- *     row：dataset 的行对应于系列，从而 dataset 中每一行是一个维度（dimension）。
+ *     column: by default, the columns of dataset are mapped the series. In this case, each column represents a dimension.
+ *     row：the rows of dataset are mapped to the series. In this case, each row represents a dimension.
  *     
- *     参见这个 示例
+ *     Check this example.
  *
  * @property int $datasetIndex Default: 0
- *    如果 series.data 没有指定，并且 dataset 存在，那么就会使用 dataset。datasetIndex 指定本系列使用那个 dataset。
+ *    If series.data is not specified, and dataset exists, the series will use dataset. datasetIndex specifies which dataset will be used.
  *
  * @property array $data
- *    系列中的数据内容数组。数组项通常为具体的数据项。
- *     注意，如果系列没有指定 data，并且 option 有 dataset，那么默认使用第一个 dataset。如果指定了 data，则不会再使用 dataset。
- *     可以使用 series.datasetIndex 指定其他的 dataset。
- *     通常来说，数据用一个二维数组表示。如下，每一列被称为一个『维度』。
+ *    Data array of series, which can be in the following forms:
+ *     Notice, if no data specified in series, and there is dataset in option, series will use the first dataset as its datasource. If data has been specified, dataset will not used.
+ *     series.datasetIndex can be used to specify other dataset.
+ *     Basically, data is represented by a two-dimension array, like the example below, where each colum is named as a dimension.
  *     series: [{
  *         data: [
- *             // 维度X   维度Y   其他维度 ...
+ *             // dimX   dimY   other dimensions ...
  *             [  3.4,    4.5,   15,   43],
  *             [  4.2,    2.3,   20,   91],
  *             [  10.8,   9.5,   30,   18],
@@ -245,37 +347,37 @@ use Hisune\EchartsPHP\Property;
  *     }]
  *     
  *     
- *     在 直角坐标系 (grid) 中『维度X』和『维度Y』会默认对应于 xAxis 和 yAxis。
- *     在 极坐标系 (polar) 中『维度X』和『维度Y』会默认对应于 radiusAxis 和 angleAxis。
- *     后面的其他维度是可选的，可以在别处被使用，例如：
- *     在 visualMap 中可以将一个或多个维度映射到颜色，大小等多个图形属性上。
- *     在 series.symbolSize 中可以使用回调函数，基于某个维度得到 symbolSize 值。
- *     使用 tooltip.formatter 或 series.label.formatter 可以把其他维度的值展示出来。
+ *     In cartesian (grid), dimX and dimY correspond to xAxis and yAxis repectively.
+ *     In polar dimX and dimY correspond to radiusAxis 和 angleAxis repectively.
+ *     Other dimensions are optional, which can be used in other place. For example:
+ *     visualMap can map one or more dimensions to viusal (color, symbol size ...).
+ *     series.symbolSize can be set as a callback function, where symbol size can be calculated by values of a certain dimension.
+ *     Values in other dimensions can be shown by tooltip.formatter or series.label.formatter.
  *     
  *     
  *     
- *     特别地，当只有一个轴为类目轴（axis.type 为 category）的时候，数据可以简化用一个一维数组表示。例如：
+ *     Especially, when there is one and only one category axis (axis.type is category), data can be simply be represented by a one-dimension array, like:
  *     xAxis: {
  *         data: [a, b, m, n]
  *     },
  *     series: [{
- *         // 与 xAxis.data 一一对应。
+ *         // Each item corresponds to each item in xAxis.data.
  *         data: [23,  44,  55,  19]
- *         // 它其实是下面这种形式的简化：
+ *         // In fact, it is the simplification of the format below:
  *         // data: [[0, 23], [1, 44], [2, 55], [3, 19]]
  *     }]
  *     
  *     
- *     『值』与 轴类型 的关系：
+ *     Relationship between value and axis.type
  *     
- *     当某维度对应于数值轴（axis.type 为 value 或者 log）的时候：
- *       其值可以为 number（例如 12）。（也可以兼容 string 形式的 number，例如 12）
+ *     When a dimension corresponds to a value axis (axis.type is value or log):
+ *       The value can be a number (like 12) (can also be a number in a string format, like 12).
  *     
- *     当某维度对应于类目轴（axis.type 为 category）的时候：
- *       其值须为类目的『序数』（从 0 开始）或者类目的『字符串值』。例如：
+ *     When a dimension corresponds to a category axis (axis.type is category):
+ *       The value should be the ordinal of the axis.data (based on 0), the string value of the axis.data. For example:
  *       xAxis: {
  *           type: category,
- *           data: [星期一, 星期二, 星期三, 星期四]
+ *           data: [Monday, Tuesday, Wednesday, Thursday]
  *       },
  *       yAxis: {
  *           type: category,
@@ -283,334 +385,371 @@ use Hisune\EchartsPHP\Property;
  *       },
  *       series: [{
  *           data: [
- *               // xAxis    yAxis
- *               [  0,        0,    2  ], // 意思是此点位于 xAxis: 星期一, yAxis: a。
- *               [  星期四,  2,    1  ], // 意思是此点位于 xAxis: 星期四, yAxis: m。
- *               [  2,       p,   2  ], // 意思是此点位于 xAxis: 星期三, yAxis: p。
- *               [  3,        3,    5  ]
+ *               // xAxis      yAxis
+ *               [  0,           0,    2  ], // This point is located at xAxis: Monday, yAxis: a.
+ *               [  Thursday,  2,    1  ], // This point is located at xAxis: Thursday, yAxis: m.
+ *               [  2,          p,   2  ], // This point is located at xAxis: Wednesday, yAxis: p.
+ *               [  3,           3,    5  ]
  *           ]
  *       }]
  *     
- *       双类目轴的示例可以参考 Github Punchcard 示例。
+ *       There is an example of double category axes: Github Punchcard.
  *     
- *     当某维度对应于时间轴（type 为 time）的时候，值可以为：
+ *     When a dimension corresponds to a time axis (type is time), the value can be:
  *     
- *     一个时间戳，如 1484141700832，表示 UTC 时间。
- *     或者字符串形式的时间描述：
- *     ISO 8601 的子集，只包含这些形式（这几种格式，除非指明时区，否则均表示本地时间，与 moment 一致）：
- *     部分年月日时间: 2012-03, 2012-03-01, 2012-03-01 05, 2012-03-01 05:06.
- *     使用 T 或空格分割: 2012-03-01T12:22:33.123, 2012-03-01 12:22:33.123.
- *     时区设定: 2012-03-01T12:22:33Z, 2012-03-01T12:22:33+8000, 2012-03-01T12:22:33-05:00.
+ *     a timestamp, like 1484141700832, which represents a UTC time.
+ *     a date string, in one of the formats below:
+ *     a subset of ISO 8601, only including (all of these are treated as local time unless timezone is specified, which is consistent with moment):
+ *     only part of year/month/date/time are specified: 2012-03, 2012-03-01, 2012-03-01 05, 2012-03-01 05:06.
+ *     separated by T or a space: 2012-03-01T12:22:33.123, 2012-03-01 12:22:33.123.
+ *     timezone specified: 2012-03-01T12:22:33Z, 2012-03-01T12:22:33+8000, 2012-03-01T12:22:33-05:00.
  *     
  *     
- *     其他的时间字符串，包括（均表示本地时间）:
+ *     other date string format (all of these are treated as local time):
  *     2012, 2012-3-1, 2012/3/1, 2012/03/01,
- *     2009/6/12 2:00, 2009/6/12 2:05:08, 2009/6/12 2:05:08.123
+ *     2009/6/12 2:00, 2009/6/12 2:05:08, 2009/6/12 2:05:08.123.
  *     
  *     
- *     或者用户自行初始化的 Date 实例：
- *     注意，用户自行初始化 Date 实例的时候，浏览器的行为有差异，不同字符串的表示也不同。
- *     例如：在 chrome 中，new Date(2012-01-01) 表示 UTC 时间的 2012 年 1 月 1 日，而 new Date(2012-1-1) 和 new Date(2012/01/01) 表示本地时间的 2012 年 1 月 1 日。在 safari 中，不支持 new Date(2012-1-1) 这种表示方法。
- *     所以，使用 new Date(dataString) 时，可使用第三方库解析（如 moment），或者使用 echarts.number.parseDate，或者参见 这里。
- *     
- *     
- *     
+ *     a JavaScript Date instance created by user:
+ *     Caution, when using a data string to create a Date instance, browser differences and inconsistencies should be considered.
+ *     For example: In chrome, new Date(2012-01-01) is treated as a Jan 1st 2012 in UTC, while new Date(2012-1-1) and new Date(2012/01/01) are treated as Jan 1st 2012 in local timezone. In safari new Date(2012-1-1) is not supported.
+ *     So if you intent to perform new Date(dateString), it is strongly recommended to use a time parse library (e.g., moment), or use echarts.number.parseDate, or check this.
  *     
  *     
  *     
- *     当需要对个别数据进行个性化定义时：
- *     数组项可用对象，其中的 value 像表示具体的数值，如：
+ *     
+ *     
+ *     
+ *     Customize a data item:
+ *     When needing to customize a data item, it can be set as an object, where property value reprensent real value. For example:
  *     [
  *         12,
- *         34,
+ *         24,
  *         {
- *             value : 56,
- *             //自定义标签样式，仅对该数据项有效
+ *             value: [24, 32],
+ *             // label style, only works in this data item.
  *             label: {},
- *             //自定义特殊 itemStyle，仅对该数据项有效
+ *             // item style, only works in this data item.
  *             itemStyle:{}
  *         },
- *         10
+ *         33
  *     ]
- *     // 或
+ *     // Or
  *     [
- *         [12, 33],
- *         [34, 313],
+ *         [12, 332],
+ *         [24, 32],
  *         {
- *             value: [56, 44],
+ *             value: [24, 32],
+ *             // label style, only works in this data item.
  *             label: {},
+ *             // item style, only works in this data item.
  *             itemStyle:{}
  *         },
- *         [10, 33]
+ *         [33, 31]
  *     ]
  *     
  *     
- *     空值：
- *     当某数据不存在时（ps：不存在不代表值为 0），可以用 - 或者 null 或者 undefined 或者 NaN 表示。
- *     例如，无数据在折线图中可表现为该点是断开的，在其它图中可表示为图形不存在。
+ *     Empty value:
+ *     - or null or undefined or NaN can be used to describe that a data item is not exists (ps：not exist does not means its value is 0).
+ *     For example, line chart can break when encounter an empty value, and scatter chart do not display graphic elements for empty values.
  *
  * @property Series\MarkPoint $markPoint
- *    图表标注。
+ *    Mark point in a chart.
  *
  * @property Series\MarkLine $markLine
- *    图表标线。
+ *    Use a line in the chart to illustrate.
  *
  * @property Series\MarkArea $markArea
- *    图表标域，常用于标记图表中某个范围的数据，例如标出某段时间投放了广告。
+ *    Used to mark an area in chart. For example, mark a time interval.
  *
  * @property int $zlevel Default: 0
- *    折线图所有图形的 zlevel 值。
- *     zlevel用于 Canvas 分层，不同zlevel值的图形会放置在不同的 Canvas 中，Canvas 分层是一种常见的优化手段。我们可以把一些图形变化频繁（例如有动画）的组件设置成一个单独的zlevel。需要注意的是过多的 Canvas 会引起内存开销的增大，在手机端上需要谨慎使用以防崩溃。
- *     zlevel 大的 Canvas 会放在 zlevel 小的 Canvas 的上面。
+ *    zlevel value of all graphical elements in broken line graph.
+ *     zlevel is used to make layers with Canvas. Graphical elements with different zlevel values will be placed in different Canvases, which is a common optimization technique. We can put those frequently changed elements (like those with animations) to a separate zlevel. Notice that too many Canvases will increase memory cost, and should be used carefully on mobile phones to avoid crash.
+ *     Canvases with bigger zlevel will be placed on Canvases with smaller zlevel.
  *
  * @property int $z Default: 2
- *    折线图组件的所有图形的z值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖。
- *     z相比zlevel优先级更低，而且不会创建新的 Canvas。
+ *    z value of all graphical elements in broken line graph, which controls order of drawing graphical components. Components with smaller z values may be overwritten by those with larger z values.
+ *     z has a lower priority to zlevel, and will not create new Canvas.
  *
  * @property boolean $silent Default: false
- *    图形是否不响应和触发鼠标事件，默认为 false，即响应和触发鼠标事件。
+ *    Whether to ignore mouse events. Default value is false, for triggering and responding to mouse events.
  *
  * @property boolean $animation Default: true
- *    是否开启动画。
+ *    Whether to enable animation.
  *
  * @property int $animationThreshold Default: 2000
- *    是否开启动画的阈值，当单个系列显示的图形数量大于这个阈值时会关闭动画。
+ *    Whether to set graphic number threshold to animation. Animation will be disabled when graphic number is larger than threshold.
  *
- * @property int $animationDuration Default: 1000
- *    初始动画的时长，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果：
+ * @property int|callable $animationDuration Default: 1000
+ *    Duration of the first animation, which supports callback function for different data to have different animation effect:
  *     animationDuration: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *
  * @property string $animationEasing Default: 'linear'
- *    初始动画的缓动效果。不同的缓动效果可以参考 缓动示例。
+ *    Easing method used for the first animation. Varied easing effects can be found at easing effect example.
  *
  * @property int|callable $animationDelay Default: 0
- *    初始动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果。
- *     如下示例：
+ *    Delay before updating the first animation, which supports callback function for different data to have different animation effect.
+ *     For example:
  *     animationDelay: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *     
- *     也可以看该示例
+ *     See this example for more information.
  *
  * @property int|callable $animationDurationUpdate Default: 300
- *    数据更新动画的时长。
- *     支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的更新动画效果：
+ *    Time for animation to complete, which supports callback function for different data to have different animation effect:
  *     animationDurationUpdate: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *
  * @property string $animationEasingUpdate Default: 'cubicOut'
- *    数据更新动画的缓动效果。
+ *    Easing method used for animation.
  *
  * @property int|callable $animationDelayUpdate Default: 0
- *    数据更新动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的更新动画效果。
- *     如下示例：
+ *    Delay before updating animation, which supports callback function for different data to have different animation effects.
+ *     For example:
  *     animationDelayUpdate: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *     
- *     也可以看该示例
+ *     See this example for more information.
  *
  * @property Series\Tooltip $tooltip
- *    本系列特定的 tooltip 设定。
+ *    tooltip settings in this series.
  *
- * @property int|string $barWidth Default: '自适应'
- *    柱条的宽度，不设时自适应。支持设置成相对于类目宽度的百分比。
- *     在同一坐标系上，此属性会被多个 bar 系列共享。此属性应设置于此坐标系中最后一个 bar 系列上才会生效，并且是对此坐标系中所有 bar 系列生效。
+ * @property boolean $roundCap Default: false
+ *    If to add round caps at the end of the bar sectors. Valid only for bar series on polar coordinates.
  *
- * @property int|string $barMaxWidth Default: '自适应'
- *    柱条的最大宽度，不设时自适应。支持设置成相对于类目宽度的百分比。
- *     在同一坐标系上，此属性会被多个 bar 系列共享。此属性应设置于此坐标系中最后一个 bar 系列上才会生效，并且是对此坐标系中所有 bar 系列生效。
+ * @property int|string $barWidth
+ *    The width of the bar. Adaptive when not specified.
+ *     Can be an absolute value like 40 or a percent value like 60%. The percent is based on the calculated category width.
+ *     In a single coodinate system, this attribute is shared by multiple bar series. This attribute should be set on the last bar series in the coodinate system, then it will be adopted by all bar series in the coordinate system.
+ *
+ * @property int|string $barMaxWidth
+ *    The maximum width of the bar.
+ *     Has higer priority than barWidth.
+ *     Can be an absolute value like 40 or a percent value like 60%. The percent is based on the calculated category width.
+ *     In a single coodinate system, this attribute is shared by multiple bar series. This attribute should be set on the last bar series in the coodinate system, then it will be adopted by all bar series in the coordinate system.
+ *
+ * @property int|string $barMinWidth
+ *    The minimum width of the bar. In cartesian the default value is 1, otherwise the default value if null.
+ *     Has higer priority than barWidth.
+ *     Can be an absolute value like 40 or a percent value like 60%. The percent is based on the calculated category width.
+ *     In a single coodinate system, this attribute is shared by multiple bar series. This attribute should be set on the last bar series in the coodinate system, then it will be adopted by all bar series in the coordinate system.
  *
  * @property int $barMinHeight Default: 0
- *    柱条最小高度，可用于防止某数据项的值过小而影响交互。
+ *    The minimum width of bar. It could be used to avoid the following situation: the interaction would be affected when the value of some data item is too small.
  *
  * @property string $barGap Default: '30%'
- *    柱间距离，可设固定值（如 20）或者百分比（如 30%，表示柱子宽度的 30%）。
- *     如果想要两个系列的柱子重叠，可以设置 barGap 为 -100%。这在用柱子做背景的时候有用。
- *     在同一坐标系上，此属性会被多个 bar 系列共享。此属性应设置于此坐标系中最后一个 bar 系列上才会生效，并且是对此坐标系中所有 bar 系列生效。
- *     例子：
+ *    The gap between bars between different series, is a percent value like 30%, which means 30% of the bar width.
+ *     Set barGap as -100% can overlap bars that belong to different series, which is useful when making a series of bar be background.
+ *     In a single coodinate system, this attribute is shared by multiple bar series. This attribute should be set on the last bar series in the coodinate system, then it will be adopted by all bar series in the coordinate system.
+ *     For example:
  *
  * @property string $barCategoryGap Default: '20%'
- *    类目间柱形距离，默认为类目间距的20%，可设固定值
- *     在同一坐标系上，此属性会被多个 bar 系列共享。此属性应设置于此坐标系中最后一个 bar 系列上才会生效，并且是对此坐标系中所有 bar 系列生效。
+ *    The bar gap of a single series, defaults to be 20% of the category gap, can be set as a fixed value.
+ *     In a single coodinate system, this attribute is shared by multiple bar series. This attribute should be set on the last bar series in the coodinate system, then it will be adopted by all bar series in the coordinate system.
+ *
+ * @property boolean $large Default: false
+ *    Whether to enable the optimization of large-scale data. It could be set when large data causes performance problem.
+ *     After being enabled, largeThreshold can be used to indicate the minimum number for turning on the optimization.
+ *     But when the optimization enabled, the style of single data item cant be customized any more.
+ *
+ * @property int $largeThreshold Default: 400
+ *    The threshold enabling the drawing optimization.
+ *
+ * @property int $progressive Default: 5000
+ *    progressive specifies the amount of graphic elements that can be rendered within a frame (about 16ms) if progressive rendering enabled.
+ *     When data amount is from thousand to more than 10 million, it will take too long time to render all of the graphic elements. Since ECharts 4, progressive rendering is supported in its workflow, which processes and renders data chunk by chunk alone with each frame, avoiding to block the UI thread of the browser.
+ *
+ * @property int $progressiveThreshold Default: 3000
+ *    If current data amount is over the threshold, progressive rendering is enabled.
+ *
+ * @property string $progressiveChunkMode Default: 'mod'
+ *    Chunk approach, optional values:
+ *     
+ *     sequential: slice data by data index.
+ *     mod: slice data by mod, which make the data items of each chunk coming from all over the data, bringing better visual effect while progressive rendering.
  *
  * @property int $hoverOffset Default: 10
- *    高亮扇区的偏移距离。
+ *    The offset distance of hovered sector.
  *
  * @property boolean|string $selectedMode Default: false
- *    选中模式，表示是否支持多个选中，默认关闭，支持布尔值和字符串，字符串取值可选single，multiple，分别表示单选还是多选。
+ *    Selected mode of pie.  It is enabled by default, and you may set it to be false to disabled it.
+ *     Besides, it can be set to single or multiple, for single selection and multiple selection.
  *
  * @property int $selectedOffset Default: 10
- *    选中扇区的偏移距离。
+ *    The offset distance of selected sector.
  *
  * @property boolean $clockwise Default: true
- *    饼图的扇区是否是顺时针排布。
+ *    Whether the layout of sectors of pie chart is clockwise.
  *
  * @property int $startAngle Default: 90
- *    起始角度，支持范围[0, 360]。
+ *    The start angle, which range is [0, 360].
  *
  * @property int $minAngle Default: 0
- *    最小的扇区角度（0 ~ 360），用于防止某个值过小导致扇区太小影响交互。
+ *    The minimum angle of sector (0 ~ 360). It prevents some sector from being too small when value is small, which will affect user interaction.
+ *
+ * @property int $minShowLabelAngle Default: 0
+ *    If a sector is less than this angle (0 ~ 360), label and labelLine will not be displayed.
  *
  * @property boolean|string $roseType Default: false
- *    是否展示成南丁格尔图，通过半径区分数据大小。可选择两种模式：
+ *    Whether to show as Nightingale chart, which distinguishs data through radius. There are 2 optional modes:
  *     
- *     radius 扇区圆心角展现数据的百分比，半径展现数据的大小。
- *     area 所有扇区圆心角相同，仅通过半径展现数据大小。
+ *     radius Use central angle to show the percentage of data, radius to show data size.
+ *     area All the sectors will share the same central angle, the data size is shown only through radiuses.
  *
  * @property boolean $avoidLabelOverlap Default: true
- *    是否启用防止标签重叠策略，默认开启，在标签拥挤重叠的情况下会挪动各个标签的位置，防止标签间的重叠。
- *     如果不需要开启该策略，例如圆环图这个例子中需要强制所有标签放在中心位置，可以将该值设为 false。
+ *    Whether to enable the strategy to avoid labels overlap. Defaults to be enabled, which will move the label positions in the case of labels overlapping
  *
  * @property boolean $stillShowZeroSum Default: true
- *    是否在数据和为0（一般情况下所有数据为0） 的时候不显示扇区。
+ *    Whether to show sector when all data are zero.
  *
  * @property Series\LabelLine $labelLine
- *    标签的视觉引导线样式，在 label 位置 设置为outside的时候会显示视觉引导线。
+ *    The style of visual guide line. Will show when label position is set as outside.
+ *     The style of visual guide line.
  *
  * @property array $center Default: '[\'50%\', \'50%\']'
- *    饼图的中心（圆心）坐标，数组的第一项是横坐标，第二项是纵坐标。
- *     支持设置成百分比，设置成百分比时第一项是相对于容器宽度，第二项是相对于容器高度。
- *     使用示例：
- *     // 设置成绝对的像素值
+ *    Center position of Pie chart, the first of which is the horizontal position, and the second is the vertical position.
+ *     Percentage is supported. When set in percentage, the item is relative to the container width, and the second item to the height.
+ *     Example: 
+ *     // Set to absolute pixel values
  *     center: [400, 300]
- *     // 设置成相对的百分比
+ *     // Set to relative percent
  *     center: [50%, 50%]
  *
- * @property array $radius Default: '[0, \'75%\']'
- *    饼图的半径，数组的第一项是内半径，第二项是外半径。
- *     支持设置成百分比，相对于容器高宽中较小的一项的一半。
- *     可以将内半径设大显示成圆环图（Donut chart）。
+ * @property int|string|array $radius Default: '[0, \'75%\']'
+ *    Radius of Pie chart. Value can be:
+ *     
+ *     number: Specify outside radius directly.
+ *     string: For example, 20%, means that the outside radius is 20% of the viewport size (the little one between width and height of the chart container).
+ *     
+ *     Array.&lt;number|string&gt;: The first item specifies the inside radius, and the second item specifies the outside radius. Each item follows the definitions above.
+ *     
+ *     
+ *     You can set a large inner radius for a Donut chart.
  *
  * @property string $animationType Default: 'expansion'
- *    初始动画效果，可选
+ *    Initial animation type.
  *     
- *     expansion 默认研圆弧展开的效果。
- *     scale 缩放效果，配合设置 animationEasing=elasticOut 可以做成 popup 的效果。
+ *     expansion Default expansion animation.
+ *     scale Scale animation. You can use it with animationEasing=elasticOut to have popup effect.
+ *
+ * @property string $animationTypeUpdate Default: 'transition'
+ *    Animation type when data updates.
+ *     
+ *     transition Changing start and end angle of each sector from the old value to new value.
+ *     expansion The whole pie expands again.
  *
  * @property int $geoIndex Default: 0
- *    使用的地理坐标系的 index，在单个图表实例中存在多个地理坐标系的时候有用。
+ *    Index of geographic coordinate to combine with, which is useful for multiple geographic axes in one chart.
  *
  * @property int $calendarIndex Default: 0
- *    使用的日历坐标系的 index，在单个图表实例中存在多个日历坐标系的时候有用。
- *
- * @property boolean $large Default: true
- *    是否开启大规模散点图的优化，在数据图形特别多的时候（&gt;=5k）可以开启。
- *     开启后配合 largeThreshold 在数据量大于指定阈值的时候对绘制进行优化。
- *     缺点：优化后不能自定义设置单个数据项的样式。
- *
- * @property int $largeThreshold Default: 2000
- *    开启绘制优化的阈值。
+ *    Index of calendar coordinates to combine with, which is useful for multiple calendar coordinates in one chart.
  *
  * @property string $effectType Default: 'ripple'
- *    特效类型，目前只支持涟漪特效ripple。
+ *    Type of effect. Only ripple effect of ripple is supported currently.
  *
  * @property string $showEffectOn Default: 'render'
- *    配置何时显示特效。
- *     可选：
+ *    When to show the effect.
+ *     Options: 
  *     
- *     render 绘制完成后显示特效。
- *     emphasis 高亮（hover）的时候显示特效。
+ *     render Show the effect when rendering is done.
+ *     emphasis Show the effect when it is highlight (hover).
  *
  * @property Series\RippleEffect $rippleEffect
- *    涟漪特效相关配置。
+ *    Related configurations about ripple effect.
  *
  * @property int $radarIndex
- *    雷达图所使用的 radar 组件的 index。
+ *    Index of radar component that radar chart uses.
  *
  * @property string|int $left Default: '12%'
- *    tree组件离容器左侧的距离。
- *     left 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 left, center, right。
- *     如果 left 的值为left, center, right，组件会根据相应的位置自动对齐。
+ *    Distance between tree component and the left side of the container.
+ *     left value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be left, center, or right.
+ *     If the left value is set to be left, center, or right, then the component will be aligned automatically based on position.
  *
  * @property string|int $top Default: '12%'
- *    tree组件离容器上侧的距离。
- *     top 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 top, middle, bottom。
- *     如果 top 的值为top, middle, bottom，组件会根据相应的位置自动对齐。
+ *    Distance between tree component and the top side of the container.
+ *     top value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
+ *     If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
  *
  * @property string|int $right Default: '12%'
- *    tree组件离容器右侧的距离。
- *     right 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
+ *    Distance between tree component and the right side of the container.
+ *     right value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%.
  *
  * @property string|int $bottom Default: '12%'
- *    tree组件离容器下侧的距离。
- *     bottom 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
+ *    Distance between tree component and the bottom side of the container.
+ *     bottom value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%.
  *
  * @property string|int $width
- *    tree组件的宽度。
+ *    Width of tree component.
  *
  * @property string|int $height
- *    tree组件的高度。
+ *    Height of tree component.
  *
  * @property string $layout Default: 'orthogonal'
- *    树图的布局，有 正交 和 径向 两种。这里的 正交布局 就是我们通常所说的 水平 和 垂直 两个方向，对应的参数取值为 orthogonal 。而 径向布局 是指以根节点为圆心，每一层节点为环，一层层向外发散绘制而成的布局，对应的参数取值为 radial 。
- *     正交布局示例：
+ *    The layout of the tree, which can be orthogonal and radial. Here the orthogonal layout is what we usually refer to the horizontal and vertical direction, the corresponding parameter value is orthogonal. The radial layout refers to the view that the root node as the center and each layer of nodes as the ring, the corresponding parameter value is radial.
+ *     Orthogonal Example：
  *     
  *     
  *     
  *     
- *     径向布局示例：
+ *     Radial Example：
  *
- * @property string $orient Default: 'horizontal'
- *    树图中 正交布局 的方向 ，对应有 水平 和 垂直 两个方向，取值分别为 horizontal , vertical.
+ * @property string $orient Default: 'LR'
+ *    The direction of the orthogonal layout in the tree diagram. That means this configuration takes effect only if layout = orthogonal. The corresponding directions are from left to right, from right to left, from top to bottom, from bottom to top, with shorthand values LR, RL, TB, BT.
+ *     Note: The previous configuration value horizontal is equivalent to LR, vertical is equivalent to TB.
+ *
+ * @property boolean|string $roam Default: false
+ *    Whether to enable mouse zooming and translating. false by default. If either zooming or translating is wanted, it can be set to scale or move. Otherwise, set it to be true to enable both.
  *
  * @property boolean $expandAndCollapse Default: true
- *    子树折叠和展开的交互，默认打开 。由于绘图区域是有限的，而通常一个树图的节点可能会比较多，这样就会出现节点之间相互遮盖的问题。为了避免这一问题，可以将暂时无关的子树折叠收起，等到需要时再将其展开。如上面径向布局树图示例，节点中心用蓝色填充的就是折叠收起的子树，可以点击将其展开。
- *     注意：如果配置自定义的图片作为节点的标记，是无法通过填充色来区分当前节点是否有折叠的子树的。而目前暂不支持，上传两张图片分别表示节点折叠和展开两种状态。所以，如果想明确地显示节点的两种状态，建议使用 ECharts 常规的标记类型，如 emptyCircle 等。
+ *    Subtree collapses and expands interaction, default true. As the drawing area is limited, and usually the nodes of a tree may be more, so there will be hidden between the nodes. In order to avoid this problem, you can put a temporary unrelated subtree folded away, until you need to start when necessary. Such as the above radial layout tree example, the center of the node is filled with blue is the folded away subtree, you can click to expand it.
+ *     Note: If you configure a custom image as the tag for a node, it is not possible to distinguish whether the current node has a collapsed subtree by the fill color. And currently do not support, upload two pictures, respectively represent the collapsing and expansion state of the node. So, if you want to explicitly show the two states of the node, it is recommended to use ECharts regular tag types, such as emptyCircle.
  *
  * @property int $initialTreeDepth Default: 2
- *    树图初始展开的层级（深度）。根节点是第 0 层，然后是第 1 层、第 2 层，... ，直到叶子节点。该配置项主要和 折叠展开 交互一起使用，目的还是为了防止一次展示过多节点，节点之间发生遮盖。如果设置为 -1 或者 null 或者 undefined，所有节点都将展开。
+ *    The initial level (depth) of the tree. The root node is the 0th layer, then the first layer, the second layer, ... , until the leaf node. This configuration item is primarily used in conjunction with collapsing and expansion interactions. The purpose is to prevent the nodes from obscuring each other. If set as -1 or null or undefined, all nodes are expanded.
  *
  * @property Series\Leaves $leaves
- *    叶子节点的特殊配置，如上面的树图实例中，叶子节点和非叶子节点的标签位置不同。
+ *    Leaf node special configuration, such as the above tree diagram example, the leaf node and non-leaf node label location is different.
  *
  * @property int $squareRatio
- *    期望矩形长宽比率。布局计算时会尽量向这个比率靠近。
- *     默认为黄金比：0.5 * (1 + Math.sqrt(5))。
+ *    The expected square ratio. Layout would approach the ratio as close as possible.
+ *     It defaults to be the golden ratio: 0.5 * (1 + Math.sqrt(5)).
  *
  * @property int $leafDepth
- *    设置了 leafDepth 后，下钻（drill down）功能开启。drill down 功能即点击后才展示子层级。
- *     leafDepth 表示『展示几层』，层次更深的节点则被隐藏起来。点击则可下钻看到层次更深的节点。
- *     例如，leafDepth 设置为 1，表示展示一层节点。
- *     默认没有开启 drill down（即 leafDepth 为 null 或 undefined）。
- *     drill down 的例子：
+ *    When leafDepth is set, the feature drill down is enabled, which means when clicking a tree node, this node will be set as root and its children will be shown.
+ *     leafDepth represents how many levels are shown at most. For example, when leafDepth is set to 1, only one level will be shown.
+ *     leafDepth is null/undefined by default, which means that drill down is disabled.
+ *     An example about drill down:
  *
  * @property string $drillDownIcon Default: '▶'
- *    当节点可以下钻时的提示符。只能是字符。
- *
- * @property boolean|string $roam Default: true
- *    是否开启拖拽漫游（移动和缩放）。可取值有：
- *     
- *     false：关闭。
- *     scale 或 zoom：只能够缩放。
- *     move 或 pan：只能够平移。
- *     true：缩放和平移均可。
+ *    Marker when the node is able to be drilled down.
  *
  * @property boolean|string $nodeClick Default: 'zoomToNode'
- *    点击节点后的行为。可取值为：
+ *    The behaviour when clicking a node. Optional values are:
  *     
- *     false：节点点击无反应。
- *     zoomToNode：点击节点后缩放到节点。
- *     link：如果节点数据中有 link 点击节点后会进行超链接跳转。
+ *     false: Do nothing after clicked.
+ *     zoomToNode: Zoom to clicked node.
+ *     link: If there is link in node data, do hyperlink jump after clicked.
  *
  * @property int $zoomToNodeRatio Default: '0.32*0.32'
- *    点击某个节点，会自动放大那个节点到合适的比例（节点占可视区域的面积比例），这个配置项就是这个比例。
+ *    The treemap will be auto zoomed to a appropriate ratio when a node is clicked (when nodeClick is set as zoomToNode and no drill down happens). This configuration item indicates the ratio.
  *
  * @property array $levels Default: '[]'
- *    多层配置
- *     treemap 中采用『三级配置』：
- *     『每个节点』-&gt;『每个层级』-&gt;『每个系列』。
- *     即我们可以对每个节点进行配置，也可以对树的每个层级进行配置，也可以 series 上设置全局配置。节点上的设置，优先级最高。
- *     最常用的是『每个层级进行配置』，levels 配置项就是每个层级的配置。例如：
+ *    Multiple Levels Configuration
+ *     treemap adopts 4-level configuration:
+ *     each node --&gt; each level --&gt; each series.
+ *     That is, we can configurate each node, can also configurate each level of the tree, or set overall configurations on each series. The highest priority is node configuration.
+ *     levels is configurations on each levels, which is used most.
+ *     For example:
  *     // Notice that in fact the data structure is not tree, but is forest.
- *     // 注意，这个数据结构实际不是『树』而是『森林』
  *     data: [
  *         {
  *             name: nodeA,
@@ -627,21 +766,23 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     ],
  *     levels: [
- *         {...}, // 『森林』的顶层配置。即含有 nodeA, nodeB 的这层。
- *         {...}, // 下一层配置，即含有 nodeAA, nodeAB, nodeBA 的这层。
- *         {...}, // 再下一层配置。
+ *         {...}, // configurations of the top level of the data structure forest
+ *             // (the level that contains nodeA, nodeB shown above).
+ *         {...}, // configurations of the next level
+ *             // (the level that contains nodeAA, nodeAB, nodeBA shown above)
+ *         {...}, // configurations of the next level
  *         ...
  *     ]
  *     
  *     
- *     视觉映射的规则
- *     treemap中首要关注的是如何在视觉上较好得区分『不同层级』、『同层级中不同类别』。这需要合理得设置不同层级的『矩形颜色』、『边界粗细』、『边界颜色』甚至『矩形颜色饱和度』等。
- *     参见这个例子，最顶层级用颜色区分，分成了『红』『绿』『蓝』等大块。每个颜色块中是下一个层级，使用颜色的饱和度来区分（参见 colorSaturation）。最外层的矩形边界是『白色』，下层级的矩形边界是当前区块颜色加上饱和度处理（参见 borderColorSaturation）。
- *     treemap 是通过这样的规则来支持这种配置的：每个层级计算用户配置的 color、colorSaturation、borderColor、colorSaturation等视觉信息（在levels中配置）。如果子节点没有配置，则继承父的配置，否则使用自己的配置）。
- *     这样，可以做到：父层级配置 color 列表，子层级配置 colorSaturation。父层级的每个节点会从 color 列表中得到一个颜色，子层级的节点会从 colorSaturation 中得到一个值，并且继承父节点得到的颜色，合成得到自己的最终颜色。
+ *     The Rules about Visual Mapping
+ *     When designing a treemap, we primarily focus on how to visually distinguish different levels, different categories in the same level, which requires appropriate settings of rectangular color, border thickness, border color and even color saturation of rectangular and so on on each level.
+ *     See example. The top level is divided into several parts by colors red, green, blue, and etc ... In each color block, colorSaturation is used to distinguish nodes in sublevel. The border color of the top level is white, while the border color of the sublevel is the color that based on the current block color and processed by borderColorSaturation.
+ *     treemap uses this rule of visual configuration: each level computes its visual value based on the configurations (color, colorSaturation, borderColor, borderColorSaturation) on this level. If there is no certain configuration in a node, it inherits the configuration from its parent.
+ *     In this way, this effect can be configured: set a color list on the parent level, and set colorSaturation on the child level, and then each node in the parent level would obtain a color from the color list, and each node in the child level would obtain a value from colorSaturation and compound it with the color inherited from its parent node to get its final color.
  *     
- *     维度与『额外的视觉映射』
- *     例子：每一个 value 字段是一个 Array，其中每个项对应一个维度（dimension）。
+ *     Dimensions and Extra Visual Mapping
+ *     See the example below: every value field is set as an Array, in which each item in the array represents a dimension respectively.
  *     [
  *         {
  *             value: [434, 6969, 8382],
@@ -668,131 +809,174 @@ use Hisune\EchartsPHP\Property;
  *         ...
  *     ]
  *     
- *     treemap 默认把第一个维度（Array 第一项）映射到『面积』上。而如果想表达更多信息，用户可以把其他的某一个维度（series-treemap.visualDimension），映射到其他的『视觉元素』上，比如颜色明暗等。参见例子中，legend选择 Growth时的状态。
+ *     treemap will map the first dimension (the first item of the array) to area. If we want to express more information, we could map another dimension (specified by series-treemap.visualDimension) to another visual types, such as colorSaturation and so on. See the example and select the legend Growth.
  *     
- *     矩形边框（border）/缝隙（gap）设置如何避免混淆
- *     如果统一用一种颜色设置矩形的缝隙（gap），那么当不同层级的矩形同时展示时可能会出现混淆。
- *     参见 例子，注意其中红色的区块中的子矩形其实是更深层级，和其他用白色缝隙区分的矩形不是在一个层级。所以，红色区块中矩形的分割线的颜色，我们在 borderColorSaturation 中设置为『加了饱和度变化的红颜色』，以示区别。
+ *     How to avoid confusion by setting border/gap of node
+ *     If all of the border/gaps are set with the same color, confusion might occur when rectangulars in different levels display at the same time.
+ *     See the example. Noticed that the child rectangles in the red area are in the deeper level than rectangles that are saparated by white gap. So in the red area, basically we set gap color with red, and use borderColorSaturation to lift the saturation.
  *     
- *     borderWidth, gapWidth, borderColor 的解释
+ *     Explanation about borderWidth, gapWidth, borderColor
  *
  * @property int $visualDimension Default: 0
- *    treemap 中支持对数据其他维度进行视觉映射。
- *     首先，treemap的数据格式（参见 series-treemap.data）中，每个节点的 value 都可以是数组。数组每项是一个『维度』（dimension）。visualDimension 指定了额外的『视觉映射』使用的是数组的哪一项。默认为第 0 项。
- *     关于视觉设置，详见 series-treemap.levels。
+ *    treemap is able to map any dimensions of data to visual.
+ *     The value of series-treemap.data can be an array. And each item of the array represents a dimension. visualDimension specifies the dimension on which visual mapping will be performed.
+ *     About visual encoding, see details in series-treemap.levels.
  *     
  *     
- *     注：treemap中 visualDimension 属性可能在多处地方存在：
- *     
- *     可以存在于 sereis-treemap 根下，表示本系列全局的统一设置。
+ *     Tps: In treemap, visualDimension attribute could appear in more than one places:
  *     
  *     
- *     可以存在于 series-treemap.levels 的每个数组元素中，表示树每个层级的统一设置。
  *     
- *     存在于 series-treemap.data 的每个节点中，表示每个节点的特定设置。
+ *     It could appear in sereis-treemap, indicating the unified setting of the series.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
  *
  * @property int $visualMin
- *    当前层级的最小 value 值。如果不设置则自动统计。
- *     手动指定 visualMin、visualMax ，即手动控制了 visual mapping 的值域（当 colorMappingBy 为 value 时有意义）。
+ *    The minimal value of current level. Auto-statistics by default.
+ *     When colorMappingBy is set to value, you are able to specify extent manually for visual mapping by specifying visualMin or visualMax.
  *
  * @property int $visualMax
- *    当前层级的最大 value 值。如果不设置则自动统计。
- *     手动指定 visualMin、visualMax ，即手动控制了 visual mapping 的值域（当 colorMappingBy 为 value 时有意义）。
+ *    The maximal value of current level. Auto-statistics by default.
+ *     When colorMappingBy is set to value, you are able to specify extent manually for visual mapping by specifying visualMin or visualMax.
  *
  * @property array $colorAlpha
- *    本系列默认的 颜色透明度 选取范围。数值范围 0 ~ 1。
- *     例如, colorAlpha 可以是 [0.3, 1].
- *     关于视觉设置，详见 series-treemap.levels。
+ *    It indicates the range of tranparent rate (color alpha)  of the series. The range of values is 0 ~ 1.
+ *     For example, colorAlpha can be [0.3, 1].
+ *     About visual encoding, see details in series-treemap.levels.
  *     
  *     
- *     注：treemap中 colorAlpha 属性可能在多处地方存在：
- *     
- *     可以存在于 sereis-treemap 根下，表示本系列全局的统一设置。
+ *     Tps: In treemap, colorAlpha attribute could appear in more than one places:
  *     
  *     
- *     可以存在于 series-treemap.levels 的每个数组元素中，表示树每个层级的统一设置。
  *     
- *     存在于 series-treemap.data 的每个节点中，表示每个节点的特定设置。
+ *     It could appear in sereis-treemap, indicating the unified setting of the series.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
  *
  * @property int $colorSaturation
- *    本系列默认的 颜色饱和度 选取范围。数值范围 0 ~ 1。
- *     例如, colorSaturation 可以是 [0.3, 1].
- *     关于视觉设置，详见 series-treemap.levels。
+ *    It indicates the range of saturation (color alpha)  of the series. The range of values is 0 ~ 1.
+ *     For example, colorSaturation can be [0.3, 1].
+ *     About visual encoding, see details in series-treemap.levels.
  *     
  *     
- *     注：treemap中 colorSaturation 属性可能在多处地方存在：
- *     
- *     可以存在于 sereis-treemap 根下，表示本系列全局的统一设置。
+ *     Tps: In treemap, colorSaturation attribute could appear in more than one places:
  *     
  *     
- *     可以存在于 series-treemap.levels 的每个数组元素中，表示树每个层级的统一设置。
  *     
- *     存在于 series-treemap.data 的每个节点中，表示每个节点的特定设置。
+ *     It could appear in sereis-treemap, indicating the unified setting of the series.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
  *
  * @property string $colorMappingBy Default: 'index'
- *    表示同一层级节点，在颜色列表中（参见 color 属性）选择时，按照什么来选择。可选值：
+ *    Specify the rule according to which each node obtain color from color list. Optional values:
  *     
- *     value：
+ *     value:
  *     
- *     将节点的值（即 series-treemap.data.value）映射到颜色列表中。
- *     这样得到的颜色，反应了节点值的大小。
- *     可以使用 visualDimension 属性来设置，用 data 中哪个纬度的值来映射。
+ *     Map series-treemap.data.value to color.
+ *     In this way, the color of each node indicate its value.
+ *     visualDimension can be used to specify which dimension of data is used to perform visual mapping.
  *     
- *     index：
+ *     index:
  *     
- *     将节点的 index（序号）映射到颜色列表中。即同一层级中，第一个节点取颜色列表中第一个颜色，第二个节点取第二个。
- *     这样得到的颜色，便于区分相邻节点。
+ *     Map the index (ordinal number) of nodes to color. Namely, in a level, the first node is mapped to the first color of color list, and the second node gets the second color.
+ *     In this way, adjacent nodes are distinguished by color.
  *     
- *     id：
+ *     id:
  *     
- *     将节点的 id（即 series-treemap.data.id）映射到颜色列表中。id 是用户指定的，这样能够使得，在treemap 通过 setOption 变化数值时，同一 id 映射到同一颜色，保持一致性。参见 例子。
- *     关于视觉设置，详见 series-treemap.levels。
- *     
- *     
- *     注：treemap中 colorMappingBy 属性可能在多处地方存在：
- *     
- *     可以存在于 sereis-treemap 根下，表示本系列全局的统一设置。
+ *     Map series-treemap.data.id to color.
+ *     Since id is used to identify node, if user call setOption to modify the tree, each node will remain the original color before and after setOption called. See this example.
+ *     About visual encoding, see details in series-treemap.levels.
  *     
  *     
- *     可以存在于 series-treemap.levels 的每个数组元素中，表示树每个层级的统一设置。
+ *     Tps: In treemap, colorMappingBy attribute could appear in more than one places:
  *     
- *     存在于 series-treemap.data 的每个节点中，表示每个节点的特定设置。
+ *     
+ *     
+ *     It could appear in sereis-treemap, indicating the unified setting of the series.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
  *
  * @property int $visibleMin Default: 10
- *    如果某个节点的矩形的面积，小于这个数值（单位：px平方），这个节点就不显示。
- *     如果不加这个限制，很小的节点会影响显示效果。
- *     关于视觉设置，详见 series-treemap.levels。
+ *    A node will not be shown when its area size is smaller than this value (unit: px square).
+ *     In this way, tiny nodes will be hidden, otherwise they will huddle together. When user zoom the treemap, the area size will increase and the rectangle will be shown if the area size is larger than this threshold.
+ *     About visual encoding, see details in series-treemap.levels.
  *     
  *     
- *     注：treemap中 visibleMin 属性可能在多处地方存在：
- *     
- *     可以存在于 sereis-treemap 根下，表示本系列全局的统一设置。
+ *     Tps: In treemap, visibleMin attribute could appear in more than one places:
  *     
  *     
- *     可以存在于 series-treemap.levels 的每个数组元素中，表示树每个层级的统一设置。
  *     
- *     存在于 series-treemap.data 的每个节点中，表示每个节点的特定设置。
+ *     It could appear in sereis-treemap, indicating the unified setting of the series.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
  *
  * @property int $childrenVisibleMin
- *    如果某个节点的矩形面积，小于这个数值（单位：px平方），则不显示这个节点的子节点。
- *     这能够在矩形面积不足够大时候，隐藏节点的细节。当用户用鼠标缩放节点时，如果面积大于此阈值，又会显示子节点。
- *     关于视觉设置，详见 series-treemap.levels。
+ *    Children will not be shown when area size of a node is smaller than this value (unit: px square).
+ *     This can hide the details of nodes when the rectangular area is not large enough. When users zoom nodes, the child node would show if the area is larger than this threshold.
+ *     About visual encoding, see details in series-treemap.levels.
  *     
  *     
- *     注：treemap中 childrenVisibleMin 属性可能在多处地方存在：
- *     
- *     可以存在于 sereis-treemap 根下，表示本系列全局的统一设置。
+ *     Tps: In treemap, childrenVisibleMin attribute could appear in more than one places:
  *     
  *     
- *     可以存在于 series-treemap.levels 的每个数组元素中，表示树每个层级的统一设置。
  *     
- *     存在于 series-treemap.data 的每个节点中，表示每个节点的特定设置。
+ *     It could appear in sereis-treemap, indicating the unified setting of the series.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
  *
  * @property Series\UpperLabel $upperLabel
- *    upperLabel 用于显示矩形的父节点的标签。当 upperLabel.show 为 true 的时候，『显示父节点标签』功能开启。
- *     同 series-treemap.label 一样，upperLabel 可以存在于 series-treemap 的根节点，或者 series-treemap.level 中，或者 series-treemap.data 的每个数据项中。
- *     series-treemap.label 描述的是，当前节点为叶节点时标签的样式；upperLabel 描述的是，当前节点为非叶节点（即含有子节点）时标签的样式。（此时标签一般会被显示在节点的最上部）
- *     参见：
+ *    upperLabel is used to specify whether show label when the node has children. When upperLabel.show is set as true, the feature that show parent label is enabled.
+ *     The same as series-treemap.label, the option upperLabel can be placed at the root of series-treemap directly, or in series-treemap.level, or in each item of series-treemap.data.
+ *     Specifically, series-treemap.label specifies the style when a node is a leaf, while upperLabel specifies the style when a node has children, in which case the label is displayed in the inner top of the node.
+ *     See:
  *     
  *     
  *     
@@ -800,87 +984,88 @@ use Hisune\EchartsPHP\Property;
  *     
  *     
  *     
- *     注：treemap中 label 属性可能在多处地方存在：
- *     
- *     可以存在于 sereis-treemap 根下，表示本系列全局的统一设置。
+ *     Tps: In treemap, label attribute could appear in more than one places:
  *     
  *     
- *     可以存在于 series-treemap.levels 的每个数组元素中，表示树每个层级的统一设置。
  *     
- *     存在于 series-treemap.data 的每个节点中，表示每个节点的特定设置。
+ *     It could appear in sereis-treemap, indicating the unified setting of the series.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
  *
  * @property Series\Breadcrumb $breadcrumb
- *    面包屑，能够显示当前节点的路径。
+ *    breadcrumb, showing the path of the current node.
  *
  * @property string $highlightPolicy Default: 'descendant'
- *    当鼠标移动到一个扇形块时，可以高亮相关的扇形块。如果其值为 descendant，则会高亮该扇形块和后代元素，其他元素将被淡化（downplay，参见 itemStyle）；如果其值为 ancestor，则会高亮该扇形块和祖先元素；如果其值为 self 则只高亮自身；none 则不会淡化其他元素。
+ *    When mouse hovers a sector, the sector is emphasized. If highlightPolicy is set to be descendant, then the sector and its descendant will be highlighted, and others will be downplayed. If highlightPolicy is ancestor, then the sector and its ancestors will be highlighted. If it is set to be self, then the sector will be highlighted and others downplayed. If it is set to be none, then others will not be downplayed.
  *     
  *     
  *     
- *     上面的例子 highlightPolicy 是默认值 descendant，我们通过 dispatchAction 触发了旭日图中某个数据块的高亮操作（相当于将鼠标移动到下图中的 target 扇形块中）。目标扇形块将采用 emphasis 的样式（在本例中是为红色），和目标扇形块相关的扇形块（由 highlightPolicy 决定哪些扇形块是相关的）采用 highlight 的样式（橙色），其他扇形块采用 downplay 的样式（灰色）。而如果没有高亮对象，则所有扇形块都采用默认的样式。样式定义是类似这样的：
+ *     The highlightPolicy value above is the default value descendant. We use dispatchAction to highlight certain sector. Target sector will use the style of emphasis, and related sectors decided by highlightPolicy uses the style of highlight, and others use downplay.
  *     itemStyle: {
  *         color: yellow,
- *         borderWidth: 2
- *     },
- *     emphasis: {
- *         itemStyle: {
+ *         borderWidth: 2,
+ *         emphasis: {
  *             color: red
- *         }
- *     },
- *     highlight: {
- *         itemStyle: {
+ *         },
+ *         highlight: {
  *             color: orange
- *         }
- *     },
- *     downplay: {
- *         itemStyle: {
+ *         },
+ *         downplay: {
  *             color: #ccc
  *         }
  *     }
  *     
- *     而如果将 highlightPolicy 设为 ancestor，则会得到这样的效果：
+ *     If highlightPolicy is set to be ancestor, then the result looks like:
  *
  * @property string|callable $sort Default: 'desc'
- *    扇形块根据数据 value 的排序方式，如果未指定 value，则其值为子元素 value 之和。默认值 desc 表示降序排序；还可以设置为 asc 表示升序排序；null 表示不排序，使用原始数据的顺序；或者用回调函数进行排列：
+ *    Sorting method that sectors use based on value, which is the sum of children when not set. The default value desc states for descending order, while it can also be set to be asc for ascending order, or null for not sorting, or callback function like:
  *     function(nodeA, nodeB) {
  *         return nodeA.getValue() - nodeB.getValue();
  *     }
  *
  * @property boolean $renderLabelForZeroData Default: false
- *    如果数据没有 name，是否需要渲染文字。
+ *    If there is no name, whether need to render it.
  *
  * @property Series\Highlight $highlight
- *    鼠标悬停后相关扇形块的配置项。参见 highlightPolicy。
+ *    Item style when mouse is hovering related items. See highlightPolicy.
  *
  * @property Series\Downplay $downplay
- *    鼠标悬停后不相关扇形块的配置项。参见 highlightPolicy。
+ *    Item style when mouse is hovering unrelated items. See highlightPolicy.
  *
  * @property array $boxWidth Default: '[7, 50]'
- *    box 的宽度的上下限。数组的意思是：[min, max]。
- *     可以是绝对数值，如 [7, 50]，也可以是百分比，如 [40%, 90%]。百分比的意思是，最大可能宽度（bandWidth）的百分之多少。
+ *    Up and bottom boundary of box width. The array is in the form of [min, max].
+ *     It could be absolute value in pixel, such as [7, 50], or percentage, such as [40%, 90%]. The percentage means the percentage to the maximum possible width.
  *
- * @property int $barMinWidth
- *    指定柱最大宽度。可以使用绝对数值（如 10）或百分比（如 20%，表示 band width 的百分之多少）。默认自适应。
+ * @property int $pointSize Default: 20
+ *    Point size of each data point. It is valid with coordinateSystem of geo value.
  *
  * @property int $blurSize Default: 20
- *    每个点模糊的大小，在地理坐标系(coordinateSystem: geo)上有效。
+ *    Blur size of each data point. It is valid with coordinateSystem of geo value.
  *
  * @property int $minOpacity Default: 0
- *    最小的透明度，在地理坐标系(coordinateSystem: geo)上有效。
+ *    Minimum opacity. It is valid with coordinateSystem of geo value.
  *
  * @property int $maxOpacity Default: 1
- *    最大的透明度，在地理坐标系(coordinateSystem: geo)上有效。
+ *    Maximum opacity. It is valid with coordinateSystem of geo value.
  *
  * @property string $map Default: ''
- *    地图类型。
- *     ECharts 3 中因为地图精度的提高，不再内置地图数据增大代码体积，你可以在地图下载界面下载到需要的地图文件引入并注册到 ECharts 中。
- *     ECharts 中提供了两种格式的地图数据，一种是可以直接 script 标签引入的 js 文件，引入后会自动注册地图名字和数据。还有一种是 JSON 文件，需要通过 AJAX 异步加载后手动注册。
- *     下面是两种类型的使用示例：
- *      JavaScript 引入示例 
+ *    Map charts.
+ *     Due to the increase of fineness of map, ECharts 3 doesnt include map data by default for package size consideration. You may find map files you need on map download page and then include and register them in ECharts.
+ *     Two formats of map data are provided in ECharts, one of which can be included in &lt;script&gt; tag as JavaScript file, and the other of is in JSON format and should be loaded using AJAX. Map name and data will be loaded automatically once the JavaScript file is loaded, while in the JSON form, you have to assign name explicitly.
+ *     Here are examples of these two types:
+ *      JavaScript importing example 
  *     &lt;script src=echarts.js&gt;&lt;/script&gt;
  *     &lt;script src=map/js/china.js&gt;&lt;/script&gt;
  *     &lt;script&gt;
- *     var chart = echarts.init(document.getElementById(main));
+ *     var chart = echarts.init(document.getElmentById(main));
  *     chart.setOption({
  *         series: [{
  *             type: map,
@@ -889,10 +1074,10 @@ use Hisune\EchartsPHP\Property;
  *     });
  *     &lt;/script&gt;
  *     
- *      JSON 引入示例 
+ *      JSON importing example 
  *     $.get(map/json/china.json, function (chinaJson) {
  *         echarts.registerMap(china, chinaJson);
- *         var chart = echarts.init(document.getElementById(main));
+ *         var chart = echarts.init(document.getElmentById(main));
  *         chart.setOption({
  *             series: [{
  *                 type: map,
@@ -901,115 +1086,124 @@ use Hisune\EchartsPHP\Property;
  *         });
  *     });
  *     
- *     ECharts 使用 geoJSON 格式的数据作为地图的轮廓，除了上述数据，你也可以通过其它手段获取地图的 geoJSON 数据注册到 ECharts 中。参见示例 USA Population Estimates
+ *     ECharts uses geoJSON format as map outline. Besides the methods introduced above, you can also get geoJSON data through in other methods if you like and register it in ECharts. Reference to USA Population Estimates for more information.
  *
  * @property int $aspectScale Default: 0.75
- *    这个参数用于 scale 地图的长宽比。
- *     最终的 aspect 的计算方式是：geoBoundingRect.width / geoBoundingRect.height * aspectScale
+ *    Used to scale aspect of geo.
+ *     The final aspect is calculated by: geoBoundingRect.width / geoBoundingRect.height * aspectScale.
  *
  * @property array $boundingCoords
- *    二维数组，定义定位的左上角以及右下角分别所对应的经纬度。例如
- *     // 设置为一张完整经纬度的世界地图
+ *    Two dimension array. Define coord of left-top, right-bottom in layout box.
+ *     // A complete world map
  *     map: world,
  *     left: 0, top: 0, right: 0, bottom: 0,
  *     boundingCoords: [
- *         // 定位左上角经纬度
+ *         // [lng, lat] of left-top corner
  *         [-180, 90],
- *         // 定位右下角经纬度
+ *         // [lng, lat] of right-bottom corner
  *         [180, -90]
  *     ],
  *
  * @property int $zoom Default: 1
- *    当前视角的缩放比例。
+ *    Zoom rate of current view-port.
  *
  * @property Series\ScaleLimit $scaleLimit
- *    滚轮缩放的极限控制，通过min, max最小和最大的缩放值，默认的缩放为1。
+ *    Limit of scaling, with min and max. 1 by default.
  *
  * @property array $nameMap
- *    自定义地区的名称映射，如：
+ *    Name mapping for customized areas. For example:
  *     {
  *         China : 中国
  *     }
  *
  * @property array $layoutCenter
- *    layoutCenter 和 layoutSize 提供了除了 left/right/top/bottom/width/height 之外的布局手段。
- *     在使用 left/right/top/bottom/width/height 的时候，可能很难在保持地图高宽比的情况下把地图放在某个盒形区域的正中间，并且保证不超出盒形的范围。此时可以通过 layoutCenter 属性定义地图中心在屏幕中的位置，layoutSize 定义地图的大小。如下示例
+ *    layoutCenter and layoutSize provides layout strategy other than left/right/top/bottom/width/height.
+ *     When using left/right/top/bottom/width/height, it is hard to put the map inside a box area with a fixed width-height ratio. In this case, layoutCenter attribute can be used to define the center position of map, and layoutSize can be used to define the size of map. For example:
  *     layoutCenter: [30%, 30%],
- *     // 如果宽高比大于 1 则宽度为 100，如果小于 1 则高度为 100，保证了不超过 100x100 的区域
+ *     // If width-height ratio is larger than 1, then width is set to be 100.
+ *     // Otherwise, height is set to be 100.
+ *     // This makes sure that it will not exceed the area of 100x100
  *     layoutSize: 100
  *     
- *     设置这两个值后 left/right/top/bottom/width/height 无效。
+ *     After setting these two values, left/right/top/bottom/width/height becomes invalid.
  *
  * @property int|string $layoutSize
- *    地图的大小，见 layoutCenter。支持相对于屏幕宽高的百分比或者绝对的像素大小。
+ *    Size of map, see layoutCenter for more information. Percentage relative to screen width, and absolute pixel values are supported.
  *
  * @property string $mapValueCalculation Default: 'sum'
- *    多个拥有相同地图类型的系列会使用同一个地图展现，如果多个系列都在同一个区域有值，ECharts 会对这些值统计得到一个数据。这个配置项就是用于配置统计的方式，目前有：
+ *    Value of multiple series with the same map type can use this option to get a statistical value.
+ *     Supported statistical methods:
  *     
- *     sum   取和。
- *     average 取平均值。
- *     max   取最大值。
- *     min   取最小值。
+ *     sum
+ *     average
+ *     max
+ *     min
  *
  * @property boolean $showLegendSymbol
- *    在图例相应区域显示图例的颜色标识（系列标识的小圆点），存在 legend 组件时生效。
+ *    Show the symbol in related area (dot of series symbol). Available when legend component exists.
  *
  * @property int $parallelIndex Default: 0
- *    使用的平行坐标系的 index，在单个图表实例中存在多个平行坐标系的时候有用。
+ *    Index of parallel coordinates to combine with, which is useful for multiple parallel axes in one chart.
  *
  * @property int $inactiveOpacity Default: 0.05
- *    框选时，未被选中的条线会设置成这个『透明度』（从而可以达到变暗的效果）。
+ *    When perform brush selection, the unselected lines will be set as this transparency rate (which could darken those lines).
  *
  * @property int $activeOpacity Default: 1
- *    框选时，选中的条线会设置成这个『透明度』（从而可以达到高亮的效果）。
+ *    When perform brush selection, the selected lines will be set as this transparency rate (which could highlight those lines).
  *
  * @property boolean $realtime Default: true
- *    是否实时刷新。
+ *    Whether to update view in realtime.
  *
  * @property boolean $polyline Default: false
- *    是否是多段线。
- *     默认为 false，只能用于绘制只有两个端点的线段，线段可以通过 lineStyle.curveness 配置为曲线。
- *     如果该配置项为 true，则可以在 data.coords 中设置多于 2 个的顶点用来绘制多段线，在绘制路线轨迹的时候比较有用，见示例 北京公交路线，设置为多段线后 lineStyle.curveness 无效。
+ *    If draw as a polyline.
+ *     Default to be false. Can only draw a two end straight line.
+ *     If it is set true, data.coords can have more than two coord to draw a polyline. It is useful when visualizing GPS track data. See example lines-bus.
  *
  * @property Series\Effect $effect
- *    线特效的配置，见示例 模拟迁徙 和 北京公交路线
- *     注意： 所有带有尾迹特效的图表需要单独放在一个层，也就是需要单独设置 zlevel，同时建议关闭该层的动画（animation: false）。不然位于同个层的其它系列的图形，和动画的标签也会产生不必要的残影。
+ *    The setting about the special effects of lines.
+ *     Tips: All the graphs with trail effect should be put on a individual layer, which means that zlevel need to be different with others. And the animation (animation: false)  of this layer is suggested to be turned off at the meanwhile. Otherwise, other graphic elements in other series and the label of animation would produce unnecessary ghosts.
  *
  * @property Series\Circular $circular
- *    环形布局相关配置
+ *    Configuration about circular layout.
  *
  * @property Series\Force $force
- *    力引导布局相关的配置项，力引导布局是模拟弹簧电荷模型在每两个节点之间添加一个斥力，每条边的两个节点之间添加一个引力，每次迭代节点会在各个斥力和引力的作用下移动位置，多次迭代后节点会静止在一个受力平衡的位置，达到整个模型的能量最小化。
- *     力引导布局的结果有良好的对称性和局部聚合性，也比较美观。
+ *    Configuration items about force-directed layout. Force-directed layout simulates spring/charge model, which will add a repulsion between 2 nodes and add a attraction between 2 nodes of each edge. In each iteration nodes will move under the effect of repulsion and attraction. After several iterations, the nodes will be static in a balanced position. As a result, the energy local minimum of this whole model will be realized.
+ *     The result of force-directed layout has a good symmetries and clustering, which is also aesthetically pleasing.
  *
  * @property int $nodeScaleRatio Default: 0.6
- *    鼠标漫游缩放时节点的相应缩放比例，当设为0时节点不随着鼠标的缩放而缩放
+ *    Related zooming ratio of nodes when mouse zooming in or out. When it is set as 0, the node will not zoom as the mouse zooms.
  *
  * @property boolean $draggable Default: false
- *    节点是否可拖拽，只在使用力引导布局的时候有用。
+ *    If node is draggable. Only available when using force-directed layout.
  *
  * @property boolean $focusNodeAdjacency Default: false
- *    是否在鼠标移到节点上的时候突出显示节点以及节点的边和邻接节点。
+ *    Whether to focus/highlight the hover node and its adjacencies.
  *
  * @property array|string $edgeSymbol Default: '[\'none\', \'none\']'
- *    边两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定。默认不显示标记，常见的可以设置为箭头，如下：
+ *    Symbol of two ends of edge line.
+ *     For example:
  *     edgeSymbol: [circle, arrow]
  *
  * @property array|int $edgeSymbolSize Default: 10
- *    边两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定。
+ *    Size of symbol of two ends of edge line. Can be an array or a single number.
+ *     For example:
+ *     // Start symbol has size 5 and end symbol has size 10
+ *     symbolSize: [5, 10],
+ *     // All has size 10
+ *     symbolSize: 10
  *
  * @property Series\EdgeLabel $edgeLabel
  *    
  *
  * @property array $categories
- *    节点分类的类目，可选。
- *     如果节点有分类的话可以通过 data[i].category 指定每个节点的类目，类目的样式会被应用到节点样式上。图例也可以基于categories名字展现和筛选。
+ *    The categories of node, which is optional.
+ *     If there is a classification of nodes, the category of each node can be assigned through data[i].category. And the style of category will also be applied to the style of nodes. categories can also be used in legend.
  *
  * @property array $nodes
- *    别名，同 data
+ *    Alias of data
  *
  * @property array $links
- *    节点间的关系数据。示例：
+ *    Relational data between nodes. Example:
  *     links: [{
  *         source: n1,
  *         target: n2
@@ -1019,288 +1213,291 @@ use Hisune\EchartsPHP\Property;
  *     }]
  *
  * @property array $edges
- *    别名，同 links
+ *    Alias of links
  *
  * @property int $nodeWidth Default: 20
- *    图中每个矩形节点的宽度。
+ *    The node width of rectangle in Sankey diagram.
  *
  * @property int $nodeGap Default: 8
- *    图中每一列任意两个矩形节点之间的间隔。
+ *    The gap between any two regtangles in each column of the Sankey diagram.
  *
  * @property int $layoutIterations Default: 32
- *    布局的迭代次数，用来不断优化图中节点的位置，以减少节点和边之间的相互遮盖。
- *     默认布局迭代次数：32。
- *     经测试，布局迭代次数不要低于默认值。
+ *    The iterations of layout, which is used to continuously optimize the positions of nodes in Sankey diagram, decreasing the overlapping between nodes and edges.
+ *     The default iterations of layout: 32.
+ *     The test shows that iterations of layout could not be less than the default value.
  *
  * @property int $min Default: 0
- *    指定的数据最小值。
+ *    The specified minimum value.
  *
  * @property int $max Default: 100
- *    指定的数据最大值。
+ *    The specified maximum value.
  *
  * @property string $minSize Default: '0%'
- *    数据最小值 min 映射的宽度。
- *     可以是绝对的像素大小，也可以是相对布局宽度的百分比，如果需要最小值的图形并不是尖端三角，可通过设置该属性实现。
+ *    The mapped width from minimum data value min.
+ *     It can be absolute pixel and also the percentage of layout width. If you dont want the graph of minimum value to be a triangle, you can set up this property larger than 0.
  *
  * @property string $maxSize Default: '100%'
- *    数据最大值 max 映射的宽度。
- *     可以是绝对的像素大小，也可以是相对布局宽度的百分比。
+ *    The mapped width from maximum data value max.
+ *     It can be absolute pixel and also the percentage of layout width.
  *
  * @property int $gap Default: 0
- *    数据图形间距。
+ *    Gap between each trapezoid.
  *
  * @property string $funnelAlign Default: 'center'
- *    水平方向对齐布局类型，默认居中对齐，可用选项还有：left | right | center
+ *    Horizontal align. Defaults to align center. Can be left, right, center.
  *
  * @property int $endAngle Default: -45
- *    仪表盘结束角度。
+ *    The end angle of gauge chart.
  *
  * @property int $splitNumber Default: 10
- *    仪表盘刻度的分割段数。
+ *    The number of split segments of gauge chart scale.
  *
  * @property Series\AxisLine $axisLine
- *    仪表盘轴线相关配置。
+ *    The related configuration about the axis line of gauge chart.
  *
  * @property Series\SplitLine $splitLine
- *    分隔线样式。
+ *    The style of split line.
  *
  * @property Series\AxisTick $axisTick
- *    刻度样式。
+ *    The tick line style.
  *
  * @property Series\AxisLabel $axisLabel
- *    刻度标签。
+ *    Axis tick label.
  *
  * @property Series\Pointer $pointer
- *    仪表盘指针。
+ *    Gauge chart pointer.
  *
  * @property Series\Title $title
- *    仪表盘标题。
+ *    The title of gauge chart.
  *
  * @property Series\Detail $detail
- *    仪表盘详情，用于显示数据。
+ *    The detail about gauge chart which is used to show data.
  *
  * @property string $symbolPosition Default: 'start'
- *    图形的定位位置。可取值：
+ *    Specify the location of the graphic elements. Optional values:
  *     
- *     start：图形边缘与柱子开始的地方内切。
- *     end：图形边缘与柱子结束的地方内切。
- *     center：图形在柱子里居中。
+ *     start: The edge of graphic element inscribes with the start of the reference bar.
+ *     end: The edge of graphic element inscribes with the end of the reference bar.
+ *     center: The graphic element is at the center of the reference bar.
  *     
- *     例子：
- *     
- *     
+ *     For example:
  *     
  *     
  *     
- *     此属性可以被设置在系列的 根部，表示对此系列中所有数据都生效；也可以被设置在 data 中的 每个数据项中，表示只对此数据项生效。
- *     例如：
+ *     
+ *     
+ *     This attribute can be set at the root level of a series, where all data items in the series will be affected by this attribute. And this attribute can also be set at each data item in series-pictorialBar.data, where only the data item is affected by this attribute.
+ *     For example:
  *     series: [{
- *         symbolPosition: ... // 对 data 中所有数据项生效。
+ *         symbolPosition: ... // Affect all data items.
  *         data: [23, 56]
  *     }]
- *     或者
+ *     // Or
  *     series: [{
  *         data: [{
  *             value: 23
- *             symbolPosition: ... // 只对此数据项生效
+ *             symbolPosition: ... // Only affect this data item.
  *         }, {
  *             value: 56
- *             symbolPosition: ... // 只对此数据项生效
+ *             symbolPosition: ... // Only affect this data item.
  *         }]
  *     }]
  *
  * @property boolean|int|string $symbolRepeat
- *    指定图形元素是否重复。值可为：
+ *    Whether to repeat a graphic element. Optional values:
  *     
- *     false/null/undefined：不重复，即每个数据值用一个图形元素表示。
- *     true：使图形元素重复，即每个数据值用一组重复的图形元素表示。重复的次数依据 data 计算得到。
- *     a number：使图形元素重复，即每个数据值用一组重复的图形元素表示。重复的次数是给定的定值。
- *     fixed：使图形元素重复，即每个数据值用一组重复的图形元素表示。重复的次数依据 symbolBoundingData 计算得到，即与 data 无关。这在此图形被用于做背景时有用。
+ *     false/null/undefined: Do not repeat, that is, each graphic element represents a data item.
+ *     true: Repeat, that is, a group of repeated graphic elements represent a data item. The repeat times is calculated according to data.
+ *     a number: Repeat, that is a group of repeated graphic elements represent a data item. The repeat times is always the given number.
+ *     fixed: Repeat, that is a group of repeated graphic elements represent a data item. The repeat times is calcuated according to symbolBoundingData, that is, the repeat times has nothing to do with data. The setting is useful when graphic elements are used as background.
  *     
- *     例子：
- *     
- *     
+ *     For example:
  *     
  *     
  *     
- *     此属性可以被设置在系列的 根部，表示对此系列中所有数据都生效；也可以被设置在 data 中的 每个数据项中，表示只对此数据项生效。
- *     例如：
+ *     
+ *     
+ *     This attribute can be set at the root level of a series, where all data items in the series will be affected by this attribute. And this attribute can also be set at each data item in series-pictorialBar.data, where only the data item is affected by this attribute.
+ *     For example:
  *     series: [{
- *         symbolRepeat: ... // 对 data 中所有数据项生效。
+ *         symbolRepeat: ... // Affect all data items.
  *         data: [23, 56]
  *     }]
- *     或者
+ *     // Or
  *     series: [{
  *         data: [{
  *             value: 23
- *             symbolRepeat: ... // 只对此数据项生效
+ *             symbolRepeat: ... // Only affect this data item.
  *         }, {
  *             value: 56
- *             symbolRepeat: ... // 只对此数据项生效
+ *             symbolRepeat: ... // Only affect this data item.
  *         }]
  *     }]
  *
  * @property string $symbolRepeatDirection Default: 'start'
- *    指定图形元素重复时，绘制的顺序。这个属性在两种情况下有用处：
+ *    When symbolRepeat is used, symbolRepeatDirection specifies the render order of the repeatd graphic elements. The setting is useful in these cases below:
  *     
- *     当 symbolMargin 设置为负值时，重复的图形会互相覆盖，这是可以使用 symbolRepeatDirection 来指定覆盖顺序。
+ *     If symbolMargin is set as a negative value, repeated elements will overlap with each other. symbolRepeatDirection can be used to specify the order of overlap.
  *     
- *     当 animationDelay 或 animationDelayUpdate 被使用时，symbolRepeatDirection 指定了 index 顺序。
- *     
- *     
- *     这个属性的值可以是：start 或 end。
- *     例子：
+ *     If animationDelay or animationDelayUpdate is used, symbolRepeatDirection specifies the order of index.
  *     
  *     
+ *     Optional values can be start and end.
+ *     For example:
  *     
  *     
  *     
- *     此属性可以被设置在系列的 根部，表示对此系列中所有数据都生效；也可以被设置在 data 中的 每个数据项中，表示只对此数据项生效。
- *     例如：
+ *     
+ *     
+ *     This attribute can be set at the root level of a series, where all data items in the series will be affected by this attribute. And this attribute can also be set at each data item in series-pictorialBar.data, where only the data item is affected by this attribute.
+ *     For example:
  *     series: [{
- *         symbolRepeatDirection: ... // 对 data 中所有数据项生效。
+ *         symbolRepeatDirection: ... // Affect all data items.
  *         data: [23, 56]
  *     }]
- *     或者
+ *     // Or
  *     series: [{
  *         data: [{
  *             value: 23
- *             symbolRepeatDirection: ... // 只对此数据项生效
+ *             symbolRepeatDirection: ... // Only affect this data item.
  *         }, {
  *             value: 56
- *             symbolRepeatDirection: ... // 只对此数据项生效
+ *             symbolRepeatDirection: ... // Only affect this data item.
  *         }]
  *     }]
  *
  * @property int|string $symbolMargin
- *    图形的两边间隔（『两边』是指其数值轴方向的两边）。可以是绝对数值（如 20），或者百分比值（如 -30%），表示相对于自身尺寸 symbolSize 的百分比。只有当 symbolRepeat 被使用时有意义。
- *     可以是正值，表示间隔大；也可以是负数。当 symbolRepeat 被使用时，负数时能使图形重叠。
- *     可以在其值结尾处加一个 !，如 30%! 或 25!，表示第一个图形的开始和最后一个图形结尾留白，不紧贴边界。默认会紧贴边界。
- *     注意：
+ *    Specify margin of both sides of a graphic element. (both sides means the two sides in the direction of its value axis). It works only when symbolRepeat is used.
+ *     Absolute value can be used (like 20), or percent value can be used (like -30%), which is based on its symbolSize.
+ *     symbolMargin can be positive value or negative value, which enables overlap of graphic elements when symbolRepeat is used.
+ *     A ! can be appended on the end of the value, like 30%! or 25!, which means a extra blank will be added on the both ends, otherwise the graphic elements on both ends will reach the boundary by default.
+ *     Notice:
  *     
- *     当 symbolRepeat 为 true/fixed 的时候：
- *       这里设置的 symbolMargin 只是个参考值，真正最后的图形间隔，是根据 symbolRepeat、symbolMargin、symbolBoundingData 综合计算得到。
- *     当 symbolRepeat 为一个固定数值的时候：
- *       这里设置的 symbolMargin 无效。
+ *     When symbolRepeat is true/fixed:
+ *       The given symbolMargin is just a reference value. The final gap of graphic elements will be calculated according to symbolRepeat, symbolMargin and symbolBoundingData.
+ *     When symbolRepeat is set as a number:
+ *       symbolMargin does not work any more.
  *     
- *     例子：
- *     
- *     
- *     
+ *     For example:
  *     
  *     
- *     此属性可以被设置在系列的 根部，表示对此系列中所有数据都生效；也可以被设置在 data 中的 每个数据项中，表示只对此数据项生效。
- *     例如：
+ *     
+ *     
+ *     
+ *     This attribute can be set at the root level of a series, where all data items in the series will be affected by this attribute. And this attribute can also be set at each data item in series-pictorialBar.data, where only the data item is affected by this attribute.
+ *     For example:
  *     series: [{
- *         symbolMargin: ... // 对 data 中所有数据项生效。
+ *         symbolMargin: ... // Affect all data items.
  *         data: [23, 56]
  *     }]
- *     或者
+ *     // Or
  *     series: [{
  *         data: [{
  *             value: 23
- *             symbolMargin: ... // 只对此数据项生效
+ *             symbolMargin: ... // Only affect this data item.
  *         }, {
  *             value: 56
- *             symbolMargin: ... // 只对此数据项生效
+ *             symbolMargin: ... // Only affect this data item.
  *         }]
  *     }]
  *
  * @property boolean $symbolClip Default: false
- *    是否剪裁图形。
+ *    Whether to clip graphic elements.
  *     
- *     false/null/undefined：图形本身表示数值大小。
- *     true：图形被剪裁后剩余的部分表示数值大小。
+ *     false/null/undefined: The whole graphic elements represent the size of value.
+ *     true: The clipped graphic elements reperent the size of value.
  *     
- *     symbolClip 常在这种场景下使用：同时表达『总值』和『当前数值』。在这种场景下，可以使用两个系列，一个系列是完整的图形，当做『背景』来表达总数值，另一个系列是使用 symbolClip 进行剪裁过的图形，表达当前数值。
- *     例子：
+ *     symbolClip is usually used in this case: both amont value and current value should be displayed. In this case, tow series can be used. One for background, using complete graphic elements, while another for current value, using clipped graphic elements.
+ *     For example:
  *     
  *     
  *     
- *     在这个例子中：
+ *     Notice, in the example above,
  *     
- *     『背景系列』和『当前值系列』使用相同的 symbolBoundingData，使得绘制出的图形的大小是一样的。
- *     『当前值系列』设置了比『背景系列』更高的 z，使得其覆盖在『背景系列』上。
+ *     The same symbolBoundingData is used in background series and current value seires, which makes their graphic elements are the same size.
+ *     A bigger z is set on current value series, which makes it is over background series.
  *     
- *     此属性可以被设置在系列的 根部，表示对此系列中所有数据都生效；也可以被设置在 data 中的 每个数据项中，表示只对此数据项生效。
- *     例如：
+ *     This attribute can be set at the root level of a series, where all data items in the series will be affected by this attribute. And this attribute can also be set at each data item in series-pictorialBar.data, where only the data item is affected by this attribute.
+ *     For example:
  *     series: [{
- *         symbolClip: ... // 对 data 中所有数据项生效。
+ *         symbolClip: ... // Affect all data items.
  *         data: [23, 56]
  *     }]
- *     或者
+ *     // Or
  *     series: [{
  *         data: [{
  *             value: 23
- *             symbolClip: ... // 只对此数据项生效
+ *             symbolClip: ... // Only affect this data item.
  *         }, {
  *             value: 56
- *             symbolClip: ... // 只对此数据项生效
+ *             symbolClip: ... // Only affect this data item.
  *         }]
  *     }]
  *
- * @property int|array $symbolBoundingData
- *    这个属性是『指定图形界限的值』。它指定了一个 data，这个 data 映射在坐标系上的位置，是图形绘制的界限。也就是说，如果设置了 symbolBoundingData，图形的尺寸则由 symbolBoundingData 决定。
- *     当柱子是水平的，symbolBoundingData 对应到 x 轴上，当柱子是竖直的，symbolBoundingData 对应到 y 轴上。
- *     规则：
+ * @property int $symbolBoundingData
+ *    Defines a bounding area availble for the graphic elements. This setting gives a data, which will then be translated to a coordinate on the coordinate system. The coordinate specifies the bounding. Namely, if symbolBoundingData is set, the final size (or layout) of the graphic elements depend on the symbolBoundingData.
+ *     When reference bar is horizontal, symbolBoundingData is coresponding to x axis, while reference bar is vertical, symbolBoundingData is coresponding to y axis.
+ *     Rule:
  *     
- *     没有使用 symbolRepeat 时：
- *       symbolBoundingData 缺省情况下和『参考柱』的尺寸一样。图形的尺寸由零点和 symbolBoundingData 决定。举例，当柱子是竖直的，柱子对应的 data 为 24，symbolSize 设置为 [30, 50%]，symbolBoundingData 设置为 124，那么最终图形的高度为 124 * 50% = 62。如果 symbolBoundingData 不设置，那么最终图形的高度为 24 * 50% = 12。
+ *     If symbolRepeat is not used:
+ *       symbolBoundingData is the same as the size of reference bar by default. The size of the graphic element is detemined by symbolBoundingData. For example, if reference bar is vertical, its data is 24, symbolSize is set as [30, 50%], symbolBoundingData is set as 124, the final size of the graphic element will be 124 * 50% = 62. If symbolBoundingData is not set, the final size will be 24 * 50% = 12.
  *     
- *     使用了 symbolRepeat 时：
- *       symbolBoundingData 缺省情况取当前坐标系所显示出的最值。symbolBoundingData 定义了一个 bounding，重复的图形在这个 bounding 中，依据 symbolMargin 和 symbolRepeat 和 symbolSize 进行排布。这几个变量决定了图形的间隔大小。
- *     
- *     
- *     在这些场景中，你可能会需要设置 symbolBoundingData：
- *     
- *     使用了 symbolCilp 时：
- *       使用一个系列表达『总值』，另一个系列表达『当前值』的时候，需要两个系列画出的图形一样大。那么就把两个系列的 symbolBoundingData 设为一样大。
+ *     If symbolRepeat is used:
+ *       symbolBoundingData is the extreme value of the coordinate system. symbolBoundingData defines a bounding area, where repeated graphic elements layout according to symbolMargin and symbolRepeat and symbolSize. Both these settings determine the gap size of the repeated graphic elements.
  *     
  *     
- *     例子：
+ *     symbolBoundingData is usually used in these cases:
+ *     
+ *     When symbolCilp is used:
+ *       And a series is used to display amont value, while another series is used to display current value. symbolBoundingData can be used to ensure that the graphic elements of these two series are at the same size.
  *     
  *     
- *     
- *     
- *     使用了 symbolRepeat 时：
- *       如果需要不同柱子中的图形的间隔保持一致，那么可以把 symbolBoundingData 设为一致的数值。当然，不设置 symbolBoundingData 也是可以的，因为其缺省值就是一个定值（坐标系所显示出的最值）。
- *     
- *     
- *     例子：
+ *     For example:
  *     
  *     
  *     
  *     
- *     symbolBoundingData 可以是一个数组，例如 [-40, 60]，表示同时指定了正值的 symbolBoundingData 和负值的 symbolBoundingData。
- *     参见例子：
+ *     When symbolRepeat is used:
+ *       symbolBoundingData can be use to ensure the gaps of the elements in different bars are the same. Of cource, you can do not set symbolBoundingData, whose default value is a stable value (extreme value of the coordinate system).
+ *     
+ *     
+ *     For example:
+ *     
+ *     
+ *     
+ *     
+ *     symbolBoundingData can also be an array, such as [-40, 60], which specifies both negative and positive symbolBoundingData.
+ *     Check this example:
  *     
  *     
  *     
  *     
  *     
  *     
- *     此属性可以被设置在系列的 根部，表示对此系列中所有数据都生效；也可以被设置在 data 中的 每个数据项中，表示只对此数据项生效。
- *     例如：
+ *     
+ *     
+ *     This attribute can be set at the root level of a series, where all data items in the series will be affected by this attribute. And this attribute can also be set at each data item in series-pictorialBar.data, where only the data item is affected by this attribute.
+ *     For example:
  *     series: [{
- *         symbolBoundingData: ... // 对 data 中所有数据项生效。
+ *         symbolBoundingData: ... // Affect all data items.
  *         data: [23, 56]
  *     }]
- *     或者
+ *     // Or
  *     series: [{
  *         data: [{
  *             value: 23
- *             symbolBoundingData: ... // 只对此数据项生效
+ *             symbolBoundingData: ... // Only affect this data item.
  *         }, {
  *             value: 56
- *             symbolBoundingData: ... // 只对此数据项生效
+ *             symbolBoundingData: ... // Only affect this data item.
  *         }]
  *     }]
  *
  * @property int $symbolPatternSize Default: 400
- *    可以使用图片作为图形的 pattern。
+ *    Image can be used as the pattern of graphic elements.
  *     var textureImg = new Image();
  *     textureImg.src = data:image/jpeg;base64,...; // dataURI
- *     // 或者
+ *     // Or
  *     // textureImg.src = http://xxx.xxx.xxx/xx.png; // URL
  *     ...
  *     itemStyle: {
@@ -1310,38 +1507,39 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *     
- *     这时候，symbolPatternSize 指定了 pattern 的缩放尺寸。比如 symbolPatternSize 为 400 时表示图片显示为 400px * 400px 的尺寸。
- *     例子：
+ *     symbolPatternSize specifies the size of pattern image. For example, if symbolPatternSize is 400, the pattern image will be displayed at the size of 400px * 400px.
+ *     For example:
  *     
  *     
  *     
  *     
  *     
- *     此属性可以被设置在系列的 根部，表示对此系列中所有数据都生效；也可以被设置在 data 中的 每个数据项中，表示只对此数据项生效。
- *     例如：
+ *     This attribute can be set at the root level of a series, where all data items in the series will be affected by this attribute. And this attribute can also be set at each data item in series-pictorialBar.data, where only the data item is affected by this attribute.
+ *     For example:
  *     series: [{
- *         symbolPatternSize: ... // 对 data 中所有数据项生效。
+ *         symbolPatternSize: ... // Affect all data items.
  *         data: [23, 56]
  *     }]
- *     或者
+ *     // Or
  *     series: [{
  *         data: [{
  *             value: 23
- *             symbolPatternSize: ... // 只对此数据项生效
+ *             symbolPatternSize: ... // Only affect this data item.
  *         }, {
  *             value: 56
- *             symbolPatternSize: ... // 只对此数据项生效
+ *             symbolPatternSize: ... // Only affect this data item.
  *         }]
  *     }]
  *
  * @property array $boundaryGap Default: '["10%", "10%"]'
- *    图中与坐标轴正交的方向的边界间隙，设置该值是为了调整图的位置，使其尽量处于屏幕的正中间，避免处于屏幕的上方或下方。
+ *    The boundary gap of the direction orthogonal with coordinate axis in diagram, which is set to adjust the diagram position, keeping it on the screen center instead of the upside or downside of the screen.
  *
  * @property int $singleAxisIndex Default: 0
- *    单个时间轴的index，默认值为0，因为只有单个轴。
+ *    The index of single time axis, which defaults to be 0 because it contains only one axis.
  *
  * @property Series\RenderItem $renderItem
- *    custom 系列需要开发者自己提供图形渲染的逻辑。这个渲染逻辑一般命名为 renderItem。例如：
+ *    custom series requires developers to write a render logic by themselves. This render logic is called renderItem.
+ *     For example:
  *     var option = {
  *         ...,
  *         series: [{
@@ -1352,19 +1550,21 @@ use Hisune\EchartsPHP\Property;
  *                 var end = api.coord([api.value(2), categoryIndex]);
  *                 var height = api.size([0, 1])[1] * 0.6;
  *     
- *                 return {
+ *                 var rectShape = echarts.graphic.clipRectByRect({
+ *                     x: start[0],
+ *                     y: start[1] - height / 2,
+ *                     width: end[0] - start[0],
+ *                     height: height
+ *                 }, {
+ *                     x: params.coordSys.x,
+ *                     y: params.coordSys.y,
+ *                     width: params.coordSys.width,
+ *                     height: params.coordSys.height
+ *                 });
+ *     
+ *                 return rectShape &amp;&amp; {
  *                     type: rect,
- *                     shape: echarts.graphic.clipRectByRect({
- *                         x: start[0],
- *                         y: start[1] - height / 2,
- *                         width: end[0] - start[0],
- *                         height: height
- *                     }, {
- *                         x: params.coordSys.x,
- *                         y: params.coordSys.y,
- *                         width: params.coordSys.width,
- *                         height: params.coordSys.height
- *                     }),
+ *                     shape: rectShape,
  *                     style: api.style()
  *                 };
  *             },
@@ -1372,20 +1572,20 @@ use Hisune\EchartsPHP\Property;
  *         }]
  *     }
  *     
- *     对于 data 中的每个数据项（为方便描述，这里称为 dataItem)，会调用此 renderItem 函数。
- *     renderItem 函数提供了两个参数：
+ *     renderItem will be called on each data item.
+ *     renderItem provides two parameters:
  *     
- *     params：包含了当前数据信息和坐标系的信息。
- *     api：是一些开发者可调用的方法集合。
+ *     params: provides info about the current series and data and coordinate system.
+ *     api: includes some methods.
  *     
- *     renderItem 函数须返回根据此 dataItem 绘制出的图形元素的定义信息，参见 renderItem.return。
- *     一般来说，renderItem 函数的主要逻辑，是将 dataItem 里的值映射到坐标系上的图形元素。这一般需要用到 renderItem.arguments.api 中的两个函数：
+ *     renderItem method should returns graphic elements definitions.See renderItem.return.
+ *     Generally, the main process of renderItem is that retrieve value from data and convert them to graphic elements on the current coordinate system. Two methods in renderItem.arguments.api are always used in this procedure:
  *     
- *     api.value(...)，意思是取出 dataItem 中的数值。例如 api.value(0) 表示取出当前 dataItem 中第一个维度的数值。
- *     api.coord(...)，意思是进行坐标转换计算。例如 var point = api.coord([api.value(0), api.value(1)]) 表示 dataItem 中的数值转换成坐标系上的点。
+ *     api.value(...) is used to retrieve value from data. For example, api.value(0) retrieve the value of the first dimension in the current data item.
+ *     api.coord(...) is used to convert data to coordinate. For example, var point = api.coord([api.value(0), api.value(1)]) converet the data to the point on the current coordinate system.
  *     
- *     有时候还需要用到 api.size(...) 函数，表示得到坐标系上一段数值范围对应的长度。
- *     返回值中样式的设置可以使用 api.style(...) 函数，他能得到 series.itemStyle 中定义的样式信息，以及视觉映射的样式信息。也可以用这种方式覆盖这些样式信息：api.style({fill: green, stroke: yellow})。
+ *     Sometimes api.size(...) method is needed, which calculates the size on the coordinate system by a given data range.
+ *     Moreover, api.style(...) method can be used to set style. It provides not only the style settings specified in series.itemStyle, but also the result of visual mapping. This method can also be called like api.style({fill: green, stroke: yellow}) to override those style settings.
  *
  * {_more_}
  */

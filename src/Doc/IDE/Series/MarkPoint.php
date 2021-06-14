@@ -9,595 +9,565 @@ namespace Hisune\EchartsPHP\Doc\IDE\Series;
 use Hisune\EchartsPHP\Property;
 
 /**
- * @property string $symbol Default: 'pin'
- *    标记的图形。
- *     ECharts 提供的标记类型包括 
- *     circle, rect, roundRect, triangle, diamond, pin, arrow
- *     也可以通过 image://url 设置为图片，其中 url 为图片的链接，或者 dataURI。
- *     可以通过 path:// 将图标设置为任意的矢量路径。这种方式相比于使用图片的方式，不用担心因为缩放而产生锯齿或模糊，而且可以设置为任意颜色。路径图形会自适应调整为合适的大小。路径的格式参见 SVG PathData。可以从 Adobe Illustrator 等工具编辑导出。
+ * @property string|callable $symbol Default: 'pin'
+ *    Symbol of .
+ *     Icon types provided by ECharts includes 
+ *     circle, rect, roundRect, triangle, diamond, pin, arrow, none
+ *     It can be set to an image with image://url , in which URL is the link to an image, or dataURI of an image.
+ *     An image URL example:
+ *     image://http://xxx.xxx.xxx/a/b.png
+ *     A dataURI example:
+ *     image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7
+ *     Icons can be set to arbitrary vector path via path:// in ECharts. As compared with a raster image, vector paths prevent jagging and blurring when scaled, and have better control over changing colors. The size of the vector icon will be adapted automatically. Refer to SVG PathData for more information about the format of the path. You may export vector paths from tools like Adobe 
+ *     For example:
+ *     path://M30.9,53.2C16.8,53.2,5.3,41.7,5.3,27.6S16.8,2,30.9,2C45,2,56.4,13.5,56.4,27.6S45,53.2,30.9,53.2z M30.9,3.5C17.6,3.5,6.8,14.4,6.8,27.6c0,13.3,10.8,24.1,24.101,24.1C44.2,51.7,55,40.9,55,27.6C54.9,14.4,44.1,3.5,30.9,3.5z M36.9,35.8c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H36c0.5,0,0.9,0.4,0.9,1V35.8z M27.8,35.8 c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H27c0.5,0,0.9,0.4,0.9,1L27.8,35.8L27.8,35.8z
+ *     If symbols needs to be different, you can set with callback function in the following format:
+ *     (value: Array|number, params: Object) =&gt; string
+ *     
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
  *
  * @property int|array|callable $symbolSize Default: 50
- *    标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示宽和高，例如 [20, 10] 表示标记宽为20，高为10。
- *     如果需要每个数据的图形大小不一样，可以设置为如下格式的回调函数：
+ *     symbol size. It can be set to single numbers like 10, or use an array to represent width and height. For example, [20, 10] means symbol width is 20, and height is10.
+ *     If size of symbols needs to be different, you can set with callback function in the following format:
  *     (value: Array|number, params: Object) =&gt; number|Array
  *     
- *     其中第一个参数 value 为 data 中的数据值。第二个参数params 是其它的数据项参数。
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
  *
  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *
+ * @property boolean $symbolKeepAspect Default: false
+ *    Whether to keep aspect for symbols in the form of path://.
  *
  * @property array $symbolOffset Default: '[0, 0]'
- *    标记相对于原本位置的偏移。默认情况下，标记会居中置放在数据对应的位置，但是如果 symbol 是自定义的矢量路径或者图片，就有可能不希望 symbol 居中。这时候可以使用该配置项配置 symbol 相对于原本居中的偏移，可以是绝对的像素值，也可以是相对的百分比。
- *     例如 [0, 50%] 就是把自己向上移动了一半的位置，在 symbol 图形是气泡的时候可以让图形下端的箭头对准数据点。
+ *    Offset of  symbol relative to original position. By default, symbol will be put in the center position of data. But if symbol is from user-defined vector path or image, you may not expect symbol to be in center. In this case, you may use this attribute to set offset to default position. It can be in absolute pixel value, or in relative percentage value.
+ *     For example, [0, 50%] means to move upside side position of symbol height. It can be used to make the arrow in the bottom to be at data position when symbol is pin.
  *
  * @property boolean $silent Default: false
- *    图形是否不响应和触发鼠标事件，默认为 false，即响应和触发鼠标事件。
+ *    Whether to ignore mouse events. Default value is false, for triggering and responding to mouse events.
  *
  * @property MarkPoint\Label $label
- *    标注的文本。
+ *    Label of mark point.
  *
  * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property MarkPoint\Emphasis $emphasis
- *    标注的高亮样式。
+ *    Mark point style.
  *
  * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 指定是在哪个维度上的最大值、最小值、平均值。或者可以使用 valueDim 指定在哪个维度上的最大值、最小值、平均值。
+ *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
  *     data: [
  *         {
- *             name: 最大值,
+ *             name: maximum,
  *             type: max
  *         }, 
  *         {
- *             name: 某个坐标,
+ *             name: coordinate,
  *             coord: [10, 20]
  *         }, {
- *             name: 固定 x 像素位置,
+ *             name: fixed x position,
  *             yAxis: 10,
  *             x: 90%
  *         }, 
  *         {
- *             name: 某个屏幕坐标,
+ *             name: screen coordinate,
  *             x: 100,
  *             y: 100
  *         }
  *     ]
  *
  * @property boolean $animation Default: true
- *    是否开启动画。
+ *    Whether to enable animation.
  *
  * @property int $animationThreshold Default: 2000
- *    是否开启动画的阈值，当单个系列显示的图形数量大于这个阈值时会关闭动画。
+ *    Whether to set graphic number threshold to animation. Animation will be disabled when graphic number is larger than threshold.
  *
- * @property int $animationDuration Default: 1000
- *    初始动画的时长，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果：
+ * @property int|callable $animationDuration Default: 1000
+ *    Duration of the first animation, which supports callback function for different data to have different animation effect:
  *     animationDuration: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *
  * @property string $animationEasing Default: 'cubicOut'
- *    初始动画的缓动效果。不同的缓动效果可以参考 缓动示例。
+ *    Easing method used for the first animation. Varied easing effects can be found at easing effect example.
  *
  * @property int|callable $animationDelay Default: 0
- *    初始动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果。
- *     如下示例：
+ *    Delay before updating the first animation, which supports callback function for different data to have different animation effect.
+ *     For example:
  *     animationDelay: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *     
- *     也可以看该示例
+ *     See this example for more information.
  *
  * @property int|callable $animationDurationUpdate Default: 300
- *    数据更新动画的时长。
- *     支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的更新动画效果：
+ *    Time for animation to complete, which supports callback function for different data to have different animation effect:
  *     animationDurationUpdate: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *
  * @property string $animationEasingUpdate Default: 'cubicOut'
- *    数据更新动画的缓动效果。
+ *    Easing method used for animation.
  *
  * @property int|callable $animationDelayUpdate Default: 0
- *    数据更新动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的更新动画效果。
- *     如下示例：
+ *    Delay before updating animation, which supports callback function for different data to have different animation effects.
+ *     For example:
  *     animationDelayUpdate: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *     
- *     也可以看该示例
+ *     See this example for more information.
  *     prefix
  *
  *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
  *
  * @property MarkPoint\Label $label
- *    标注的文本。
+ *    Label of mark point.
  *
  * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property MarkPoint\Emphasis $emphasis
- *    标注的高亮样式。
+ *    Mark point style.
  *
  * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 指定是在哪个维度上的最大值、最小值、平均值。或者可以使用 valueDim 指定在哪个维度上的最大值、最小值、平均值。
+ *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
  *     data: [
  *         {
- *             name: 最大值,
+ *             name: maximum,
  *             type: max
  *         }, 
  *         {
- *             name: 某个坐标,
+ *             name: coordinate,
  *             coord: [10, 20]
  *         }, {
- *             name: 固定 x 像素位置,
+ *             name: fixed x position,
  *             yAxis: 10,
  *             x: 90%
  *         }, 
  *         {
- *             name: 某个屏幕坐标,
+ *             name: screen coordinate,
  *             x: 100,
  *             y: 100
  *         }
  *     ]
  *
  *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
  *
  * @property MarkPoint\Label $label
- *    标注的文本。
+ *    Label of mark point.
  *
  * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property MarkPoint\Emphasis $emphasis
- *    标注的高亮样式。
+ *    Mark point style.
  *
  * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
  *     data: [
  *         {
- *             name: 某个屏幕坐标,
+ *             name: screen coordinate,
  *             x: 100,
  *             y: 100
  *         }
  *     ]
  *
  *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
  *
  * @property MarkPoint\Label $label
- *    标注的文本。
+ *    Label of mark point.
  *
  * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property MarkPoint\Emphasis $emphasis
- *    标注的高亮样式。
+ *    Mark point style.
  *
  * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 指定是在哪个维度上的最大值、最小值、平均值。或者可以使用 valueDim 指定在哪个维度上的最大值、最小值、平均值。
+ *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
  *     data: [
  *         {
- *             name: 最大值,
+ *             name: maximum,
  *             type: max
  *         }, 
  *         {
- *             name: 某个坐标,
+ *             name: coordinate,
  *             coord: [10, 20]
  *         }, {
- *             name: 固定 x 像素位置,
+ *             name: fixed x position,
  *             yAxis: 10,
  *             x: 90%
  *         }, 
  *         {
- *             name: 某个屏幕坐标,
+ *             name: screen coordinate,
  *             x: 100,
  *             y: 100
  *         }
  *     ]
  *
  *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
  *
  * @property MarkPoint\Label $label
- *    标注的文本。
+ *    Label of mark point.
  *
  * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property MarkPoint\Emphasis $emphasis
- *    标注的高亮样式。
+ *    Mark point style.
  *
  * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 指定是在哪个维度上的最大值、最小值、平均值。或者可以使用 valueDim 指定在哪个维度上的最大值、最小值、平均值。
+ *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
  *     data: [
  *         {
- *             name: 最大值,
+ *             name: maximum,
  *             type: max
  *         }, 
  *         {
- *             name: 某个坐标,
+ *             name: coordinate,
  *             coord: [10, 20]
  *         }, {
- *             name: 固定 x 像素位置,
+ *             name: fixed x position,
  *             yAxis: 10,
  *             x: 90%
  *         }, 
  *         {
- *             name: 某个屏幕坐标,
+ *             name: screen coordinate,
  *             x: 100,
  *             y: 100
  *         }
  *     ]
  *
  *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
  *
  * @property MarkPoint\Label $label
- *    标注的文本。
+ *    Label of mark point.
  *
  * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property MarkPoint\Emphasis $emphasis
- *    标注的高亮样式。
+ *    Mark point style.
  *
  * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 指定是在哪个维度上的最大值、最小值、平均值。或者可以使用 valueDim 指定在哪个维度上的最大值、最小值、平均值。
+ *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
  *     data: [
  *         {
- *             name: 最大值,
+ *             name: maximum,
  *             type: max
  *         }, 
  *         {
- *             name: 某个坐标,
+ *             name: coordinate,
  *             coord: [10, 20]
  *         }, {
- *             name: 固定 x 像素位置,
+ *             name: fixed x position,
  *             yAxis: 10,
  *             x: 90%
  *         }, 
  *         {
- *             name: 某个屏幕坐标,
+ *             name: screen coordinate,
  *             x: 100,
  *             y: 100
  *         }
  *     ]
  *
  *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
  *
  * @property MarkPoint\Label $label
- *    标注的文本。
+ *    Label of mark point.
  *
  * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property MarkPoint\Emphasis $emphasis
- *    标注的高亮样式。
+ *    Mark point style.
  *
  * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 指定是在哪个维度上的最大值、最小值、平均值。或者可以使用 valueDim 指定在哪个维度上的最大值、最小值、平均值。
+ *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
  *     data: [
  *         {
- *             name: 最大值,
+ *             name: maximum,
  *             type: max
  *         }, 
  *         {
- *             name: 某个坐标,
+ *             name: coordinate,
  *             coord: [10, 20]
  *         }, {
- *             name: 固定 x 像素位置,
+ *             name: fixed x position,
  *             yAxis: 10,
  *             x: 90%
  *         }, 
  *         {
- *             name: 某个屏幕坐标,
+ *             name: screen coordinate,
  *             x: 100,
  *             y: 100
  *         }
  *     ]
  *
  *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
  *
  * @property MarkPoint\Label $label
- *    标注的文本。
+ *    Label of mark point.
  *
  * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property MarkPoint\Emphasis $emphasis
- *    标注的高亮样式。
+ *    Mark point style.
  *
  * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
  *     data: [
  *         {
- *             name: 某个屏幕坐标,
+ *             name: screen coordinate,
  *             x: 100,
  *             y: 100
  *         }
  *     ]
  *
  *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
  *
  * @property MarkPoint\Label $label
- *    标注的文本。
+ *    Label of mark point.
  *
  * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property MarkPoint\Emphasis $emphasis
- *    标注的高亮样式。
+ *    Mark point style.
  *
  * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
  *     data: [
  *         {
- *             name: 某个坐标,
+ *             name: coordinate,
  *             coord: [10, 20]
  *         }, {
- *             name: 固定 x 像素位置,
+ *             name: fixed x position,
  *             yAxis: 10,
  *             x: 90%
  *         }, 
  *         {
- *             name: 某个屏幕坐标,
+ *             name: screen coordinate,
  *             x: 100,
  *             y: 100
  *         }
  *     ]
  *
  *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
  *
  * @property MarkPoint\Label $label
- *    标注的文本。
+ *    Label of mark point.
  *
  * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property MarkPoint\Emphasis $emphasis
- *    标注的高亮样式。
+ *    Mark point style.
  *
  * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
  *     data: [
  *         {
- *             name: 某个屏幕坐标,
+ *             name: screen coordinate,
  *             x: 100,
  *             y: 100
  *         }
  *     ]
  *
  *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
  *
  * @property MarkPoint\Label $label
- *    标注的文本。
+ *    Label of mark point.
  *
  * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property MarkPoint\Emphasis $emphasis
- *    标注的高亮样式。
+ *    Mark point style.
  *
  * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 指定是在哪个维度上的最大值、最小值、平均值。或者可以使用 valueDim 指定在哪个维度上的最大值、最小值、平均值。
+ *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
  *     data: [
  *         {
- *             name: 最大值,
+ *             name: maximum,
  *             type: max
  *         }, 
  *         {
- *             name: 某个坐标,
+ *             name: coordinate,
  *             coord: [10, 20]
  *         }, {
- *             name: 固定 x 像素位置,
+ *             name: fixed x position,
  *             yAxis: 10,
  *             x: 90%
  *         }, 
  *         {
- *             name: 某个屏幕坐标,
+ *             name: screen coordinate,
  *             x: 100,
  *             y: 100
  *         }
  *     ]
  *
  *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
  *
  * @property MarkPoint\Label $label
- *    标注的文本。
+ *    Label of mark point.
  *
  * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property MarkPoint\Emphasis $emphasis
- *    标注的高亮样式。
+ *    Mark point style.
  *
  * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
  *     data: [
  *         {
- *             name: 某个屏幕坐标,
+ *             name: screen coordinate,
  *             x: 100,
  *             y: 100
  *         }
  *     ]
  *
  *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
  *
  * @property MarkPoint\Label $label
- *    标注的文本。
+ *    Label of mark point.
  *
  * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property MarkPoint\Emphasis $emphasis
- *    标注的高亮样式。
+ *    Mark point style.
  *
  * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
  *     data: [
  *         {
- *             name: 某个屏幕坐标,
+ *             name: screen coordinate,
  *             x: 100,
  *             y: 100
  *         }
  *     ]
  *
  *  * @property int $symbolRotate
- *    标记的旋转角度。注意在 markLine 中当 symbol 为 arrow 时会忽略 symbolRotate 强制设置为切线的角度。
+ *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
  *
  * @property MarkPoint\Label $label
- *    标注的文本。
+ *    Label of mark point.
  *
  * @property MarkPoint\ItemStyle $itemStyle
- *    标注的样式。
- *
- * @property MarkPoint\Emphasis $emphasis
- *    标注的高亮样式。
+ *    Mark point style.
  *
  * @property array $data
- *    标注的数据数组。每个数组项是一个对象，有下面几种方式指定标注的位置。
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 指定是在哪个维度上的最大值、最小值、平均值。或者可以使用 valueDim 指定在哪个维度上的最大值、最小值、平均值。
+ *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
- *     示例：
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
  *     data: [
  *         {
- *             name: 最大值,
+ *             name: maximum,
  *             type: max
  *         }, 
  *         {
- *             name: 某个坐标,
+ *             name: coordinate,
  *             coord: [10, 20]
  *         }, {
- *             name: 固定 x 像素位置,
+ *             name: fixed x position,
  *             yAxis: 10,
  *             x: 90%
  *         }, 
  *         {
- *             name: 某个屏幕坐标,
+ *             name: screen coordinate,
  *             x: 100,
  *             y: 100
  *         }

@@ -10,13 +10,13 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: true
- *    是否显示指针。
+ *    Whether to show the pointer.
  *
  * @property string|int $length Default: '80%'
- *    指针长度，可以是绝对数值，也可以是相对于半径的半分比。
+ *    The length of pointer which could be absolute value and also the percentage relative to radius.
  *
  * @property int $width Default: 8
- *    指针宽度。
+ *    The width of pointer.
  *
  * {_more_}
  */

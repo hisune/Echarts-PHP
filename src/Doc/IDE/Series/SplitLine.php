@@ -10,10 +10,10 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: true
- *    是否显示分隔线。
+ *    Whether to show the split line.
  *
  * @property int|string $length Default: 30
- *    分隔线线长。支持相对半径的百分比。
+ *    The length of split line, can be a pecentage value relative to radius.
  *
  * @property SplitLine\LineStyle $lineStyle
  *    

@@ -10,19 +10,19 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property int $width Default: 20
- *    框选范围的宽度。
+ *    Width of selecting box.
  *
  * @property int $borderWidth Default: 1
- *    选框的边框宽度。
+ *    Border width of the select box.
  *
  * @property string $borderColor Default: 'rgba(160,197,232)'
- *    选框的边框颜色。
+ *    Border color of the select box.
  *
  * @property string $color Default: 'rgba(160,197,232)'
- *    选框的填充色。
+ *    Border fill color of the select box.
  *
  * @property int $opacity Default: 0.3
- *    选框的透明度。
+ *    Opacity of the select box.
  *
  * {_more_}
  */

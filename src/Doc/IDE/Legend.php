@@ -10,13 +10,13 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property string $type
- *    图例的类型。可选值：
+ *    Type of legend. Optional values:
  *     
- *     plain：普通图例。缺省就是普通图例。
- *     scroll：可滚动翻页的图例。当图例数量较多时可以使用。
+ *     plain: Simple legend. (default)
+ *     scroll: Scrollable legend. It helps when too many legend items needed to be shown.
  *     
- *     参见 滚动图例（垂直） 或 滚动图例（水平）。
- *     当使用 scroll 时，这些使用这些设置进行细节配置：
+ *     See vertically scrollable legend or horizontally scrollable legend.
+ *     When scroll used, these options below can be used for detailed configuration:
  *     
  *     legend.scrollDataIndex
  *     legend.pageButtonItemGap
@@ -31,243 +31,286 @@ use Hisune\EchartsPHP\Property;
  *     legend.animation
  *     legend.animationDurationUpdate
  *
+ * @property string $id
+ *    Component ID, not specified by default. If specified, it can be used to refer the component in option or API.
+ *
  * @property boolean $show Default: true
  *    
  *
  * @property int $zlevel Default: 0
- *    所有图形的 zlevel 值。
- *     zlevel用于 Canvas 分层，不同zlevel值的图形会放置在不同的 Canvas 中，Canvas 分层是一种常见的优化手段。我们可以把一些图形变化频繁（例如有动画）的组件设置成一个单独的zlevel。需要注意的是过多的 Canvas 会引起内存开销的增大，在手机端上需要谨慎使用以防崩溃。
- *     zlevel 大的 Canvas 会放在 zlevel 小的 Canvas 的上面。
+ *    zlevel value of all graphical elements in .
+ *     zlevel is used to make layers with Canvas. Graphical elements with different zlevel values will be placed in different Canvases, which is a common optimization technique. We can put those frequently changed elements (like those with animations) to a separate zlevel. Notice that too many Canvases will increase memory cost, and should be used carefully on mobile phones to avoid crash.
+ *     Canvases with bigger zlevel will be placed on Canvases with smaller zlevel.
  *
  * @property int $z Default: 2
- *    组件的所有图形的z值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖。
- *     z相比zlevel优先级更低，而且不会创建新的 Canvas。
+ *    z value of all graphical elements in , which controls order of drawing graphical components. Components with smaller z values may be overwritten by those with larger z values.
+ *     z has a lower priority to zlevel, and will not create new Canvas.
  *
  * @property string|int $left Default: 'auto'
- *    图例组件离容器左侧的距离。
- *     left 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 left, center, right。
- *     如果 left 的值为left, center, right，组件会根据相应的位置自动对齐。
+ *    Distance between legend component and the left side of the container.
+ *     left value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be left, center, or right.
+ *     If the left value is set to be left, center, or right, then the component will be aligned automatically based on position.
  *
  * @property string|int $top Default: 'auto'
- *    图例组件离容器上侧的距离。
- *     top 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 top, middle, bottom。
- *     如果 top 的值为top, middle, bottom，组件会根据相应的位置自动对齐。
+ *    Distance between legend component and the top side of the container.
+ *     top value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
+ *     If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
  *
  * @property string|int $right Default: 'auto'
- *    图例组件离容器右侧的距离。
- *     right 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
- *     默认自适应。
+ *    Distance between legend component and the right side of the container.
+ *     right value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%.
+ *     Adaptive by default.
  *
  * @property string|int $bottom Default: 'auto'
- *    图例组件离容器下侧的距离。
- *     bottom 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
- *     默认自适应。
+ *    Distance between legend component and the bottom side of the container.
+ *     bottom value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%.
+ *     Adaptive by default.
  *
  * @property string|int $width Default: 'auto'
- *    图例组件的宽度。默认自适应。
+ *    Width of legend component. Adaptive by default.
  *
  * @property string|int $height Default: 'auto'
- *    图例组件的高度。默认自适应。
+ *    Height of legend component. Adaptive by default.
  *
  * @property string $orient Default: 'horizontal'
- *    图例列表的布局朝向。
- *     可选：
+ *    The layout orientation of legend.
+ *     Options:
  *     
  *     horizontal
  *     vertical
  *
  * @property string $align Default: 'auto'
- *    图例标记和文本的对齐。默认自动，根据组件的位置和 orient 决定，当组件的 left 值为 right 以及纵向布局（orient 为  vertical）的时候为右对齐，及为 right。
- *     可选：
+ *    Legend mrker and text aligning. By default, it automatically calculates from component location and orient. When left value of this component is right, and the vertical layout (orient is vertical), it would be aligned to right.
+ *     Option:
  *     
  *     auto
  *     left
  *     right
  *
  * @property int $padding Default: 5
- *    图例内边距，单位px，默认各方向内边距为5，接受数组分别设定上右下左边距。
- *     使用示例：
- *     // 设置内边距为 5
+ *    legend space around content. The unit is px. Default values for each position are 5. And they can be set to different values with left, right, top, and bottom.
+ *     Examples: 
+ *     // Set padding to be 5
  *     padding: 5
- *     // 设置上下的内边距为 5，左右的内边距为 10
+ *     // Set the top and bottom paddings to be 5, and left and right paddings to be 10
  *     padding: [5, 10]
- *     // 分别设置四个方向的内边距
+ *     // Set each of the four paddings seperately
  *     padding: [
- *         5,  // 上
- *         10, // 右
- *         5,  // 下
- *         10, // 左
+ *         5,  // up
+ *         10, // right
+ *         5,  // down
+ *         10, // left
  *     ]
  *
  * @property int $itemGap Default: 10
- *    图例每项之间的间隔。横向布局时为水平间隔，纵向布局时为纵向间隔。
+ *    The distance between each legend, horizontal distance in horizontal layout, and vertical distance in vertical layout.
  *
  * @property int $itemWidth Default: 25
- *    图例标记的图形宽度。
+ *    Image width of legend symbol.
  *
  * @property int $itemHeight Default: 14
- *    图例标记的图形高度。
+ *    Image height of legend symbol.
+ *
+ * @property boolean $symbolKeepAspect Default: true
+ *    Whether to keep aspect for icons (from series.symbol or user-defined legend.data.icon) in the form of path://.
  *
  * @property string|callable $formatter
- *    用来格式化图例文本，支持字符串模板和回调函数两种形式。
- *     示例：
- *     // 使用字符串模板，模板变量为图例名称 {name}
+ *    Formatter is used to format label of legend, which supports string template and callback function.
+ *     Example:
+ *     // using string template, the template variable is legend name {name}
  *     formatter: Legend {name}
- *     // 使用回调函数
+ *     // using callback function
  *     formatter: function (name) {
  *         return Legend  + name;
  *     }
  *
  * @property string|boolean $selectedMode Default: true
- *    图例选择的模式，控制是否可以通过点击图例改变系列的显示状态。默认开启图例选择，可以设成 false 关闭。
- *     除此之外也可以设成 single 或者  multiple 使用单选或者多选模式。
+ *    Selected mode of legend, which controls whether series can be toggled displaying by clicking legends. It is enabled by default, and you may set it to be false to disabled it.
+ *     Besides, it can be set to single or multiple, for single selection and multiple selection.
  *
  * @property string $inactiveColor Default: '#ccc'
- *    图例关闭时的颜色。
+ *    Legend color when not selected.
  *
  * @property array $selected
- *    图例选中状态表。
- *     示例：
+ *    State table of selected legend.
+ *     example:
  *     selected: {
- *         // 选中系列1
- *         系列1: true,
- *         // 不选中系列2
- *         系列2: false
+ *         // selectedseries 1
+ *         series 1: true,
+ *         // unselectedseries 2
+ *         series 2: false
  *     }
  *
  * @property Legend\TextStyle $textStyle
- *    图例的公用文本样式。
+ *    Legend text style.
  *
  * @property array $tooltip
- *    图例的 tooltip 配置，配置项同 tooltip。默认不显示，可以在 legend 文字很多的时候对文字做裁剪并且开启 tooltip，如下示例：
- *     legend: {
- *         formatter: function (name) {
- *             return echarts.format.truncateText(name, 40, 14px Microsoft Yahei, …);
- *         },
- *         tooltip: {
- *             show: true
- *         }
- *     }
+ *    Tooltip configuration for legend tooltip, which is similar to tooltip.
+ *
+ * @property string $icon
+ *    Icon of the legend items.
+ *     Icon types provided by ECharts includes 
+ *     circle, rect, roundRect, triangle, diamond, pin, arrow, none
+ *     It can be set to an image with image://url , in which URL is the link to an image, or dataURI of an image.
+ *     An image URL example:
+ *     image://http://xxx.xxx.xxx/a/b.png
+ *     A dataURI example:
+ *     image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7
+ *     Icons can be set to arbitrary vector path via path:// in ECharts. As compared with a raster image, vector paths prevent jagging and blurring when scaled, and have better control over changing colors. The size of the vector icon will be adapted automatically. Refer to SVG PathData for more information about the format of the path. You may export vector paths from tools like Adobe 
+ *     For example:
+ *     path://M30.9,53.2C16.8,53.2,5.3,41.7,5.3,27.6S16.8,2,30.9,2C45,2,56.4,13.5,56.4,27.6S45,53.2,30.9,53.2z M30.9,3.5C17.6,3.5,6.8,14.4,6.8,27.6c0,13.3,10.8,24.1,24.101,24.1C44.2,51.7,55,40.9,55,27.6C54.9,14.4,44.1,3.5,30.9,3.5z M36.9,35.8c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H36c0.5,0,0.9,0.4,0.9,1V35.8z M27.8,35.8 c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H27c0.5,0,0.9,0.4,0.9,1L27.8,35.8L27.8,35.8z
  *
  * @property array $data
- *    图例的数据数组。数组项通常为一个字符串，每一项代表一个系列的 name（如果是饼图，也可以是饼图单个数据的 name）。图例组件会自动根据对应系列的图形标记（symbol）来绘制自己的颜色和标记，特殊字符串 （空字符串）或者 \n（换行字符串）用于图例的换行。
- *     如果 data 没有被指定，会自动从当前系列中获取。多数系列会取自 series.name 或者 series.encode 的 seriesName 所指定的维度。如 饼图 and 漏斗图 等会取自 series.data 中的 name。
- *     如果要设置单独一项的样式，也可以把该项写成配置项对象。此时必须使用 name 属性对应表示系列的 name。
- *     示例
+ *    Data array of legend. An array item is usually a name representing string. (If it is a pie chart, it could also be the name of a single data in the pie chart) of a series. Legend component would automatically calculate the color and icon according to series. Special string  (null string) or \n (new line string) can be used for a new line.
+ *     If data is not specified, it will be auto collected from series. For most of series, it will be collected from series.name or the dimension name specified by seriesName of series.encode. For some types of series like pie and funnel, it will be collected from the name field of series.data.
+ *     If you need to set the style for a single item, you may also set the configuration of it. In this case, name attribute is used to represent name of series.
+ *     Example:
  *     data: [{
- *         name: 系列1,
- *         // 强制设置图形为圆。
+ *         name: series 1,
+ *         // compulsorily set icon as a circle
  *         icon: circle,
- *         // 设置文本为红色
+ *         // set up the text in red
  *         textStyle: {
  *             color: red
  *         }
  *     }]
  *
  * @property string $backgroundColor Default: 'transparent'
- *    图例背景色，默认透明。
+ *    Background color of legend, which is transparent by default.
  *     
- *     颜色可以使用 RGB 表示，比如 rgb(128, 128, 128)   ，如果想要加上 alpha 通道，可以使用 RGBA，比如 rgba(128, 128, 128, 0.5)，也可以使用十六进制格式，比如 #ccc
+ *     Color can be represented in RGB, for example rgb(128, 128, 128). RGBA can be used when you need alpha channel, for example rgba(128, 128, 128, 0.5). You may also use hexadecimal format, for example #ccc.
  *
  * @property string $borderColor Default: '#ccc'
- *    图例的边框颜色。支持的颜色格式同 backgroundColor。
+ *    Border color of legend. Support the same color format as backgroundColor.
  *
  * @property int $borderWidth Default: 1
- *    图例的边框线宽。
+ *    Border width of legend.
  *
  * @property int|array $borderRadius Default: 0
- *    圆角半径，单位px，支持传入数组分别指定 4 个圆角半径。
- *     如:
- *     borderRadius: 5, // 统一设置四个角的圆角大小
- *     borderRadius: [5, 5, 0, 0] //（顺时针左上，右上，右下，左下）
+ *    The radius of rounded corner. Its unit is px. And it supports use array to respectively specify the 4 corner radiuses.
+ *     For example:
+ *     borderRadius: 5, // consistently set the size of 4 rounded corners
+ *     borderRadius: [5, 5, 0, 0] // (clockwise upper left, upper right, bottom right and bottom left)
  *
  * @property int $shadowBlur
- *    图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。
- *     示例：
+ *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
  *         shadowBlur: 10
  *     }
  *     
- *     注意：此配置项生效的前提是，设置了 show: true 以及值不为 tranparent 的背景色 backgroundColor。
+ *     Attention: This property works only if show: true is configured and backgroundColor is defined other than transparent.
  *
  * @property string $shadowColor
- *    阴影颜色。支持的格式同color。
- *     注意：此配置项生效的前提是，设置了 show: true。
+ *    Shadow color. Support same format as color.
+ *     Attention: This property works only if show: true configured.
  *
  * @property int $shadowOffsetX Default: 0
- *    阴影水平方向上的偏移距离。
- *     注意：此配置项生效的前提是，设置了 show: true。
+ *    Offset distance on the horizontal direction of shadow.
+ *     Attention: This property works only if show: true configured.
  *
  * @property int $shadowOffsetY Default: 0
- *    阴影垂直方向上的偏移距离。
- *     注意：此配置项生效的前提是，设置了 show: true。
+ *    Offset distance on the vertical direction of shadow.
+ *     Attention: This property works only if show: true configured.
  *
  * @property int $scrollDataIndex Default: 0
- *    legend.type 为 scroll 时有效。
- *     图例当前最左上显示项的 dataIndex。
- *     setOption 时指定此项的话，可决定当前图例滚动到哪里。
- *     但是，如果仅仅想改变图例翻页，一般并不调用 setOption（因为这太重量了），仅仅使用 action legendScroll 即可。
- *     参见 滚动图例（垂直） 或 滚动图例（水平）。
+ *    It works when legend.type is scroll.
+ *     dataIndex of the left top most displayed item.
+ *     Although the scrolling of legend items can be controlled by calling setOption and specifying this property, we suggest that do not controll legend in this way unless necessary (setOption might be time-consuming), but just use action legendScroll to do that.
+ *     See vertically scrollable legend or horizontally scrollable legend.
  *
  * @property int $pageButtonItemGap Default: 5
- *    legend.type 为 scroll 时有效。
- *     图例控制块中，按钮和页信息之间的间隔。
- *     参见 滚动图例（垂直） 或 滚动图例（水平）。
+ *    It works when legend.type is scroll.
+ *     The gap between page buttons and page info text.
+ *     See vertically scrollable legend or horizontally scrollable legend.
  *
  * @property int $pageButtonGap
- *    legend.type 为 scroll 时有效。
- *     图例控制块和图例项之间的间隔。
- *     参见 滚动图例（垂直） 或 滚动图例（水平）。
+ *    It works when legend.type is scroll.
+ *     The gap between page buttons and legend items.
+ *     See vertically scrollable legend or horizontally scrollable legend.
  *
  * @property string $pageButtonPosition Default: 'end'
- *    legend.type 为 scroll 时有效。
- *     图例控制块的位置。可选值为：
+ *    It works when legend.type is scroll.
+ *     The position of page buttons and page info. Optional values:
  *     
- *     start：控制块在左或上。
- *     end：按钮快在右或下。
+ *     start: on the left or top.
+ *     end: on the right or bottom.
  *     
- *     参见 滚动图例（垂直） 或 滚动图例（水平）。
+ *     See vertically scrollable legend or horizontally scrollable legend.
  *
  * @property string|callable $pageFormatter Default: '{current}/{total}'
- *    legend.type 为 scroll 时有效。
- *     图例控制块中，页信息的显示格式。默认为 {current}/{total}，其中 {current} 是当前页号（从 1 开始计数），{total} 是总页数。
- *     如果 pageFormatter 使用函数，须返回字符串，参数为：
+ *    It works when legend.type is scroll.
+ *     Page info formatter. It is {current}/{total} by default, where {current} is current page number (start from 1), and {total} is the total page number.
+ *     If pageFormatter is a function, it should return a string. The parameters is:
  *     {
  *         current: number
  *         total: number
  *     }
  *     
- *     参见 滚动图例（垂直） 或 滚动图例（水平）。
+ *     See vertically scrollable legend or horizontally scrollable legend.
  *
  * @property Legend\PageIcons $pageIcons
- *    legend.type 为 scroll 时有效。
- *     图例控制块的图标。
+ *    It works when legend.type is scroll.
+ *     The icons of page buttons.
  *
  * @property string $pageIconColor Default: '#2f4554'
- *    legend.type 为 scroll 时有效。
- *     翻页按钮的颜色。
- *     参见 滚动图例（垂直） 或 滚动图例（水平）。
+ *    It works when legend.type is scroll.
+ *     The color of page buttons.
+ *     See vertically scrollable legend or horizontally scrollable legend.
  *
  * @property string $pageIconInactiveColor Default: '#aaa'
- *    legend.type 为 scroll 时有效。
- *     翻页按钮不激活时（即翻页到头时）的颜色。
- *     参见 滚动图例（垂直） 或 滚动图例（水平）。
+ *    It works when legend.type is scroll.
+ *     The color of page buttons when they are inactive.
+ *     See vertically scrollable legend or horizontally scrollable legend.
  *
  * @property int|array $pageIconSize Default: 15
- *    legend.type 为 scroll 时有效。
- *     翻页按钮的大小。可以是数字，也可以是数组，如 [10, 3]，表示 [宽，高]。
- *     参见 滚动图例（垂直） 或 滚动图例（水平）。
+ *    It works when legend.type is scroll.
+ *     The size of page buttons. It can be a number, or an array, like [10, 3], represents [width, height].
+ *     See vertically scrollable legend or horizontally scrollable legend.
  *
  * @property Legend\PageTextStyle $pageTextStyle
- *    legend.type 为 scroll 时有效。
- *     图例页信息的文字样式。
+ *    It works when legend.type is scroll.
+ *     The text style of page info.
  *
  * @property boolean $animation
- *    图例翻页是否使用动画。
+ *    Whether to use animation when page scrolll.
  *
  * @property int $animationDurationUpdate Default: 800
- *    图例翻页时的动画时长。
+ *    Duration of the page scroll animation.
+ *
+ * @property boolean|array $selector Default: false
+ *    The selector button in the legend component. Currently includes both a full selection and an inverse selection. The selector button doesnt display by default, the user can manually configure it.
+ *     Usage:
+ *     selector: [
+ *         {
+ *             type: all or inverse,
+ *             // can be any title you like
+ *             title: All
+ *         },
+ *         {
+ *             type: inverse,
+ *             title: Inv
+ *         }
+ *     ]
+ *     
+ *     // or
+ *     selector: true
+ *     
+ *     // or
+ *     selector: [all, inverse]
+ *
+ * @property Legend\SelectorLabel $selectorLabel
+ *    The text label style of the selector button, which is displayed by default.
+ *
+ * @property string $selectorPosition Default: 'auto'
+ *    The position of the selector button, which can be placed at the end or start of the legend component, the corresponding values are end and start. By default, when the legend is laid out horizontally, the selector is placed at the end of it, and when the legend is laid out vertically, the selector is placed at the start of it.
+ *
+ * @property int $selectorItemGap Default: 7
+ *    The gap between the selector button.
+ *
+ * @property int $selectorButtonGap Default: 10
+ *    The gap between selector button and legend component.
  *
  * {_more_}
  */

@@ -10,18 +10,18 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: false
- *    是否显示标签。
+ *    Whether to show label.
  *
  * @property string|array $position
- *    标签的位置。
- *     可选：
+ *    Label position.
+ *     Followings are the options: 
  *     
  *     [x, y]
- *       通过相对的百分比或者绝对像素值表示标签相对于图形包围盒左上角的位置。
- *       示例：
- *       // 绝对的像素值
+ *       Use relative percentage, or absolute pixel values to represent position of label relative to top-left corner of bounding box.
+ *       For example:
+ *       // Absolute pixel values
  *       position: [10, 10],
- *       // 相对的百分比
+ *       // Relative percentage
  *       position: [50%, 50%]
  *     
  *     
@@ -40,34 +40,34 @@ use Hisune\EchartsPHP\Property;
  *     insideTopRight
  *     insideBottomRight
  *     
- *     参见：label position。
+ *     See: label position.
  *
  * @property int $distance Default: 5
- *    距离图形元素的距离。当 position 为字符描述值（如 top、insideRight）时候有效。
- *     参见：label position。
+ *    Distance to the host graphic element. Works when position is string value (like top、insideRight).
+ *     See: label position.
  *
  * @property int $rotate
- *    标签旋转。从 -90 度到 90 度。正值是逆时针。
- *     参见：label rotation。
+ *    Rotate label, from -90 degree to 90, positive value represents rotate anti-clockwise.
+ *     See: label rotation.
  *
  * @property array $offset
- *    是否对文字进行偏移。默认不偏移。例如：[30, 40] 表示文字在横向上偏移 30，纵向上偏移 40。
+ *    Whether to move text slightly. For example: [30, 40] means move 30 horizontally and move 40 vertically.
  *
  * @property string $color Default: '"#fff"'
- *    文字的颜色。
- *     如果设置为 auto，则为视觉映射得到的颜色，如系列色。
+ *     text color.
+ *     If set as auto, the color will assigned as visual color, such as series color.
  *
  * @property string $fontStyle Default: 'normal'
- *    文字字体的风格
- *     可选：
+ *     font style
+ *     Options are:
  *     
  *     normal
  *     italic
  *     oblique
  *
  * @property string $fontWeight Default: 'normal'
- *    文字字体的粗细
- *     可选：
+ *     font thick weight
+ *     Options are:
  *     
  *     normal
  *     bold
@@ -76,147 +76,147 @@ use Hisune\EchartsPHP\Property;
  *     100 | 200 | 300 | 400...
  *
  * @property string $fontFamily Default: 'sans-serif'
- *    文字的字体系列
- *     还可以是 serif , monospace, Arial, Courier New, Microsoft YaHei, ...
+ *     font family
+ *     Can also be serif , monospace, ...
  *
  * @property int $fontSize Default: 12
- *    文字的字体大小
+ *     font size
  *
  * @property string $align
- *    文字水平对齐方式，默认自动。
- *     可选：
+ *    Horizontal alignment of text, automatic by default.
+ *     Options are:
  *     
  *     left
  *     center
  *     right
  *     
- *     rich 中如果没有设置 align，则会取父层级的 align。例如：
+ *     If align is not set in rich, align in parent level will be used. For example:
  *     {
  *         align: right,
  *         rich: {
  *             a: {
- *                 // 没有设置 `align`，则 `align` 为 right
+ *                 // `align` is not set, then it will be right
  *             }
  *         }
  *     }
  *
  * @property string $verticalAlign
- *    文字垂直对齐方式，默认自动。
- *     可选：
+ *    Vertical alignment of text, automatic by default.
+ *     Options are:
  *     
  *     top
  *     middle
  *     bottom
  *     
- *     rich 中如果没有设置 verticalAlign，则会取父层级的 verticalAlign。例如：
+ *     If verticalAlign is not set in rich, verticalAlign in parent level will be used. For example:
  *     {
  *         verticalAlign: bottom,
  *         rich: {
  *             a: {
- *                 // 没有设置 `verticalAlign`，则 `verticalAlign` 为 bottom
+ *                 // `verticalAlign` is not set, then it will be bottom
  *             }
  *         }
  *     }
  *
  * @property int $lineHeight
- *    行高。
- *     rich 中如果没有设置 lineHeight，则会取父层级的 lineHeight。例如：
+ *    Line height of the text fregment.
+ *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
  *         rich: {
  *             a: {
- *                 // 没有设置 `lineHeight`，则 `lineHeight` 为 56
+ *                 // `lineHeight` is not set, then it will be 56
  *             }
  *         }
  *     }
  *
  * @property string|array $backgroundColor Default: 'transparent'
- *    文字块背景色。
- *     可以是直接的颜色值，例如：#123234, red, rgba(0,23,11,0.3)。
- *     可以支持使用图片，例如：
+ *    Background color of the text fregment.
+ *     Can be color string, like #123234, red, rgba(0,23,11,0.3).
+ *     Or image can be used, for example:
  *     backgroundColor: {
  *         image: xxx/xxx.png
- *         // 这里可以是图片的 URL，
- *         // 或者图片的 dataURI，
- *         // 或者 HTMLImageElement 对象，
- *         // 或者 HTMLCanvasElement 对象。
+ *         // It can be URL of a image,
+ *         // or dataURI,
+ *         // or HTMLImageElement,
+ *         // or HTMLCanvasElement.
  *     }
  *     
- *     当使用图片的时候，可以使用 width 或 height 指定高宽，也可以不指定自适应。
- *     如果设置为 auto，则为视觉映射得到的颜色，如系列色。
+ *     width or height can be specified when using background image, or
+ *     auto adapted by default.
+ *     If set as auto, the color will assigned as visual color, such as series color.
  *
  * @property string $borderColor Default: 'transparent'
- *    文字块边框颜色。
- *     如果设置为 auto，则为视觉映射得到的颜色，如系列色。
+ *    Border color of the text fregment.
+ *     If set as auto, the color will assigned as visual color, such as series color.
  *
  * @property int $borderWidth Default: 0
- *    文字块边框宽度。
+ *    Border width of the text fregment.
  *
- * @property int|array $borderRadius Default: 0
- *    文字块的圆角。
+ * @property int $borderRadius Default: 0
+ *    Border radius of the text fregment.
  *
  * @property int|array $padding Default: 0
- *    文字块的内边距。例如：
+ *    Padding of the text fregment, for example:
  *     
- *     padding: [3, 4, 5, 6]：表示 [上, 右, 下, 左] 的边距。
- *     padding: 4：表示 padding: [4, 4, 4, 4]。
- *     padding: [3, 4]：表示 padding: [3, 4, 3, 4]。
+ *     padding: [3, 4, 5, 6]: represents padding of [top, right, bottom, left].
+ *     padding: 4: represents padding: [4, 4, 4, 4].
+ *     padding: [3, 4]: represents padding: [3, 4, 3, 4].
  *     
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
+ *     Notice, width and height specifies the width and height of the content, without padding.
  *
  * @property string $shadowColor Default: 'transparent'
- *    文字块的背景阴影颜色。
+ *    Shadow color of the text block.
  *
  * @property int $shadowBlur Default: 0
- *    文字块的背景阴影长度。
+ *    Show blur of the text block.
  *
  * @property int $shadowOffsetX Default: 0
- *    文字块的背景阴影 X 偏移。
+ *    Shadow X offset of the text block.
  *
  * @property int $shadowOffsetY Default: 0
- *    文字块的背景阴影 Y 偏移。
+ *    Shadow Y offset of the text block.
  *
  * @property int|string $width
- *    文字块的宽度。一般不用指定，不指定则自动是文字的宽度。在想做表格项或者使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     width 也可以是百分比字符串，如 100%。表示的是所在文本块的 contentWidth（即不包含文本块的 padding）的百分之多少。之所以以 contentWidth 做基数，因为每个文本片段只能基于 content box 布局。如果以 outerWidth 做基数，则百分比的计算在实用中不具有意义，可能会超出。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
+ *     Notice, width and height only work when rich specified.
  *
  * @property int|string $height
- *    文字块的高度。一般不用指定，不指定则自动是文字的高度。在使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     Notice, width and height only work when rich specified.
  *
  * @property string $textBorderColor Default: 'transparent'
- *    文字本身的描边颜色。
- *     如果设置为 auto，则为视觉映射得到的颜色，如系列色。
+ *    Storke color of the text.
+ *     If set as auto, the color will assigned as visual color, such as series color.
  *
  * @property int $textBorderWidth Default: 0
- *    文字本身的描边宽度。
+ *    Storke line width of the text.
  *
  * @property string $textShadowColor Default: 'transparent'
- *    文字本身的阴影颜色。
+ *    Shadow color of the text itself.
  *
  * @property int $textShadowBlur Default: 0
- *    文字本身的阴影长度。
+ *    Shadow blue of the text itself.
  *
  * @property int $textShadowOffsetX Default: 0
- *    文字本身的阴影 X 偏移。
+ *    Shadow X offset of the text itself.
  *
  * @property int $textShadowOffsetY Default: 0
- *    文字本身的阴影 Y 偏移。
+ *    Shadow Y offset of the text itself.
  *
  * @property Label\Rich $rich
- *    在 rich 里面，可以自定义富文本样式。利用富文本样式，可以在标签中做出非常丰富的效果。
- *     例如：
+ *    Rich text styles can be defined in this rich property. For example:
  *     label: {
- *         // 在文本中，可以对部分文本采用 rich 中定义样式。
- *         // 这里需要在文本中使用标记符号：
- *         // `{styleName|text content text content}` 标记样式名。
- *         // 注意，换行仍是使用 \n。
+ *         // Styles defined in rich can be applied to some fregments
+ *         // of text by adding some markers to those fregment, like
+ *         // `{styleName|text content text content}`.
+ *         // `\n` is the newline character.
  *         formatter: [
- *             {a|这段文本采用样式a},
- *             {b|这段文本采用样式b}这段用默认样式{x|这段用样式x}
+ *             {a|Style a is applied to this snippet}
+ *             {b|Style b is applied to this snippet}This snippet use default style{x|use style x}
  *         ].join(\n),
  *     
  *         rich: {
@@ -240,18 +240,21 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *     
- *     详情参见教程：富文本标签
+ *     For more details, see Rich Text please.
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|array $position
- *    标签的位置。
- *     可选：
+ *    Label position.
+ *     Followings are the options: 
  *     
  *     [x, y]
- *       通过相对的百分比或者绝对像素值表示标签相对于图形包围盒左上角的位置。
- *       示例：
- *       // 绝对的像素值
+ *       Use relative percentage, or absolute pixel values to represent position of label relative to top-left corner of bounding box.
+ *       For example:
+ *       // Absolute pixel values
  *       position: [10, 10],
- *       // 相对的百分比
+ *       // Relative percentage
  *       position: [50%, 50%]
  *     
  *     
@@ -270,85 +273,84 @@ use Hisune\EchartsPHP\Property;
  *     insideTopRight
  *     insideBottomRight
  *     
- *     参见：label position。
+ *     See: label position.
  *
  * @property int $rotate
- *    标签旋转。从 -90 度到 90 度。正值是逆时针。
- *     参见：label rotation。
+ *    Rotate label, from -90 degree to 90, positive value represents rotate anti-clockwise.
+ *     See: label rotation.
  *
  * @property array $offset
- *    是否对文字进行偏移。默认不偏移。例如：[30, 40] 表示文字在横向上偏移 30，纵向上偏移 40。
+ *    Whether to move text slightly. For example: [30, 40] means move 30 horizontally and move 40 vertically.
  *
  * @property string $align
- *    文字水平对齐方式，默认自动。
- *     可选：
+ *    Horizontal alignment of text, automatic by default.
+ *     Options are:
  *     
  *     left
  *     center
  *     right
  *     
- *     rich 中如果没有设置 align，则会取父层级的 align。例如：
+ *     If align is not set in rich, align in parent level will be used. For example:
  *     {
  *         align: right,
  *         rich: {
  *             a: {
- *                 // 没有设置 `align`，则 `align` 为 right
+ *                 // `align` is not set, then it will be right
  *             }
  *         }
  *     }
  *
  * @property string $verticalAlign
- *    文字垂直对齐方式，默认自动。
- *     可选：
+ *    Vertical alignment of text, automatic by default.
+ *     Options are:
  *     
  *     top
  *     middle
  *     bottom
  *     
- *     rich 中如果没有设置 verticalAlign，则会取父层级的 verticalAlign。例如：
+ *     If verticalAlign is not set in rich, verticalAlign in parent level will be used. For example:
  *     {
  *         verticalAlign: bottom,
  *         rich: {
  *             a: {
- *                 // 没有设置 `verticalAlign`，则 `verticalAlign` 为 bottom
+ *                 // `verticalAlign` is not set, then it will be bottom
  *             }
  *         }
  *     }
  *
  * @property int $lineHeight
- *    行高。
- *     rich 中如果没有设置 lineHeight，则会取父层级的 lineHeight。例如：
+ *    Line height of the text fregment.
+ *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
  *         rich: {
  *             a: {
- *                 // 没有设置 `lineHeight`，则 `lineHeight` 为 56
+ *                 // `lineHeight` is not set, then it will be 56
  *             }
  *         }
  *     }
  *
  * @property int|string $width
- *    文字块的宽度。一般不用指定，不指定则自动是文字的宽度。在想做表格项或者使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     width 也可以是百分比字符串，如 100%。表示的是所在文本块的 contentWidth（即不包含文本块的 padding）的百分之多少。之所以以 contentWidth 做基数，因为每个文本片段只能基于 content box 布局。如果以 outerWidth 做基数，则百分比的计算在实用中不具有意义，可能会超出。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
+ *     Notice, width and height only work when rich specified.
  *
  * @property int|string $height
- *    文字块的高度。一般不用指定，不指定则自动是文字的高度。在使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     Notice, width and height only work when rich specified.
  *
  * @property Label\Rich $rich
- *    在 rich 里面，可以自定义富文本样式。利用富文本样式，可以在标签中做出非常丰富的效果。
- *     例如：
+ *    Rich text styles can be defined in this rich property. For example:
  *     label: {
- *         // 在文本中，可以对部分文本采用 rich 中定义样式。
- *         // 这里需要在文本中使用标记符号：
- *         // `{styleName|text content text content}` 标记样式名。
- *         // 注意，换行仍是使用 \n。
+ *         // Styles defined in rich can be applied to some fregments
+ *         // of text by adding some markers to those fregment, like
+ *         // `{styleName|text content text content}`.
+ *         // `\n` is the newline character.
  *         formatter: [
- *             {a|这段文本采用样式a},
- *             {b|这段文本采用样式b}这段用默认样式{x|这段用样式x}
+ *             {a|Style a is applied to this snippet}
+ *             {b|Style b is applied to this snippet}This snippet use default style{x|use style x}
  *         ].join(\n),
  *     
  *         rich: {
@@ -372,18 +374,21 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *     
- *     详情参见教程：富文本标签
+ *     For more details, see Rich Text please.
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|array $position
- *    标签的位置。
- *     可选：
+ *    Label position.
+ *     Followings are the options: 
  *     
  *     [x, y]
- *       通过相对的百分比或者绝对像素值表示标签相对于图形包围盒左上角的位置。
- *       示例：
- *       // 绝对的像素值
+ *       Use relative percentage, or absolute pixel values to represent position of label relative to top-left corner of bounding box.
+ *       For example:
+ *       // Absolute pixel values
  *       position: [10, 10],
- *       // 相对的百分比
+ *       // Relative percentage
  *       position: [50%, 50%]
  *     
  *     
@@ -402,85 +407,84 @@ use Hisune\EchartsPHP\Property;
  *     insideTopRight
  *     insideBottomRight
  *     
- *     参见：label position。
+ *     See: label position.
  *
  * @property int $rotate
- *    标签旋转。从 -90 度到 90 度。正值是逆时针。
- *     参见：label rotation。
+ *    Rotate label, from -90 degree to 90, positive value represents rotate anti-clockwise.
+ *     See: label rotation.
  *
  * @property array $offset
- *    是否对文字进行偏移。默认不偏移。例如：[30, 40] 表示文字在横向上偏移 30，纵向上偏移 40。
+ *    Whether to move text slightly. For example: [30, 40] means move 30 horizontally and move 40 vertically.
  *
  * @property string $align
- *    文字水平对齐方式，默认自动。
- *     可选：
+ *    Horizontal alignment of text, automatic by default.
+ *     Options are:
  *     
  *     left
  *     center
  *     right
  *     
- *     rich 中如果没有设置 align，则会取父层级的 align。例如：
+ *     If align is not set in rich, align in parent level will be used. For example:
  *     {
  *         align: right,
  *         rich: {
  *             a: {
- *                 // 没有设置 `align`，则 `align` 为 right
+ *                 // `align` is not set, then it will be right
  *             }
  *         }
  *     }
  *
  * @property string $verticalAlign
- *    文字垂直对齐方式，默认自动。
- *     可选：
+ *    Vertical alignment of text, automatic by default.
+ *     Options are:
  *     
  *     top
  *     middle
  *     bottom
  *     
- *     rich 中如果没有设置 verticalAlign，则会取父层级的 verticalAlign。例如：
+ *     If verticalAlign is not set in rich, verticalAlign in parent level will be used. For example:
  *     {
  *         verticalAlign: bottom,
  *         rich: {
  *             a: {
- *                 // 没有设置 `verticalAlign`，则 `verticalAlign` 为 bottom
+ *                 // `verticalAlign` is not set, then it will be bottom
  *             }
  *         }
  *     }
  *
  * @property int $lineHeight
- *    行高。
- *     rich 中如果没有设置 lineHeight，则会取父层级的 lineHeight。例如：
+ *    Line height of the text fregment.
+ *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
  *         rich: {
  *             a: {
- *                 // 没有设置 `lineHeight`，则 `lineHeight` 为 56
+ *                 // `lineHeight` is not set, then it will be 56
  *             }
  *         }
  *     }
  *
  * @property int|string $width
- *    文字块的宽度。一般不用指定，不指定则自动是文字的宽度。在想做表格项或者使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     width 也可以是百分比字符串，如 100%。表示的是所在文本块的 contentWidth（即不包含文本块的 padding）的百分之多少。之所以以 contentWidth 做基数，因为每个文本片段只能基于 content box 布局。如果以 outerWidth 做基数，则百分比的计算在实用中不具有意义，可能会超出。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
+ *     Notice, width and height only work when rich specified.
  *
  * @property int|string $height
- *    文字块的高度。一般不用指定，不指定则自动是文字的高度。在使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     Notice, width and height only work when rich specified.
  *
  * @property Label\Rich $rich
- *    在 rich 里面，可以自定义富文本样式。利用富文本样式，可以在标签中做出非常丰富的效果。
- *     例如：
+ *    Rich text styles can be defined in this rich property. For example:
  *     label: {
- *         // 在文本中，可以对部分文本采用 rich 中定义样式。
- *         // 这里需要在文本中使用标记符号：
- *         // `{styleName|text content text content}` 标记样式名。
- *         // 注意，换行仍是使用 \n。
+ *         // Styles defined in rich can be applied to some fregments
+ *         // of text by adding some markers to those fregment, like
+ *         // `{styleName|text content text content}`.
+ *         // `\n` is the newline character.
  *         formatter: [
- *             {a|这段文本采用样式a},
- *             {b|这段文本采用样式b}这段用默认样式{x|这段用样式x}
+ *             {a|Style a is applied to this snippet}
+ *             {b|Style b is applied to this snippet}This snippet use default style{x|use style x}
  *         ].join(\n),
  *     
  *         rich: {
@@ -504,18 +508,21 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *     
- *     详情参见教程：富文本标签
+ *     For more details, see Rich Text please.
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|array $position
- *    标签的位置。
- *     可选：
+ *    Label position.
+ *     Followings are the options: 
  *     
  *     [x, y]
- *       通过相对的百分比或者绝对像素值表示标签相对于图形包围盒左上角的位置。
- *       示例：
- *       // 绝对的像素值
+ *       Use relative percentage, or absolute pixel values to represent position of label relative to top-left corner of bounding box.
+ *       For example:
+ *       // Absolute pixel values
  *       position: [10, 10],
- *       // 相对的百分比
+ *       // Relative percentage
  *       position: [50%, 50%]
  *     
  *     
@@ -534,85 +541,84 @@ use Hisune\EchartsPHP\Property;
  *     insideTopRight
  *     insideBottomRight
  *     
- *     参见：label position。
+ *     See: label position.
  *
  * @property int $rotate
- *    标签旋转。从 -90 度到 90 度。正值是逆时针。
- *     参见：label rotation。
+ *    Rotate label, from -90 degree to 90, positive value represents rotate anti-clockwise.
+ *     See: label rotation.
  *
  * @property array $offset
- *    是否对文字进行偏移。默认不偏移。例如：[30, 40] 表示文字在横向上偏移 30，纵向上偏移 40。
+ *    Whether to move text slightly. For example: [30, 40] means move 30 horizontally and move 40 vertically.
  *
  * @property string $align
- *    文字水平对齐方式，默认自动。
- *     可选：
+ *    Horizontal alignment of text, automatic by default.
+ *     Options are:
  *     
  *     left
  *     center
  *     right
  *     
- *     rich 中如果没有设置 align，则会取父层级的 align。例如：
+ *     If align is not set in rich, align in parent level will be used. For example:
  *     {
  *         align: right,
  *         rich: {
  *             a: {
- *                 // 没有设置 `align`，则 `align` 为 right
+ *                 // `align` is not set, then it will be right
  *             }
  *         }
  *     }
  *
  * @property string $verticalAlign
- *    文字垂直对齐方式，默认自动。
- *     可选：
+ *    Vertical alignment of text, automatic by default.
+ *     Options are:
  *     
  *     top
  *     middle
  *     bottom
  *     
- *     rich 中如果没有设置 verticalAlign，则会取父层级的 verticalAlign。例如：
+ *     If verticalAlign is not set in rich, verticalAlign in parent level will be used. For example:
  *     {
  *         verticalAlign: bottom,
  *         rich: {
  *             a: {
- *                 // 没有设置 `verticalAlign`，则 `verticalAlign` 为 bottom
+ *                 // `verticalAlign` is not set, then it will be bottom
  *             }
  *         }
  *     }
  *
  * @property int $lineHeight
- *    行高。
- *     rich 中如果没有设置 lineHeight，则会取父层级的 lineHeight。例如：
+ *    Line height of the text fregment.
+ *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
  *         rich: {
  *             a: {
- *                 // 没有设置 `lineHeight`，则 `lineHeight` 为 56
+ *                 // `lineHeight` is not set, then it will be 56
  *             }
  *         }
  *     }
  *
  * @property int|string $width
- *    文字块的宽度。一般不用指定，不指定则自动是文字的宽度。在想做表格项或者使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     width 也可以是百分比字符串，如 100%。表示的是所在文本块的 contentWidth（即不包含文本块的 padding）的百分之多少。之所以以 contentWidth 做基数，因为每个文本片段只能基于 content box 布局。如果以 outerWidth 做基数，则百分比的计算在实用中不具有意义，可能会超出。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
+ *     Notice, width and height only work when rich specified.
  *
  * @property int|string $height
- *    文字块的高度。一般不用指定，不指定则自动是文字的高度。在使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     Notice, width and height only work when rich specified.
  *
  * @property Label\Rich $rich
- *    在 rich 里面，可以自定义富文本样式。利用富文本样式，可以在标签中做出非常丰富的效果。
- *     例如：
+ *    Rich text styles can be defined in this rich property. For example:
  *     label: {
- *         // 在文本中，可以对部分文本采用 rich 中定义样式。
- *         // 这里需要在文本中使用标记符号：
- *         // `{styleName|text content text content}` 标记样式名。
- *         // 注意，换行仍是使用 \n。
+ *         // Styles defined in rich can be applied to some fregments
+ *         // of text by adding some markers to those fregment, like
+ *         // `{styleName|text content text content}`.
+ *         // `\n` is the newline character.
  *         formatter: [
- *             {a|这段文本采用样式a},
- *             {b|这段文本采用样式b}这段用默认样式{x|这段用样式x}
+ *             {a|Style a is applied to this snippet}
+ *             {b|Style b is applied to this snippet}This snippet use default style{x|use style x}
  *         ].join(\n),
  *     
  *         rich: {
@@ -636,18 +642,21 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *     
- *     详情参见教程：富文本标签
+ *     For more details, see Rich Text please.
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|array $position
- *    标签的位置。
- *     可选：
+ *    Label position.
+ *     Followings are the options: 
  *     
  *     [x, y]
- *       通过相对的百分比或者绝对像素值表示标签相对于图形包围盒左上角的位置。
- *       示例：
- *       // 绝对的像素值
+ *       Use relative percentage, or absolute pixel values to represent position of label relative to top-left corner of bounding box.
+ *       For example:
+ *       // Absolute pixel values
  *       position: [10, 10],
- *       // 相对的百分比
+ *       // Relative percentage
  *       position: [50%, 50%]
  *     
  *     
@@ -666,85 +675,84 @@ use Hisune\EchartsPHP\Property;
  *     insideTopRight
  *     insideBottomRight
  *     
- *     参见：label position。
+ *     See: label position.
  *
  * @property int $rotate
- *    标签旋转。从 -90 度到 90 度。正值是逆时针。
- *     参见：label rotation。
+ *    Rotate label, from -90 degree to 90, positive value represents rotate anti-clockwise.
+ *     See: label rotation.
  *
  * @property array $offset
- *    是否对文字进行偏移。默认不偏移。例如：[30, 40] 表示文字在横向上偏移 30，纵向上偏移 40。
+ *    Whether to move text slightly. For example: [30, 40] means move 30 horizontally and move 40 vertically.
  *
  * @property string $align
- *    文字水平对齐方式，默认自动。
- *     可选：
+ *    Horizontal alignment of text, automatic by default.
+ *     Options are:
  *     
  *     left
  *     center
  *     right
  *     
- *     rich 中如果没有设置 align，则会取父层级的 align。例如：
+ *     If align is not set in rich, align in parent level will be used. For example:
  *     {
  *         align: right,
  *         rich: {
  *             a: {
- *                 // 没有设置 `align`，则 `align` 为 right
+ *                 // `align` is not set, then it will be right
  *             }
  *         }
  *     }
  *
  * @property string $verticalAlign
- *    文字垂直对齐方式，默认自动。
- *     可选：
+ *    Vertical alignment of text, automatic by default.
+ *     Options are:
  *     
  *     top
  *     middle
  *     bottom
  *     
- *     rich 中如果没有设置 verticalAlign，则会取父层级的 verticalAlign。例如：
+ *     If verticalAlign is not set in rich, verticalAlign in parent level will be used. For example:
  *     {
  *         verticalAlign: bottom,
  *         rich: {
  *             a: {
- *                 // 没有设置 `verticalAlign`，则 `verticalAlign` 为 bottom
+ *                 // `verticalAlign` is not set, then it will be bottom
  *             }
  *         }
  *     }
  *
  * @property int $lineHeight
- *    行高。
- *     rich 中如果没有设置 lineHeight，则会取父层级的 lineHeight。例如：
+ *    Line height of the text fregment.
+ *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
  *         rich: {
  *             a: {
- *                 // 没有设置 `lineHeight`，则 `lineHeight` 为 56
+ *                 // `lineHeight` is not set, then it will be 56
  *             }
  *         }
  *     }
  *
  * @property int|string $width
- *    文字块的宽度。一般不用指定，不指定则自动是文字的宽度。在想做表格项或者使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     width 也可以是百分比字符串，如 100%。表示的是所在文本块的 contentWidth（即不包含文本块的 padding）的百分之多少。之所以以 contentWidth 做基数，因为每个文本片段只能基于 content box 布局。如果以 outerWidth 做基数，则百分比的计算在实用中不具有意义，可能会超出。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
+ *     Notice, width and height only work when rich specified.
  *
  * @property int|string $height
- *    文字块的高度。一般不用指定，不指定则自动是文字的高度。在使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     Notice, width and height only work when rich specified.
  *
  * @property Label\Rich $rich
- *    在 rich 里面，可以自定义富文本样式。利用富文本样式，可以在标签中做出非常丰富的效果。
- *     例如：
+ *    Rich text styles can be defined in this rich property. For example:
  *     label: {
- *         // 在文本中，可以对部分文本采用 rich 中定义样式。
- *         // 这里需要在文本中使用标记符号：
- *         // `{styleName|text content text content}` 标记样式名。
- *         // 注意，换行仍是使用 \n。
+ *         // Styles defined in rich can be applied to some fregments
+ *         // of text by adding some markers to those fregment, like
+ *         // `{styleName|text content text content}`.
+ *         // `\n` is the newline character.
  *         formatter: [
- *             {a|这段文本采用样式a},
- *             {b|这段文本采用样式b}这段用默认样式{x|这段用样式x}
+ *             {a|Style a is applied to this snippet}
+ *             {b|Style b is applied to this snippet}This snippet use default style{x|use style x}
  *         ].join(\n),
  *     
  *         rich: {
@@ -768,18 +776,21 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *     
- *     详情参见教程：富文本标签
+ *     For more details, see Rich Text please.
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|array $position
- *    标签的位置。
- *     可选：
+ *    Label position.
+ *     Followings are the options: 
  *     
  *     [x, y]
- *       通过相对的百分比或者绝对像素值表示标签相对于图形包围盒左上角的位置。
- *       示例：
- *       // 绝对的像素值
+ *       Use relative percentage, or absolute pixel values to represent position of label relative to top-left corner of bounding box.
+ *       For example:
+ *       // Absolute pixel values
  *       position: [10, 10],
- *       // 相对的百分比
+ *       // Relative percentage
  *       position: [50%, 50%]
  *     
  *     
@@ -798,85 +809,84 @@ use Hisune\EchartsPHP\Property;
  *     insideTopRight
  *     insideBottomRight
  *     
- *     参见：label position。
+ *     See: label position.
  *
  * @property int $rotate
- *    标签旋转。从 -90 度到 90 度。正值是逆时针。
- *     参见：label rotation。
+ *    Rotate label, from -90 degree to 90, positive value represents rotate anti-clockwise.
+ *     See: label rotation.
  *
  * @property array $offset
- *    是否对文字进行偏移。默认不偏移。例如：[30, 40] 表示文字在横向上偏移 30，纵向上偏移 40。
+ *    Whether to move text slightly. For example: [30, 40] means move 30 horizontally and move 40 vertically.
  *
  * @property string $align
- *    文字水平对齐方式，默认自动。
- *     可选：
+ *    Horizontal alignment of text, automatic by default.
+ *     Options are:
  *     
  *     left
  *     center
  *     right
  *     
- *     rich 中如果没有设置 align，则会取父层级的 align。例如：
+ *     If align is not set in rich, align in parent level will be used. For example:
  *     {
  *         align: right,
  *         rich: {
  *             a: {
- *                 // 没有设置 `align`，则 `align` 为 right
+ *                 // `align` is not set, then it will be right
  *             }
  *         }
  *     }
  *
  * @property string $verticalAlign
- *    文字垂直对齐方式，默认自动。
- *     可选：
+ *    Vertical alignment of text, automatic by default.
+ *     Options are:
  *     
  *     top
  *     middle
  *     bottom
  *     
- *     rich 中如果没有设置 verticalAlign，则会取父层级的 verticalAlign。例如：
+ *     If verticalAlign is not set in rich, verticalAlign in parent level will be used. For example:
  *     {
  *         verticalAlign: bottom,
  *         rich: {
  *             a: {
- *                 // 没有设置 `verticalAlign`，则 `verticalAlign` 为 bottom
+ *                 // `verticalAlign` is not set, then it will be bottom
  *             }
  *         }
  *     }
  *
  * @property int $lineHeight
- *    行高。
- *     rich 中如果没有设置 lineHeight，则会取父层级的 lineHeight。例如：
+ *    Line height of the text fregment.
+ *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
  *         rich: {
  *             a: {
- *                 // 没有设置 `lineHeight`，则 `lineHeight` 为 56
+ *                 // `lineHeight` is not set, then it will be 56
  *             }
  *         }
  *     }
  *
  * @property int|string $width
- *    文字块的宽度。一般不用指定，不指定则自动是文字的宽度。在想做表格项或者使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     width 也可以是百分比字符串，如 100%。表示的是所在文本块的 contentWidth（即不包含文本块的 padding）的百分之多少。之所以以 contentWidth 做基数，因为每个文本片段只能基于 content box 布局。如果以 outerWidth 做基数，则百分比的计算在实用中不具有意义，可能会超出。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
+ *     Notice, width and height only work when rich specified.
  *
  * @property int|string $height
- *    文字块的高度。一般不用指定，不指定则自动是文字的高度。在使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     Notice, width and height only work when rich specified.
  *
  * @property Label\Rich $rich
- *    在 rich 里面，可以自定义富文本样式。利用富文本样式，可以在标签中做出非常丰富的效果。
- *     例如：
+ *    Rich text styles can be defined in this rich property. For example:
  *     label: {
- *         // 在文本中，可以对部分文本采用 rich 中定义样式。
- *         // 这里需要在文本中使用标记符号：
- *         // `{styleName|text content text content}` 标记样式名。
- *         // 注意，换行仍是使用 \n。
+ *         // Styles defined in rich can be applied to some fregments
+ *         // of text by adding some markers to those fregment, like
+ *         // `{styleName|text content text content}`.
+ *         // `\n` is the newline character.
  *         formatter: [
- *             {a|这段文本采用样式a},
- *             {b|这段文本采用样式b}这段用默认样式{x|这段用样式x}
+ *             {a|Style a is applied to this snippet}
+ *             {b|Style b is applied to this snippet}This snippet use default style{x|use style x}
  *         ].join(\n),
  *     
  *         rich: {
@@ -900,18 +910,21 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *     
- *     详情参见教程：富文本标签
+ *     For more details, see Rich Text please.
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|array $position
- *    标签的位置。
- *     可选：
+ *    Label position.
+ *     Followings are the options: 
  *     
  *     [x, y]
- *       通过相对的百分比或者绝对像素值表示标签相对于图形包围盒左上角的位置。
- *       示例：
- *       // 绝对的像素值
+ *       Use relative percentage, or absolute pixel values to represent position of label relative to top-left corner of bounding box.
+ *       For example:
+ *       // Absolute pixel values
  *       position: [10, 10],
- *       // 相对的百分比
+ *       // Relative percentage
  *       position: [50%, 50%]
  *     
  *     
@@ -930,85 +943,84 @@ use Hisune\EchartsPHP\Property;
  *     insideTopRight
  *     insideBottomRight
  *     
- *     参见：label position。
+ *     See: label position.
  *
  * @property int $rotate
- *    标签旋转。从 -90 度到 90 度。正值是逆时针。
- *     参见：label rotation。
+ *    Rotate label, from -90 degree to 90, positive value represents rotate anti-clockwise.
+ *     See: label rotation.
  *
  * @property array $offset
- *    是否对文字进行偏移。默认不偏移。例如：[30, 40] 表示文字在横向上偏移 30，纵向上偏移 40。
+ *    Whether to move text slightly. For example: [30, 40] means move 30 horizontally and move 40 vertically.
  *
  * @property string $align
- *    文字水平对齐方式，默认自动。
- *     可选：
+ *    Horizontal alignment of text, automatic by default.
+ *     Options are:
  *     
  *     left
  *     center
  *     right
  *     
- *     rich 中如果没有设置 align，则会取父层级的 align。例如：
+ *     If align is not set in rich, align in parent level will be used. For example:
  *     {
  *         align: right,
  *         rich: {
  *             a: {
- *                 // 没有设置 `align`，则 `align` 为 right
+ *                 // `align` is not set, then it will be right
  *             }
  *         }
  *     }
  *
  * @property string $verticalAlign
- *    文字垂直对齐方式，默认自动。
- *     可选：
+ *    Vertical alignment of text, automatic by default.
+ *     Options are:
  *     
  *     top
  *     middle
  *     bottom
  *     
- *     rich 中如果没有设置 verticalAlign，则会取父层级的 verticalAlign。例如：
+ *     If verticalAlign is not set in rich, verticalAlign in parent level will be used. For example:
  *     {
  *         verticalAlign: bottom,
  *         rich: {
  *             a: {
- *                 // 没有设置 `verticalAlign`，则 `verticalAlign` 为 bottom
+ *                 // `verticalAlign` is not set, then it will be bottom
  *             }
  *         }
  *     }
  *
  * @property int $lineHeight
- *    行高。
- *     rich 中如果没有设置 lineHeight，则会取父层级的 lineHeight。例如：
+ *    Line height of the text fregment.
+ *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
  *         rich: {
  *             a: {
- *                 // 没有设置 `lineHeight`，则 `lineHeight` 为 56
+ *                 // `lineHeight` is not set, then it will be 56
  *             }
  *         }
  *     }
  *
  * @property int|string $width
- *    文字块的宽度。一般不用指定，不指定则自动是文字的宽度。在想做表格项或者使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     width 也可以是百分比字符串，如 100%。表示的是所在文本块的 contentWidth（即不包含文本块的 padding）的百分之多少。之所以以 contentWidth 做基数，因为每个文本片段只能基于 content box 布局。如果以 outerWidth 做基数，则百分比的计算在实用中不具有意义，可能会超出。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
+ *     Notice, width and height only work when rich specified.
  *
  * @property int|string $height
- *    文字块的高度。一般不用指定，不指定则自动是文字的高度。在使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     Notice, width and height only work when rich specified.
  *
  * @property Label\Rich $rich
- *    在 rich 里面，可以自定义富文本样式。利用富文本样式，可以在标签中做出非常丰富的效果。
- *     例如：
+ *    Rich text styles can be defined in this rich property. For example:
  *     label: {
- *         // 在文本中，可以对部分文本采用 rich 中定义样式。
- *         // 这里需要在文本中使用标记符号：
- *         // `{styleName|text content text content}` 标记样式名。
- *         // 注意，换行仍是使用 \n。
+ *         // Styles defined in rich can be applied to some fregments
+ *         // of text by adding some markers to those fregment, like
+ *         // `{styleName|text content text content}`.
+ *         // `\n` is the newline character.
  *         formatter: [
- *             {a|这段文本采用样式a},
- *             {b|这段文本采用样式b}这段用默认样式{x|这段用样式x}
+ *             {a|Style a is applied to this snippet}
+ *             {b|Style b is applied to this snippet}This snippet use default style{x|use style x}
  *         ].join(\n),
  *     
  *         rich: {
@@ -1032,18 +1044,21 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *     
- *     详情参见教程：富文本标签
+ *     For more details, see Rich Text please.
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|array $position
- *    标签的位置。
- *     可选：
+ *    Label position.
+ *     Followings are the options: 
  *     
  *     [x, y]
- *       通过相对的百分比或者绝对像素值表示标签相对于图形包围盒左上角的位置。
- *       示例：
- *       // 绝对的像素值
+ *       Use relative percentage, or absolute pixel values to represent position of label relative to top-left corner of bounding box.
+ *       For example:
+ *       // Absolute pixel values
  *       position: [10, 10],
- *       // 相对的百分比
+ *       // Relative percentage
  *       position: [50%, 50%]
  *     
  *     
@@ -1062,85 +1077,84 @@ use Hisune\EchartsPHP\Property;
  *     insideTopRight
  *     insideBottomRight
  *     
- *     参见：label position。
+ *     See: label position.
  *
  * @property int $rotate
- *    标签旋转。从 -90 度到 90 度。正值是逆时针。
- *     参见：label rotation。
+ *    Rotate label, from -90 degree to 90, positive value represents rotate anti-clockwise.
+ *     See: label rotation.
  *
  * @property array $offset
- *    是否对文字进行偏移。默认不偏移。例如：[30, 40] 表示文字在横向上偏移 30，纵向上偏移 40。
+ *    Whether to move text slightly. For example: [30, 40] means move 30 horizontally and move 40 vertically.
  *
  * @property string $align
- *    文字水平对齐方式，默认自动。
- *     可选：
+ *    Horizontal alignment of text, automatic by default.
+ *     Options are:
  *     
  *     left
  *     center
  *     right
  *     
- *     rich 中如果没有设置 align，则会取父层级的 align。例如：
+ *     If align is not set in rich, align in parent level will be used. For example:
  *     {
  *         align: right,
  *         rich: {
  *             a: {
- *                 // 没有设置 `align`，则 `align` 为 right
+ *                 // `align` is not set, then it will be right
  *             }
  *         }
  *     }
  *
  * @property string $verticalAlign
- *    文字垂直对齐方式，默认自动。
- *     可选：
+ *    Vertical alignment of text, automatic by default.
+ *     Options are:
  *     
  *     top
  *     middle
  *     bottom
  *     
- *     rich 中如果没有设置 verticalAlign，则会取父层级的 verticalAlign。例如：
+ *     If verticalAlign is not set in rich, verticalAlign in parent level will be used. For example:
  *     {
  *         verticalAlign: bottom,
  *         rich: {
  *             a: {
- *                 // 没有设置 `verticalAlign`，则 `verticalAlign` 为 bottom
+ *                 // `verticalAlign` is not set, then it will be bottom
  *             }
  *         }
  *     }
  *
  * @property int $lineHeight
- *    行高。
- *     rich 中如果没有设置 lineHeight，则会取父层级的 lineHeight。例如：
+ *    Line height of the text fregment.
+ *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
  *         rich: {
  *             a: {
- *                 // 没有设置 `lineHeight`，则 `lineHeight` 为 56
+ *                 // `lineHeight` is not set, then it will be 56
  *             }
  *         }
  *     }
  *
  * @property int|string $width
- *    文字块的宽度。一般不用指定，不指定则自动是文字的宽度。在想做表格项或者使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     width 也可以是百分比字符串，如 100%。表示的是所在文本块的 contentWidth（即不包含文本块的 padding）的百分之多少。之所以以 contentWidth 做基数，因为每个文本片段只能基于 content box 布局。如果以 outerWidth 做基数，则百分比的计算在实用中不具有意义，可能会超出。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
+ *     Notice, width and height only work when rich specified.
  *
  * @property int|string $height
- *    文字块的高度。一般不用指定，不指定则自动是文字的高度。在使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     Notice, width and height only work when rich specified.
  *
  * @property Label\Rich $rich
- *    在 rich 里面，可以自定义富文本样式。利用富文本样式，可以在标签中做出非常丰富的效果。
- *     例如：
+ *    Rich text styles can be defined in this rich property. For example:
  *     label: {
- *         // 在文本中，可以对部分文本采用 rich 中定义样式。
- *         // 这里需要在文本中使用标记符号：
- *         // `{styleName|text content text content}` 标记样式名。
- *         // 注意，换行仍是使用 \n。
+ *         // Styles defined in rich can be applied to some fregments
+ *         // of text by adding some markers to those fregment, like
+ *         // `{styleName|text content text content}`.
+ *         // `\n` is the newline character.
  *         formatter: [
- *             {a|这段文本采用样式a},
- *             {b|这段文本采用样式b}这段用默认样式{x|这段用样式x}
+ *             {a|Style a is applied to this snippet}
+ *             {b|Style b is applied to this snippet}This snippet use default style{x|use style x}
  *         ].join(\n),
  *     
  *         rich: {
@@ -1164,18 +1178,21 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *     
- *     详情参见教程：富文本标签
+ *     For more details, see Rich Text please.
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|array $position
- *    标签的位置。
- *     可选：
+ *    Label position.
+ *     Followings are the options: 
  *     
  *     [x, y]
- *       通过相对的百分比或者绝对像素值表示标签相对于图形包围盒左上角的位置。
- *       示例：
- *       // 绝对的像素值
+ *       Use relative percentage, or absolute pixel values to represent position of label relative to top-left corner of bounding box.
+ *       For example:
+ *       // Absolute pixel values
  *       position: [10, 10],
- *       // 相对的百分比
+ *       // Relative percentage
  *       position: [50%, 50%]
  *     
  *     
@@ -1194,85 +1211,84 @@ use Hisune\EchartsPHP\Property;
  *     insideTopRight
  *     insideBottomRight
  *     
- *     参见：label position。
+ *     See: label position.
  *
  * @property int $rotate
- *    标签旋转。从 -90 度到 90 度。正值是逆时针。
- *     参见：label rotation。
+ *    Rotate label, from -90 degree to 90, positive value represents rotate anti-clockwise.
+ *     See: label rotation.
  *
  * @property array $offset
- *    是否对文字进行偏移。默认不偏移。例如：[30, 40] 表示文字在横向上偏移 30，纵向上偏移 40。
+ *    Whether to move text slightly. For example: [30, 40] means move 30 horizontally and move 40 vertically.
  *
  * @property string $align
- *    文字水平对齐方式，默认自动。
- *     可选：
+ *    Horizontal alignment of text, automatic by default.
+ *     Options are:
  *     
  *     left
  *     center
  *     right
  *     
- *     rich 中如果没有设置 align，则会取父层级的 align。例如：
+ *     If align is not set in rich, align in parent level will be used. For example:
  *     {
  *         align: right,
  *         rich: {
  *             a: {
- *                 // 没有设置 `align`，则 `align` 为 right
+ *                 // `align` is not set, then it will be right
  *             }
  *         }
  *     }
  *
  * @property string $verticalAlign
- *    文字垂直对齐方式，默认自动。
- *     可选：
+ *    Vertical alignment of text, automatic by default.
+ *     Options are:
  *     
  *     top
  *     middle
  *     bottom
  *     
- *     rich 中如果没有设置 verticalAlign，则会取父层级的 verticalAlign。例如：
+ *     If verticalAlign is not set in rich, verticalAlign in parent level will be used. For example:
  *     {
  *         verticalAlign: bottom,
  *         rich: {
  *             a: {
- *                 // 没有设置 `verticalAlign`，则 `verticalAlign` 为 bottom
+ *                 // `verticalAlign` is not set, then it will be bottom
  *             }
  *         }
  *     }
  *
  * @property int $lineHeight
- *    行高。
- *     rich 中如果没有设置 lineHeight，则会取父层级的 lineHeight。例如：
+ *    Line height of the text fregment.
+ *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
  *         rich: {
  *             a: {
- *                 // 没有设置 `lineHeight`，则 `lineHeight` 为 56
+ *                 // `lineHeight` is not set, then it will be 56
  *             }
  *         }
  *     }
  *
  * @property int|string $width
- *    文字块的宽度。一般不用指定，不指定则自动是文字的宽度。在想做表格项或者使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     width 也可以是百分比字符串，如 100%。表示的是所在文本块的 contentWidth（即不包含文本块的 padding）的百分之多少。之所以以 contentWidth 做基数，因为每个文本片段只能基于 content box 布局。如果以 outerWidth 做基数，则百分比的计算在实用中不具有意义，可能会超出。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
+ *     Notice, width and height only work when rich specified.
  *
  * @property int|string $height
- *    文字块的高度。一般不用指定，不指定则自动是文字的高度。在使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     Notice, width and height only work when rich specified.
  *
  * @property Label\Rich $rich
- *    在 rich 里面，可以自定义富文本样式。利用富文本样式，可以在标签中做出非常丰富的效果。
- *     例如：
+ *    Rich text styles can be defined in this rich property. For example:
  *     label: {
- *         // 在文本中，可以对部分文本采用 rich 中定义样式。
- *         // 这里需要在文本中使用标记符号：
- *         // `{styleName|text content text content}` 标记样式名。
- *         // 注意，换行仍是使用 \n。
+ *         // Styles defined in rich can be applied to some fregments
+ *         // of text by adding some markers to those fregment, like
+ *         // `{styleName|text content text content}`.
+ *         // `\n` is the newline character.
  *         formatter: [
- *             {a|这段文本采用样式a},
- *             {b|这段文本采用样式b}这段用默认样式{x|这段用样式x}
+ *             {a|Style a is applied to this snippet}
+ *             {b|Style b is applied to this snippet}This snippet use default style{x|use style x}
  *         ].join(\n),
  *     
  *         rich: {
@@ -1296,18 +1312,21 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *     
- *     详情参见教程：富文本标签
+ *     For more details, see Rich Text please.
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|array $position
- *    标签的位置。
- *     可选：
+ *    Label position.
+ *     Followings are the options: 
  *     
  *     [x, y]
- *       通过相对的百分比或者绝对像素值表示标签相对于图形包围盒左上角的位置。
- *       示例：
- *       // 绝对的像素值
+ *       Use relative percentage, or absolute pixel values to represent position of label relative to top-left corner of bounding box.
+ *       For example:
+ *       // Absolute pixel values
  *       position: [10, 10],
- *       // 相对的百分比
+ *       // Relative percentage
  *       position: [50%, 50%]
  *     
  *     
@@ -1326,85 +1345,84 @@ use Hisune\EchartsPHP\Property;
  *     insideTopRight
  *     insideBottomRight
  *     
- *     参见：label position。
+ *     See: label position.
  *
  * @property int $rotate
- *    标签旋转。从 -90 度到 90 度。正值是逆时针。
- *     参见：label rotation。
+ *    Rotate label, from -90 degree to 90, positive value represents rotate anti-clockwise.
+ *     See: label rotation.
  *
  * @property array $offset
- *    是否对文字进行偏移。默认不偏移。例如：[30, 40] 表示文字在横向上偏移 30，纵向上偏移 40。
+ *    Whether to move text slightly. For example: [30, 40] means move 30 horizontally and move 40 vertically.
  *
  * @property string $align
- *    文字水平对齐方式，默认自动。
- *     可选：
+ *    Horizontal alignment of text, automatic by default.
+ *     Options are:
  *     
  *     left
  *     center
  *     right
  *     
- *     rich 中如果没有设置 align，则会取父层级的 align。例如：
+ *     If align is not set in rich, align in parent level will be used. For example:
  *     {
  *         align: right,
  *         rich: {
  *             a: {
- *                 // 没有设置 `align`，则 `align` 为 right
+ *                 // `align` is not set, then it will be right
  *             }
  *         }
  *     }
  *
  * @property string $verticalAlign
- *    文字垂直对齐方式，默认自动。
- *     可选：
+ *    Vertical alignment of text, automatic by default.
+ *     Options are:
  *     
  *     top
  *     middle
  *     bottom
  *     
- *     rich 中如果没有设置 verticalAlign，则会取父层级的 verticalAlign。例如：
+ *     If verticalAlign is not set in rich, verticalAlign in parent level will be used. For example:
  *     {
  *         verticalAlign: bottom,
  *         rich: {
  *             a: {
- *                 // 没有设置 `verticalAlign`，则 `verticalAlign` 为 bottom
+ *                 // `verticalAlign` is not set, then it will be bottom
  *             }
  *         }
  *     }
  *
  * @property int $lineHeight
- *    行高。
- *     rich 中如果没有设置 lineHeight，则会取父层级的 lineHeight。例如：
+ *    Line height of the text fregment.
+ *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
  *         rich: {
  *             a: {
- *                 // 没有设置 `lineHeight`，则 `lineHeight` 为 56
+ *                 // `lineHeight` is not set, then it will be 56
  *             }
  *         }
  *     }
  *
  * @property int|string $width
- *    文字块的宽度。一般不用指定，不指定则自动是文字的宽度。在想做表格项或者使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     width 也可以是百分比字符串，如 100%。表示的是所在文本块的 contentWidth（即不包含文本块的 padding）的百分之多少。之所以以 contentWidth 做基数，因为每个文本片段只能基于 content box 布局。如果以 outerWidth 做基数，则百分比的计算在实用中不具有意义，可能会超出。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
+ *     Notice, width and height only work when rich specified.
  *
  * @property int|string $height
- *    文字块的高度。一般不用指定，不指定则自动是文字的高度。在使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     Notice, width and height only work when rich specified.
  *
  * @property Label\Rich $rich
- *    在 rich 里面，可以自定义富文本样式。利用富文本样式，可以在标签中做出非常丰富的效果。
- *     例如：
+ *    Rich text styles can be defined in this rich property. For example:
  *     label: {
- *         // 在文本中，可以对部分文本采用 rich 中定义样式。
- *         // 这里需要在文本中使用标记符号：
- *         // `{styleName|text content text content}` 标记样式名。
- *         // 注意，换行仍是使用 \n。
+ *         // Styles defined in rich can be applied to some fregments
+ *         // of text by adding some markers to those fregment, like
+ *         // `{styleName|text content text content}`.
+ *         // `\n` is the newline character.
  *         formatter: [
- *             {a|这段文本采用样式a},
- *             {b|这段文本采用样式b}这段用默认样式{x|这段用样式x}
+ *             {a|Style a is applied to this snippet}
+ *             {b|Style b is applied to this snippet}This snippet use default style{x|use style x}
  *         ].join(\n),
  *     
  *         rich: {
@@ -1428,18 +1446,21 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *     
- *     详情参见教程：富文本标签
+ *     For more details, see Rich Text please.
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|array $position
- *    标签的位置。
- *     可选：
+ *    Label position.
+ *     Followings are the options: 
  *     
  *     [x, y]
- *       通过相对的百分比或者绝对像素值表示标签相对于图形包围盒左上角的位置。
- *       示例：
- *       // 绝对的像素值
+ *       Use relative percentage, or absolute pixel values to represent position of label relative to top-left corner of bounding box.
+ *       For example:
+ *       // Absolute pixel values
  *       position: [10, 10],
- *       // 相对的百分比
+ *       // Relative percentage
  *       position: [50%, 50%]
  *     
  *     
@@ -1458,85 +1479,84 @@ use Hisune\EchartsPHP\Property;
  *     insideTopRight
  *     insideBottomRight
  *     
- *     参见：label position。
+ *     See: label position.
  *
  * @property int $rotate
- *    标签旋转。从 -90 度到 90 度。正值是逆时针。
- *     参见：label rotation。
+ *    Rotate label, from -90 degree to 90, positive value represents rotate anti-clockwise.
+ *     See: label rotation.
  *
  * @property array $offset
- *    是否对文字进行偏移。默认不偏移。例如：[30, 40] 表示文字在横向上偏移 30，纵向上偏移 40。
+ *    Whether to move text slightly. For example: [30, 40] means move 30 horizontally and move 40 vertically.
  *
  * @property string $align
- *    文字水平对齐方式，默认自动。
- *     可选：
+ *    Horizontal alignment of text, automatic by default.
+ *     Options are:
  *     
  *     left
  *     center
  *     right
  *     
- *     rich 中如果没有设置 align，则会取父层级的 align。例如：
+ *     If align is not set in rich, align in parent level will be used. For example:
  *     {
  *         align: right,
  *         rich: {
  *             a: {
- *                 // 没有设置 `align`，则 `align` 为 right
+ *                 // `align` is not set, then it will be right
  *             }
  *         }
  *     }
  *
  * @property string $verticalAlign
- *    文字垂直对齐方式，默认自动。
- *     可选：
+ *    Vertical alignment of text, automatic by default.
+ *     Options are:
  *     
  *     top
  *     middle
  *     bottom
  *     
- *     rich 中如果没有设置 verticalAlign，则会取父层级的 verticalAlign。例如：
+ *     If verticalAlign is not set in rich, verticalAlign in parent level will be used. For example:
  *     {
  *         verticalAlign: bottom,
  *         rich: {
  *             a: {
- *                 // 没有设置 `verticalAlign`，则 `verticalAlign` 为 bottom
+ *                 // `verticalAlign` is not set, then it will be bottom
  *             }
  *         }
  *     }
  *
  * @property int $lineHeight
- *    行高。
- *     rich 中如果没有设置 lineHeight，则会取父层级的 lineHeight。例如：
+ *    Line height of the text fregment.
+ *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
  *         rich: {
  *             a: {
- *                 // 没有设置 `lineHeight`，则 `lineHeight` 为 56
+ *                 // `lineHeight` is not set, then it will be 56
  *             }
  *         }
  *     }
  *
  * @property int|string $width
- *    文字块的宽度。一般不用指定，不指定则自动是文字的宽度。在想做表格项或者使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     width 也可以是百分比字符串，如 100%。表示的是所在文本块的 contentWidth（即不包含文本块的 padding）的百分之多少。之所以以 contentWidth 做基数，因为每个文本片段只能基于 content box 布局。如果以 outerWidth 做基数，则百分比的计算在实用中不具有意义，可能会超出。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
+ *     Notice, width and height only work when rich specified.
  *
  * @property int|string $height
- *    文字块的高度。一般不用指定，不指定则自动是文字的高度。在使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     Notice, width and height only work when rich specified.
  *
  * @property Label\Rich $rich
- *    在 rich 里面，可以自定义富文本样式。利用富文本样式，可以在标签中做出非常丰富的效果。
- *     例如：
+ *    Rich text styles can be defined in this rich property. For example:
  *     label: {
- *         // 在文本中，可以对部分文本采用 rich 中定义样式。
- *         // 这里需要在文本中使用标记符号：
- *         // `{styleName|text content text content}` 标记样式名。
- *         // 注意，换行仍是使用 \n。
+ *         // Styles defined in rich can be applied to some fregments
+ *         // of text by adding some markers to those fregment, like
+ *         // `{styleName|text content text content}`.
+ *         // `\n` is the newline character.
  *         formatter: [
- *             {a|这段文本采用样式a},
- *             {b|这段文本采用样式b}这段用默认样式{x|这段用样式x}
+ *             {a|Style a is applied to this snippet}
+ *             {b|Style b is applied to this snippet}This snippet use default style{x|use style x}
  *         ].join(\n),
  *     
  *         rich: {
@@ -1560,18 +1580,21 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *     
- *     详情参见教程：富文本标签
+ *     For more details, see Rich Text please.
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|array $position
- *    标签的位置。
- *     可选：
+ *    Label position.
+ *     Followings are the options: 
  *     
  *     [x, y]
- *       通过相对的百分比或者绝对像素值表示标签相对于图形包围盒左上角的位置。
- *       示例：
- *       // 绝对的像素值
+ *       Use relative percentage, or absolute pixel values to represent position of label relative to top-left corner of bounding box.
+ *       For example:
+ *       // Absolute pixel values
  *       position: [10, 10],
- *       // 相对的百分比
+ *       // Relative percentage
  *       position: [50%, 50%]
  *     
  *     
@@ -1590,85 +1613,84 @@ use Hisune\EchartsPHP\Property;
  *     insideTopRight
  *     insideBottomRight
  *     
- *     参见：label position。
+ *     See: label position.
  *
  * @property int $rotate
- *    标签旋转。从 -90 度到 90 度。正值是逆时针。
- *     参见：label rotation。
+ *    Rotate label, from -90 degree to 90, positive value represents rotate anti-clockwise.
+ *     See: label rotation.
  *
  * @property array $offset
- *    是否对文字进行偏移。默认不偏移。例如：[30, 40] 表示文字在横向上偏移 30，纵向上偏移 40。
+ *    Whether to move text slightly. For example: [30, 40] means move 30 horizontally and move 40 vertically.
  *
  * @property string $align
- *    文字水平对齐方式，默认自动。
- *     可选：
+ *    Horizontal alignment of text, automatic by default.
+ *     Options are:
  *     
  *     left
  *     center
  *     right
  *     
- *     rich 中如果没有设置 align，则会取父层级的 align。例如：
+ *     If align is not set in rich, align in parent level will be used. For example:
  *     {
  *         align: right,
  *         rich: {
  *             a: {
- *                 // 没有设置 `align`，则 `align` 为 right
+ *                 // `align` is not set, then it will be right
  *             }
  *         }
  *     }
  *
  * @property string $verticalAlign
- *    文字垂直对齐方式，默认自动。
- *     可选：
+ *    Vertical alignment of text, automatic by default.
+ *     Options are:
  *     
  *     top
  *     middle
  *     bottom
  *     
- *     rich 中如果没有设置 verticalAlign，则会取父层级的 verticalAlign。例如：
+ *     If verticalAlign is not set in rich, verticalAlign in parent level will be used. For example:
  *     {
  *         verticalAlign: bottom,
  *         rich: {
  *             a: {
- *                 // 没有设置 `verticalAlign`，则 `verticalAlign` 为 bottom
+ *                 // `verticalAlign` is not set, then it will be bottom
  *             }
  *         }
  *     }
  *
  * @property int $lineHeight
- *    行高。
- *     rich 中如果没有设置 lineHeight，则会取父层级的 lineHeight。例如：
+ *    Line height of the text fregment.
+ *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
  *         rich: {
  *             a: {
- *                 // 没有设置 `lineHeight`，则 `lineHeight` 为 56
+ *                 // `lineHeight` is not set, then it will be 56
  *             }
  *         }
  *     }
  *
  * @property int|string $width
- *    文字块的宽度。一般不用指定，不指定则自动是文字的宽度。在想做表格项或者使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     width 也可以是百分比字符串，如 100%。表示的是所在文本块的 contentWidth（即不包含文本块的 padding）的百分之多少。之所以以 contentWidth 做基数，因为每个文本片段只能基于 content box 布局。如果以 outerWidth 做基数，则百分比的计算在实用中不具有意义，可能会超出。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
+ *     Notice, width and height only work when rich specified.
  *
  * @property int|string $height
- *    文字块的高度。一般不用指定，不指定则自动是文字的高度。在使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     Notice, width and height only work when rich specified.
  *
  * @property Label\Rich $rich
- *    在 rich 里面，可以自定义富文本样式。利用富文本样式，可以在标签中做出非常丰富的效果。
- *     例如：
+ *    Rich text styles can be defined in this rich property. For example:
  *     label: {
- *         // 在文本中，可以对部分文本采用 rich 中定义样式。
- *         // 这里需要在文本中使用标记符号：
- *         // `{styleName|text content text content}` 标记样式名。
- *         // 注意，换行仍是使用 \n。
+ *         // Styles defined in rich can be applied to some fregments
+ *         // of text by adding some markers to those fregment, like
+ *         // `{styleName|text content text content}`.
+ *         // `\n` is the newline character.
  *         formatter: [
- *             {a|这段文本采用样式a},
- *             {b|这段文本采用样式b}这段用默认样式{x|这段用样式x}
+ *             {a|Style a is applied to this snippet}
+ *             {b|Style b is applied to this snippet}This snippet use default style{x|use style x}
  *         ].join(\n),
  *     
  *         rich: {
@@ -1692,18 +1714,21 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *     
- *     详情参见教程：富文本标签
+ *     For more details, see Rich Text please.
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|array $position
- *    标签的位置。
- *     可选：
+ *    Label position.
+ *     Followings are the options: 
  *     
  *     [x, y]
- *       通过相对的百分比或者绝对像素值表示标签相对于图形包围盒左上角的位置。
- *       示例：
- *       // 绝对的像素值
+ *       Use relative percentage, or absolute pixel values to represent position of label relative to top-left corner of bounding box.
+ *       For example:
+ *       // Absolute pixel values
  *       position: [10, 10],
- *       // 相对的百分比
+ *       // Relative percentage
  *       position: [50%, 50%]
  *     
  *     
@@ -1722,85 +1747,84 @@ use Hisune\EchartsPHP\Property;
  *     insideTopRight
  *     insideBottomRight
  *     
- *     参见：label position。
+ *     See: label position.
  *
  * @property int $rotate
- *    标签旋转。从 -90 度到 90 度。正值是逆时针。
- *     参见：label rotation。
+ *    Rotate label, from -90 degree to 90, positive value represents rotate anti-clockwise.
+ *     See: label rotation.
  *
  * @property array $offset
- *    是否对文字进行偏移。默认不偏移。例如：[30, 40] 表示文字在横向上偏移 30，纵向上偏移 40。
+ *    Whether to move text slightly. For example: [30, 40] means move 30 horizontally and move 40 vertically.
  *
  * @property string $align
- *    文字水平对齐方式，默认自动。
- *     可选：
+ *    Horizontal alignment of text, automatic by default.
+ *     Options are:
  *     
  *     left
  *     center
  *     right
  *     
- *     rich 中如果没有设置 align，则会取父层级的 align。例如：
+ *     If align is not set in rich, align in parent level will be used. For example:
  *     {
  *         align: right,
  *         rich: {
  *             a: {
- *                 // 没有设置 `align`，则 `align` 为 right
+ *                 // `align` is not set, then it will be right
  *             }
  *         }
  *     }
  *
  * @property string $verticalAlign
- *    文字垂直对齐方式，默认自动。
- *     可选：
+ *    Vertical alignment of text, automatic by default.
+ *     Options are:
  *     
  *     top
  *     middle
  *     bottom
  *     
- *     rich 中如果没有设置 verticalAlign，则会取父层级的 verticalAlign。例如：
+ *     If verticalAlign is not set in rich, verticalAlign in parent level will be used. For example:
  *     {
  *         verticalAlign: bottom,
  *         rich: {
  *             a: {
- *                 // 没有设置 `verticalAlign`，则 `verticalAlign` 为 bottom
+ *                 // `verticalAlign` is not set, then it will be bottom
  *             }
  *         }
  *     }
  *
  * @property int $lineHeight
- *    行高。
- *     rich 中如果没有设置 lineHeight，则会取父层级的 lineHeight。例如：
+ *    Line height of the text fregment.
+ *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
  *         rich: {
  *             a: {
- *                 // 没有设置 `lineHeight`，则 `lineHeight` 为 56
+ *                 // `lineHeight` is not set, then it will be 56
  *             }
  *         }
  *     }
  *
  * @property int|string $width
- *    文字块的宽度。一般不用指定，不指定则自动是文字的宽度。在想做表格项或者使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     width 也可以是百分比字符串，如 100%。表示的是所在文本块的 contentWidth（即不包含文本块的 padding）的百分之多少。之所以以 contentWidth 做基数，因为每个文本片段只能基于 content box 布局。如果以 outerWidth 做基数，则百分比的计算在实用中不具有意义，可能会超出。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
+ *     Notice, width and height only work when rich specified.
  *
  * @property int|string $height
- *    文字块的高度。一般不用指定，不指定则自动是文字的高度。在使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     Notice, width and height only work when rich specified.
  *
  * @property Label\Rich $rich
- *    在 rich 里面，可以自定义富文本样式。利用富文本样式，可以在标签中做出非常丰富的效果。
- *     例如：
+ *    Rich text styles can be defined in this rich property. For example:
  *     label: {
- *         // 在文本中，可以对部分文本采用 rich 中定义样式。
- *         // 这里需要在文本中使用标记符号：
- *         // `{styleName|text content text content}` 标记样式名。
- *         // 注意，换行仍是使用 \n。
+ *         // Styles defined in rich can be applied to some fregments
+ *         // of text by adding some markers to those fregment, like
+ *         // `{styleName|text content text content}`.
+ *         // `\n` is the newline character.
  *         formatter: [
- *             {a|这段文本采用样式a},
- *             {b|这段文本采用样式b}这段用默认样式{x|这段用样式x}
+ *             {a|Style a is applied to this snippet}
+ *             {b|Style b is applied to this snippet}This snippet use default style{x|use style x}
  *         ].join(\n),
  *     
  *         rich: {
@@ -1824,18 +1848,21 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *     
- *     详情参见教程：富文本标签
+ *     For more details, see Rich Text please.
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  *  * @property string|array $position
- *    标签的位置。
- *     可选：
+ *    Label position.
+ *     Followings are the options: 
  *     
  *     [x, y]
- *       通过相对的百分比或者绝对像素值表示标签相对于图形包围盒左上角的位置。
- *       示例：
- *       // 绝对的像素值
+ *       Use relative percentage, or absolute pixel values to represent position of label relative to top-left corner of bounding box.
+ *       For example:
+ *       // Absolute pixel values
  *       position: [10, 10],
- *       // 相对的百分比
+ *       // Relative percentage
  *       position: [50%, 50%]
  *     
  *     
@@ -1854,85 +1881,84 @@ use Hisune\EchartsPHP\Property;
  *     insideTopRight
  *     insideBottomRight
  *     
- *     参见：label position。
+ *     See: label position.
  *
  * @property int $rotate
- *    标签旋转。从 -90 度到 90 度。正值是逆时针。
- *     参见：label rotation。
+ *    Rotate label, from -90 degree to 90, positive value represents rotate anti-clockwise.
+ *     See: label rotation.
  *
  * @property array $offset
- *    是否对文字进行偏移。默认不偏移。例如：[30, 40] 表示文字在横向上偏移 30，纵向上偏移 40。
+ *    Whether to move text slightly. For example: [30, 40] means move 30 horizontally and move 40 vertically.
  *
  * @property string $align
- *    文字水平对齐方式，默认自动。
- *     可选：
+ *    Horizontal alignment of text, automatic by default.
+ *     Options are:
  *     
  *     left
  *     center
  *     right
  *     
- *     rich 中如果没有设置 align，则会取父层级的 align。例如：
+ *     If align is not set in rich, align in parent level will be used. For example:
  *     {
  *         align: right,
  *         rich: {
  *             a: {
- *                 // 没有设置 `align`，则 `align` 为 right
+ *                 // `align` is not set, then it will be right
  *             }
  *         }
  *     }
  *
  * @property string $verticalAlign
- *    文字垂直对齐方式，默认自动。
- *     可选：
+ *    Vertical alignment of text, automatic by default.
+ *     Options are:
  *     
  *     top
  *     middle
  *     bottom
  *     
- *     rich 中如果没有设置 verticalAlign，则会取父层级的 verticalAlign。例如：
+ *     If verticalAlign is not set in rich, verticalAlign in parent level will be used. For example:
  *     {
  *         verticalAlign: bottom,
  *         rich: {
  *             a: {
- *                 // 没有设置 `verticalAlign`，则 `verticalAlign` 为 bottom
+ *                 // `verticalAlign` is not set, then it will be bottom
  *             }
  *         }
  *     }
  *
  * @property int $lineHeight
- *    行高。
- *     rich 中如果没有设置 lineHeight，则会取父层级的 lineHeight。例如：
+ *    Line height of the text fregment.
+ *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
  *         rich: {
  *             a: {
- *                 // 没有设置 `lineHeight`，则 `lineHeight` 为 56
+ *                 // `lineHeight` is not set, then it will be 56
  *             }
  *         }
  *     }
  *
  * @property int|string $width
- *    文字块的宽度。一般不用指定，不指定则自动是文字的宽度。在想做表格项或者使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     width 也可以是百分比字符串，如 100%。表示的是所在文本块的 contentWidth（即不包含文本块的 padding）的百分之多少。之所以以 contentWidth 做基数，因为每个文本片段只能基于 content box 布局。如果以 outerWidth 做基数，则百分比的计算在实用中不具有意义，可能会超出。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
+ *     Notice, width and height only work when rich specified.
  *
  * @property int|string $height
- *    文字块的高度。一般不用指定，不指定则自动是文字的高度。在使用图片（参见 backgroundColor）时，可能会使用它。
- *     注意，文字块的 width 和 height 指定的是内容高宽，不包含 padding。
- *     注意，如果不定义 rich 属性，则不能指定 width 和 height。
+ *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
+ *     Notice, width and height specifies the width and height of the content, without padding.
+ *     Notice, width and height only work when rich specified.
  *
  * @property Label\Rich $rich
- *    在 rich 里面，可以自定义富文本样式。利用富文本样式，可以在标签中做出非常丰富的效果。
- *     例如：
+ *    Rich text styles can be defined in this rich property. For example:
  *     label: {
- *         // 在文本中，可以对部分文本采用 rich 中定义样式。
- *         // 这里需要在文本中使用标记符号：
- *         // `{styleName|text content text content}` 标记样式名。
- *         // 注意，换行仍是使用 \n。
+ *         // Styles defined in rich can be applied to some fregments
+ *         // of text by adding some markers to those fregment, like
+ *         // `{styleName|text content text content}`.
+ *         // `\n` is the newline character.
  *         formatter: [
- *             {a|这段文本采用样式a},
- *             {b|这段文本采用样式b}这段用默认样式{x|这段用样式x}
+ *             {a|Style a is applied to this snippet}
+ *             {b|Style b is applied to this snippet}This snippet use default style{x|use style x}
  *         ].join(\n),
  *     
  *         rich: {
@@ -1956,7 +1982,10 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *     
- *     详情参见教程：富文本标签
+ *     For more details, see Rich Text please.
+ *
+ * @property Label\Emphasis $emphasis
+ *    
  *
  * {_more_}
  */

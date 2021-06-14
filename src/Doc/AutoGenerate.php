@@ -18,8 +18,8 @@ class AutoGenerate
 {
 
     public $optionJson = [
-        'cn' => 'http://echarts.baidu.com/documents/cn/option.json',
-        'en' => 'https://ecomfe.github.io/echarts-doc/public/en/documents/en/option.json',
+        'cn' => 'https://www.echartsjs.com/documents/zh/option.json',
+        'en' => 'https://echarts.apache.org/documents/en/option.json',
     ];
 
     protected $language;
@@ -123,7 +123,7 @@ class AutoGenerate
 
             // 输出ECharts类的property doc
             if(!$dir){
-                $description = isset($property['descriptionCN']) ? $this->_replaceDescription($property['descriptionCN'], false) . "\n *" : '';
+                $description = isset($property['description']) ? $this->_replaceDescription($property['description'], false) . "\n *" : '';
                 if(file_exists($dirToWrite . '/' . $top . '.php')){
                     echo " * @property Doc\\IDE\\{$top} \$" . lcfirst($top) . "\n *   " . $description . "\n";
                 }else{
@@ -173,7 +173,7 @@ PHP;
             $default = "\n";
         }
 
-        $detail['descriptionCN'] = isset($detail['descriptionCN']) ? $this->_replaceDescription($detail['descriptionCN'], true, 0, 4) : '';
+        $detail['description'] = isset($detail['description']) ? $this->_replaceDescription($detail['description'], true, 0, 4) : '';
 
         if(isset($detail['type'])){
             if(!isset($detail['properties'])){
@@ -184,12 +184,12 @@ PHP;
                 }else if(is_string($detail['type'])){
                     $detail['type'] = $this->_replacePropertyType($detail['type']);
                 }
-                $line = $this->_propertyLine((is_array($detail['type']) ? implode('|', $detail['type']) : $detail['type']), $name, $default, $detail['descriptionCN'], $top, $dir);
+                $line = $this->_propertyLine((is_array($detail['type']) ? implode('|', $detail['type']) : $detail['type']), $name, $default, $detail['description'], $top, $dir);
             }else{
-                $line = $this->_propertyLine(ltrim(str_replace('/', '\\', $top) . '\\' . ucfirst($name), '\\'), $name, $default, $detail['descriptionCN'], $top, $dir);
+                $line = $this->_propertyLine(ltrim(str_replace('/', '\\', $top) . '\\' . ucfirst($name), '\\'), $name, $default, $detail['description'], $top, $dir);
             }
         }else{
-            $line = $this->_propertyLine('mixed', $name, $default, $detail['descriptionCN'], $top, $dir);
+            $line = $this->_propertyLine('mixed', $name, $default, $detail['description'], $top, $dir);
         }
 
         return $line;

@@ -9,16 +9,16 @@ namespace Hisune\EchartsPHP\Doc\IDE\Toolbox\Feature\MagicType;
 use Hisune\EchartsPHP\Property;
 
 /**
- * @property string $line Default: '切换为折线图'
+ * @property string $line Default: 'for line charts'
  *    
  *
- * @property string $bar Default: '切换为柱状图'
+ * @property string $bar Default: 'for bar charts'
  *    
  *
- * @property string $stack Default: '切换为堆叠'
+ * @property string $stack Default: 'for stacked charts'
  *    
  *
- * @property string $tiled Default: '切换为平铺'
+ * @property string $tiled Default: 'for tiled charts'
  *    
  *
  * {_more_}

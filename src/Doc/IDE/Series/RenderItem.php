@@ -10,13 +10,13 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property RenderItem\Arguments $arguments
- *    renderItem 函数的参数。
+ *    Parameters of renderItem.
  *
  * @property array $return
- *    图形元素。每个图形元素是一个 object。详细信息参见：graphic。（width\height\top\bottom 不支持）
- *     如果什么都不渲染，可以不返回任何东西。
- *     例如：
- *     // 单独一个矩形
+ *    renderItem should returns graphic element definitions. Each graphic element is an object. See graphic for detailed info. (But width\height\top\bottom is not supported here)
+ *     If nothing should be rendered in this data item, just returns nothing.
+ *     For example:
+ *     // Returns a rectangular.
  *     {
  *         type: rect,
  *         shape: {
@@ -25,11 +25,12 @@ use Hisune\EchartsPHP\Property;
  *         style: api.style()
  *     }
  *     
- *     // 一组图形元素
+ *     // Returns a group of elements.
  *     {
  *         type: group,
- *         // 如果 diffChildrenByName 设为 true，则会使用 child.name 进行 diff，
- *         // 从而能有更好的过度动画，但是降低性能。缺省为 false。
+ *         // If diffChildrenByName is set as `true`, `child.name` will be used
+ *         // to diff children, which improves animation transition but degrade
+ *         // performance. The default value is `false`.
  *         // diffChildrenByName: true,
  *         children: [{
  *             type: circle,
@@ -45,6 +46,49 @@ use Hisune\EchartsPHP\Property;
  *             style: api.style()
  *         }]
  *     }
+ *
+ * @property RenderItem\Return_group $return_group
+ *    group is the only type that can contain children, so that a group of elements can be positioned and transformed together.
+ *
+ * @property RenderItem\Return_path $return_path
+ *    Use SVG PathData to describe a path. Can be used to draw icons or any other shapes fitting the specified size by auto transforming.
+ *     See examples:
+ *     icons and shapes.
+ *     About width/height, cover/contain, see
+ *     layout.
+ *
+ * @property RenderItem\Return_image $return_image
+ *    
+ *
+ * @property RenderItem\Return_text $return_text
+ *    Text block.
+ *
+ * @property RenderItem\Return_rect $return_rect
+ *    Rectangle element.
+ *
+ * @property RenderItem\Return_circle $return_circle
+ *    Circle element.
+ *
+ * @property RenderItem\Return_ring $return_ring
+ *    Ring element.
+ *
+ * @property RenderItem\Return_sector $return_sector
+ *    Sector element.
+ *
+ * @property RenderItem\Return_arc $return_arc
+ *    Arc element.
+ *
+ * @property RenderItem\Return_polygon $return_polygon
+ *    Polygon element.
+ *
+ * @property RenderItem\Return_polyline $return_polyline
+ *    Polyline element.
+ *
+ * @property RenderItem\Return_line $return_line
+ *    Line element.
+ *
+ * @property RenderItem\Return_bezierCurve $return_bezierCurve
+ *    Quadratic bezier curve or cubic bezier curve.
  *
  * {_more_}
  */

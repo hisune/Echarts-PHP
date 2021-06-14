@@ -10,88 +10,88 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property Data\0 $0
- *    起点的数据。
+ *    Data of the starting point.
  *
  * @property Data\1 $1
- *    终点的数据。
+ *    Data of the ending point.
  *
  *  * @property Data\0 $0
- *    起点的数据。
+ *    Data of the starting point.
  *
  * @property Data\1 $1
- *    终点的数据。
+ *    Data of the ending point.
  *
  *  * @property Data\0 $0
- *    起点的数据。
+ *    Data of the starting point.
  *
  * @property Data\1 $1
- *    终点的数据。
+ *    Data of the ending point.
  *
  *  * @property Data\0 $0
- *    起点的数据。
+ *    Data of the starting point.
  *
  * @property Data\1 $1
- *    终点的数据。
+ *    Data of the ending point.
  *
  *  * @property Data\0 $0
- *    起点的数据。
+ *    Data of the starting point.
  *
  * @property Data\1 $1
- *    终点的数据。
+ *    Data of the ending point.
  *
  *  * @property Data\0 $0
- *    起点的数据。
+ *    Data of the starting point.
  *
  * @property Data\1 $1
- *    终点的数据。
+ *    Data of the ending point.
  *
  *  * @property Data\0 $0
- *    起点的数据。
+ *    Data of the starting point.
  *
  * @property Data\1 $1
- *    终点的数据。
+ *    Data of the ending point.
  *
  *  * @property Data\0 $0
- *    起点的数据。
+ *    Data of the starting point.
  *
  * @property Data\1 $1
- *    终点的数据。
+ *    Data of the ending point.
  *
  *  * @property Data\0 $0
- *    起点的数据。
+ *    Data of the starting point.
  *
  * @property Data\1 $1
- *    终点的数据。
+ *    Data of the ending point.
  *
  *  * @property Data\0 $0
- *    起点的数据。
+ *    Data of the starting point.
  *
  * @property Data\1 $1
- *    终点的数据。
+ *    Data of the ending point.
  *
  *  * @property Data\0 $0
- *    起点的数据。
+ *    Data of the starting point.
  *
  * @property Data\1 $1
- *    终点的数据。
+ *    Data of the ending point.
  *
  *  * @property Data\0 $0
- *    起点的数据。
+ *    Data of the starting point.
  *
  * @property Data\1 $1
- *    终点的数据。
+ *    Data of the ending point.
  *
  *  * @property Data\0 $0
- *    起点的数据。
+ *    Data of the starting point.
  *
  * @property Data\1 $1
- *    终点的数据。
+ *    Data of the ending point.
  *
  *  * @property Data\0 $0
- *    起点的数据。
+ *    Data of the starting point.
  *
  * @property Data\1 $1
- *    终点的数据。
+ *    Data of the ending point.
  *
  * {_more_}
  */

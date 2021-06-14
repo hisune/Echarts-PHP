@@ -10,88 +10,88 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property Data\0 $0
- *    标域左上角的数据
+ *    Specify the left-top point.
  *
  * @property Data\1 $1
- *    标域右下角的数据
+ *    Specify the right-bottom point.
  *
  *  * @property Data\0 $0
- *    标域左上角的数据
+ *    Specify the left-top point.
  *
  * @property Data\1 $1
- *    标域右下角的数据
+ *    Specify the right-bottom point.
  *
  *  * @property Data\0 $0
- *    标域左上角的数据
+ *    Specify the left-top point.
  *
  * @property Data\1 $1
- *    标域右下角的数据
+ *    Specify the right-bottom point.
  *
  *  * @property Data\0 $0
- *    标域左上角的数据
+ *    Specify the left-top point.
  *
  * @property Data\1 $1
- *    标域右下角的数据
+ *    Specify the right-bottom point.
  *
  *  * @property Data\0 $0
- *    标域左上角的数据
+ *    Specify the left-top point.
  *
  * @property Data\1 $1
- *    标域右下角的数据
+ *    Specify the right-bottom point.
  *
  *  * @property Data\0 $0
- *    标域左上角的数据
+ *    Specify the left-top point.
  *
  * @property Data\1 $1
- *    标域右下角的数据
+ *    Specify the right-bottom point.
  *
  *  * @property Data\0 $0
- *    标域左上角的数据
+ *    Specify the left-top point.
  *
  * @property Data\1 $1
- *    标域右下角的数据
+ *    Specify the right-bottom point.
  *
  *  * @property Data\0 $0
- *    标域左上角的数据
+ *    Specify the left-top point.
  *
  * @property Data\1 $1
- *    标域右下角的数据
+ *    Specify the right-bottom point.
  *
  *  * @property Data\0 $0
- *    标域左上角的数据
+ *    Specify the left-top point.
  *
  * @property Data\1 $1
- *    标域右下角的数据
+ *    Specify the right-bottom point.
  *
  *  * @property Data\0 $0
- *    标域左上角的数据
+ *    Specify the left-top point.
  *
  * @property Data\1 $1
- *    标域右下角的数据
+ *    Specify the right-bottom point.
  *
  *  * @property Data\0 $0
- *    标域左上角的数据
+ *    Specify the left-top point.
  *
  * @property Data\1 $1
- *    标域右下角的数据
+ *    Specify the right-bottom point.
  *
  *  * @property Data\0 $0
- *    标域左上角的数据
+ *    Specify the left-top point.
  *
  * @property Data\1 $1
- *    标域右下角的数据
+ *    Specify the right-bottom point.
  *
  *  * @property Data\0 $0
- *    标域左上角的数据
+ *    Specify the left-top point.
  *
  * @property Data\1 $1
- *    标域右下角的数据
+ *    Specify the right-bottom point.
  *
  *  * @property Data\0 $0
- *    标域左上角的数据
+ *    Specify the left-top point.
  *
  * @property Data\1 $1
- *    标域右下角的数据
+ *    Specify the right-bottom point.
  *
  * {_more_}
  */

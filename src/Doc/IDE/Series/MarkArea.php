@@ -10,35 +10,33 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $silent Default: false
- *    图形是否不响应和触发鼠标事件，默认为 false，即响应和触发鼠标事件。
+ *    Whether to ignore mouse events. Default value is false, for triggering and responding to mouse events.
  *
  * @property MarkArea\Label $label
- *    标域文本配置。
+ *    Label in mark area.
  *
  * @property MarkArea\ItemStyle $itemStyle
- *    该标域的样式。
- *
- * @property MarkArea\Emphasis $emphasis
- *    高亮的标域样式
+ *    Style of the mark area.
  *
  * @property MarkArea\Data $data
- *    标域的数据数组。每个数组项是一个两个项的数组，分别表示标域左上角和右下角的位置，每个项支持通过下面几种方式指定自己的位置
+ *    The scope of the area is defined by data, which is an array with two item, representing the left-top point and the right-bottom point of rectangle area. Each item can be defined as follows:
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Specify the coordinate in screen coordinate system using x, y, where the unit is pixel (e.g., the value is 5), or percent (e.g., the value is 35%).
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
- *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 或者 valueDim 指定是在哪个维度上的最大值、最小值、平均值。
- *     
- *     如果是笛卡尔坐标系的话，也可以通过只指定 xAxis 或者 yAxis 来实现 X 轴或者 Y 轴为某值的标域，见示例 scatter-weight
+ *     Specify the coordinate in data coordinate system (i.e., cartesian) using
+ *     coord, which can be also set as min, max, average (e.g, coord: [23, min], or coord: [average, max]).
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     
+ *     Locate the point on the min value or max value of series.data using type, where valueIndex or valueDim can be used to specify the dimension on which the min, max or average are calculated.
+ *     If in cartesian, you can only specify xAxis or yAxis to define a mark area based on only X or Y axis, see sample scatter-weight
+ *     
+ *     The priority follows as above if more than one above definition used.
  *     data: [
  *     
  *         [
  *             {
- *                 name: 平均值到最大值,
+ *                 name: From average to max,
  *                 type: average
  *             },
  *             {
@@ -48,7 +46,7 @@ use Hisune\EchartsPHP\Property;
  *     
  *         [
  *             {
- *                 name: 两个坐标之间的标域,
+ *                 name: Mark area between two points in data coordiantes,
  *                 coord: [10, 20]
  *             },
  *             {
@@ -56,7 +54,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 60分到80分,
+ *                 name: From 60 to 80,
  *                 yAxis: 60
  *             },
  *             {
@@ -64,7 +62,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 所有数据范围区间
+ *                 name: Mark area covers all data
  *                 coord: [min, min]
  *             },
  *             {
@@ -73,7 +71,7 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标域,
+ *                 name: Mark area in two screen points,
  *                 x: 100,
  *                 y: 100
  *             }, {
@@ -83,80 +81,77 @@ use Hisune\EchartsPHP\Property;
  *         ]
  *     ]
  *
- * @property boolean $animation Default: false
- *    是否开启动画。
+ * @property boolean $animation Default: true
+ *    Whether to enable animation.
  *
  * @property int $animationThreshold Default: 2000
- *    是否开启动画的阈值，当单个系列显示的图形数量大于这个阈值时会关闭动画。
+ *    Whether to set graphic number threshold to animation. Animation will be disabled when graphic number is larger than threshold.
  *
- * @property int $animationDuration Default: 1000
- *    初始动画的时长，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果：
+ * @property int|callable $animationDuration Default: 1000
+ *    Duration of the first animation, which supports callback function for different data to have different animation effect:
  *     animationDuration: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *
  * @property string $animationEasing Default: 'cubicOut'
- *    初始动画的缓动效果。不同的缓动效果可以参考 缓动示例。
+ *    Easing method used for the first animation. Varied easing effects can be found at easing effect example.
  *
  * @property int|callable $animationDelay Default: 0
- *    初始动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的初始动画效果。
- *     如下示例：
+ *    Delay before updating the first animation, which supports callback function for different data to have different animation effect.
+ *     For example:
  *     animationDelay: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *     
- *     也可以看该示例
+ *     See this example for more information.
  *
  * @property int|callable $animationDurationUpdate Default: 300
- *    数据更新动画的时长。
- *     支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的更新动画效果：
+ *    Time for animation to complete, which supports callback function for different data to have different animation effect:
  *     animationDurationUpdate: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *
  * @property string $animationEasingUpdate Default: 'cubicOut'
- *    数据更新动画的缓动效果。
+ *    Easing method used for animation.
  *
  * @property int|callable $animationDelayUpdate Default: 0
- *    数据更新动画的延迟，支持回调函数，可以通过每个数据返回不同的 delay 时间实现更戏剧的更新动画效果。
- *     如下示例：
+ *    Delay before updating animation, which supports callback function for different data to have different animation effects.
+ *     For example:
  *     animationDelayUpdate: function (idx) {
- *         // 越往后的数据延迟越大
+ *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *     
- *     也可以看该示例
+ *     See this example for more information.
  *
  *  * @property MarkArea\Label $label
- *    标域文本配置。
+ *    Label in mark area.
  *
  * @property MarkArea\ItemStyle $itemStyle
- *    该标域的样式。
- *
- * @property MarkArea\Emphasis $emphasis
- *    高亮的标域样式
+ *    Style of the mark area.
  *
  * @property MarkArea\Data $data
- *    标域的数据数组。每个数组项是一个两个项的数组，分别表示标域左上角和右下角的位置，每个项支持通过下面几种方式指定自己的位置
+ *    The scope of the area is defined by data, which is an array with two item, representing the left-top point and the right-bottom point of rectangle area. Each item can be defined as follows:
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Specify the coordinate in screen coordinate system using x, y, where the unit is pixel (e.g., the value is 5), or percent (e.g., the value is 35%).
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
- *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 或者 valueDim 指定是在哪个维度上的最大值、最小值、平均值。
- *     
- *     如果是笛卡尔坐标系的话，也可以通过只指定 xAxis 或者 yAxis 来实现 X 轴或者 Y 轴为某值的标域，见示例 scatter-weight
+ *     Specify the coordinate in data coordinate system (i.e., cartesian) using
+ *     coord, which can be also set as min, max, average (e.g, coord: [23, min], or coord: [average, max]).
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     
+ *     Locate the point on the min value or max value of series.data using type, where valueIndex or valueDim can be used to specify the dimension on which the min, max or average are calculated.
+ *     If in cartesian, you can only specify xAxis or yAxis to define a mark area based on only X or Y axis, see sample scatter-weight
+ *     
+ *     The priority follows as above if more than one above definition used.
  *     data: [
  *     
  *         [
  *             {
- *                 name: 平均值到最大值,
+ *                 name: From average to max,
  *                 type: average
  *             },
  *             {
@@ -166,7 +161,7 @@ use Hisune\EchartsPHP\Property;
  *     
  *         [
  *             {
- *                 name: 两个坐标之间的标域,
+ *                 name: Mark area between two points in data coordiantes,
  *                 coord: [10, 20]
  *             },
  *             {
@@ -174,7 +169,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 60分到80分,
+ *                 name: From 60 to 80,
  *                 yAxis: 60
  *             },
  *             {
@@ -182,7 +177,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 所有数据范围区间
+ *                 name: Mark area covers all data
  *                 coord: [min, min]
  *             },
  *             {
@@ -191,7 +186,7 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标域,
+ *                 name: Mark area in two screen points,
  *                 x: 100,
  *                 y: 100
  *             }, {
@@ -202,24 +197,21 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property MarkArea\Label $label
- *    标域文本配置。
+ *    Label in mark area.
  *
  * @property MarkArea\ItemStyle $itemStyle
- *    该标域的样式。
- *
- * @property MarkArea\Emphasis $emphasis
- *    高亮的标域样式
+ *    Style of the mark area.
  *
  * @property MarkArea\Data $data
- *    标域的数据数组。每个数组项是一个两个项的数组，分别表示标域左上角和右下角的位置，每个项支持通过下面几种方式指定自己的位置
+ *    The scope of the area is defined by data, which is an array with two item, representing the left-top point and the right-bottom point of rectangle area. Each item can be defined as follows:
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Specify the coordinate in screen coordinate system using x, y, where the unit is pixel (e.g., the value is 5), or percent (e.g., the value is 35%).
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     The priority follows as above if more than one above definition used.
  *     data: [
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标域,
+ *                 name: Mark area in two screen points,
  *                 x: 100,
  *                 y: 100
  *             }, {
@@ -230,32 +222,30 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property MarkArea\Label $label
- *    标域文本配置。
+ *    Label in mark area.
  *
  * @property MarkArea\ItemStyle $itemStyle
- *    该标域的样式。
- *
- * @property MarkArea\Emphasis $emphasis
- *    高亮的标域样式
+ *    Style of the mark area.
  *
  * @property MarkArea\Data $data
- *    标域的数据数组。每个数组项是一个两个项的数组，分别表示标域左上角和右下角的位置，每个项支持通过下面几种方式指定自己的位置
+ *    The scope of the area is defined by data, which is an array with two item, representing the left-top point and the right-bottom point of rectangle area. Each item can be defined as follows:
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Specify the coordinate in screen coordinate system using x, y, where the unit is pixel (e.g., the value is 5), or percent (e.g., the value is 35%).
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
- *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 或者 valueDim 指定是在哪个维度上的最大值、最小值、平均值。
- *     
- *     如果是笛卡尔坐标系的话，也可以通过只指定 xAxis 或者 yAxis 来实现 X 轴或者 Y 轴为某值的标域，见示例 scatter-weight
+ *     Specify the coordinate in data coordinate system (i.e., cartesian) using
+ *     coord, which can be also set as min, max, average (e.g, coord: [23, min], or coord: [average, max]).
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     
+ *     Locate the point on the min value or max value of series.data using type, where valueIndex or valueDim can be used to specify the dimension on which the min, max or average are calculated.
+ *     If in cartesian, you can only specify xAxis or yAxis to define a mark area based on only X or Y axis, see sample scatter-weight
+ *     
+ *     The priority follows as above if more than one above definition used.
  *     data: [
  *     
  *         [
  *             {
- *                 name: 平均值到最大值,
+ *                 name: From average to max,
  *                 type: average
  *             },
  *             {
@@ -265,7 +255,7 @@ use Hisune\EchartsPHP\Property;
  *     
  *         [
  *             {
- *                 name: 两个坐标之间的标域,
+ *                 name: Mark area between two points in data coordiantes,
  *                 coord: [10, 20]
  *             },
  *             {
@@ -273,7 +263,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 60分到80分,
+ *                 name: From 60 to 80,
  *                 yAxis: 60
  *             },
  *             {
@@ -281,7 +271,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 所有数据范围区间
+ *                 name: Mark area covers all data
  *                 coord: [min, min]
  *             },
  *             {
@@ -290,7 +280,7 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标域,
+ *                 name: Mark area in two screen points,
  *                 x: 100,
  *                 y: 100
  *             }, {
@@ -301,32 +291,30 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property MarkArea\Label $label
- *    标域文本配置。
+ *    Label in mark area.
  *
  * @property MarkArea\ItemStyle $itemStyle
- *    该标域的样式。
- *
- * @property MarkArea\Emphasis $emphasis
- *    高亮的标域样式
+ *    Style of the mark area.
  *
  * @property MarkArea\Data $data
- *    标域的数据数组。每个数组项是一个两个项的数组，分别表示标域左上角和右下角的位置，每个项支持通过下面几种方式指定自己的位置
+ *    The scope of the area is defined by data, which is an array with two item, representing the left-top point and the right-bottom point of rectangle area. Each item can be defined as follows:
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Specify the coordinate in screen coordinate system using x, y, where the unit is pixel (e.g., the value is 5), or percent (e.g., the value is 35%).
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
- *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 或者 valueDim 指定是在哪个维度上的最大值、最小值、平均值。
- *     
- *     如果是笛卡尔坐标系的话，也可以通过只指定 xAxis 或者 yAxis 来实现 X 轴或者 Y 轴为某值的标域，见示例 scatter-weight
+ *     Specify the coordinate in data coordinate system (i.e., cartesian) using
+ *     coord, which can be also set as min, max, average (e.g, coord: [23, min], or coord: [average, max]).
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     
+ *     Locate the point on the min value or max value of series.data using type, where valueIndex or valueDim can be used to specify the dimension on which the min, max or average are calculated.
+ *     If in cartesian, you can only specify xAxis or yAxis to define a mark area based on only X or Y axis, see sample scatter-weight
+ *     
+ *     The priority follows as above if more than one above definition used.
  *     data: [
  *     
  *         [
  *             {
- *                 name: 平均值到最大值,
+ *                 name: From average to max,
  *                 type: average
  *             },
  *             {
@@ -336,7 +324,7 @@ use Hisune\EchartsPHP\Property;
  *     
  *         [
  *             {
- *                 name: 两个坐标之间的标域,
+ *                 name: Mark area between two points in data coordiantes,
  *                 coord: [10, 20]
  *             },
  *             {
@@ -344,7 +332,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 60分到80分,
+ *                 name: From 60 to 80,
  *                 yAxis: 60
  *             },
  *             {
@@ -352,7 +340,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 所有数据范围区间
+ *                 name: Mark area covers all data
  *                 coord: [min, min]
  *             },
  *             {
@@ -361,7 +349,7 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标域,
+ *                 name: Mark area in two screen points,
  *                 x: 100,
  *                 y: 100
  *             }, {
@@ -372,32 +360,30 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property MarkArea\Label $label
- *    标域文本配置。
+ *    Label in mark area.
  *
  * @property MarkArea\ItemStyle $itemStyle
- *    该标域的样式。
- *
- * @property MarkArea\Emphasis $emphasis
- *    高亮的标域样式
+ *    Style of the mark area.
  *
  * @property MarkArea\Data $data
- *    标域的数据数组。每个数组项是一个两个项的数组，分别表示标域左上角和右下角的位置，每个项支持通过下面几种方式指定自己的位置
+ *    The scope of the area is defined by data, which is an array with two item, representing the left-top point and the right-bottom point of rectangle area. Each item can be defined as follows:
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Specify the coordinate in screen coordinate system using x, y, where the unit is pixel (e.g., the value is 5), or percent (e.g., the value is 35%).
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
- *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 或者 valueDim 指定是在哪个维度上的最大值、最小值、平均值。
- *     
- *     如果是笛卡尔坐标系的话，也可以通过只指定 xAxis 或者 yAxis 来实现 X 轴或者 Y 轴为某值的标域，见示例 scatter-weight
+ *     Specify the coordinate in data coordinate system (i.e., cartesian) using
+ *     coord, which can be also set as min, max, average (e.g, coord: [23, min], or coord: [average, max]).
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     
+ *     Locate the point on the min value or max value of series.data using type, where valueIndex or valueDim can be used to specify the dimension on which the min, max or average are calculated.
+ *     If in cartesian, you can only specify xAxis or yAxis to define a mark area based on only X or Y axis, see sample scatter-weight
+ *     
+ *     The priority follows as above if more than one above definition used.
  *     data: [
  *     
  *         [
  *             {
- *                 name: 平均值到最大值,
+ *                 name: From average to max,
  *                 type: average
  *             },
  *             {
@@ -407,7 +393,7 @@ use Hisune\EchartsPHP\Property;
  *     
  *         [
  *             {
- *                 name: 两个坐标之间的标域,
+ *                 name: Mark area between two points in data coordiantes,
  *                 coord: [10, 20]
  *             },
  *             {
@@ -415,7 +401,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 60分到80分,
+ *                 name: From 60 to 80,
  *                 yAxis: 60
  *             },
  *             {
@@ -423,7 +409,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 所有数据范围区间
+ *                 name: Mark area covers all data
  *                 coord: [min, min]
  *             },
  *             {
@@ -432,7 +418,7 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标域,
+ *                 name: Mark area in two screen points,
  *                 x: 100,
  *                 y: 100
  *             }, {
@@ -443,32 +429,30 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property MarkArea\Label $label
- *    标域文本配置。
+ *    Label in mark area.
  *
  * @property MarkArea\ItemStyle $itemStyle
- *    该标域的样式。
- *
- * @property MarkArea\Emphasis $emphasis
- *    高亮的标域样式
+ *    Style of the mark area.
  *
  * @property MarkArea\Data $data
- *    标域的数据数组。每个数组项是一个两个项的数组，分别表示标域左上角和右下角的位置，每个项支持通过下面几种方式指定自己的位置
+ *    The scope of the area is defined by data, which is an array with two item, representing the left-top point and the right-bottom point of rectangle area. Each item can be defined as follows:
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Specify the coordinate in screen coordinate system using x, y, where the unit is pixel (e.g., the value is 5), or percent (e.g., the value is 35%).
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
- *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 或者 valueDim 指定是在哪个维度上的最大值、最小值、平均值。
- *     
- *     如果是笛卡尔坐标系的话，也可以通过只指定 xAxis 或者 yAxis 来实现 X 轴或者 Y 轴为某值的标域，见示例 scatter-weight
+ *     Specify the coordinate in data coordinate system (i.e., cartesian) using
+ *     coord, which can be also set as min, max, average (e.g, coord: [23, min], or coord: [average, max]).
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     
+ *     Locate the point on the min value or max value of series.data using type, where valueIndex or valueDim can be used to specify the dimension on which the min, max or average are calculated.
+ *     If in cartesian, you can only specify xAxis or yAxis to define a mark area based on only X or Y axis, see sample scatter-weight
+ *     
+ *     The priority follows as above if more than one above definition used.
  *     data: [
  *     
  *         [
  *             {
- *                 name: 平均值到最大值,
+ *                 name: From average to max,
  *                 type: average
  *             },
  *             {
@@ -478,7 +462,7 @@ use Hisune\EchartsPHP\Property;
  *     
  *         [
  *             {
- *                 name: 两个坐标之间的标域,
+ *                 name: Mark area between two points in data coordiantes,
  *                 coord: [10, 20]
  *             },
  *             {
@@ -486,7 +470,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 60分到80分,
+ *                 name: From 60 to 80,
  *                 yAxis: 60
  *             },
  *             {
@@ -494,7 +478,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 所有数据范围区间
+ *                 name: Mark area covers all data
  *                 coord: [min, min]
  *             },
  *             {
@@ -503,7 +487,7 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标域,
+ *                 name: Mark area in two screen points,
  *                 x: 100,
  *                 y: 100
  *             }, {
@@ -514,24 +498,21 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property MarkArea\Label $label
- *    标域文本配置。
+ *    Label in mark area.
  *
  * @property MarkArea\ItemStyle $itemStyle
- *    该标域的样式。
- *
- * @property MarkArea\Emphasis $emphasis
- *    高亮的标域样式
+ *    Style of the mark area.
  *
  * @property MarkArea\Data $data
- *    标域的数据数组。每个数组项是一个两个项的数组，分别表示标域左上角和右下角的位置，每个项支持通过下面几种方式指定自己的位置
+ *    The scope of the area is defined by data, which is an array with two item, representing the left-top point and the right-bottom point of rectangle area. Each item can be defined as follows:
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Specify the coordinate in screen coordinate system using x, y, where the unit is pixel (e.g., the value is 5), or percent (e.g., the value is 35%).
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     The priority follows as above if more than one above definition used.
  *     data: [
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标域,
+ *                 name: Mark area in two screen points,
  *                 x: 100,
  *                 y: 100
  *             }, {
@@ -542,28 +523,26 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property MarkArea\Label $label
- *    标域文本配置。
+ *    Label in mark area.
  *
  * @property MarkArea\ItemStyle $itemStyle
- *    该标域的样式。
- *
- * @property MarkArea\Emphasis $emphasis
- *    高亮的标域样式
+ *    Style of the mark area.
  *
  * @property MarkArea\Data $data
- *    标域的数据数组。每个数组项是一个两个项的数组，分别表示标域左上角和右下角的位置，每个项支持通过下面几种方式指定自己的位置
+ *    The scope of the area is defined by data, which is an array with two item, representing the left-top point and the right-bottom point of rectangle area. Each item can be defined as follows:
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Specify the coordinate in screen coordinate system using x, y, where the unit is pixel (e.g., the value is 5), or percent (e.g., the value is 35%).
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
+ *     Specify the coordinate in data coordinate system (i.e., cartesian) using
+ *     coord, which can be also set as min, max, average (e.g, coord: [23, min], or coord: [average, max]).
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     The priority follows as above if more than one above definition used.
  *     data: [
  *     
  *         [
  *             {
- *                 name: 两个坐标之间的标域,
+ *                 name: Mark area between two points in data coordiantes,
  *                 coord: [10, 20]
  *             },
  *             {
@@ -571,7 +550,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 60分到80分,
+ *                 name: From 60 to 80,
  *                 yAxis: 60
  *             },
  *             {
@@ -579,7 +558,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 所有数据范围区间
+ *                 name: Mark area covers all data
  *                 coord: [min, min]
  *             },
  *             {
@@ -588,7 +567,7 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标域,
+ *                 name: Mark area in two screen points,
  *                 x: 100,
  *                 y: 100
  *             }, {
@@ -599,24 +578,21 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property MarkArea\Label $label
- *    标域文本配置。
+ *    Label in mark area.
  *
  * @property MarkArea\ItemStyle $itemStyle
- *    该标域的样式。
- *
- * @property MarkArea\Emphasis $emphasis
- *    高亮的标域样式
+ *    Style of the mark area.
  *
  * @property MarkArea\Data $data
- *    标域的数据数组。每个数组项是一个两个项的数组，分别表示标域左上角和右下角的位置，每个项支持通过下面几种方式指定自己的位置
+ *    The scope of the area is defined by data, which is an array with two item, representing the left-top point and the right-bottom point of rectangle area. Each item can be defined as follows:
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Specify the coordinate in screen coordinate system using x, y, where the unit is pixel (e.g., the value is 5), or percent (e.g., the value is 35%).
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     The priority follows as above if more than one above definition used.
  *     data: [
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标域,
+ *                 name: Mark area in two screen points,
  *                 x: 100,
  *                 y: 100
  *             }, {
@@ -627,32 +603,30 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property MarkArea\Label $label
- *    标域文本配置。
+ *    Label in mark area.
  *
  * @property MarkArea\ItemStyle $itemStyle
- *    该标域的样式。
- *
- * @property MarkArea\Emphasis $emphasis
- *    高亮的标域样式
+ *    Style of the mark area.
  *
  * @property MarkArea\Data $data
- *    标域的数据数组。每个数组项是一个两个项的数组，分别表示标域左上角和右下角的位置，每个项支持通过下面几种方式指定自己的位置
+ *    The scope of the area is defined by data, which is an array with two item, representing the left-top point and the right-bottom point of rectangle area. Each item can be defined as follows:
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Specify the coordinate in screen coordinate system using x, y, where the unit is pixel (e.g., the value is 5), or percent (e.g., the value is 35%).
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
- *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 或者 valueDim 指定是在哪个维度上的最大值、最小值、平均值。
- *     
- *     如果是笛卡尔坐标系的话，也可以通过只指定 xAxis 或者 yAxis 来实现 X 轴或者 Y 轴为某值的标域，见示例 scatter-weight
+ *     Specify the coordinate in data coordinate system (i.e., cartesian) using
+ *     coord, which can be also set as min, max, average (e.g, coord: [23, min], or coord: [average, max]).
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     
+ *     Locate the point on the min value or max value of series.data using type, where valueIndex or valueDim can be used to specify the dimension on which the min, max or average are calculated.
+ *     If in cartesian, you can only specify xAxis or yAxis to define a mark area based on only X or Y axis, see sample scatter-weight
+ *     
+ *     The priority follows as above if more than one above definition used.
  *     data: [
  *     
  *         [
  *             {
- *                 name: 平均值到最大值,
+ *                 name: From average to max,
  *                 type: average
  *             },
  *             {
@@ -662,7 +636,7 @@ use Hisune\EchartsPHP\Property;
  *     
  *         [
  *             {
- *                 name: 两个坐标之间的标域,
+ *                 name: Mark area between two points in data coordiantes,
  *                 coord: [10, 20]
  *             },
  *             {
@@ -670,7 +644,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 60分到80分,
+ *                 name: From 60 to 80,
  *                 yAxis: 60
  *             },
  *             {
@@ -678,7 +652,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 所有数据范围区间
+ *                 name: Mark area covers all data
  *                 coord: [min, min]
  *             },
  *             {
@@ -687,7 +661,7 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标域,
+ *                 name: Mark area in two screen points,
  *                 x: 100,
  *                 y: 100
  *             }, {
@@ -698,24 +672,21 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property MarkArea\Label $label
- *    标域文本配置。
+ *    Label in mark area.
  *
  * @property MarkArea\ItemStyle $itemStyle
- *    该标域的样式。
- *
- * @property MarkArea\Emphasis $emphasis
- *    高亮的标域样式
+ *    Style of the mark area.
  *
  * @property MarkArea\Data $data
- *    标域的数据数组。每个数组项是一个两个项的数组，分别表示标域左上角和右下角的位置，每个项支持通过下面几种方式指定自己的位置
+ *    The scope of the area is defined by data, which is an array with two item, representing the left-top point and the right-bottom point of rectangle area. Each item can be defined as follows:
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Specify the coordinate in screen coordinate system using x, y, where the unit is pixel (e.g., the value is 5), or percent (e.g., the value is 35%).
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     The priority follows as above if more than one above definition used.
  *     data: [
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标域,
+ *                 name: Mark area in two screen points,
  *                 x: 100,
  *                 y: 100
  *             }, {
@@ -726,24 +697,21 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property MarkArea\Label $label
- *    标域文本配置。
+ *    Label in mark area.
  *
  * @property MarkArea\ItemStyle $itemStyle
- *    该标域的样式。
- *
- * @property MarkArea\Emphasis $emphasis
- *    高亮的标域样式
+ *    Style of the mark area.
  *
  * @property MarkArea\Data $data
- *    标域的数据数组。每个数组项是一个两个项的数组，分别表示标域左上角和右下角的位置，每个项支持通过下面几种方式指定自己的位置
+ *    The scope of the area is defined by data, which is an array with two item, representing the left-top point and the right-bottom point of rectangle area. Each item can be defined as follows:
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Specify the coordinate in screen coordinate system using x, y, where the unit is pixel (e.g., the value is 5), or percent (e.g., the value is 35%).
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     The priority follows as above if more than one above definition used.
  *     data: [
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标域,
+ *                 name: Mark area in two screen points,
  *                 x: 100,
  *                 y: 100
  *             }, {
@@ -754,32 +722,30 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  *  * @property MarkArea\Label $label
- *    标域文本配置。
+ *    Label in mark area.
  *
  * @property MarkArea\ItemStyle $itemStyle
- *    该标域的样式。
- *
- * @property MarkArea\Emphasis $emphasis
- *    高亮的标域样式
+ *    Style of the mark area.
  *
  * @property MarkArea\Data $data
- *    标域的数据数组。每个数组项是一个两个项的数组，分别表示标域左上角和右下角的位置，每个项支持通过下面几种方式指定自己的位置
+ *    The scope of the area is defined by data, which is an array with two item, representing the left-top point and the right-bottom point of rectangle area. Each item can be defined as follows:
  *     
- *     通过 x, y 属性指定相对容器的屏幕坐标，单位像素，支持百分比。
+ *     Specify the coordinate in screen coordinate system using x, y, where the unit is pixel (e.g., the value is 5), or percent (e.g., the value is 35%).
  *     
- *     用 coord 属性指定数据在相应坐标系上的坐标位置，单个维度支持设置 min, max, average。
- *     
- *     直接用 type 属性标注系列中的最大值，最小值。这时候可以使用 valueIndex 或者 valueDim 指定是在哪个维度上的最大值、最小值、平均值。
- *     
- *     如果是笛卡尔坐标系的话，也可以通过只指定 xAxis 或者 yAxis 来实现 X 轴或者 Y 轴为某值的标域，见示例 scatter-weight
+ *     Specify the coordinate in data coordinate system (i.e., cartesian) using
+ *     coord, which can be also set as min, max, average (e.g, coord: [23, min], or coord: [average, max]).
  *     
  *     
- *     当多个属性同时存在时，优先级按上述的顺序。
+ *     
+ *     Locate the point on the min value or max value of series.data using type, where valueIndex or valueDim can be used to specify the dimension on which the min, max or average are calculated.
+ *     If in cartesian, you can only specify xAxis or yAxis to define a mark area based on only X or Y axis, see sample scatter-weight
+ *     
+ *     The priority follows as above if more than one above definition used.
  *     data: [
  *     
  *         [
  *             {
- *                 name: 平均值到最大值,
+ *                 name: From average to max,
  *                 type: average
  *             },
  *             {
@@ -789,7 +755,7 @@ use Hisune\EchartsPHP\Property;
  *     
  *         [
  *             {
- *                 name: 两个坐标之间的标域,
+ *                 name: Mark area between two points in data coordiantes,
  *                 coord: [10, 20]
  *             },
  *             {
@@ -797,7 +763,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 60分到80分,
+ *                 name: From 60 to 80,
  *                 yAxis: 60
  *             },
  *             {
@@ -805,7 +771,7 @@ use Hisune\EchartsPHP\Property;
  *             }
  *         ], [
  *             {
- *                 name: 所有数据范围区间
+ *                 name: Mark area covers all data
  *                 coord: [min, min]
  *             },
  *             {
@@ -814,7 +780,7 @@ use Hisune\EchartsPHP\Property;
  *         ],
  *         [
  *             {
- *                 name: 两个屏幕坐标之间的标域,
+ *                 name: Mark area in two screen points,
  *                 x: 100,
  *                 y: 100
  *             }, {

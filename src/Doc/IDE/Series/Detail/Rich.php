@@ -13,7 +13,7 @@ use Hisune\EchartsPHP\Property;
  *    
  *
  * @property string $color Default: 'auto'
- *    文本颜色，默认取数值所在的区间的颜色
+ *    The text color. Defaults to use the color of section where the numerical value belongs to.
  *
  * {_more_}
  */

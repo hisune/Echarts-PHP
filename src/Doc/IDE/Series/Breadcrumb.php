@@ -10,36 +10,36 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: true
- *    是否显示面包屑。
+ *    Whether to show the breadcrumb.
  *
  * @property string|int $left Default: 'center'
- *    asdf 组件离容器左侧的距离。
- *     left 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 left, center, right。
- *     如果 left 的值为left, center, right，组件会根据相应的位置自动对齐。
+ *    Distance between asdf  component and the left side of the container.
+ *     left value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be left, center, or right.
+ *     If the left value is set to be left, center, or right, then the component will be aligned automatically based on position.
  *
  * @property string|int $top Default: 'auto'
- *    asdf 组件离容器上侧的距离。
- *     top 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比，也可以是 top, middle, bottom。
- *     如果 top 的值为top, middle, bottom，组件会根据相应的位置自动对齐。
+ *    Distance between asdf  component and the top side of the container.
+ *     top value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
+ *     If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
  *
  * @property string|int $right Default: 'auto'
- *    asdf 组件离容器右侧的距离。
- *     right 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
- *     默认自适应。
+ *    Distance between asdf  component and the right side of the container.
+ *     right value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%.
+ *     Adaptive by default.
  *
  * @property string|int $bottom Default: 0
- *    asdf 组件离容器下侧的距离。
- *     bottom 的值可以是像 20 这样的具体像素值，可以是像 20% 这样相对于容器高宽的百分比。
- *     默认自适应。
+ *    Distance between asdf  component and the bottom side of the container.
+ *     bottom value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%.
+ *     Adaptive by default.
  *
  * @property int $height Default: 22
- *    面包屑的高度。
+ *    The height of breadcrumb.
  *
  * @property int $emptyItemWidth Default: 25
- *    当面包屑没有内容时候，设个最小宽度。
+ *    When is no content in breadcrumb, this minimal width need to be set up.
  *
  * @property Breadcrumb\ItemStyle $itemStyle
- *     图形样式。
+ *    Graphic style of , emphasis is the style when it is highlighted, like being hovered by mouse, or highlighted via legend connect.
  *
  * @property Breadcrumb\Emphasis $emphasis
  *    

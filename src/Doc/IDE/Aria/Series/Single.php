@@ -10,20 +10,20 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property string $prefix Default: ''
- *    对于所有系列的整体性描述，显示在每个系列描述之前。其中包括模板变量：
+ *    General description for all series. This displays before all series descriptions. Template variable:
  *     
- *     {seriesCount}：将被替换为系列个数，这里始终为 1。
+ *     {seriesCount}: will be replaced by series count, which is 1.
  *
- * @property string $withName Default: '图表类型是{seriesType}，表示{seriesName}。'
- *    如果系列有 name 属性，则采用该描述。其中包括模板变量：
+ * @property string $withName Default: 'The chart type is {seriesType}, which means {seriesName}. '
+ *    If chart contains name attribute, then this is used. Template variable:
  *     
- *     {seriesName}：将被替换为系列的 name；
- *     {seriesType}：将被替换为系列的类型名称，如：柱状图、 折线图 等等。
+ *     {seriesName}: will be replaced by the series name;
+ *     {seriesType}: will be replaced by the series type name.
  *
- * @property string $withoutName Default: '图表类型是{seriesType}。'
- *    如果系列没有 name 属性，则采用该描述。其中包括模板变量：
+ * @property string $withoutName Default: 'The chart type is {seriesType}.'
+ *    If chart doesnt contain name attribute, then this is used. Template variable:
  *     
- *     {seriesType}：将被替换为系列的类型名称，如：柱状图、 折线图 等等。
+ *     {seriesType}: will be replaced by series type name.
  *
  * {_more_}
  */

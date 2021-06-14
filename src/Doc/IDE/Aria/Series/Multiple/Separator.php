@@ -10,10 +10,10 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property string $middle Default: '；'
- *    除了最后一个系列后的分隔符。
+ *    Separators other than the last one.
  *
- * @property string $end Default: '。'
- *    最后一个系列后的分隔符。
+ * @property string $end Default: '.'
+ *    The last series seperator.
  *
  * {_more_}
  */

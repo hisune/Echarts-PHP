@@ -9,148 +9,228 @@ namespace Hisune\EchartsPHP\Doc\IDE\Series;
 use Hisune\EchartsPHP\Property;
 
 /**
- * @property string|array|callable $position
+ * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -161,200 +241,280 @@ use Hisune\EchartsPHP\Property;
  * @property string $backgroundColor Default: 'rgba(50,50,50,0.7)'
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的背景颜色。
+ *     The background color of tooltips floating layer.
  *
  * @property string $borderColor Default: '#333'
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的边框颜色。
+ *     The border color of tooltips floating layer.
  *
  * @property int $borderWidth Default: 0
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的边框宽。
+ *     The border width of tooltips floating layer.
  *
  * @property int $padding Default: 5
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内边距，单位px，默认各方向内边距为5，接受数组分别设定上右下左边距。
- *     使用示例：
- *     // 设置内边距为 5
+ *     The floating layer of tooltip space around content. The unit is px. Default values for each position are 5. And they can be set to different values with left, right, top, and bottom.
+ *     Examples: 
+ *     // Set padding to be 5
  *     padding: 5
- *     // 设置上下的内边距为 5，左右的内边距为 10
+ *     // Set the top and bottom paddings to be 5, and left and right paddings to be 10
  *     padding: [5, 10]
- *     // 分别设置四个方向的内边距
+ *     // Set each of the four paddings seperately
  *     padding: [
- *         5,  // 上
- *         10, // 右
- *         5,  // 下
- *         10, // 左
+ *         5,  // up
+ *         10, // right
+ *         5,  // down
+ *         10, // left
  *     ]
  *
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -365,160 +525,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -529,160 +769,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -693,160 +1013,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -857,160 +1257,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -1021,160 +1501,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -1185,160 +1745,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -1349,160 +1989,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -1513,160 +2233,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -1677,160 +2477,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -1841,160 +2721,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -2005,160 +2965,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -2169,160 +3209,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -2333,160 +3453,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -2497,160 +3697,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -2661,160 +3941,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -2825,160 +4185,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -2989,160 +4429,240 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
- *  * @property string|array|callable $position
+ *  * @property string|array $position
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的位置，默认不设置时位置会跟随鼠标的位置。
- *     可选：
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
  *     
  *     Array
- *       通过数组表示提示框浮层的位置，支持数字设置绝对位置，百分比设置相对位置。
- *       示例:
- *       // 绝对位置，相对于容器左侧 10px, 上侧 10 px
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
  *       position: [10, 10]
- *       // 相对位置，放置在容器正中间
+ *       // relative position, in the exact center of the container
  *       position: [50%, 50%]
  *     
  *     
  *     Function
- *       回调函数，格式如下
+ *       Callback function in the following form:
  *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
  *     
- *       参数：
- *       point: 鼠标位置，如 [20, 40]。
- *       params: 同 formatter 的参数相同。
- *       dom: tooltip 的 dom 对象。
- *       rect: 只有鼠标在图形上时有效，是一个用x, y, width, height四个属性表达的图形包围盒。
- *       size: 包括 dom 的尺寸和 echarts 容器的当前尺寸，例如：{contentSize: [width, height], viewSize: [width, height]}。
- *       返回值：
- *       可以是一个表示 tooltip 位置的数组，数组值可以是绝对的像素值，也可以是相  百分比。
- *       也可以是一个对象，如：{left: 10, top: 30}，或者 {right: 20%, bottom: 40}。
- *       如下示例：
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
  *       position: function (point, params, dom, rect, size) {
- *           // 固定在顶部
+ *           // fixed at top
  *           return [point[0], 10%];
  *       }
  *     
- *       或者：
+ *       Or:
  *       position: function (pos, params, dom, rect, size) {
- *           // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
  *           var obj = {top: 60};
  *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
  *           return obj;
  *       }
  *     
  *     
- *     
- *     
  *     inside
- *       鼠标所在图形的内部中心位置，只在 trigger 为item的时候有效。
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     top
- *       鼠标所在图形上侧，只在 trigger 为item的时候有效。
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     left
- *       鼠标所在图形左侧，只在 trigger 为item的时候有效。
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     right
- *       鼠标所在图形右侧，只在 trigger 为item的时候有效。
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *     
  *     bottom
- *       鼠标所在图形底侧，只在 trigger 为item的时候有效。
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
  *
  * @property string|callable $formatter
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层内容格式器，支持字符串模板和回调函数两种形式。
- *     1, 字符串模板
- *     模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。
- *     在 trigger 为 axis 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。
- *     不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。
- *     其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
  *     
- *     折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
  *     
- *     散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
  *     
- *     地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
  *     
- *     饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
  *     
  *     
- *     更多其它图表模板变量的含义可以见相应的图表的 label.formatter 配置项。
- *     示例：
+ *     Example: 
  *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
  *     
- *     2, 回调函数
- *     回调函数格式：
+ *     2. Callback function
+ *     The format of callback function:
  *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
  *     
- *     第一个参数 params 是 formatter 需要的数据集。格式如下：
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
- *         // 饼图的百分比
+ *         // the percentage of pie chart
  *         percent: number,
  *     
  *     }
  *     
- *     在 trigger 为 axis 的时候，或者 tooltip 被 axisPointer 触发的时候，params 是多个系列的数据数组。其中每项内容格式同上，并且，
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     {
  *         componentType: series,
- *         // 系列类型
+ *         // Series type
  *         seriesType: string,
- *         // 系列在传入的 option.series 中的 index
+ *         // Series index in option.series
  *         seriesIndex: number,
- *         // 系列名称
+ *         // Series name
  *         seriesName: string,
- *         // 数据名，类目名
+ *         // Data name, or category name
  *         name: string,
- *         // 数据在传入的 data 数组中的 index
+ *         // Data index in input data array
  *         dataIndex: number,
- *         // 传入的原始数据项
+ *         // Original data as input
  *         data: Object,
- *         // 传入的数据值
- *         value: number|Array,
- *         // 数据图形的颜色
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
  *         color: string,
  *     
  *     }
  *     
- *     注： ECharts 2.x 使用数组表示各参数的方式不再支持。
- *     第二个参数 ticket 是异步回调标识，配合第三个参数 callback 使用。
- *     第三个参数 callback 是异步回调，在提示框浮层内容是异步获取的时候，可以通过 callback 传入上述的 ticket 和 html 更新提示框浮层内容。
- *     示例：
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -3153,16 +4673,260 @@ use Hisune\EchartsPHP\Property;
  * @property Tooltip\TextStyle $textStyle
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     提示框浮层的文本样式。
+ *     The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
  *    
  *     
- *     注意：series.tooltip 仅在 tooltip.trigger 为 item 时有效。
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
  *     
- *     额外附加到浮层的 css 样式。如下为浮层添加阴影的示例：
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
+ *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+ *
+ *  * @property string|array $position
+ *    
+ *     
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
+ *     
+ *     The position of the tooltips floating layer, which would follow the position of mouse by default.
+ *     Options:
+ *     
+ *     Array
+ *       Display the position of tooltips floating layer through array, which supports absolute position and relative percentage.
+ *       Example:
+ *       // absolute position, which is 10px to the left side and 10px to the top side of the container
+ *       position: [10, 10]
+ *       // relative position, in the exact center of the container
+ *       position: [50%, 50%]
+ *     
+ *     
+ *     Function
+ *       Callback function in the following form:
+ *       (point: Array, params: Object|Array.&lt;Object&gt;, dom: HTMLDomElement, rect: Object, size: Object) =&gt; Array
+ *     
+ *       Parameters:
+ *       point: Mouse position.
+ *       param: The same as formatter.
+ *       dom: The DOM object of tooltip.
+ *       rect: It is valid only when mouse is on graphic elements, which stands for a bounding box with x, y, width, and height.
+ *       size: The size of dom echarts container. For example: {contentSize: [width, height], viewSize: [width, height]}. 
+ *       Return:
+ *       Return value is an array standing for tooltip position, which can be absolute pixels, or relative percentage.
+ *       Or can be an object, like {left: 10, top: 30}, or {right: 20%, bottom: 40}.
+ *       For example:
+ *       position: function (point, params, dom, rect, size) {
+ *           // fixed at top
+ *           return [point[0], 10%];
+ *       }
+ *     
+ *       Or:
+ *       position: function (pos, params, dom, rect, size) {
+ *           // tooltip will be fixed on the right if mouse hovering on the left,
+ *           // and on the left if hovering on the right.
+ *           var obj = {top: 60};
+ *           obj[[left, right][+(pos[0] &lt; size.viewSize[0] / 2)]] = 5;
+ *           return obj;
+ *       }
+ *     
+ *     
+ *     inside
+ *      Center position of the graphic element where the mouse is in, which is only valid when trigger is item.
+ *     
+ *     top
+ *       Top position of the graphic element where the mouse is in, which is only valid when trigger is item.
+ *     
+ *     left
+ *       Left position of the graphic element where the mouse is in, which is only valid when trigger is item.
+ *     
+ *     right
+ *       Right position of the graphic element where the mouse is in, which is only valid when trigger is item.
+ *     
+ *     bottom
+ *       Bottom position of the graphic element where the mouse is in, which is only valid when trigger is item.
+ *
+ * @property string|callable $formatter
+ *    
+ *     
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
+ *     
+ *     The content formatter of tooltips floating layer which supports string template and callback function.
+ *     1. String template
+ *     The template variables are {a}, {b}, {c}, {d} and {e}, which stands for series name, data name and data value and ect. When trigger is set to be axis, there may be data from multiple series. In this time, series index can be refered as {a0}, {a1}, or {a2}.
+ *     {a}, {b}, {c}, {d} have different meanings for different series types:
+ *     
+ *     Line (area) charts, bar (column) charts, K charts: {a} for series name, {b} for category name, {c} for data value, {d} for none;
+ *     
+ *     Scatter (bubble) charts: {a} for series name, {b} for data name, {c} for data value, {d} for none;
+ *     
+ *     Map: {a} for series name, {b} for area name, {c} for merging data, {d} for none;
+ *     
+ *     Pie charts, gauge charts, funnel charts: {a} for series name, {b} for data item name, {c} for data value, {d} for percentage.
+ *     
+ *     
+ *     Example: 
+ *     formatter: {b0}: {c0}&lt;br /&gt;{b1}: {c1}
+ *     
+ *     2. Callback function
+ *     The format of callback function:
+ *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
+ *     
+ *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
+ *     {
+ *         componentType: series,
+ *         // Series type
+ *         seriesType: string,
+ *         // Series index in option.series
+ *         seriesIndex: number,
+ *         // Series name
+ *         seriesName: string,
+ *         // Data name, or category name
+ *         name: string,
+ *         // Data index in input data array
+ *         dataIndex: number,
+ *         // Original data as input
+ *         data: Object,
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
+ *         color: string,
+ *     
+ *         // the percentage of pie chart
+ *         percent: number,
+ *     
+ *     }
+ *     
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
+ *     {
+ *         componentType: series,
+ *         // Series type
+ *         seriesType: string,
+ *         // Series index in option.series
+ *         seriesIndex: number,
+ *         // Series name
+ *         seriesName: string,
+ *         // Data name, or category name
+ *         name: string,
+ *         // Data index in input data array
+ *         dataIndex: number,
+ *         // Original data as input
+ *         data: Object,
+ *         // Value of data. In most series it is the same as data.
+ *         // But in some series it is some part of the data (e.g., in map, radar)
+ *         value: number|Array|Object,
+ *         // encoding info of coordinate system
+ *         // Key: coord, like (x y radius angle)
+ *         // value: Must be an array, not null/undefined. Contain dimension indices, like:
+ *         // {
+ *         //     x: [2] // values on dimension index 2 are mapped to x axis.
+ *         //     y: [0] // values on dimension index 0 are mapped to y axis.
+ *         // }
+ *         encode: Object,
+ *         // dimension names list
+ *         dimensionNames: Array&lt;String&gt;,
+ *         // data dimension index, for example 0 or 1 or 2 ...
+ *         // Only work in `radar` series.
+ *         dimensionIndex: number,
+ *         // Color of data
+ *         color: string,
+ *     
+ *     }
+ *     
+ *     Note: the usage of encode and dimensionNames can be:
+ *     If data is:
+ *     dataset: {
+ *         source: [
+ *             [Matcha Latte, 43.3, 85.8, 93.7],
+ *             [Milk Tea, 83.1, 73.4, 55.1],
+ *             [Cheese Cocoa, 86.4, 65.2, 82.5],
+ *             [Walnut Brownie, 72.4, 53.9, 39.1]
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.encode.y[0]]
+ *     
+ *     If data is:
+ *     dataset: {
+ *         dimensions: [product, 2015, 2016, 2017],
+ *         source: [
+ *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
+ *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
+ *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
+ *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
+ *         ]
+ *     }
+ *     
+ *     We can get values that corresponding to y axis by:
+ *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     
+ *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
+ *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
+ *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     Example:
+ *     formatter: function (params, ticket, callback) {
+ *         $.get(detail?name= + params.name, function (content) {
+ *             callback(ticket, toHTML(content));
+ *         });
+ *         return Loading;
+ *     }
+ *
+ * @property Tooltip\TextStyle $textStyle
+ *    
+ *     
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
+ *     
+ *     The text syle of tooltips floating layer.
+ *
+ * @property string $extraCssText
+ *    
+ *     
+ *     Notice：series.tooltip only works when tooltip.trigger is item.
+ *     
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
  *
  * {_more_}

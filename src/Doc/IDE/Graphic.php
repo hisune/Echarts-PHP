@@ -9,9 +9,12 @@ namespace Hisune\EchartsPHP\Doc\IDE;
 use Hisune\EchartsPHP\Property;
 
 /**
+ * @property string $id
+ *    Component ID, not specified by default. If specified, it can be used to refer the component in option or API.
+ *
  * @property array $elements
- *    里面是所有图形元素的集合。
- *     注意：graphic 的标准写法是：
+ *    A list of all graphic elements.
+ *     Note, the standard configuration of graphic component is:
  *     {
  *         graphic: {
  *             elements: [
@@ -20,17 +23,17 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *     
- *     但是我们常常可以用简写：
+ *     But we always use short patterns for convenience:
  *     {
- *         graphic: {
+ *         graphic: { // Declare only one graphic element.
  *             type: rect,
  *             ...
  *         }
  *     }
  *     
- *     或者：
+ *     Or:
  *     {
- *         graphic: [
+ *         graphic: [ // Declare multiple graphic elements.
  *             {type: rect, ...}, {type: circle, ...}, ...
  *         ]
  *     }
