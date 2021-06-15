@@ -77,7 +77,7 @@ class EChartsExtended extends ECharts{
 
 		$attribute = self::_renderAttribute($attribute);
 
-		$theme = $this->jsonEncode($theme);
+		$theme = Config::jsonEncode($theme);
 
 		$this->addExtraScript(<<<ECHART_PLACEHOLDER
 //<script>
@@ -138,8 +138,8 @@ ECHART_PLACEHOLDER
 
 		$jsVar = $this->getJsVar();
 		$optionVar = $this->getOptionVar();
-		$option = $this->jsonEncode($option);
-		$initOptions = $this->jsonEncode($initOptions);
+		$option = Config::jsonEncode($option);
+		$initOptions = Config::jsonEncode($initOptions);
 
 		$eventsHtml = $this->renderEvents();
 
