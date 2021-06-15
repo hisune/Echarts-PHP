@@ -139,85 +139,82 @@ namespace Hisune\EchartsPHP;
 class ECharts extends Property
 {
 
-    public $_events = [];
-    protected $jsVar;
+	public $_events = [];
+	protected $jsVar;
 
-    /**
-     * @param $dist string, dist of libraries
-     */
-    public function __construct($dist = '')
-    {
-        if ($dist){
-            Config::$dist = $dist;
-        }
-        $this->setJsVar();
-    }
+	/**
+	 * @param $dist string, dist of libraries
+	 */
+	public function __construct($dist = '')
+	{
+		if ($dist){
+			Config::$dist = $dist;
+		}
+		$this->setJsVar();
+	}
 
-    public function render($id, $attribute = array(), $theme = null)
-    {
-        return Config::render($id, $this->getOption(), $theme, $attribute, $this->_events);
-    }
+	public function render($id, $attribute = array(), $theme = null)
+	{
+		return Config::render($id, $this->getOption(), $theme, $attribute, $this->_events);
+	}
 
-    public function getOption($render = null, $jsObject = false)
-    {
-        $options = [];
-        is_null($render) && $render = $this->_options;
+	public function getOption($render = null, $jsObject = false)
+	{
+		$options = [];
+		is_null($render) && $render = $this->_options;
 
-        foreach ($render as $k => $v) {
-            if (is_object($v)) {
-                $options[$k] = $v->_options;
-                if (is_array($options[$k]))
-                    $options[$k] = $this->getOption($options[$k]);
-            } else
-                $options[$k] = $v;
-        }
-        Config::optionMethod($options);
+		foreach ($render as $k => $v) {
+			if (is_object($v)) {
+				$options[$k] = $v->_options;
+				if (is_array($options[$k]))
+					$options[$k] = $this->getOption($options[$k]);
+			} else
+				$options[$k] = $v;
+		}
+		Config::optionMethod($options);
 
-        return $jsObject ? Config::jsonEncode($options) : $options;
-    }
+		return $jsObject ? Config::jsonEncode($options) : $options;
+	}
 
-    public function setOption(array $options = array())
-    {
-        foreach ($options as $k => $v)
-            $this->offsetSet($k, $v);
-    }
+	public function setOption(array $options = array())
+	{
+		foreach ($options as $k => $v)
+			$this->offsetSet($k, $v);
+	}
 
-    public function on($event, $callback)
-    {
-        $this->_events[$event] = $callback;
-    }
+	public function on($event, $callback)
+	{
+		$this->_events[$event] = $callback;
+	}
 
-    public function setJsVar($name = null)
-    {
-        if(!$name || !is_string($name)){
-            Config::$jsVar = uniqid();
-        }else{
-            Config::$jsVar = $name;
-        }
-        $this->jsVar = Config::$jsVar;
-    }
+	public function setJsVar($name = null)
+	{
+		if(!$name || !is_string($name)){
+			Config::$jsVar = uniqid();
+		}else{
+			Config::$jsVar = $name;
+		}
+		$this->jsVar = Config::$jsVar;
+	}
 
-    public function getJsVar($full = false)
-    {
-        return $full ? 'chart_' . $this->jsVar : $this->jsVar;
-    }
+	public function getJsVar($full = false)
+	{
+		return $full ? 'chart_' . $this->jsVar : $this->jsVar;
+	}
 
-    public function addSeries(Doc\IDE\Series $series)
-    {
-        $this->series[] = $this->getOption($series->_options);
-    }
+	public function addSeries(Doc\IDE\Series $series)
+	{
+		$this->series[] = $this->getOption($series->_options);
+	}
 
-    public function addXAxis(Doc\IDE\XAxis $xAxis)
-    {
-        $this->xAxis[] = $this->getOption($xAxis->_options);
-    }
+	public function addXAxis(Doc\IDE\XAxis $xAxis)
+	{
+		$this->xAxis[] = $this->getOption($xAxis->_options);
+	}
 
-    public function addYAxis(Doc\IDE\YAxis $yAxis)
-    {
-        $this->yAxis[] = $this->getOption($yAxis->_options);
-    }
+	public function addYAxis(Doc\IDE\YAxis $yAxis)
+	{
+		$this->yAxis[] = $this->getOption($yAxis->_options);
+	}
 
 }
-
-
-

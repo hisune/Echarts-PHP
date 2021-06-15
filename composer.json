@@ -19,7 +19,8 @@
         "source": "https://github.com/hisune/Echarts-PHP"
     },
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=5.4.0",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {
