@@ -29,7 +29,7 @@ use Hisune\EchartsPHP\Property;
  * @property string|int $top Default: 60
  *    Distance between calendar component and the top side of the container.
  *     top value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
- *     If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
+ *     If the top value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
  *
  * @property string|int $right Default: 'auto'
  *    Distance between calendar component and the right side of the container.
@@ -42,12 +42,16 @@ use Hisune\EchartsPHP\Property;
  *     Adaptive by default.
  *
  * @property int|string $width Default: 'auto'
- *    The height of calendar coordinates.
+ *    
+ *     
+ *     The height of calendar coordinates.
  *     Note: cellSize is 20 by default. If width is set,
  *       cellSize[0] will be forced to auto;
  *
  * @property int|string $height Default: 'auto'
- *    The height of calendar coordinates.
+ *    
+ *     
+ *     The height of calendar coordinates.
  *     Note: cellSize is 20 by default. If height is set,
  *       cellSize[1] will be forced to auto;
  *
@@ -68,7 +72,9 @@ use Hisune\EchartsPHP\Property;
  *     range: [2017-01, 2017-02]
  *
  * @property int|array $cellSize Default: 20
- *    The size of each rect of calendar coordinates, can be set to a single value or array, the first element is width and the second element is height.
+ *    
+ *     
+ *     The size of each rect of calendar coordinates, can be set to a single value or array, the first element is width and the second element is height.
  *     Support setting self-adaptation: auto, the default width and height to be 20.
  *     Examples:
  *     
@@ -88,7 +94,9 @@ use Hisune\EchartsPHP\Property;
  *     cellSize: [auto, 40]
  *
  * @property string $orient Default: 'horizontal'
- *    The layout orientation of calendar.
+ *    
+ *     
+ *     The layout orientation of calendar.
  *     Options:
  *     
  *     horizontal
@@ -110,7 +118,9 @@ use Hisune\EchartsPHP\Property;
  *    Year label in calendar coordinates.
  *
  * @property boolean $silent Default: false
- *    Whether to ignore mouse events. Default value is false, for triggering and responding to mouse events.
+ *    
+ *     
+ *     Whether to ignore mouse events. Default value is false, for triggering and responding to mouse events.
  *
  * {_more_}
  */

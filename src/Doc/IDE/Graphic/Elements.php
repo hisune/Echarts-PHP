@@ -38,61 +38,124 @@ use Hisune\EchartsPHP\Property;
  *     replace: create a new element according to the given option and replace the existing element (if any).
  *     remove: delete the existing element (if any).
  *
- * @property array $position Default: '[0, 0]'
- *    2D transform can be applied to graphic elements, including:
- *     
- *     position: [horizontal translate offset, vertical translate offset], [0, 0] by default. Positive value means translate towards right or bottom.
- *     rotation: Rotation in radian, 0 by default. Positive when anticlockwise.
- *     scale: [horizontal scale factor, vertical scale factor], [1, 1] by default.
- *     
- *     origin specifies the origin point of rotation and scaling, [0, 0] by default.
- *     Notice:
- *     
- *     The coordinates specified in the transform attribute above are relative to the [0, 0] of the parent element (that is, group or the root canvas). Thus we are able to group multiple elements, and groups can be nested.
- *     The order that the transform attributes are applied to a single graphic element is: Firstly, rotation, then, scale, finally, position.
+ * @property int $x Default: 0
+ *    x position of element. In pixels.
+ *
+ * @property int $y Default: 0
+ *    y position of element. In pixels.
  *
  * @property int $rotation Default: 0
- *    2D transform can be applied to graphic elements, including:
- *     
- *     position: [horizontal translate offset, vertical translate offset], [0, 0] by default. Positive value means translate towards right or bottom.
- *     rotation: Rotation in radian, 0 by default. Positive when anticlockwise.
- *     scale: [horizontal scale factor, vertical scale factor], [1, 1] by default.
- *     
- *     origin specifies the origin point of rotation and scaling, [0, 0] by default.
- *     Notice:
- *     
- *     The coordinates specified in the transform attribute above are relative to the [0, 0] of the parent element (that is, group or the root canvas). Thus we are able to group multiple elements, and groups can be nested.
- *     The order that the transform attributes are applied to a single graphic element is: Firstly, rotation, then, scale, finally, position.
+ *    Degree value of rotation.
  *
- * @property array $scale Default: '[1, 1]'
- *    2D transform can be applied to graphic elements, including:
- *     
- *     position: [horizontal translate offset, vertical translate offset], [0, 0] by default. Positive value means translate towards right or bottom.
- *     rotation: Rotation in radian, 0 by default. Positive when anticlockwise.
- *     scale: [horizontal scale factor, vertical scale factor], [1, 1] by default.
- *     
- *     origin specifies the origin point of rotation and scaling, [0, 0] by default.
- *     Notice:
- *     
- *     The coordinates specified in the transform attribute above are relative to the [0, 0] of the parent element (that is, group or the root canvas). Thus we are able to group multiple elements, and groups can be nested.
- *     The order that the transform attributes are applied to a single graphic element is: Firstly, rotation, then, scale, finally, position.
+ * @property int $scaleX Default: 1
+ *    Scale on x.
  *
- * @property int $origin Default: '[0, 0]'
- *    2D transform can be applied to graphic elements, including:
+ * @property int $scaleY Default: 1
+ *    Scale on y.
+ *
+ * @property int $originX Default: 0
+ *    x value of element scale and rotation origin. In pixels
+ *
+ * @property int $originY Default: 0
+ *    y value of element scale and rotation origin. In pixels.
+ *
+ * @property string|array $transition Default: '[\'x\', \'y\']'
+ *    You can specify that all properties have transition animations turned on with `all, or you can specify a single property or an array of properties.
+ *     The properties can be:
+ *     Transform related properties:x, y, scaleX, scaleY, rotation, originX, originY. For example:
+ *     {
+ *         type: rect,
+ *         x: 100,
+ *         y: 200,
+ *         transition: [x, y]
+ *     }
  *     
- *     position: [horizontal translate offset, vertical translate offset], [0, 0] by default. Positive value means translate towards right or bottom.
- *     rotation: Rotation in radian, 0 by default. Positive when anticlockwise.
- *     scale: [horizontal scale factor, vertical scale factor], [1, 1] by default.
+ *     Shortcut to transition all of the properties in shape, style, extra. For example:
+ *     {
+ *         type: rect,
+ *         shape: { // ... },
+ *         // Indicate that all props in `shape` will
+ *         // have transition animation.
+ *         transition: shape,
+ *     }
  *     
- *     origin specifies the origin point of rotation and scaling, [0, 0] by default.
- *     Notice:
+ *     In the custom series. x and y are transitioned by default. If you want to disable the default transition, just set it as: transition: [].
+ *     See this example please.
+ *
+ * @property array $enterFrom
+ *    Initial properties for enter animation.
+ *     Example:
+ *     {
+ *         type: circle,
+ *         x: 100,
+ *         enterFrom: {
+ *             // Fade in
+ *             style: { opacity: 0 },
+ *             // Slide in from left
+ *             x: 0
+ *         }
+ *     }
+ *
+ * @property array $leaveTo
+ *    End properties for leave animation.
+ *     Example:
+ *     {
+ *         type: circle,
+ *         x: 100,
+ *         leaveTo: {
+ *             // Fade out
+ *             style: { opacity: 0 },
+ *             // Slide out to right
+ *             x: 200
+ *         }
+ *     }
+ *
+ * @property Elements\EnterAnimation $enterAnimation
+ *    Configurations of enter animation.
+ *
+ * @property Elements\UpdateAnimation $updateAnimation
+ *    Configurations of update animation.
+ *
+ * @property Elements\LeaveAnimation $leaveAnimation
+ *    Configurations of leave animation.
+ *
+ * @property Elements\KeyframeAnimation $keyframeAnimation
+ *    Configurations of keyframe based animation. Support for configuring an array to use multiple keyframe animations at the same time.
+ *     Example:
+ *     keyframeAnimation: [{
+ *         // Using scale for breath animation.
+ *         duration: 1000,
+ *         loop: true,
+ *         keyframes: [{
+ *             percent: 0.5,
+ *             easing: sinusoidalInOut,
+ *             scaleX: 0.1,
+ *             scaleY: 0.1
+ *         }, {
+ *             percent: 1,
+ *             easing: sinusoidalInOut,
+ *             scaleX: 1,
+ *             scaleY: 1
+ *         }]
+ *     }, {
+ *         // Translate animation.
+ *         duration: 2000,
+ *         loop: true,
+ *         keyframes: [{
+ *             percent: 0,
+ *             x: 10
+ *         }, {
+ *             percent: 1,
+ *             x: 100
+ *         }]
+ *     }]
  *     
- *     The coordinates specified in the transform attribute above are relative to the [0, 0] of the parent element (that is, group or the root canvas). Thus we are able to group multiple elements, and groups can be nested.
- *     The order that the transform attributes are applied to a single graphic element is: Firstly, rotation, then, scale, finally, position.
+ *     
+ *     If both keyframe animation and transition animation are applied to a property, the transition animation is ignored.
  *
  * @property int|string $left Default: 'undefined'
  *    Specify how to be positioned in its parent.
- *     When the element is at the top level, the parent is the contianer of the chart instance.
+ *     When the element is at the top level, the parent is the container of the chart instance.
  *     Otherwise, the parent is a group element.
  *     Optional values:
  *     
@@ -105,7 +168,7 @@ use Hisune\EchartsPHP\Property;
  *
  * @property int|string $right Default: 'undefined'
  *    Specify how to be positioned in its parent.
- *     When the element is at the top level, the parent is the contianer of the chart instance.
+ *     When the element is at the top level, the parent is the container of the chart instance.
  *     Otherwise, the parent is a group element.
  *     Optional values:
  *     
@@ -118,7 +181,7 @@ use Hisune\EchartsPHP\Property;
  *
  * @property int|string $top Default: 'undefined'
  *    Specify how to be positioned in its parent.
- *     When the element is at the top level, the parent is the contianer of the chart instance.
+ *     When the element is at the top level, the parent is the container of the chart instance.
  *     Otherwise, the parent is a group element.
  *     Optional values:
  *     
@@ -131,7 +194,7 @@ use Hisune\EchartsPHP\Property;
  *
  * @property int|string $bottom Default: 'undefined'
  *    Specify how to be positioned in its parent.
- *     When the element is at the top level, the parent is the contianer of the chart instance.
+ *     When the element is at the top level, the parent is the container of the chart instance.
  *     Otherwise, the parent is a group element.
  *     Optional values:
  *     
@@ -142,7 +205,7 @@ use Hisune\EchartsPHP\Property;
  *     Only one between top and bottom can work.
  *     If top or bottom is specified, positioning attributes in shape (like y, cy) will not work.
  *
- * @property strin $bounding Default: 'all'
+ * @property string $bounding Default: 'all'
  *    Used to specify whether the entire transformed element (containing children if is group) is confined in its container.
  *     See sample:
  *     
@@ -151,7 +214,7 @@ use Hisune\EchartsPHP\Property;
  *     Optional values:
  *     
  *     all: (default)
- *       Use the transformed bounding box of itself and its descentants to perform position calculation, which confine the entire body in the boundary of its parent.
+ *       Use the transformed bounding box of itself and its descendants to perform position calculation, which confine the entire body in the boundary of its parent.
  *     
  *     raw:
  *       Only use the untransformed bounding box of itself (without its descentant) to perform position calculation, which is suitable when the content in the element need to be overflow its parent.
@@ -178,8 +241,89 @@ use Hisune\EchartsPHP\Property;
  * @property boolean $ignore Default: false
  *    Whether the element is totally ignored (neither render nor listen events).
  *
+ * @property array $textContent
+ *    Text block attached to an element and layout based on the element by textConfig.
+ *     The props the the same as text.
+ *
+ * @property Elements\TextConfig $textConfig
+ *    
+ *
+ * @property callable $during
+ *    during callback enable users to set props to an element in each animation frame.
+ *     (duringAPI: CustomDuringAPI) =&gt; void
+ *     
+ *     interface CustomDuringAPI {
+ *         // Set transform prop value.
+ *         // Transform prop see `TransformProp`.
+ *         setTransform(key: TransformProp, val: unknown): void;
+ *         // Get transform prop value of the current animation frame.
+ *         getTransform(key: TransformProp): unknown;
+ *         // Set shape prop value.
+ *         // Shape prop is like `{ type: rect, shape: { xxxProp: xxxValue } }`.
+ *         setShape(key: string, val: unknown): void;
+ *         // Get shape prop value of the current animation frame.
+ *         getShape(key: string): unknown;
+ *         // Set style prop value.
+ *         // Style prop is like `{ type: rect, style: { xxxProp: xxxValue } }`.
+ *         setStyle(key: string, val: unknown): void;
+ *         // Get style prop value of the current animation frame.
+ *         getStyle(key: string): unknown;
+ *         // Set extra prop value.
+ *         // Extra prop is like `{ type: rect, extra: { xxxProp: xxxValue } }`.
+ *         setExtra(key: string, val: unknown): void;
+ *         // Get extra prop value of the current animation frame.
+ *         getExtra(key: string): unknown;
+ *     }
+ *     
+ *     type TransformProp =
+ *         x | y | scaleX | scaleY | originX | originY | rotation;
+ *     
+ *     In most cases users do not need this during callback. For example, if some props are specified in transition, echarts will make interpolation for these props internally and therefore have animation based on these props automatically. But if this kind of internal interpolation does not match the user requirements of animation, users can use this during callback to customize them.
+ *     For example, if users are using polygon shape. The shape is described by shape.points, which is an points array like:
+ *     {
+ *         type: polygon,
+ *         shape: {
+ *             points: [[12, 33], [15, 36], [19, 39], ...]
+ *         },
+ *         // ...
+ *     }
+ *     
+ *     If users specify them into transition like:
+ *     {
+ *         type: polygon,
+ *         shape: {
+ *             points: [[12, 33], [15, 36], [19, 39], ...],
+ *         },
+ *         transition: shape
+ *         // ...
+ *     }
+ *     
+ *     Although the points will be interpolated, the consequent animation will be like that each point runs straight to the target position, which might do not match the user requirement if some kind of track like spiral is actually needed. In this case, users can use the during callback like that:
+ *     {
+ *         type: polygon,
+ *         shape: {
+ *             points: calculatePoints(initialDegree),
+ *             transition: points
+ *         },
+ *         extra: {
+ *             degree: nextDegree
+ *         },
+ *         // Make echarts interpolate `extra.degree` internally, based on which
+ *         // we calculate the `points` in each animation frame.
+ *         transition: extra,
+ *         during: function (duringAPI) {
+ *             var currentDegree = duringAPI.getExtra(degree);
+ *             duringAPI.setShape(calculatePoints(currentDegree));
+ *         }
+ *         // ...
+ *     }
+ *     
+ *     See this example example.
+ *
  * @property string $cursor Default: 'pointer'
- *    The mouse style when mouse hovers on an element, the same as cursor property in CSS.
+ *    
+ *     
+ *     The mouse style when mouse hovers on an element, the same as cursor property in CSS.
  *
  * @property boolean $draggable Default: false
  *    Can be dragged or not.
@@ -248,6 +392,26 @@ use Hisune\EchartsPHP\Property;
  *
  * @property Elements\Style $style
  *    
+ *
+ * @property string $focus Default: 'none'
+ *    
+ *     Since v5.0.0
+ *     
+ *     When its highlighted, whether to fade out of other data to focus the highlighted. The following configurations are supported:
+ *     
+ *     none Do not fade out other data, its by default.
+ *     self Only focus (not fade out) the element of the currently highlighted data.
+ *     series Focus on all elements of the series which the currently highlighted data belongs to.
+ *
+ * @property string $blurScope Default: 'coordinateSystem'
+ *    
+ *     Since v5.0.0
+ *     
+ *     The range of fade out when focus is enabled. Support the following configurations
+ *     
+ *     coordinateSystem
+ *     series
+ *     global
  *
  * @property Elements\Shape $shape
  *    

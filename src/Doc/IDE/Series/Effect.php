@@ -23,7 +23,7 @@ use Hisune\EchartsPHP\Property;
  *
  * @property string $symbol Default: 'circle'
  *    The symbol of special effect.
- *     Icon types provided by ECharts includes 
+ *     Icon types provided by ECharts includes
  *     circle, rect, roundRect, triangle, diamond, pin, arrow, none
  *     It can be set to an image with image://url , in which URL is the link to an image, or dataURI of an image.
  *     An image URL example:

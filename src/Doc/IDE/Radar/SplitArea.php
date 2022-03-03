@@ -10,7 +10,9 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: true
- *    Set this to true to show the splitArea.
+ *    
+ *     
+ *     Set this to true to show the splitArea.
  *
  * @property SplitArea\AreaStyle $areaStyle
  *    Split area style.

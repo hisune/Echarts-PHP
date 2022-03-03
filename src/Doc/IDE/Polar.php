@@ -22,7 +22,9 @@ use Hisune\EchartsPHP\Property;
  *     z has a lower priority to zlevel, and will not create new Canvas.
  *
  * @property array $center Default: '[\'50%\', \'50%\']'
- *    Center position of Polar coordinate, the first of which is the horizontal position, and the second is the vertical position.
+ *    
+ *     
+ *     Center position of Polar coordinate, the first of which is the horizontal position, and the second is the vertical position.
  *     Percentage is supported. When set in percentage, the item is relative to the container width, and the second item to the height.
  *     Example: 
  *     // Set to absolute pixel values
@@ -31,16 +33,18 @@ use Hisune\EchartsPHP\Property;
  *     center: [50%, 50%]
  *
  * @property int|string|array $radius
- *    Radius of Polar coordinate. Value can be:
+ *    
+ *     
+ *     Radius of Polar coordinate. Value can be:
  *     
  *     number: Specify outside radius directly.
  *     string: For example, 20%, means that the outside radius is 20% of the viewport size (the little one between width and height of the chart container).
+ *     
  *     
  *     Array.&lt;number|string&gt;: The first item specifies the inside radius, and the second item specifies the outside radius. Each item follows the definitions above.
  *
  * @property Polar\Tooltip $tooltip
  *    tooltip settings in the coordinate system component.
- *     
  *     General Introduction:
  *     tooltip can be configured on different places:
  *     

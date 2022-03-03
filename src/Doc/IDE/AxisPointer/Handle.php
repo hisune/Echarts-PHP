@@ -10,10 +10,14 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: false
- *    Set to true to use handle.
+ *    
+ *     
+ *     Set to true to use handle.
  *
  * @property * $icon
- *    The icon of the handle.
+ *    
+ *     
+ *     The icon of the handle.
  *     It can be set to an image with image://url , in which URL is the link to an image, or dataURI of an image.
  *     An image URL example:
  *     image://http://xxx.xxx.xxx/a/b.png
@@ -25,19 +29,29 @@ use Hisune\EchartsPHP\Property;
  *     See the example of using image
  *
  * @property int|array $size Default: 45
- *    The size of the handle, which can be set as a single value or an array ([width, height]).
+ *    
+ *     
+ *     The size of the handle, which can be set as a single value or an array ([width, height]).
  *
  * @property int $margin Default: 50
- *    Distance from handle center to axis.
+ *    
+ *     
+ *     Distance from handle center to axis.
  *
  * @property string $color Default: '#333'
- *    The color of the handle.
+ *    
+ *     
+ *     The color of the handle.
  *
  * @property int $throttle Default: 40
- *    Throttle rate of trigger view update when dragging handle, in ms. Increase the value to improve performance, but decrease the experience.
+ *    
+ *     
+ *     Throttle rate of trigger view update when dragging handle, in ms. Increase the value to improve performance, but decrease the experience.
  *
  * @property int $shadowBlur Default: 3
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -45,13 +59,19 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor Default: '#aaa'
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
  *
  * @property int $shadowOffsetX Default: 2
- *    Offset distance on the horizontal direction of shadow.
+ *    
+ *     
+ *     Offset distance on the horizontal direction of shadow.
  *
  * @property int $shadowOffsetY Default: 0
- *    Offset distance on the vertical direction of shadow.
+ *    
+ *     
+ *     Offset distance on the vertical direction of shadow.
  *
  * {_more_}
  */

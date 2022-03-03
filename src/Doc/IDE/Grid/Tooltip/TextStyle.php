@@ -10,18 +10,24 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property string $color Default: '#fff'
- *     text color.
+ *    
+ *     
+ *      text color.
  *
  * @property string $fontStyle Default: 'normal'
- *     font style
+ *    
+ *     
+ *      font style.
  *     Options are:
  *     
  *     normal
  *     italic
  *     oblique
  *
- * @property string $fontWeight Default: 'normal'
- *     font thick weight
+ * @property string|int $fontWeight Default: 'normal'
+ *    
+ *     
+ *      font thick weight.
  *     Options are:
  *     
  *     normal
@@ -31,14 +37,20 @@ use Hisune\EchartsPHP\Property;
  *     100 | 200 | 300 | 400...
  *
  * @property string $fontFamily Default: 'sans-serif'
- *     font family
+ *    
+ *     
+ *      font family.
  *     Can also be serif , monospace, ...
  *
  * @property int $fontSize Default: 14
- *     font size
+ *    
+ *     
+ *      font size.
  *
  * @property int $lineHeight
- *    Line height of the text fregment.
+ *    
+ *     
+ *     Line height of the text fragment.
  *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
@@ -49,34 +61,92 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     }
  *
- * @property int|string $width
- *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
- *     Notice, width and height specifies the width and height of the content, without padding.
- *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
- *     Notice, width and height only work when rich specified.
+ * @property int $width
+ *    
+ *     
+ *     Width of text block.
  *
- * @property int|string $height
- *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
- *     Notice, width and height specifies the width and height of the content, without padding.
- *     Notice, width and height only work when rich specified.
+ * @property int $height
+ *    
+ *     
+ *     Height of text block.
  *
- * @property string $textBorderColor Default: 'transparent'
- *    Storke color of the text.
+ * @property string $textBorderColor
+ *    
+ *     
+ *     Storke color of the text.
  *
- * @property int $textBorderWidth Default: 0
- *    Storke line width of the text.
+ * @property int $textBorderWidth
+ *    
+ *     
+ *     Storke line width of the text.
+ *
+ * @property string|int|array $textBorderType Default: 'solid'
+ *    
+ *     
+ *     
+ *     Stroke line type of the text.
+ *     Possible values are:
+ *     
+ *     solid
+ *     dashed
+ *     dotted
+ *     
+ *     Since v5.0.0, it can also be a number or a number array to specify the dash array of the line. With 
+ *     textBorderDashOffset
+ *     , we can make the line style more flexible.
+ *     For example：
+ *     {
+ *     
+ *     textBorderType: [5, 10],
+ *     
+ *     textBorderDashOffset: 5
+ *     }
+ *
+ * @property int $textBorderDashOffset Default: 0
+ *    
+ *     Since v5.0.0
+ *     
+ *     
+ *     
+ *     To set the line dash offset. With 
+ *     textBorderType
+ *     , we can make the line style more flexible.
+ *     Refer to MDN lineDashOffset for more details.
  *
  * @property string $textShadowColor Default: 'transparent'
- *    Shadow color of the text itself.
+ *    
+ *     
+ *     Shadow color of the text itself.
  *
  * @property int $textShadowBlur Default: 0
- *    Shadow blue of the text itself.
+ *    
+ *     
+ *     Shadow blue of the text itself.
  *
  * @property int $textShadowOffsetX Default: 0
- *    Shadow X offset of the text itself.
+ *    
+ *     
+ *     Shadow X offset of the text itself.
  *
  * @property int $textShadowOffsetY Default: 0
- *    Shadow Y offset of the text itself.
+ *    
+ *     
+ *     Shadow Y offset of the text itself.
+ *
+ * @property string $overflow Default: 'none'
+ *    
+ *     
+ *     Determine how to display the text when its overflow. Available when width is set.
+ *     
+ *     truncate Truncate the text and trailing with ellipsis.
+ *     break Break by word
+ *     breakAll Break by character.
+ *
+ * @property string $ellipsis Default: '...'
+ *    Ellipsis to be displayed when overflow is set to truncate.
+ *     
+ *     truncate Truncate the overflow lines.
  *
  * {_more_}
  */

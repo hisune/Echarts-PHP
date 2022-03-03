@@ -214,7 +214,7 @@ use Hisune\EchartsPHP\Property;
  *    Determines whether a selected box can be changed in shape or translated.
  *
  * @property array $brushStyle
- *    Defailt brush style, whose value is:
+ *    Default brush style, whose value is:
  *     {
  *         borderWidth: 1,
  *         color: rgba(120,140,180,0.3),
@@ -242,7 +242,7 @@ use Hisune\EchartsPHP\Property;
  *     
  *     In this example, debounce is used to make sure the bar chart is updated only when the user has stopped action. In other cases, the animation result may not be so good.
  *
- * @property int $removeOnClick Default: '1'
+ * @property boolean $removeOnClick Default: true
  *    Defined whether clearing all select-boxes on click is enabled when brush.brushMode is single.
  *
  * @property array $inBrush
@@ -258,7 +258,7 @@ use Hisune\EchartsPHP\Property;
  *     colorSaturation: Saturation in HSL.
  *     colorHue: Hue in HSL.
  *     
- *     In most cases, inBrush can be left unassigned, in which case default visual configuration is remained.
+ *     In most cases, inBrush can be left unassigned, in which case default visual configuration remains.
  *
  * @property array $outOfBrush
  *    Defines visual effects of items out of selection.

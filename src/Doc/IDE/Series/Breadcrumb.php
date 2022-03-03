@@ -10,7 +10,9 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: true
- *    Whether to show the breadcrumb.
+ *    
+ *     
+ *     Whether to show the breadcrumb.
  *
  * @property string|int $left Default: 'center'
  *    Distance between asdf  component and the left side of the container.
@@ -20,7 +22,7 @@ use Hisune\EchartsPHP\Property;
  * @property string|int $top Default: 'auto'
  *    Distance between asdf  component and the top side of the container.
  *     top value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
- *     If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
+ *     If the top value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
  *
  * @property string|int $right Default: 'auto'
  *    Distance between asdf  component and the right side of the container.
@@ -33,10 +35,14 @@ use Hisune\EchartsPHP\Property;
  *     Adaptive by default.
  *
  * @property int $height Default: 22
- *    The height of breadcrumb.
+ *    
+ *     
+ *     The height of breadcrumb.
  *
  * @property int $emptyItemWidth Default: 25
- *    When is no content in breadcrumb, this minimal width need to be set up.
+ *    
+ *     
+ *     When is no content in breadcrumb, this minimal width need to be set up.
  *
  * @property Breadcrumb\ItemStyle $itemStyle
  *    Graphic style of , emphasis is the style when it is highlighted, like being hovered by mouse, or highlighted via legend connect.

@@ -16,47 +16,78 @@ use Hisune\EchartsPHP\Property;
  *    Whether to show the geo component.
  *
  * @property string $map Default: ''
- *    Map charts.
- *     Due to the increase of fineness of map, ECharts 3 doesnt include map data by default for package size consideration. You may find map files you need on map download page and then include and register them in ECharts.
- *     Two formats of map data are provided in ECharts, one of which can be included in &lt;script&gt; tag as JavaScript file, and the other of is in JSON format and should be loaded using AJAX. Map name and data will be loaded automatically once the JavaScript file is loaded, while in the JSON form, you have to assign name explicitly.
- *     Here are examples of these two types:
- *      JavaScript importing example 
- *     &lt;script src=echarts.js&gt;&lt;/script&gt;
- *     &lt;script src=map/js/china.js&gt;&lt;/script&gt;
- *     &lt;script&gt;
- *     var chart = echarts.init(document.getElmentById(main));
- *     chart.setOption({
- *         series: [{
- *             type: map,
- *             map: china
- *         }]
- *     });
- *     &lt;/script&gt;
- *     
- *      JSON importing example 
- *     $.get(map/json/china.json, function (chinaJson) {
- *         echarts.registerMap(china, chinaJson);
- *         var chart = echarts.init(document.getElmentById(main));
+ *    Map name registered in registerMap.
+ *     Use geoJSON
+ *     $.get(map/china_geo.json, function (chinaJson) {
+ *         echarts.registerMap(china, {geoJSON: geoJson});
+ *         var chart = echarts.init(document.getElementById(main));
  *         chart.setOption({
- *             series: [{
- *                 type: map,
- *                 map: china
+ *             geo: [{
+ *                 map: china,
+ *                 ...
  *             }]
  *         });
  *     });
  *     
- *     ECharts uses geoJSON format as map outline. Besides the methods introduced above, you can also get geoJSON data through in other methods if you like and register it in ECharts. Reference to USA Population Estimates for more information.
+ *     See also geoJSON hexbin.
+ *     The demo above shows that ECharts can uses geoJSON format as map outline. You can use third-party geoJSON data (like maps) and register them into ECharts.
+ *     Use SVG
+ *     $.get(map/topographic_map.svg, function (svg) {
+ *         echarts.registerMap(topo, {svg: svg});
+ *         var chart = echarts.init(document.getElementById(main));
+ *         chart.setOption({
+ *             geo: [{
+ *                 map: topo,
+ *                 ...
+ *             }]
+ *         });
+ *     });
+ *     
+ *     See also Flight Seatmap.
+ *     The demo above shows that SVG format can be used in ECharts. See more info in SVG Base Map.
  *
  * @property boolean|string $roam Default: false
- *    Whether to enable mouse zooming and translating. false by default. If either zooming or translating is wanted, it can be set to scale or move. Otherwise, set it to be true to enable both.
+ *    
+ *     
+ *     Whether to enable mouse zooming and translating. false by default. If either zooming or translating is wanted, it can be set to scale or move. Otherwise, set it to be true to enable both.
+ *
+ * @property Geo\Projection $projection
+ *    For custom map projection, at least two methods project, unproject should be provided to calculate the coordinates after projection and before projection respectively.
+ *     For example, for the Mercator projection.
+ *     series: {
+ *         type: map,
+ *         projection: {
+ *             project: (point) =&gt; [point[0] / 180 * Math.PI, -Math.log(Math.tan((Math.PI / 2 + point[1] / 180 * Math.PI) / 2))],
+ *             unproject: (point) =&gt; [point[0] * 180 / Math.PI, 2 * 180 / Math.PI * Math.atan(Math.exp(point[1])) - 90]
+ *         }
+ *     }
+ *     
+ *     In addition to our own implementation of the projection formula, we can also use exists projection implementations provided by third-party libraries such as d3-geo.
+ *     const projection = d3.geoConicEqualArea();
+ *     // ...
+ *     series: {
+ *         type: map,
+ *         projection: {
+ *             project: (point) =&gt; projection(point),
+ *             unproject: (point) =&gt; projection.invert(point)
+ *         }
+ *     }
+ *     
+ *     
+ *     Note: Custom projections are only useful when using GeoJSON as a data source.
  *
  * @property array $center
- *    Center of current view-port, in longitude and latitude.
+ *    Center of current view-port, in longitude and latitude by default. Use the projected coordinates if projection is set.
  *     Example:
  *     center: [115.97, 29.71]
+ *     
+ *     projection: {
+ *         projection: (pt) =&gt; project(pt)
+ *     },
+ *     center: project([115.97, 29.71])
  *
  * @property int $aspectScale Default: 0.75
- *    Used to scale aspect of geo.
+ *    Used to scale aspect of geo. Will be ignored if projection is set.
  *     The final aspect is calculated by: geoBoundingRect.width / geoBoundingRect.height * aspectScale.
  *
  * @property array $boundingCoords
@@ -83,6 +114,20 @@ use Hisune\EchartsPHP\Property;
  *         China : 中国
  *     }
  *
+ * @property string $nameProperty Default: 'name'
+ *    
+ *     Since v4.8.0
+ *     
+ *     customized property key for GeoJSON feature. By default, name is used as primary key to identify GeoJSON feature.
+ *     For example:
+ *     {
+ *         nameProperty: NAME, // key to connect following data point to GeoJSON region {type:Feature,id:01,properties:{NAME:Alabama}, geometry: { ... }}
+ *         data:[
+ *             {name: Alabama, value: 4822023},
+ *             {name: Alaska, value: 731449},
+ *         ]
+ *     }
+ *
  * @property boolean|string $selectedMode Default: false
  *    Selected mode decides whether multiple selecting is supported. By default, false is used for disabling selection. Its value can also be single for selecting single area, or multiple for selecting multiple areas.
  *
@@ -91,6 +136,18 @@ use Hisune\EchartsPHP\Property;
  *
  * @property Geo\ItemStyle $itemStyle
  *    Graphic style of Map Area Border, emphasis is the style when it is highlighted, like being hovered by mouse, or highlighted via legend connect.
+ *
+ * @property Geo\Emphasis $emphasis
+ *    Map area style in highlighted state.
+ *
+ * @property Geo\Select $select
+ *    Map area style in selected state.
+ *
+ * @property Geo\Blur $blur
+ *    
+ *     Since v5.1.0
+ *     
+ *     Map area style in blurred state.
  *
  * @property int $zlevel Default: 0
  *    zlevel value of all graphical elements in .
@@ -109,7 +166,7 @@ use Hisune\EchartsPHP\Property;
  * @property string|int $top Default: 'auto'
  *    Distance between  component and the top side of the container.
  *     top value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
- *     If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
+ *     If the top value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
  *
  * @property string|int $right Default: 'auto'
  *    Distance between  component and the right side of the container.
@@ -149,7 +206,25 @@ use Hisune\EchartsPHP\Property;
  *     The region color can also be controlled by map series. See series-map.geoIndex.
  *
  * @property boolean $silent Default: false
- *    Whether to ignore mouse events. Default value is false, for triggering and responding to mouse events.
+ *    
+ *     
+ *     Whether to ignore mouse events. Default value is false, for triggering and responding to mouse events.
+ *
+ * @property Geo\Tooltip $tooltip
+ *    
+ *     Since v5.1.0
+ *     
+ *     tooltip settings in the coordinate system component.
+ *     General Introduction:
+ *     tooltip can be configured on different places:
+ *     
+ *     Configured on global: tooltip
+ *     
+ *     Configured in a coordinate system: grid.tooltip, polar.tooltip, single.tooltip
+ *     
+ *     Configured in a series: series.tooltip
+ *     
+ *     Configured in each item of series.data: series.data.tooltip
  *
  * {_more_}
  */

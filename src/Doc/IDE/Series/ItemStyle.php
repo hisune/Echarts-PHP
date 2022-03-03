@@ -10,59 +10,109 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property string|callable $color
- *     color.  Color is taken from option.color Palette by default. 
+ *    
  *     
- *     Color can be represented in RGB, for example rgb(128, 128, 128). RGBA can be used when you need alpha channel, for example rgba(128, 128, 128, 0.5). You may also use hexadecimal format, for example #ccc. Gradient color and texture are also supported besides single colors.
- *     // Linear gradient. First four parameters are x0, y0, x2, and y2, each ranged from 0 to 1, standing for percentage in the bounding box. If global is `true`, then the first four parameters are in absolute pixel positions.
- *     color: {
- *         type: linear,
- *         x: 0,
- *         y: 0,
- *         x2: 0,
- *         y2: 1,
- *         colorStops: [{
- *             offset: 0, color: red // color at 0% position
- *         }, {
- *             offset: 1, color: blue // color at 100% position
- *         }],
- *         global: false // false by default
- *     }
- *     // Radial gradient. First three parameters are x and y positions of center, and radius, similar to linear gradient.
- *     color: {
- *         type: radial,
- *         x: 0.5,
- *         y: 0.5,
- *         r: 0.5,
- *         colorStops: [{
- *             offset: 0, color: red // color at 0% position
- *         }, {
- *             offset: 1, color: blue // color at 100% position
- *         }],
- *         global: false // false by default
- *     }
- *     // Fill with texture
- *     color: {
- *         image: imageDom, // HTMLImageElement, and HTMLCanvasElement are supported, while string path is not supported
- *         repeat: repeat // whether to repeat texture, whose value can be repeat-x, repeat-y, or no-repeat
- *     }
+ *      color. Color is taken from option.color Palette by default. 
  *     
+ *     Supports setting as solid color using rgb(255,255,255), rgba(255,255,255,1), #fff, etc. Also supports setting as gradient color and pattern fill, see option.color for details
  *     
  *     Supports callback functions, in the form of:
  *     (params: Object) =&gt; Color
  *     
  *     Input parameters are seriesIndex, dataIndex, data, value, and etc. of data item.
  *
- * @property string $borderColor Default: '"#000"'
- *     border color, whose format is similar to that of color.
+ * @property string $borderColor Default: '#000'
+ *    
+ *     
+ *      border color, whose format is similar to that of color.
  *
  * @property int $borderWidth Default: 0
- *     border width. No border when it is set to be 0.
+ *    
+ *     
+ *      border width. No border when it is set to be 0.
+ *      border width. No border when it is set to be 0.
  *
- * @property string $borderType Default: 'solid'
- *    Border type, which can be solid, dashed, or dotted. solid by default.
+ * @property string|int|array $borderType Default: 'solid'
+ *    
+ *     
+ *     
+ *      border type.
+ *     Possible values are:
+ *     
+ *     solid
+ *     dashed
+ *     dotted
+ *     
+ *     Since v5.0.0, it can also be a number or a number array to specify the dash array of the line. With 
+ *     borderDashOffset
+ *     , we can make the line style more flexible.
+ *     For example：
+ *     {
+ *     
+ *     borderType: [5, 10],
+ *     
+ *     borderDashOffset: 5
+ *     }
+ *
+ * @property int $borderDashOffset Default: 0
+ *    
+ *     Since v5.0.0
+ *     
+ *     
+ *     
+ *     To set the line dash offset. With 
+ *     borderType
+ *     , we can make the line style more flexible.
+ *     Refer to MDN lineDashOffset for more details.
+ *
+ * @property string $borderCap Default: 'butt'
+ *    
+ *     Since v5.0.0
+ *     
+ *     
+ *     
+ *     To specify how to draw the end points of the line.
+ *     Possible values are:
+ *     
+ *     butt: The ends of lines are squared off at the endpoints.
+ *     round: The ends of lines are rounded.
+ *     square: The ends of lines are squared off by adding a box with an equal width and half the height of the lines thickness.
+ *     
+ *     Default value is butt. Refer to MDN lineCap for more details.
+ *
+ * @property string $borderJoin Default: 'bevel'
+ *    
+ *     Since v5.0.0
+ *     
+ *     
+ *     
+ *     To determine the shape used to join two line segments where they meet.
+ *     Possible values are:
+ *     
+ *     bevel: Fills an additional triangular area between the common endpoint of connected segments, and the separate outside rectangular corners of each segment.
+ *     round: Rounds off the corners of a shape by filling an additional sector of disc centered at the common endpoint of connected segments. The radius for these rounded corners is equal to the line width.
+ *     miter: Connected segments are joined by extending their outside edges to connect at a single point, with the effect of filling an additional lozenge-shaped area. This setting is affected by the 
+ *     borderMiterLimit
+ *     property.
+ *     
+ *     Default value is bevel. Refer to MDN lineJoin for more details.
+ *
+ * @property int $borderMiterLimit Default: 10
+ *    
+ *     Since v5.0.0
+ *     
+ *     
+ *     
+ *     To set the miter limit ratio. Only works when 
+ *     borderJoin
+ *      is set as miter.
+ *     Default value is 10. Negative、0、Infinity and NaN values are ignored.
+ *     Refer to MDN miterLimit for more details.
  *
  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -70,34 +120,49 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
  *
  * @property int $shadowOffsetX Default: 0
- *    Offset distance on the horizontal direction of shadow.
+ *    
+ *     
+ *     Offset distance on the horizontal direction of shadow.
  *
  * @property int $shadowOffsetY Default: 0
- *    Offset distance on the vertical direction of shadow.
+ *    
+ *     
+ *     Offset distance on the vertical direction of shadow.
  *
  * @property int $opacity
- *    Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
+ *    
+ *     
+ *     Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
+ *
+ * @property ItemStyle\Decal $decal
+ *    The style of the decal pattern. It works only if aria.enabled and aria.decal.show are both set to be true.
+ *     If it is set to be none, no decal will be used.
+ *     It works only if areaStyle is set.
  *
  *  * @property string $color Default: 'auto'
- *    Bar color. defaults to acquire colors from global palette option.color .
+ *    
+ *     
+ *     Bar color. By default, colors from global palette option.color is used.
+ *     
+ *     Supports setting as solid color using rgb(255,255,255), rgba(255,255,255,1), #fff, etc. Also supports setting as gradient color and pattern fill, see option.color for details
  *
- * @property string $barBorderColor Default: '#000'
- *    The border color of bar.
- *
- * @property int $barBorderWidth Default: 0
- *    The border width of bar. defaults to have no border.
- *
- * @property int|array $barBorderRadius Default: 0
- *    The radius of rounded corner. Its unit is px. And it supports use array to respectively specify the 4 corner radiuses.
+ * @property int|array $borderRadius Default: 0
+ *    
+ *     
+ *     The radius of rounded corner. Its unit is px. And it supports use array to respectively specify the 4 corner radiuses.
  *     For example:
- *     barBorderRadius: 5, // consistently set the size of 4 rounded corners
- *     barBorderRadius: [5, 5, 0, 0] // (clockwise upper left, upper right, bottom right and bottom left)
+ *     borderRadius: 5, // consistently set the size of 4 rounded corners
+ *     borderRadius: [5, 5, 0, 0] // (clockwise upper left, upper right, bottom right and bottom left)
  *
  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -105,13 +170,23 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
  *
  * @property int $opacity
- *    Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
+ *    
+ *     
+ *     Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
+ *
+ * @property ItemStyle\Decal $decal
+ *    The style of the decal pattern. It works only if aria.enabled and aria.decal.show are both set to be true.
+ *     If it is set to be none, no decal will be used.
  *
  *  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -119,13 +194,23 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
  *
  * @property int $opacity
- *    Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
+ *    
+ *     
+ *     Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
+ *
+ * @property ItemStyle\Decal $decal
+ *    The style of the decal pattern. It works only if aria.enabled and aria.decal.show are both set to be true.
+ *     If it is set to be none, no decal will be used.
  *
  *  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -133,13 +218,19 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
  *
- * @property int $opacity
- *    Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
+ * @property int $opacity Default: 0.8
+ *    
+ *     
+ *     Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
  *
  *  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -147,13 +238,14 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
- *
- * @property int $opacity
- *    Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
  *
  *  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -161,13 +253,19 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
  *
- * @property int $opacity
- *    Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
+ * @property ItemStyle\Decal $decal
+ *    The style of the decal pattern. It works only if aria.enabled and aria.decal.show are both set to be true.
+ *     If it is set to be none, no decal will be used.
+ *     It works only if areaStyle is set.
  *
  *  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -175,137 +273,40 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
- *
- * @property int $opacity
- *    Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
  *
  *  * @property int $colorAlpha
- *    The tranparent rate of a node, the range is between 0 ~ 1.
+ *    
+ *     
+ *     The tranparent rate of a node, the range is between 0 ~ 1.
  *
  * @property int $colorSaturation
- *    The color saturation of a node. The range is between 0 ~ 1.
+ *    
+ *     
+ *     The color saturation of a node. The range is between 0 ~ 1.
  *
  * @property int $gapWidth Default: 0
- *    Gaps between child nodes.
+ *    
+ *     
+ *     Gaps between child nodes.
  *
  * @property string $borderColorSaturation
- *    The color saturation of a border or gap. The value range is between 0 ~ 1.
+ *    
+ *     
+ *     The color saturation of a border or gap. The value range is between 0 ~ 1.
  *     Tips:
  *     When borderColorSaturation is set, the borderColor is disabled, and, instead, the final border color is calculated based on the color of this node (this color could be sepcified explicitly or inherited from its parent node) and mixing with borderColorSaturation.
  *     In this way, a effect can be implemented: different sections have different hue of gap color repectively, which makes users easy to distinguish both sections and levels.
- *     
  *     How to avoid confusion by setting border/gap of node
  *     If all of the border/gaps are set with the same color, confusion might occur when rectangulars in different levels display at the same time.
- *     See the example. Noticed that the child rectangles in the red area are in the deeper level than rectangles that are saparated by white gap. So in the red area, basically we set gap color with red, and use borderColorSaturation to lift the saturation.
- *
- * @property string $strokeColor
- *    Stroke color of each rect.
- *
- * @property int $strokeWidth
- *    Stroke width of each rect.
- *
- *  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
- *     For example:
- *     {
- *         shadowColor: rgba(0, 0, 0, 0.5),
- *         shadowBlur: 10
- *     }
- *
- * @property string $shadowColor
- *    Shadow color. Support same format as color.
- *
- * @property int $opacity Default: 1
- *    Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
- *
- *  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
- *     For example:
- *     {
- *         shadowColor: rgba(0, 0, 0, 0.5),
- *         shadowBlur: 10
- *     }
- *
- * @property string $shadowColor
- *    Shadow color. Support same format as color.
- *
- *  * @property string $color0 Default: '#314656'
- *    Fill color of bearish candle stick.
- *     
- *     Color can be represented in RGB, for example rgb(128, 128, 128). RGBA can be used when you need alpha channel, for example rgba(128, 128, 128, 0.5). You may also use hexadecimal format, for example #ccc. Gradient color and texture are also supported besides single colors.
- *     // Linear gradient. First four parameters are x0, y0, x2, and y2, each ranged from 0 to 1, standing for percentage in the bounding box. If global is `true`, then the first four parameters are in absolute pixel positions.
- *     color: {
- *         type: linear,
- *         x: 0,
- *         y: 0,
- *         x2: 0,
- *         y2: 1,
- *         colorStops: [{
- *             offset: 0, color: red // color at 0% position
- *         }, {
- *             offset: 1, color: blue // color at 100% position
- *         }],
- *         global: false // false by default
- *     }
- *     // Radial gradient. First three parameters are x and y positions of center, and radius, similar to linear gradient.
- *     color: {
- *         type: radial,
- *         x: 0.5,
- *         y: 0.5,
- *         r: 0.5,
- *         colorStops: [{
- *             offset: 0, color: red // color at 0% position
- *         }, {
- *             offset: 1, color: blue // color at 100% position
- *         }],
- *         global: false // false by default
- *     }
- *     // Fill with texture
- *     color: {
- *         image: imageDom, // HTMLImageElement, and HTMLCanvasElement are supported, while string path is not supported
- *         repeat: repeat // whether to repeat texture, whose value can be repeat-x, repeat-y, or no-repeat
- *     }
- *
- * @property string $borderColor0 Default: '#314656'
- *    Border color of bearish candle stick.
- *     
- *     Color can be represented in RGB, for example rgb(128, 128, 128). RGBA can be used when you need alpha channel, for example rgba(128, 128, 128, 0.5). You may also use hexadecimal format, for example #ccc. Gradient color and texture are also supported besides single colors.
- *     // Linear gradient. First four parameters are x0, y0, x2, and y2, each ranged from 0 to 1, standing for percentage in the bounding box. If global is `true`, then the first four parameters are in absolute pixel positions.
- *     color: {
- *         type: linear,
- *         x: 0,
- *         y: 0,
- *         x2: 0,
- *         y2: 1,
- *         colorStops: [{
- *             offset: 0, color: red // color at 0% position
- *         }, {
- *             offset: 1, color: blue // color at 100% position
- *         }],
- *         global: false // false by default
- *     }
- *     // Radial gradient. First three parameters are x and y positions of center, and radius, similar to linear gradient.
- *     color: {
- *         type: radial,
- *         x: 0.5,
- *         y: 0.5,
- *         r: 0.5,
- *         colorStops: [{
- *             offset: 0, color: red // color at 0% position
- *         }, {
- *             offset: 1, color: blue // color at 100% position
- *         }],
- *         global: false // false by default
- *     }
- *     // Fill with texture
- *     color: {
- *         image: imageDom, // HTMLImageElement, and HTMLCanvasElement are supported, while string path is not supported
- *         repeat: repeat // whether to repeat texture, whose value can be repeat-x, repeat-y, or no-repeat
- *     }
+ *     See the example. Notice that the child rectangles in the red area are in the deeper level than rectangles that are saparated by white gap. So in the red area, basically we set gap color with red, and use borderColorSaturation to lift the saturation.
  *
  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -313,10 +314,18 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
+ *
+ * @property ItemStyle\Decal $decal
+ *    The style of the decal pattern. It works only if aria.enabled and aria.decal.show are both set to be true.
+ *     If it is set to be none, no decal will be used.
  *
  *  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -324,16 +333,86 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
  *
- *  * @property ItemStyle\AreaColor $areaColor Default: '#eee'
+ * @property ItemStyle\Decal $decal
+ *    The style of the decal pattern. It works only if aria.enabled and aria.decal.show are both set to be true.
+ *     If it is set to be none, no decal will be used.
+ *
+ *  * @property int $shadowBlur
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *     For example:
+ *     {
+ *         shadowColor: rgba(0, 0, 0, 0.5),
+ *         shadowBlur: 10
+ *     }
+ *
+ * @property string $shadowColor
+ *    
+ *     
+ *     Shadow color. Support same format as color.
+ *
+ * @property ItemStyle\Decal $decal
+ *    The style of the decal pattern. It works only if aria.enabled and aria.decal.show are both set to be true.
+ *     If it is set to be none, no decal will be used.
+ *
+ *  * @property string $color0 Default: '#314656'
+ *    
+ *     
+ *     Fill color of bearish candle stick.
+ *     
+ *     Supports setting as solid color using rgb(255,255,255), rgba(255,255,255,1), #fff, etc. Also supports setting as gradient color and pattern fill, see option.color for details
+ *
+ * @property string $borderColor0 Default: '#314656'
+ *    
+ *     
+ *     Border color of bearish candle stick.
+ *     
+ *     Supports setting as solid color using rgb(255,255,255), rgba(255,255,255,1), #fff, etc. Also supports setting as gradient color and pattern fill, see option.color for details
+ *
+ * @property int $shadowBlur
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *     For example:
+ *     {
+ *         shadowColor: rgba(0, 0, 0, 0.5),
+ *         shadowBlur: 10
+ *     }
+ *
+ * @property string $shadowColor
+ *    
+ *     
+ *     Shadow color. Support same format as color.
+ *
+ *  * @property int $shadowBlur
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *     For example:
+ *     {
+ *         shadowColor: rgba(0, 0, 0, 0.5),
+ *         shadowBlur: 10
+ *     }
+ *
+ * @property string $shadowColor
+ *    
+ *     
+ *     Shadow color. Support same format as color.
+ *
+ *  * @property string $areaColor Default: '#eee'
  *    Area filling color.
+ *     
+ *     Supports setting as solid color using rgb(255,255,255), rgba(255,255,255,1), #fff, etc. Also supports setting as gradient color and pattern fill, see option.color for details
  *
- * @property ItemStyle\Emphasis $emphasis
- *    Map area style in highlighted state.
- *
- *  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ * @property int $shadowBlur
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -341,10 +420,14 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
  *
  *  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -352,10 +435,14 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
  *
  *  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -363,10 +450,18 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
+ *
+ * @property ItemStyle\Decal $decal
+ *    The style of the decal pattern. It works only if aria.enabled and aria.decal.show are both set to be true.
+ *     If it is set to be none, no decal will be used.
  *
  *  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -374,10 +469,18 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
+ *
+ * @property ItemStyle\Decal $decal
+ *    The style of the decal pattern. It works only if aria.enabled and aria.decal.show are both set to be true.
+ *     If it is set to be none, no decal will be used.
  *
  *  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -385,10 +488,18 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
+ *
+ * @property ItemStyle\Decal $decal
+ *    The style of the decal pattern. It works only if aria.enabled and aria.decal.show are both set to be true.
+ *     If it is set to be none, no decal will be used.
  *
  *  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -396,10 +507,18 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
+ *
+ * @property ItemStyle\Decal $decal
+ *    The style of the decal pattern. It works only if aria.enabled and aria.decal.show are both set to be true.
+ *     If it is set to be none, no decal will be used.
  *
  *  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -407,7 +526,32 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
+ *
+ * @property ItemStyle\Decal $decal
+ *    The style of the decal pattern. It works only if aria.enabled and aria.decal.show are both set to be true.
+ *     If it is set to be none, no decal will be used.
+ *
+ *  * @property int $shadowBlur
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *     For example:
+ *     {
+ *         shadowColor: rgba(0, 0, 0, 0.5),
+ *         shadowBlur: 10
+ *     }
+ *
+ * @property string $shadowColor
+ *    
+ *     
+ *     Shadow color. Support same format as color.
+ *
+ * @property ItemStyle\Decal $decal
+ *    The style of the decal pattern. It works only if aria.enabled and aria.decal.show are both set to be true.
+ *     If it is set to be none, no decal will be used.
  *
  * {_more_}
  */

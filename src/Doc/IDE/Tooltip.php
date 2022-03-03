@@ -10,10 +10,15 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: true
- *    Whether to show the tooltip component, including tooltip floating layer and axisPointer.
+ *    
+ *     
+ *     Whether to show the tooltip component.
+ *     including tooltip floating layer and axisPointer.
  *
  * @property string $trigger Default: 'item'
- *    Type of triggering.
+ *    
+ *     
+ *     Type of triggering.
  *     Options:
  *     
  *     item
@@ -28,7 +33,7 @@ use Hisune\EchartsPHP\Property;
  *
  * @property Tooltip\AxisPointer $axisPointer
  *    Configuration item for axisPointer.
- *     tooltip.axisPointer is like syntactic sugar of axisPointer settings on axes (for example, xAxis.axisPointer or angleAxis.axisPointer). More detailed features can be configured on someAxis.axisPointer. But in common cases, using tooltip.axisPinter is more convenient.
+ *     tooltip.axisPointer is like syntactic sugar of axisPointer settings on axes (for example, xAxis.axisPointer or angleAxis.axisPointer). More detailed features can be configured on someAxis.axisPointer. But in common cases, using tooltip.axisPointer is more convenient.
  *     
  *     Notice: configurations of tooltip.axisPointer has lower priority than that of someAxis.axisPointer.
  *     
@@ -90,14 +95,20 @@ use Hisune\EchartsPHP\Property;
  *     In value axis and time axis, if snap is set as true, axisPointer will snap to point automatically.
  *
  * @property boolean $showContent Default: true
- *    Whether to show the tooltip floating layer, whose default value is true. It should be configurated to be false, if you only need tooltip to trigger the event or show the axisPointer without content.
+ *    
+ *     
+ *     Whether to show the tooltip floating layer, whose default value is true. It should be configurated to be false, if you only need tooltip to trigger the event or show the axisPointer without content.
  *
  * @property boolean $alwaysShowContent Default: false
- *    Whether to show tooltip content all the time. By default, it will be hidden after some time. It can be set to be true to preserve displaying.
+ *    
+ *     
+ *     Whether to show tooltip content all the time. By default, it will be hidden after some time. It can be set to be true to preserve displaying.
  *     This attribute is newly added to ECharts 3.0.
  *
  * @property string $triggerOn Default: 'mousemove|click'
- *    Conditions to trigger tooltip. Options:
+ *    
+ *     
+ *     Conditions to trigger tooltip. Options:
  *     
  *     mousemove
  *       Trigger when mouse moves.
@@ -115,23 +126,60 @@ use Hisune\EchartsPHP\Property;
  *     This attribute is new to ECharts 3.0.
  *
  * @property int $showDelay Default: 0
- *    Delay time for showing tooltip, in ms. No delay by default, and it is not recommended to set. Only valid when triggerOn is set to be mousemove.
+ *    
+ *     
+ *     Delay time for showing tooltip, in ms. No delay by default, and it is not recommended to set. Only valid when triggerOn is set to be mousemove.
  *
  * @property int $hideDelay Default: 100
- *    Delay time for hiding tooltip, in ms. It will be invalid when alwaysShowContent is true.
+ *    
+ *     
+ *     Delay time for hiding tooltip, in ms. It will be invalid when alwaysShowContent is true.
  *
  * @property boolean $enterable Default: true
- *    Whether mouse is allowed to enter the floating layer of tooltip, whose default value is false. If you need to interact in the tooltip like with links or buttons, it can be set as true.
+ *    
+ *     
+ *     Whether mouse is allowed to enter the floating layer of tooltip, whose default value is false. If you need to interact in the tooltip like with links or buttons, it can be set as true.
  *
  * @property string $renderMode Default: 'html'
- *    Render mode for tooltip. By default, it is set to be html so that extra DOM element is used for tooltip. It can also set to be richText so that the tooltip will be rendered inside Canvas (SVG rich text is not implemented yet). This is very useful for environments that dont have DOM, such as Wechat applications.
+ *    
+ *     
+ *     Render mode for tooltip. By default, it is set to be html so that extra DOM element is used for tooltip. It can also set to be richText so that the tooltip will be rendered inside Canvas (SVG rich text is not implemented yet). This is very useful for environments that dont have DOM, such as Wechat applications.
  *
  * @property boolean $confine Default: false
- *    Whether confine tooltip content in the view rect of chart instance.
+ *    
+ *     
+ *     Whether confine tooltip content in the view rect of chart instance.
  *     Useful when tooltip is cut because of overflow: hidden set on outer dom of chart instance, or because of narrow screen on mobile.
  *
+ * @property boolean $appendToBody Default: false
+ *    
+ *     
+ *     
+ *     
+ *     
+ *     Since v4.7.0
+ *     
+ *     Whether to append the tooltip DOM element as a child of the &lt;body&gt; of the HTML page, when using renderMode html.
+ *     By default false, means that the tooltip DOM element will be one of a descendant of its echarts DOM container. But that means that the tooltip might be cut when overflow the container if some of the ancestors DOM element of the echarts container are styled with overflow: hidden. This case could also be resolved by setting tooltip.confine, but it might not suitable for all scenarios.
+ *     Here we provide appendToBody: true to auto append the tooltip element to &lt;body&gt;, which is a common way to resolve this kind of issue. But true is not set as a default value because to void to bring break change for some cases where tooltip is deeply customized and to void some unexpected bad cases.
+ *     Note that it also works when CSS transform used.
+ *
+ * @property string $className
+ *    
+ *     
+ *     
+ *     
+ *     
+ *     Since v5.0.0
+ *     
+ *     Specify the classes for the tooltip root DOM. (Only works in html render mode).
+ *     Example:
+ *     className: echarts-tooltip echarts-tooltip-dark
+ *
  * @property int $transitionDuration Default: 0.4
- *    The transition duration of tooltips animation, in seconds. When it is set to be 0, it would move closely with the mouse.
+ *    
+ *     
+ *     The transition duration of tooltips animation, in seconds. When it is set to be 0, it would move closely with the mouse.
  *
  * @property string|array $position
  *    The position of the tooltips floating layer, which would follow the position of mouse by default.
@@ -210,7 +258,7 @@ use Hisune\EchartsPHP\Property;
  *     
  *     2. Callback function
  *     The format of callback function:
- *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
+ *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string | HTMLElement | HTMLElement[]
  *     
  *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
@@ -246,40 +294,15 @@ use Hisune\EchartsPHP\Property;
  *         // Color of data
  *         color: string,
  *     
- *         // the percentage of pie chart
- *         percent: number,
  *     
- *     }
  *     
- *     Note: the usage of encode and dimensionNames can be:
- *     If data is:
- *     dataset: {
- *         source: [
- *             [Matcha Latte, 43.3, 85.8, 93.7],
- *             [Milk Tea, 83.1, 73.4, 55.1],
- *             [Cheese Cocoa, 86.4, 65.2, 82.5],
- *             [Walnut Brownie, 72.4, 53.9, 39.1]
- *         ]
- *     }
  *     
- *     We can get values that corresponding to y axis by:
- *     params.value[params.encode.y[0]]
  *     
- *     If data is:
- *     dataset: {
- *         dimensions: [product, 2015, 2016, 2017],
- *         source: [
- *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
- *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
- *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
- *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
- *         ]
- *     }
+ *     When [trigger](~tooltip.trigger) is `axis`, or when tooltip is triggered by [axisPointer](~xAxis.axisPointer), `params` is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     
- *     We can get values that corresponding to y axis by:
- *     params.value[params.dimensionNames[params.encode.y[0]]]
  *     
- *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
+ *     
+ *     ```ts
  *     {
  *         componentType: series,
  *         // Series type
@@ -313,40 +336,18 @@ use Hisune\EchartsPHP\Property;
  *         // Color of data
  *         color: string,
  *     
- *     }
  *     
- *     Note: the usage of encode and dimensionNames can be:
- *     If data is:
- *     dataset: {
- *         source: [
- *             [Matcha Latte, 43.3, 85.8, 93.7],
- *             [Milk Tea, 83.1, 73.4, 55.1],
- *             [Cheese Cocoa, 86.4, 65.2, 82.5],
- *             [Walnut Brownie, 72.4, 53.9, 39.1]
- *         ]
- *     }
  *     
- *     We can get values that corresponding to y axis by:
- *     params.value[params.encode.y[0]]
  *     
- *     If data is:
- *     dataset: {
- *         dimensions: [product, 2015, 2016, 2017],
- *         source: [
- *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
- *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
- *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
- *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
- *         ]
- *     }
  *     
- *     We can get values that corresponding to y axis by:
- *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     **Note: **Using array to present all the parameters in ECharts 2.x is not supported anymore.
  *     
- *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
- *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
- *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     The second parameter `ticket` is the asynchronous callback flag which should be used along with the third parameter `callback` when it is used.
+ *     
+ *     The third parameter `callback` is asynchronous callback. When the content of tooltip is acquired asynchronously, `ticket` and `htm` as introduced above can be used to update tooltip with callback.
+ *     
  *     Example:
+ *     ```ts
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
@@ -354,18 +355,64 @@ use Hisune\EchartsPHP\Property;
  *         return Loading;
  *     }
  *
+ * @property string $valueFormatter
+ *    
+ *     Since v5.3.0
+ *     
+ *     Callback function for formatting the value section in tooltip.
+ *     Interface:
+ *     (value: number | string) =&gt; string
+ *     
+ *     Example:
+ *     // Add $ prefix
+ *     valueFormatter: (value) =&gt; $ + value.toFixed(2)
+ *
  * @property string $backgroundColor Default: 'rgba(50,50,50,0.7)'
  *    The background color of tooltips floating layer.
  *
  * @property string $borderColor Default: '#333'
- *    The border color of tooltips floating layer.
+ *    
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     The border color of tooltips floating layer.
  *
  * @property int $borderWidth Default: 0
- *    The border width of tooltips floating layer.
+ *    
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     The border width of tooltips floating layer.
  *
  * @property int $padding Default: 5
- *    The floating layer of tooltip space around content. The unit is px. Default values for each position are 5. And they can be set to different values with left, right, top, and bottom.
- *     Examples: 
+ *    
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     The floating layer of tooltip space around content. The unit is px. Default values for each position are 5. And they can be set to different values with left, right, top, and bottom.
+ *     Examples:
  *     // Set padding to be 5
  *     padding: 5
  *     // Set the top and bottom paddings to be 5, and left and right paddings to be 10
@@ -382,8 +429,41 @@ use Hisune\EchartsPHP\Property;
  *    The text syle of tooltips floating layer.
  *
  * @property string $extraCssText
- *    Extra CSS style for floating layer. The following is an example for adding shadow.
+ *    
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     Extra CSS style for floating layer. The following is an example for adding shadow.
  *     extraCssText: box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+ *
+ * @property string $order Default: 'seriesAsc'
+ *    
+ *     
+ *     
+ *     
+ *     
+ *     Since v5.0.0
+ *     
+ *     Tooltip order for multiple series. Defaults is seriesAsc.
+ *     Conditions to order tooltip. Options:
+ *     
+ *     seriesAsc
+ *       Base on series declaration, ascending order tooltip.
+ *     
+ *     seriesDesc
+ *       Base on series declaration, descending order tooltip.
+ *     
+ *     valueAsc
+ *       Base on value, ascending order tooltip, only for numberic value.
+ *     
+ *     valueDesc
+ *       Base on value, descending order tooltip, only for numberic value.
  *
  * {_more_}
  */

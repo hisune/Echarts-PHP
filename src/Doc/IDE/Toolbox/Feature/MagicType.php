@@ -13,7 +13,7 @@ use Hisune\EchartsPHP\Property;
  *    Whether to show the tool.
  *
  * @property array $type
- *    Enabled magic types, including line (for line charts), bar (for bar charts), stack (for stacked charts), and tiled (for tiled charts).
+ *    Enabled magic types, including line (for line charts), bar (for bar charts), stack (for stacked charts).
  *
  * @property MagicType\Title $title
  *    Title for different types, can be configured seperately.

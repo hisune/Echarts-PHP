@@ -9,52 +9,55 @@ namespace Hisune\EchartsPHP\Doc\IDE\Series\Emphasis\Label;
 use Hisune\EchartsPHP\Property;
 
 /**
- * @property Rich\<user defined style name> $<user defined style name>
+ * @property Rich\<style_name> $<style_name>
  *    
  *
- *  * @property Rich\<user defined style name> $<user defined style name>
+ *  * @property Rich\<style_name> $<style_name>
  *    
  *
- *  * @property Rich\<user defined style name> $<user defined style name>
+ *  * @property Rich\<style_name> $<style_name>
  *    
  *
- *  * @property Rich\<user defined style name> $<user defined style name>
+ *  * @property Rich\<style_name> $<style_name>
  *    
  *
- *  * @property Rich\<user defined style name> $<user defined style name>
+ *  * @property Rich\<style_name> $<style_name>
  *    
  *
- *  * @property Rich\<user defined style name> $<user defined style name>
+ *  * @property Rich\<style_name> $<style_name>
  *    
  *
- *  * @property Rich\<user defined style name> $<user defined style name>
+ *  * @property Rich\<style_name> $<style_name>
  *    
  *
- *  * @property Rich\<user defined style name> $<user defined style name>
+ *  * @property Rich\<style_name> $<style_name>
  *    
  *
- *  * @property Rich\<user defined style name> $<user defined style name>
+ *  * @property Rich\<style_name> $<style_name>
  *    
  *
- *  * @property Rich\<user defined style name> $<user defined style name>
+ *  * @property Rich\<style_name> $<style_name>
  *    
  *
- *  * @property Rich\<user defined style name> $<user defined style name>
+ *  * @property Rich\<style_name> $<style_name>
  *    
  *
- *  * @property Rich\<user defined style name> $<user defined style name>
+ *  * @property Rich\<style_name> $<style_name>
  *    
  *
- *  * @property Rich\<user defined style name> $<user defined style name>
+ *  * @property Rich\<style_name> $<style_name>
  *    
  *
- *  * @property Rich\<user defined style name> $<user defined style name>
+ *  * @property Rich\<style_name> $<style_name>
  *    
  *
- *  * @property Rich\<user defined style name> $<user defined style name>
+ *  * @property Rich\<style_name> $<style_name>
  *    
  *
- *  * @property Rich\<user defined style name> $<user defined style name>
+ *  * @property Rich\<style_name> $<style_name>
+ *    
+ *
+ *  * @property Rich\<style_name> $<style_name>
  *    
  *
  * {_more_}

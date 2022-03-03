@@ -10,8 +10,10 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property string|callable $symbol Default: 'pin'
- *    Symbol of .
- *     Icon types provided by ECharts includes 
+ *    
+ *     
+ *     Symbol of .
+ *     Icon types provided by ECharts includes
  *     circle, rect, roundRect, triangle, diamond, pin, arrow, none
  *     It can be set to an image with image://url , in which URL is the link to an image, or dataURI of an image.
  *     An image URL example:
@@ -27,24 +29,40 @@ use Hisune\EchartsPHP\Property;
  *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
  *
  * @property int|array|callable $symbolSize Default: 50
- *     symbol size. It can be set to single numbers like 10, or use an array to represent width and height. For example, [20, 10] means symbol width is 20, and height is10.
+ *    
+ *     
+ *      symbol size. It can be set to single numbers like 10, or use an array to represent width and height. For example, [20, 10] means symbol width is 20, and height is10.
  *     If size of symbols needs to be different, you can set with callback function in the following format:
  *     (value: Array|number, params: Object) =&gt; number|Array
  *     
  *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
  *
- * @property int $symbolRotate
- *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ * @property int|callable $symbolRotate
+ *    
+ *     
+ *     Rotate degree of  symbol. The negative value represents clockwise. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *     If rotation of symbols needs to be different, you can set with callback function in the following format:
+ *     (value: Array|number, params: Object) =&gt; number
+ *     
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
+ *     
+ *     Callback is supported since 4.8.0 .
  *
  * @property boolean $symbolKeepAspect Default: false
- *    Whether to keep aspect for symbols in the form of path://.
+ *    
+ *     
+ *     Whether to keep aspect for symbols in the form of path://.
  *
  * @property array $symbolOffset Default: '[0, 0]'
- *    Offset of  symbol relative to original position. By default, symbol will be put in the center position of data. But if symbol is from user-defined vector path or image, you may not expect symbol to be in center. In this case, you may use this attribute to set offset to default position. It can be in absolute pixel value, or in relative percentage value.
- *     For example, [0, 50%] means to move upside side position of symbol height. It can be used to make the arrow in the bottom to be at data position when symbol is pin.
+ *    
+ *     
+ *     Offset of  symbol relative to original position. By default, symbol will be put in the center position of data. But if symbol is from user-defined vector path or image, you may not expect symbol to be in center. In this case, you may use this attribute to set offset to default position. It can be in absolute pixel value, or in relative percentage value.
+ *     For example, [0, -50%] means to move upside side position of symbol height. It can be used to make the arrow in the bottom to be at data position when symbol is pin.
  *
  * @property boolean $silent Default: false
- *    Whether to ignore mouse events. Default value is false, for triggering and responding to mouse events.
+ *    
+ *     
+ *     Whether to ignore mouse events. Default value is false, for triggering and responding to mouse events.
  *
  * @property MarkPoint\Label $label
  *    Label of mark point.
@@ -52,10 +70,20 @@ use Hisune\EchartsPHP\Property;
  * @property MarkPoint\ItemStyle $itemStyle
  *    Mark point style.
  *
+ * @property MarkPoint\Emphasis $emphasis
+ *    Emphasis status of mark point.
+ *
+ * @property MarkPoint\Blur $blur
+ *    
+ *     Since v5.0.0
+ *     
+ *     Configurations of blur state. Whether to blur follows the series.
+ *
  * @property array $data
  *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
  *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
+ *     
  *     
  *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
@@ -77,6 +105,7 @@ use Hisune\EchartsPHP\Property;
  *             yAxis: 10,
  *             x: 90%
  *         }, 
+ *     
  *         {
  *             name: screen coordinate,
  *             x: 100,
@@ -85,20 +114,26 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  * @property boolean $animation Default: true
- *    Whether to enable animation.
+ *    
+ *     
+ *     Whether to enable animation.
  *
  * @property int $animationThreshold Default: 2000
  *    Whether to set graphic number threshold to animation. Animation will be disabled when graphic number is larger than threshold.
  *
  * @property int|callable $animationDuration Default: 1000
- *    Duration of the first animation, which supports callback function for different data to have different animation effect:
+ *    
+ *     
+ *     Duration of the first animation, which supports callback function for different data to have different animation effect:
  *     animationDuration: function (idx) {
  *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *
  * @property string $animationEasing Default: 'cubicOut'
- *    Easing method used for the first animation. Varied easing effects can be found at easing effect example.
+ *    
+ *     
+ *     Easing method used for the first animation. Varied easing effects can be found at easing effect example.
  *
  * @property int|callable $animationDelay Default: 0
  *    Delay before updating the first animation, which supports callback function for different data to have different animation effect.
@@ -111,14 +146,18 @@ use Hisune\EchartsPHP\Property;
  *     See this example for more information.
  *
  * @property int|callable $animationDurationUpdate Default: 300
- *    Time for animation to complete, which supports callback function for different data to have different animation effect:
+ *    
+ *     
+ *     Time for animation to complete, which supports callback function for different data to have different animation effect:
  *     animationDurationUpdate: function (idx) {
  *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *
  * @property string $animationEasingUpdate Default: 'cubicOut'
- *    Easing method used for animation.
+ *    
+ *     
+ *     Easing method used for animation.
  *
  * @property int|callable $animationDelayUpdate Default: 0
  *    Delay before updating animation, which supports callback function for different data to have different animation effects.
@@ -129,10 +168,17 @@ use Hisune\EchartsPHP\Property;
  *     }
  *     
  *     See this example for more information.
- *     prefix
  *
- *  * @property int $symbolRotate
- *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *  * @property int|callable $symbolRotate
+ *    
+ *     
+ *     Rotate degree of  symbol. The negative value represents clockwise. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *     If rotation of symbols needs to be different, you can set with callback function in the following format:
+ *     (value: Array|number, params: Object) =&gt; number
+ *     
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
+ *     
+ *     Callback is supported since 4.8.0 .
  *
  * @property MarkPoint\Label $label
  *    Label of mark point.
@@ -140,10 +186,62 @@ use Hisune\EchartsPHP\Property;
  * @property MarkPoint\ItemStyle $itemStyle
  *    Mark point style.
  *
+ * @property MarkPoint\Emphasis $emphasis
+ *    Emphasis status of mark point.
+ *
+ * @property MarkPoint\Blur $blur
+ *    
+ *     Since v5.0.0
+ *     
+ *     Configurations of blur state. Whether to blur follows the series.
+ *
  * @property array $data
  *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
  *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
+ *     
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
+ *     data: [
+ *     
+ *         {
+ *             name: screen coordinate,
+ *             x: 100,
+ *             y: 100
+ *         }
+ *     ]
+ *
+ *  * @property int|callable $symbolRotate
+ *    
+ *     
+ *     Rotate degree of  symbol. The negative value represents clockwise. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *     If rotation of symbols needs to be different, you can set with callback function in the following format:
+ *     (value: Array|number, params: Object) =&gt; number
+ *     
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
+ *     
+ *     Callback is supported since 4.8.0 .
+ *
+ * @property MarkPoint\Label $label
+ *    Label of mark point.
+ *
+ * @property MarkPoint\ItemStyle $itemStyle
+ *    Mark point style.
+ *
+ * @property MarkPoint\Emphasis $emphasis
+ *    Emphasis status of mark point.
+ *
+ * @property MarkPoint\Blur $blur
+ *    
+ *     Since v5.0.0
+ *     
+ *     Configurations of blur state. Whether to blur follows the series.
+ *
+ * @property array $data
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
+ *     
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
+ *     
  *     
  *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
@@ -165,6 +263,7 @@ use Hisune\EchartsPHP\Property;
  *             yAxis: 10,
  *             x: 90%
  *         }, 
+ *     
  *         {
  *             name: screen coordinate,
  *             x: 100,
@@ -172,8 +271,16 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     ]
  *
- *  * @property int $symbolRotate
- *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *  * @property int|callable $symbolRotate
+ *    
+ *     
+ *     Rotate degree of  symbol. The negative value represents clockwise. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *     If rotation of symbols needs to be different, you can set with callback function in the following format:
+ *     (value: Array|number, params: Object) =&gt; number
+ *     
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
+ *     
+ *     Callback is supported since 4.8.0 .
  *
  * @property MarkPoint\Label $label
  *    Label of mark point.
@@ -181,34 +288,20 @@ use Hisune\EchartsPHP\Property;
  * @property MarkPoint\ItemStyle $itemStyle
  *    Mark point style.
  *
+ * @property MarkPoint\Emphasis $emphasis
+ *    Emphasis status of mark point.
+ *
+ * @property MarkPoint\Blur $blur
+ *    
+ *     Since v5.0.0
+ *     
+ *     Configurations of blur state. Whether to blur follows the series.
+ *
  * @property array $data
  *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
  *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     When multiple attributes exist, priority is as the above order.
- *     For example: 
- *     data: [
- *         {
- *             name: screen coordinate,
- *             x: 100,
- *             y: 100
- *         }
- *     ]
- *
- *  * @property int $symbolRotate
- *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
- *
- * @property MarkPoint\Label $label
- *    Label of mark point.
- *
- * @property MarkPoint\ItemStyle $itemStyle
- *    Mark point style.
- *
- * @property array $data
- *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
- *     
- *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
  *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
@@ -230,6 +323,7 @@ use Hisune\EchartsPHP\Property;
  *             yAxis: 10,
  *             x: 90%
  *         }, 
+ *     
  *         {
  *             name: screen coordinate,
  *             x: 100,
@@ -237,8 +331,16 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     ]
  *
- *  * @property int $symbolRotate
- *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *  * @property int|callable $symbolRotate
+ *    
+ *     
+ *     Rotate degree of  symbol. The negative value represents clockwise. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *     If rotation of symbols needs to be different, you can set with callback function in the following format:
+ *     (value: Array|number, params: Object) =&gt; number
+ *     
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
+ *     
+ *     Callback is supported since 4.8.0 .
  *
  * @property MarkPoint\Label $label
  *    Label of mark point.
@@ -246,10 +348,20 @@ use Hisune\EchartsPHP\Property;
  * @property MarkPoint\ItemStyle $itemStyle
  *    Mark point style.
  *
+ * @property MarkPoint\Emphasis $emphasis
+ *    Emphasis status of mark point.
+ *
+ * @property MarkPoint\Blur $blur
+ *    
+ *     Since v5.0.0
+ *     
+ *     Configurations of blur state. Whether to blur follows the series.
+ *
  * @property array $data
  *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
  *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
+ *     
  *     
  *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
@@ -271,6 +383,7 @@ use Hisune\EchartsPHP\Property;
  *             yAxis: 10,
  *             x: 90%
  *         }, 
+ *     
  *         {
  *             name: screen coordinate,
  *             x: 100,
@@ -278,8 +391,16 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     ]
  *
- *  * @property int $symbolRotate
- *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *  * @property int|callable $symbolRotate
+ *    
+ *     
+ *     Rotate degree of  symbol. The negative value represents clockwise. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *     If rotation of symbols needs to be different, you can set with callback function in the following format:
+ *     (value: Array|number, params: Object) =&gt; number
+ *     
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
+ *     
+ *     Callback is supported since 4.8.0 .
  *
  * @property MarkPoint\Label $label
  *    Label of mark point.
@@ -287,10 +408,20 @@ use Hisune\EchartsPHP\Property;
  * @property MarkPoint\ItemStyle $itemStyle
  *    Mark point style.
  *
+ * @property MarkPoint\Emphasis $emphasis
+ *    Emphasis status of mark point.
+ *
+ * @property MarkPoint\Blur $blur
+ *    
+ *     Since v5.0.0
+ *     
+ *     Configurations of blur state. Whether to blur follows the series.
+ *
  * @property array $data
  *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
  *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
+ *     
  *     
  *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
@@ -312,6 +443,7 @@ use Hisune\EchartsPHP\Property;
  *             yAxis: 10,
  *             x: 90%
  *         }, 
+ *     
  *         {
  *             name: screen coordinate,
  *             x: 100,
@@ -319,8 +451,16 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     ]
  *
- *  * @property int $symbolRotate
- *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *  * @property int|callable $symbolRotate
+ *    
+ *     
+ *     Rotate degree of  symbol. The negative value represents clockwise. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *     If rotation of symbols needs to be different, you can set with callback function in the following format:
+ *     (value: Array|number, params: Object) =&gt; number
+ *     
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
+ *     
+ *     Callback is supported since 4.8.0 .
  *
  * @property MarkPoint\Label $label
  *    Label of mark point.
@@ -328,10 +468,157 @@ use Hisune\EchartsPHP\Property;
  * @property MarkPoint\ItemStyle $itemStyle
  *    Mark point style.
  *
+ * @property MarkPoint\Emphasis $emphasis
+ *    Emphasis status of mark point.
+ *
+ * @property MarkPoint\Blur $blur
+ *    
+ *     Since v5.0.0
+ *     
+ *     Configurations of blur state. Whether to blur follows the series.
+ *
  * @property array $data
  *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
  *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
+ *     
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
+ *     data: [
+ *     
+ *         {
+ *             name: screen coordinate,
+ *             x: 100,
+ *             y: 100
+ *         }
+ *     ]
+ *
+ *  * @property int|callable $symbolRotate
+ *    
+ *     
+ *     Rotate degree of  symbol. The negative value represents clockwise. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *     If rotation of symbols needs to be different, you can set with callback function in the following format:
+ *     (value: Array|number, params: Object) =&gt; number
+ *     
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
+ *     
+ *     Callback is supported since 4.8.0 .
+ *
+ * @property MarkPoint\Label $label
+ *    Label of mark point.
+ *
+ * @property MarkPoint\ItemStyle $itemStyle
+ *    Mark point style.
+ *
+ * @property MarkPoint\Emphasis $emphasis
+ *    Emphasis status of mark point.
+ *
+ * @property MarkPoint\Blur $blur
+ *    
+ *     Since v5.0.0
+ *     
+ *     Configurations of blur state. Whether to blur follows the series.
+ *
+ * @property array $data
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
+ *     
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
+ *     
+ *     
+ *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
+ *     
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
+ *     data: [
+ *         {
+ *             name: coordinate,
+ *             coord: [10, 20]
+ *         }, {
+ *             name: fixed x position,
+ *             yAxis: 10,
+ *             x: 90%
+ *         }, 
+ *     
+ *         {
+ *             name: screen coordinate,
+ *             x: 100,
+ *             y: 100
+ *         }
+ *     ]
+ *
+ *  * @property int|callable $symbolRotate
+ *    
+ *     
+ *     Rotate degree of  symbol. The negative value represents clockwise. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *     If rotation of symbols needs to be different, you can set with callback function in the following format:
+ *     (value: Array|number, params: Object) =&gt; number
+ *     
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
+ *     
+ *     Callback is supported since 4.8.0 .
+ *
+ * @property MarkPoint\Label $label
+ *    Label of mark point.
+ *
+ * @property MarkPoint\ItemStyle $itemStyle
+ *    Mark point style.
+ *
+ * @property MarkPoint\Emphasis $emphasis
+ *    Emphasis status of mark point.
+ *
+ * @property MarkPoint\Blur $blur
+ *    
+ *     Since v5.0.0
+ *     
+ *     Configurations of blur state. Whether to blur follows the series.
+ *
+ * @property array $data
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
+ *     
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
+ *     
+ *     When multiple attributes exist, priority is as the above order.
+ *     For example: 
+ *     data: [
+ *     
+ *         {
+ *             name: screen coordinate,
+ *             x: 100,
+ *             y: 100
+ *         }
+ *     ]
+ *
+ *  * @property int|callable $symbolRotate
+ *    
+ *     
+ *     Rotate degree of  symbol. The negative value represents clockwise. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *     If rotation of symbols needs to be different, you can set with callback function in the following format:
+ *     (value: Array|number, params: Object) =&gt; number
+ *     
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
+ *     
+ *     Callback is supported since 4.8.0 .
+ *
+ * @property MarkPoint\Label $label
+ *    Label of mark point.
+ *
+ * @property MarkPoint\ItemStyle $itemStyle
+ *    Mark point style.
+ *
+ * @property MarkPoint\Emphasis $emphasis
+ *    Emphasis status of mark point.
+ *
+ * @property MarkPoint\Blur $blur
+ *    
+ *     Since v5.0.0
+ *     
+ *     Configurations of blur state. Whether to blur follows the series.
+ *
+ * @property array $data
+ *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
+ *     
+ *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
+ *     
  *     
  *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
@@ -353,6 +640,7 @@ use Hisune\EchartsPHP\Property;
  *             yAxis: 10,
  *             x: 90%
  *         }, 
+ *     
  *         {
  *             name: screen coordinate,
  *             x: 100,
@@ -360,14 +648,31 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     ]
  *
- *  * @property int $symbolRotate
- *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *  * @property int|callable $symbolRotate
+ *    
+ *     
+ *     Rotate degree of  symbol. The negative value represents clockwise. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *     If rotation of symbols needs to be different, you can set with callback function in the following format:
+ *     (value: Array|number, params: Object) =&gt; number
+ *     
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
+ *     
+ *     Callback is supported since 4.8.0 .
  *
  * @property MarkPoint\Label $label
  *    Label of mark point.
  *
  * @property MarkPoint\ItemStyle $itemStyle
  *    Mark point style.
+ *
+ * @property MarkPoint\Emphasis $emphasis
+ *    Emphasis status of mark point.
+ *
+ * @property MarkPoint\Blur $blur
+ *    
+ *     Since v5.0.0
+ *     
+ *     Configurations of blur state. Whether to blur follows the series.
  *
  * @property array $data
  *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
@@ -377,6 +682,7 @@ use Hisune\EchartsPHP\Property;
  *     When multiple attributes exist, priority is as the above order.
  *     For example: 
  *     data: [
+ *     
  *         {
  *             name: screen coordinate,
  *             x: 100,
@@ -384,8 +690,16 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     ]
  *
- *  * @property int $symbolRotate
- *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *  * @property int|callable $symbolRotate
+ *    
+ *     
+ *     Rotate degree of  symbol. The negative value represents clockwise. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *     If rotation of symbols needs to be different, you can set with callback function in the following format:
+ *     (value: Array|number, params: Object) =&gt; number
+ *     
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
+ *     
+ *     Callback is supported since 4.8.0 .
  *
  * @property MarkPoint\Label $label
  *    Label of mark point.
@@ -393,40 +707,14 @@ use Hisune\EchartsPHP\Property;
  * @property MarkPoint\ItemStyle $itemStyle
  *    Mark point style.
  *
- * @property array $data
- *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
- *     
- *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
- *     
- *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
- *     
- *     
- *     When multiple attributes exist, priority is as the above order.
- *     For example: 
- *     data: [
- *         {
- *             name: coordinate,
- *             coord: [10, 20]
- *         }, {
- *             name: fixed x position,
- *             yAxis: 10,
- *             x: 90%
- *         }, 
- *         {
- *             name: screen coordinate,
- *             x: 100,
- *             y: 100
- *         }
- *     ]
+ * @property MarkPoint\Emphasis $emphasis
+ *    Emphasis status of mark point.
  *
- *  * @property int $symbolRotate
- *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
- *
- * @property MarkPoint\Label $label
- *    Label of mark point.
- *
- * @property MarkPoint\ItemStyle $itemStyle
- *    Mark point style.
+ * @property MarkPoint\Blur $blur
+ *    
+ *     Since v5.0.0
+ *     
+ *     Configurations of blur state. Whether to blur follows the series.
  *
  * @property array $data
  *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
@@ -436,6 +724,7 @@ use Hisune\EchartsPHP\Property;
  *     When multiple attributes exist, priority is as the above order.
  *     For example: 
  *     data: [
+ *     
  *         {
  *             name: screen coordinate,
  *             x: 100,
@@ -443,8 +732,16 @@ use Hisune\EchartsPHP\Property;
  *         }
  *     ]
  *
- *  * @property int $symbolRotate
- *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *  * @property int|callable $symbolRotate
+ *    
+ *     
+ *     Rotate degree of  symbol. The negative value represents clockwise. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *     If rotation of symbols needs to be different, you can set with callback function in the following format:
+ *     (value: Array|number, params: Object) =&gt; number
+ *     
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
+ *     
+ *     Callback is supported since 4.8.0 .
  *
  * @property MarkPoint\Label $label
  *    Label of mark point.
@@ -452,99 +749,20 @@ use Hisune\EchartsPHP\Property;
  * @property MarkPoint\ItemStyle $itemStyle
  *    Mark point style.
  *
- * @property array $data
- *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
- *     
- *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
- *     
- *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
- *     
- *     Use type attribute to mark the maximum and minimum values in the series, in which valueIndex or valueDim can be used to assign the dimension.
- *     
- *     
- *     When multiple attributes exist, priority is as the above order.
- *     For example: 
- *     data: [
- *         {
- *             name: maximum,
- *             type: max
- *         }, 
- *         {
- *             name: coordinate,
- *             coord: [10, 20]
- *         }, {
- *             name: fixed x position,
- *             yAxis: 10,
- *             x: 90%
- *         }, 
- *         {
- *             name: screen coordinate,
- *             x: 100,
- *             y: 100
- *         }
- *     ]
+ * @property MarkPoint\Emphasis $emphasis
+ *    Emphasis status of mark point.
  *
- *  * @property int $symbolRotate
- *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
- *
- * @property MarkPoint\Label $label
- *    Label of mark point.
- *
- * @property MarkPoint\ItemStyle $itemStyle
- *    Mark point style.
+ * @property MarkPoint\Blur $blur
+ *    
+ *     Since v5.0.0
+ *     
+ *     Configurations of blur state. Whether to blur follows the series.
  *
  * @property array $data
  *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
  *     
  *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
- *     When multiple attributes exist, priority is as the above order.
- *     For example: 
- *     data: [
- *         {
- *             name: screen coordinate,
- *             x: 100,
- *             y: 100
- *         }
- *     ]
- *
- *  * @property int $symbolRotate
- *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
- *
- * @property MarkPoint\Label $label
- *    Label of mark point.
- *
- * @property MarkPoint\ItemStyle $itemStyle
- *    Mark point style.
- *
- * @property array $data
- *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
- *     
- *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
- *     
- *     When multiple attributes exist, priority is as the above order.
- *     For example: 
- *     data: [
- *         {
- *             name: screen coordinate,
- *             x: 100,
- *             y: 100
- *         }
- *     ]
- *
- *  * @property int $symbolRotate
- *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
- *
- * @property MarkPoint\Label $label
- *    Label of mark point.
- *
- * @property MarkPoint\ItemStyle $itemStyle
- *    Mark point style.
- *
- * @property array $data
- *    Data array for mark points, each of which is an object. Here are some ways to assign mark point position.
- *     
- *     Assign coordinate according to container with x, y attribute, in which pixel values and percentage are supported.
  *     
  *     Assign coordinate position with coord attribute, in which min, max, average are supported for each dimension.
  *     
@@ -566,6 +784,7 @@ use Hisune\EchartsPHP\Property;
  *             yAxis: 10,
  *             x: 90%
  *         }, 
+ *     
  *         {
  *             name: screen coordinate,
  *             x: 100,

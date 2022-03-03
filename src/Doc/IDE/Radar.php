@@ -22,7 +22,9 @@ use Hisune\EchartsPHP\Property;
  *     z has a lower priority to zlevel, and will not create new Canvas.
  *
  * @property array $center Default: '[\'50%\', \'50%\']'
- *    Center position of , the first of which is the horizontal position, and the second is the vertical position.
+ *    
+ *     
+ *     Center position of , the first of which is the horizontal position, and the second is the vertical position.
  *     Percentage is supported. When set in percentage, the item is relative to the container width, and the second item to the height.
  *     Example: 
  *     // Set to absolute pixel values
@@ -31,30 +33,41 @@ use Hisune\EchartsPHP\Property;
  *     center: [50%, 50%]
  *
  * @property int|string|array $radius Default: '75%'
- *    Radius of . Value can be:
+ *    
+ *     
+ *     Radius of . Value can be:
  *     
  *     number: Specify outside radius directly.
  *     string: For example, 20%, means that the outside radius is 20% of the viewport size (the little one between width and height of the chart container).
+ *     
  *     
  *     Array.&lt;number|string&gt;: The first item specifies the inside radius, and the second item specifies the outside radius. Each item follows the definitions above.
  *
  * @property int $startAngle Default: 90
  *    The start angle of coordinate, which is the angle of the first indicator axis.
  *
- * @property Radar\Name $name
- *    Name of radar chart.
+ * @property Radar\AxisName $axisName
+ *    Name options for radar indicators.
  *
  * @property int $nameGap Default: 15
- *    Distance between the indicators name and axis.
+ *    
+ *     
+ *     Distance between the indicators name and axis.
  *
  * @property int $splitNumber Default: 5
- *    Segments of indicator axis.
+ *    
+ *     
+ *     Segments of indicator axis.
  *
  * @property string $shape Default: 'polygon'
- *    Radar render type, in which polygon and circle are supported.
+ *    
+ *     
+ *     Radar render type, in which polygon and circle are supported.
  *
  * @property boolean $scale Default: false
- *    Whether to prevent calculating the scaling relative to zero. If it is set to be true, the coordinate tick would not compulsorily contain zero value, which is usually useful in scatter diagram of double numerical values axis.
+ *    
+ *     
+ *     Whether to prevent calculating the scaling relative to zero. If it is set to be true, the coordinate tick would not compulsorily contain zero value, which is usually useful in scatter diagram of double numerical values axis.
  *
  * @property boolean $silent Default: false
  *    Set this to true, to prevent interaction with the axis.
@@ -84,7 +97,7 @@ use Hisune\EchartsPHP\Property;
  *    Settings related to axis label.
  *
  * @property Radar\SplitLine $splitLine
- *    SplitLine of axis in grid area.
+ *    Split line of axis in grid area.
  *
  * @property Radar\SplitArea $splitArea
  *    Split area of axis in grid area, not shown by default.
@@ -99,9 +112,6 @@ use Hisune\EchartsPHP\Property;
  *        { name: Development (Development) , max: 52000},
  *        { name: Marketing (Marketing) , max: 25000}
  *     ]
- *
- * @property string $color
- *    Specfy a color the the indicator.
  *
  * {_more_}
  */

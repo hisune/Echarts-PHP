@@ -12,7 +12,7 @@ use Hisune\EchartsPHP\Property;
  * @property int $x Default: 0
  *    The x value of the left-top corner of the element in the coordinate system of its parent.
  *
- * @property int $y Default: '0'
+ * @property int $y Default: 0
  *    The y value of the left-top corner of the element in the coordinate system of its parent.
  *
  * @property int $width Default: 0
@@ -30,6 +30,31 @@ use Hisune\EchartsPHP\Property;
  *     r: [1, 2]    means [1, 2, 1, 2]
  *     r: [1, 2, 3] means [1, 2, 3, 2]
  *
+ * @property string|array $transition Default: 'undefined'
+ *    Can be a single property name or an array of property names.
+ *     Enable transition animation when the specified properties changed.
+ *     Can only specify properties that are under this shape.
+ *     For example:
+ *     {
+ *         type: rect,
+ *         shape: {
+ *             ...
+ *             // This two props will perform transition animation.
+ *             transition: [mmm, ppp]
+ *         }
+ *     }
+ *     
+ *     We can also specify all of the properties like this:
+ *     {
+ *         type: rect,
+ *         shape: {
+ *             ...
+ *         },
+ *         // Indicate that all props in `shape` will
+ *         // have transition animation.
+ *         transition: shape,
+ *     };
+ *
  *  * @property int $cx Default: 0
  *    The x value of the center of the element in the coordinate system of its parent.
  *
@@ -46,7 +71,7 @@ use Hisune\EchartsPHP\Property;
  *    start angle, in radian.
  *
  * @property int $endAngle Default: 'Math.PI * 2'
- *    end anble, in radian.
+ *    end angle, in radian.
  *
  * @property boolean $clockwise Default: true
  *    Whether draw clockwise.

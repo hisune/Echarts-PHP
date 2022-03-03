@@ -10,13 +10,79 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show
- *    Whether to show the visual guide ine.
+ *    
+ *     
+ *     Whether to show the label guide line.
+ *
+ * @property LabelLine\LineStyle $lineStyle
+ *    
+ *
+ *  * @property boolean $show
+ *    
+ *     
+ *     Whether to show the label guide line.
+ *
+ * @property LabelLine\LineStyle $lineStyle
+ *    
+ *
+ *  * @property boolean $show
+ *    
+ *     
+ *     Whether to show the label guide line.
+ *
+ * @property LabelLine\LineStyle $lineStyle
+ *    
+ *
+ *  * @property boolean $show
+ *    
+ *     
+ *     Whether to show the label guide line.
+ *
+ * @property LabelLine\LineStyle $lineStyle
+ *    
+ *
+ *  * @property boolean $show
+ *    
+ *     
+ *     Whether to show the label guide line.
+ *
+ * @property LabelLine\LineStyle $lineStyle
+ *    
+ *
+ *  * @property boolean $show
+ *    
+ *     
+ *     Whether to show the label guide line.
+ *
+ * @property LabelLine\LineStyle $lineStyle
+ *    
+ *
+ *  * @property boolean $show
+ *    
+ *     
+ *     Whether to show the label guide line.
  *
  * @property LabelLine\LineStyle $lineStyle
  *    
  *
  *  * @property boolean $show
  *    Whether to show visual guide line.
+ *
+ * @property LabelLine\LineStyle $lineStyle
+ *    
+ *
+ *  * @property boolean $show
+ *    
+ *     
+ *     Whether to show the label guide line.
+ *
+ * @property LabelLine\LineStyle $lineStyle
+ *    
+ *
+ *  * @property boolean $show
+ *    
+ *     
+ *     Whether to show the label guide line.
  *
  * @property LabelLine\LineStyle $lineStyle
  *    

@@ -10,7 +10,9 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property string $type
- *    Type of legend. Optional values:
+ *    
+ *     
+ *     Type of legend. Optional values:
  *     
  *     plain: Simple legend. (default)
  *     scroll: Scrollable legend. It helps when too many legend items needed to be shown.
@@ -54,7 +56,7 @@ use Hisune\EchartsPHP\Property;
  * @property string|int $top Default: 'auto'
  *    Distance between legend component and the top side of the container.
  *     top value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
- *     If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
+ *     If the top value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
  *
  * @property string|int $right Default: 'auto'
  *    Distance between legend component and the right side of the container.
@@ -73,23 +75,33 @@ use Hisune\EchartsPHP\Property;
  *    Height of legend component. Adaptive by default.
  *
  * @property string $orient Default: 'horizontal'
- *    The layout orientation of legend.
+ *    
+ *     
+ *     The layout orientation of legend.
  *     Options:
  *     
  *     horizontal
  *     vertical
  *
  * @property string $align Default: 'auto'
- *    Legend mrker and text aligning. By default, it automatically calculates from component location and orient. When left value of this component is right, and the vertical layout (orient is vertical), it would be aligned to right.
+ *    
+ *     
+ *     Legend marker and text aligning. By default, it automatically calculates from component location and orientation. When left value of this component is right, and the vertical layout (orient is vertical), it would be aligned to right.
  *     Option:
  *     
  *     auto
  *     left
  *     right
  *
- * @property int $padding Default: 5
- *    legend space around content. The unit is px. Default values for each position are 5. And they can be set to different values with left, right, top, and bottom.
- *     Examples: 
+ * @property int|array $padding Default: 5
+ *    
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     legend space around content. The unit is px. Default values for each position are 5. And they can be set to different values with left, right, top, and bottom.
+ *     Examples:
  *     // Set padding to be 5
  *     padding: 5
  *     // Set the top and bottom paddings to be 5, and left and right paddings to be 10
@@ -103,16 +115,28 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *
  * @property int $itemGap Default: 10
- *    The distance between each legend, horizontal distance in horizontal layout, and vertical distance in vertical layout.
+ *    
+ *     
+ *     The distance between each legend, horizontal distance in horizontal layout, and vertical distance in vertical layout.
  *
  * @property int $itemWidth Default: 25
- *    Image width of legend symbol.
+ *    
+ *     
+ *     Image width of legend symbol.
  *
  * @property int $itemHeight Default: 14
- *    Image height of legend symbol.
+ *    
+ *     
+ *     Image height of legend symbol.
  *
- * @property boolean $symbolKeepAspect Default: true
- *    Whether to keep aspect for icons (from series.symbol or user-defined legend.data.icon) in the form of path://.
+ * @property Legend\ItemStyle $itemStyle
+ *    Legend item style. If its children have values as inherit, the values are inherited from corresponding series options.
+ *
+ * @property Legend\LineStyle $lineStyle
+ *    Legend line style. If its children have values as inherit, the values are inherited from corresponding series options.
+ *
+ * @property int|string $symbolRotate Default: 'inherit'
+ *    Rotation of the symbol, which can be number | inherit. If its inherit, symbolRotate of the series will be used.
  *
  * @property string|callable $formatter
  *    Formatter is used to format label of legend, which supports string template and callback function.
@@ -125,11 +149,25 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string|boolean $selectedMode Default: true
- *    Selected mode of legend, which controls whether series can be toggled displaying by clicking legends. It is enabled by default, and you may set it to be false to disabled it.
+ *    
+ *     
+ *     Selected mode of legend, which controls whether series can be toggled displaying by clicking legends. It is enabled by default, and you may set it to be false to disable it.
  *     Besides, it can be set to single or multiple, for single selection and multiple selection.
  *
  * @property string $inactiveColor Default: '#ccc'
- *    Legend color when not selected.
+ *    
+ *     
+ *     Legend color when not selected.
+ *
+ * @property string $inactiveBorderColor Default: '#ccc'
+ *    
+ *     
+ *     Legend border color when not selected.
+ *
+ * @property string $inactiveBorderWidth Default: 'auto'
+ *    
+ *     
+ *     Legend border width when not selected. If it is auto, the border width is set to be 2 if there is border width in the series, 0 elsewise. If it is inherit, it always takes the border width of the series.
  *
  * @property array $selected
  *    State table of selected legend.
@@ -148,8 +186,10 @@ use Hisune\EchartsPHP\Property;
  *    Tooltip configuration for legend tooltip, which is similar to tooltip.
  *
  * @property string $icon
- *    Icon of the legend items.
- *     Icon types provided by ECharts includes 
+ *    
+ *     
+ *     Icon of the legend items.
+ *     Icon types provided by ECharts includes
  *     circle, rect, roundRect, triangle, diamond, pin, arrow, none
  *     It can be set to an image with image://url , in which URL is the link to an image, or dataURI of an image.
  *     An image URL example:
@@ -176,24 +216,34 @@ use Hisune\EchartsPHP\Property;
  *     }]
  *
  * @property string $backgroundColor Default: 'transparent'
- *    Background color of legend, which is transparent by default.
+ *    
+ *     
+ *     Background color of legend, which is transparent by default.
  *     
  *     Color can be represented in RGB, for example rgb(128, 128, 128). RGBA can be used when you need alpha channel, for example rgba(128, 128, 128, 0.5). You may also use hexadecimal format, for example #ccc.
  *
  * @property string $borderColor Default: '#ccc'
- *    Border color of legend. Support the same color format as backgroundColor.
+ *    
+ *     
+ *     Border color of legend. Support the same color format as backgroundColor.
  *
  * @property int $borderWidth Default: 1
- *    Border width of legend.
+ *    
+ *     
+ *     Border width of legend.
  *
  * @property int|array $borderRadius Default: 0
- *    The radius of rounded corner. Its unit is px. And it supports use array to respectively specify the 4 corner radiuses.
+ *    
+ *     
+ *     The radius of rounded corner. Its unit is px. And it supports use array to respectively specify the 4 corner radiuses.
  *     For example:
  *     borderRadius: 5, // consistently set the size of 4 rounded corners
  *     borderRadius: [5, 5, 0, 0] // (clockwise upper left, upper right, bottom right and bottom left)
  *
  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -203,21 +253,27 @@ use Hisune\EchartsPHP\Property;
  *     Attention: This property works only if show: true is configured and backgroundColor is defined other than transparent.
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
  *     Attention: This property works only if show: true configured.
  *
  * @property int $shadowOffsetX Default: 0
- *    Offset distance on the horizontal direction of shadow.
+ *    
+ *     
+ *     Offset distance on the horizontal direction of shadow.
  *     Attention: This property works only if show: true configured.
  *
  * @property int $shadowOffsetY Default: 0
- *    Offset distance on the vertical direction of shadow.
+ *    
+ *     
+ *     Offset distance on the vertical direction of shadow.
  *     Attention: This property works only if show: true configured.
  *
  * @property int $scrollDataIndex Default: 0
  *    It works when legend.type is scroll.
  *     dataIndex of the left top most displayed item.
- *     Although the scrolling of legend items can be controlled by calling setOption and specifying this property, we suggest that do not controll legend in this way unless necessary (setOption might be time-consuming), but just use action legendScroll to do that.
+ *     Although the scrolling of legend items can be controlled by calling setOption and specifying this property, we suggest that do not control legend in this way unless necessary (setOption might be time-consuming), but just use action legendScroll to do that.
  *     See vertically scrollable legend or horizontally scrollable legend.
  *
  * @property int $pageButtonItemGap Default: 5
@@ -255,17 +311,23 @@ use Hisune\EchartsPHP\Property;
  *     The icons of page buttons.
  *
  * @property string $pageIconColor Default: '#2f4554'
- *    It works when legend.type is scroll.
+ *    
+ *     
+ *     It works when legend.type is scroll.
  *     The color of page buttons.
  *     See vertically scrollable legend or horizontally scrollable legend.
  *
  * @property string $pageIconInactiveColor Default: '#aaa'
- *    It works when legend.type is scroll.
+ *    
+ *     
+ *     It works when legend.type is scroll.
  *     The color of page buttons when they are inactive.
  *     See vertically scrollable legend or horizontally scrollable legend.
  *
  * @property int|array $pageIconSize Default: 15
- *    It works when legend.type is scroll.
+ *    
+ *     
+ *     It works when legend.type is scroll.
  *     The size of page buttons. It can be a number, or an array, like [10, 3], represents [width, height].
  *     See vertically scrollable legend or horizontally scrollable legend.
  *
@@ -274,13 +336,23 @@ use Hisune\EchartsPHP\Property;
  *     The text style of page info.
  *
  * @property boolean $animation
- *    Whether to use animation when page scrolll.
+ *    
+ *     
+ *     Whether to use animation when page scrolls.
  *
  * @property int $animationDurationUpdate Default: 800
- *    Duration of the page scroll animation.
+ *    
+ *     
+ *     Duration of the page scroll animation.
+ *
+ * @property Legend\Emphasis $emphasis
+ *    
  *
  * @property boolean|array $selector Default: false
- *    The selector button in the legend component. Currently includes both a full selection and an inverse selection. The selector button doesnt display by default, the user can manually configure it.
+ *    
+ *     Since v4.4.0
+ *     
+ *     The selector button in the legend component. Currently includes both a full selection and an inverse selection. The selector button doesnt display by default, the user can manually configure it.
  *     Usage:
  *     selector: [
  *         {
@@ -301,16 +373,40 @@ use Hisune\EchartsPHP\Property;
  *     selector: [all, inverse]
  *
  * @property Legend\SelectorLabel $selectorLabel
- *    The text label style of the selector button, which is displayed by default.
+ *    
+ *     Since v4.4.0
+ *     
+ *     The text label style of the selector button, which is displayed by default.
  *
  * @property string $selectorPosition Default: 'auto'
- *    The position of the selector button, which can be placed at the end or start of the legend component, the corresponding values are end and start. By default, when the legend is laid out horizontally, the selector is placed at the end of it, and when the legend is laid out vertically, the selector is placed at the start of it.
+ *    
+ *     
+ *     
+ *     
+ *     
+ *     Since v4.4.0
+ *     
+ *     The position of the selector button, which can be placed at the end or start of the legend component, the corresponding values are end and start. By default, when the legend is laid out horizontally, the selector is placed at the end of it, and when the legend is laid out vertically, the selector is placed at the start of it.
  *
  * @property int $selectorItemGap Default: 7
- *    The gap between the selector button.
+ *    
+ *     
+ *     
+ *     
+ *     
+ *     Since v4.4.0
+ *     
+ *     The gap between the selector button.
  *
  * @property int $selectorButtonGap Default: 10
- *    The gap between selector button and legend component.
+ *    
+ *     
+ *     
+ *     
+ *     
+ *     Since v4.4.0
+ *     
+ *     The gap between selector button and legend component.
  *
  * {_more_}
  */

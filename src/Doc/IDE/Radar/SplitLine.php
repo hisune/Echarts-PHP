@@ -9,9 +9,14 @@ namespace Hisune\EchartsPHP\Doc\IDE\Radar;
 use Hisune\EchartsPHP\Property;
 
 /**
- * @property SplitLine\Show $show Default: true
- *    Set this to false to prevent the splitLine from showing.
+ * @property boolean $show Default: true
+ *    
+ *     
+ *     Set this to false to prevent the splitLine from showing.
  *     value type axes are shown by default, while category type axes are hidden.
+ *
+ * @property SplitLine\LineStyle $lineStyle
+ *    
  *
  * {_more_}
  */

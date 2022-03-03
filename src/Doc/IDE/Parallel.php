@@ -29,7 +29,7 @@ use Hisune\EchartsPHP\Property;
  * @property string|int $top Default: 60
  *    Distance between parallel  component and the top side of the container.
  *     top value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
- *     If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
+ *     If the top value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
  *
  * @property string|int $right Default: 80
  *    Distance between parallel  component and the right side of the container.
@@ -46,15 +46,23 @@ use Hisune\EchartsPHP\Property;
  *    Height of parallel  component. Adaptive by default.
  *
  * @property string $layout Default: 'horizontal'
- *    Layout modes, whose optional values are:
+ *    
+ *     
+ *     Layout modes, whose optional values are:
  *     
  *     horizontal: place each axis horizontally.
  *     
  *     vertical: place each axis vertically.
  *
  * @property boolean $axisExpandable Default: false
- *    When dimension number is extremely large, say, more than 50 dimensions, there will be more than 50 axes, which may hardly display in a page.
+ *    
+ *     
+ *     
+ *     
+ *     When dimension number is extremely large, say, more than 50 dimensions, there will be more than 50 axes, which may hardly display in a page.
  *     In this case, you may use parallel.axisExpandable to improve the display. See this example:
+ *     
+ *     
  *     
  *     
  *     
@@ -63,19 +71,27 @@ use Hisune\EchartsPHP\Property;
  *     Whether to enable toggling axis on clicking.
  *
  * @property int $axisExpandCenter
- *    Index of the axis which is used as the center of expanding initially. It doesnt have a default value, and needs to be assigned manually.
+ *    
+ *     
+ *     Index of the axis which is used as the center of expanding initially. It doesnt have a default value, and needs to be assigned manually.
  *     Please refer to parallel.axisExpandable for more information.
  *
  * @property int $axisExpandCount Default: 0
- *    Defines how many axes are at expanding state initially. Wed suggest you assign this value manually according to dimensions.
+ *    
+ *     
+ *     Defines how many axes are at expanding state initially. Wed suggest you assign this value manually according to dimensions.
  *     Please refer to parallel.axisExpandCenter and parallel.axisExpandable.
  *
  * @property int $axisExpandWidth Default: 50
- *    Distance between two axes when at expanding state, in pixels.
+ *    
+ *     
+ *     Distance between two axes when at expanding state, in pixels.
  *     Please refer to parallel.axisExpandable for more information.
  *
  * @property string $axisExpandTriggerOn Default: 'click'
- *    Optional values:
+ *    
+ *     
+ *     Optional values:
  *     
  *     click: Trigger expanding when mouse clicking.
  *     mousemove: Trigger expanding when mouse hovering.

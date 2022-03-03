@@ -18,9 +18,6 @@ use Hisune\EchartsPHP\Property;
  * @property array $stack
  *    
  *
- * @property array $tiled
- *    
- *
  * {_more_}
  */
 class Option extends Property {}

@@ -18,6 +18,19 @@ use Hisune\EchartsPHP\Property;
  * @property string $name
  *    Series name used for displaying in tooltip and filtering with legend, or updating data and configuration with setOption.
  *
+ * @property string $colorBy Default: 'series'
+ *    
+ *     
+ *     
+ *     
+ *     
+ *     Since v5.2.0
+ *     
+ *     The policy to take color from option.color. Valid values:
+ *     
+ *     series: assigns the colors in the palette by series, so that all data in the same series are in the same color;
+ *     data: assigns colors in the palette according to data items, with each data item using a different color.
+ *
  * @property string $coordinateSystem Default: 'cartesian2d'
  *    The coordinate used in the series, whose options are:
  *     
@@ -38,9 +51,11 @@ use Hisune\EchartsPHP\Property;
  * @property int $polarIndex Default: 0
  *    Index of polar coordinate to combine with, which is useful for multiple polar axes in one chart.
  *
- * @property string|callable $symbol Default: 'circle'
- *    Symbol of .
- *     Icon types provided by ECharts includes 
+ * @property string|callable $symbol Default: 'emptyCircle'
+ *    
+ *     
+ *     Symbol of .
+ *     Icon types provided by ECharts includes
  *     circle, rect, roundRect, triangle, diamond, pin, arrow, none
  *     It can be set to an image with image://url , in which URL is the link to an image, or dataURI of an image.
  *     An image URL example:
@@ -56,68 +71,157 @@ use Hisune\EchartsPHP\Property;
  *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
  *
  * @property int|array|callable $symbolSize Default: 4
- *     symbol size. It can be set to single numbers like 10, or use an array to represent width and height. For example, [20, 10] means symbol width is 20, and height is10.
+ *    
+ *     
+ *      symbol size. It can be set to single numbers like 10, or use an array to represent width and height. For example, [20, 10] means symbol width is 20, and height is10.
  *     If size of symbols needs to be different, you can set with callback function in the following format:
  *     (value: Array|number, params: Object) =&gt; number|Array
  *     
  *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
  *
- * @property int $symbolRotate
- *    Rotate degree of  symbol. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ * @property int|callable $symbolRotate
+ *    
+ *     
+ *     Rotate degree of  symbol. The negative value represents clockwise. Note that when symbol is set to be arrow in markLine, symbolRotate value will be ignored, and compulsively use tangent angle.
+ *     If rotation of symbols needs to be different, you can set with callback function in the following format:
+ *     (value: Array|number, params: Object) =&gt; number
+ *     
+ *     The first parameter value is the value in data, and the second parameter params is the rest parameters of data item.
+ *     
+ *     Callback is supported since 4.8.0 .
  *
  * @property boolean $symbolKeepAspect Default: false
- *    Whether to keep aspect for symbols in the form of path://.
+ *    
+ *     
+ *     Whether to keep aspect for symbols in the form of path://.
  *
  * @property array $symbolOffset Default: '[0, 0]'
- *    Offset of  symbol relative to original position. By default, symbol will be put in the center position of data. But if symbol is from user-defined vector path or image, you may not expect symbol to be in center. In this case, you may use this attribute to set offset to default position. It can be in absolute pixel value, or in relative percentage value.
- *     For example, [0, 50%] means to move upside side position of symbol height. It can be used to make the arrow in the bottom to be at data position when symbol is pin.
+ *    
+ *     
+ *     Offset of  symbol relative to original position. By default, symbol will be put in the center position of data. But if symbol is from user-defined vector path or image, you may not expect symbol to be in center. In this case, you may use this attribute to set offset to default position. It can be in absolute pixel value, or in relative percentage value.
+ *     For example, [0, -50%] means to move upside side position of symbol height. It can be used to make the arrow in the bottom to be at data position when symbol is pin.
  *
  * @property boolean $showSymbol Default: true
- *    Whether to show symbol. It would be shown during tooltip hover.
+ *    
+ *     
+ *     Whether to show symbol. It would be shown during tooltip hover.
  *
  * @property boolean $showAllSymbol Default: 'auto'
- *    Only work when main axis is category axis (axis.type is category). Optional values:
+ *    
+ *     
+ *     Only work when main axis is category axis (axis.type is category). Optional values:
  *     
  *     auto: Default value. Show all symbols if there is enough space. Otherwise follow the interval strategy with with axisLabel.interval.
  *     true: Show all symbols.
  *     false: Follow the interval strategy with axisLabel.interval.
  *
- * @property boolean $hoverAnimation Default: true
- *    Set this to false to prevent the animation effect when the mouse is hovering over a symbol
- *
  * @property boolean $legendHoverLink Default: true
- *    Whether to enable highlighting chart when legend is being hovered.
+ *    
+ *     
+ *     Whether to enable highlighting chart when legend is being hovered.
  *
  * @property string $stack
  *    If stack the value. On the same category axis, the series with the same stack name would be put on top of each other.
  *     The effect of the below example could be seen through stack switching of toolbox on the top right corner:
  *
  * @property string $cursor Default: 'pointer'
- *    The mouse style when mouse hovers on an element, the same as cursor property in CSS.
+ *    
+ *     
+ *     The mouse style when mouse hovers on an element, the same as cursor property in CSS.
  *
  * @property boolean $connectNulls Default: false
- *    Whether to connect the line across null points.
+ *    
+ *     
+ *     Whether to connect the line across null points.
  *
  * @property boolean $clip Default: true
  *    
- *     Since 4.4.0
+ *     
+ *     
+ *     
+ *     
+ *     Since v4.4.0
  *     
  *     If clip the overflow on the coordinate system. Clip results varies between series:
  *     
- *     Scatter：Ignore the symbols exceeds the coordinate system. Not clip the graphics.
+ *     Scatter/EffectScatter：Ignore the symbols exceeds the coordinate system. Not clip the elements.
  *     Bar：Clip all the overflowed. With bar width kept.
  *     Line：Clip the overflowed line.
  *     Lines: Clip all the overflowed.
+ *     Candlestick: Ignore the elements exceeds the coordinate system.
  *     Custom: Clip all the olverflowed.
  *     
  *     All these series have default value true except custom series. Set it to false if you dont want to clip.
  *
+ * @property boolean $triggerLineEvent Default: false
+ *    
+ *     Since v5.2.2
+ *     
+ *     Whether line and area can trigger the event.
+ *
  * @property string|boolean $step Default: false
- *    Whether to show as a step line. It can be true, false. Or start, middle, end. Which will configure the turn point of step line.
+ *    
+ *     
+ *     Whether to show as a step line. It can be true, false. Or start, middle, end. Which will configure the turn point of step line.
  *     See the example using different step options:
  *
  * @property Series\Label $label
  *    Text label of , to explain some data information about graphic item like value, name and so on. label is placed under itemStyle in ECharts 2.x. In ECharts 3, to make the configuration structure flatter, labelis taken to be at the same level with itemStyle, and has emphasis as itemStyle does.
+ *
+ * @property Series\EndLabel $endLabel
+ *    
+ *     Since v5.0.0
+ *     
+ *     Label on the end of line.
+ *
+ * @property Series\LabelLine $labelLine
+ *    Configuration of label guide line.
+ *
+ * @property Series\LabelLayout $labelLayout
+ *    
+ *     Since v5.0.0
+ *     
+ *     Unified layout configuration of labels.
+ *     It provide a chance to adjust the labels (x, y) position, alignment based on the original layout each series provides.
+ *     This option can be a callback with following parameters.
+ *     // corresponding index of data
+ *     dataIndex: number
+ *     // corresponding type of data. Only available in graph, in which it can be node or edge
+ *     dataType?: string
+ *     // corresponding index of series
+ *     seriesIndex: number
+ *     // Displayed text of label.
+ *     text: string
+ *     // Bounding rectangle of label.
+ *     labelRect: {x: number, y: number, width: number, height: number}
+ *     // Horizontal alignment of label.
+ *     align: left | center | right
+ *     // Vertical alignment of label.
+ *     verticalAlign: top | middle | bottom
+ *     // Bounding rectangle of the element corresponding to.
+ *     rect: {x: number, y: number, width: number, height: number}
+ *     // Default points array of labelLine. Currently only provided in pie and funnel series.
+ *     // Its null in other series.
+ *     labelLinePoints?: number[][]
+ *     
+ *     Example:
+ *     Align the labels on the right. Left 10px margin to the edge.
+ *     labelLayout(params) {
+ *         return {
+ *             x: params.rect.x + 10,
+ *             y: params.rect.y + params.rect.height / 2,
+ *             verticalAlign: middle,
+ *             align: left
+ *         }
+ *     }
+ *     
+ *     Set the text size based on the size of element bounding rectangle.
+ *     
+ *     labelLayout(params) {
+ *         return {
+ *             fontSize: Math.max(params.rect.width / 10, 5)
+ *         };
+ *     }
  *
  * @property Series\ItemStyle $itemStyle
  *    The style of the symbol point of broken line.
@@ -130,6 +234,29 @@ use Hisune\EchartsPHP\Property;
  *
  * @property Series\Emphasis $emphasis
  *    Highlight style of the graphic.
+ *
+ * @property Series\Blur $blur
+ *    
+ *     Since v5.0.0
+ *     
+ *     Configurations of blur state. Available when emphasis.focus is set.
+ *
+ * @property Series\Select $select
+ *    
+ *     Since v5.0.0
+ *     
+ *     Configurations of select state. Available when selectedMode is set.
+ *
+ * @property boolean|string $selectedMode Default: false
+ *    
+ *     Since v5.0.0
+ *     
+ *     
+ *     
+ *     Selected mode. It is enabled by default, and you may set it to be false to disable it.
+ *     Besides, it can be set to single, multiple or series, for single selection, multiple selections and whole series selection.
+ *     
+ *     series is supported since v5.3.0
  *
  * @property boolean|int $smooth Default: false
  *    Whether to show as smooth curve.
@@ -151,6 +278,7 @@ use Hisune\EchartsPHP\Property;
  *    The dowmsampling strategy used when the data size is much larger than pixel size. It will improve the performance when turned on. Defaults to be turned off, indicating that all the data points will be drawn.
  *     Options:
  *     
+ *     lttb Use Largest-Triangle-Three-Bucket algorithm to filter points. It will keep the trends and extremas.
  *     average Use average value of filter points
  *     max Use maximum value of filter points
  *     min Use minimum value of filter points
@@ -158,7 +286,7 @@ use Hisune\EchartsPHP\Property;
  *
  * @property array $dimensions
  *    dimensions can be used to define dimension info for series.data or dataset.source.
- *     Notice: if dataset is used, we can provide dimension names in the first column/row of dataset.source, and not need to specify dimensions here. But if dimensions is specified here, echarts will not retrieve dimension names from the first row/column of dataset.source any more.
+ *     Notice: if dataset is used, we can definite dimensions in dataset.dimensions, or provide dimension names in the first column/row of dataset.source, and not need to specify dimensions here. But if dimensions is specified here, it will be used despite the dimension definitions in dataset.
  *     For example:
  *     option = {
  *         dataset: {
@@ -255,7 +383,10 @@ use Hisune\EchartsPHP\Property;
  *         itemId: 2,
  *         // Using dimensions[3] as the name of each data item. This is useful in charts like
  *         // pie, funnel, where data item name can be displayed in legend.
- *         itemName: 3
+ *         itemName: 3,
+ *         // Using dimensions[4] as the groupId of each data item. groupId will be used to categorize the data. And to determine
+ *         // How the merge and split animation are performed in the universal transition. See universalTransition option for detail.
+ *         itemGroupId: 4
  *     }
  *     
  *     // These properties only work in cartesian(grid) coordinate system:
@@ -331,11 +462,15 @@ use Hisune\EchartsPHP\Property;
  * @property int $datasetIndex Default: 0
  *    If series.data is not specified, and dataset exists, the series will use dataset. datasetIndex specifies which dataset will be used.
  *
+ * @property string $dataGroupId
+ *    A groupID common to all data in the series. the groupID will be used to classify the data and determine how merge and split animations are performed in the universal transition animation.
+ *     If you are using the dataset component to represent the data, it is recommended to use encode.itemGroupID to specify which dimension is encoded as the groupID.
+ *
  * @property array $data
  *    Data array of series, which can be in the following forms:
  *     Notice, if no data specified in series, and there is dataset in option, series will use the first dataset as its datasource. If data has been specified, dataset will not used.
  *     series.datasetIndex can be used to specify other dataset.
- *     Basically, data is represented by a two-dimension array, like the example below, where each colum is named as a dimension.
+ *     Basically, data is represented by a two-dimension array, like the example below, where each column is named as a dimension.
  *     series: [{
  *         data: [
  *             // dimX   dimY   other dimensions ...
@@ -347,10 +482,10 @@ use Hisune\EchartsPHP\Property;
  *     }]
  *     
  *     
- *     In cartesian (grid), dimX and dimY correspond to xAxis and yAxis repectively.
- *     In polar dimX and dimY correspond to radiusAxis 和 angleAxis repectively.
- *     Other dimensions are optional, which can be used in other place. For example:
- *     visualMap can map one or more dimensions to viusal (color, symbol size ...).
+ *     In cartesian (grid), dimX and dimY correspond to xAxis and yAxis respectively.
+ *     In polar dimX and dimY correspond to radiusAxis 和 angleAxis respectively.
+ *     Other dimensions are optional, which can be used in other places. For example:
+ *     visualMap can map one or more dimensions to visual (color, symbol size ...).
  *     series.symbolSize can be set as a callback function, where symbol size can be calculated by values of a certain dimension.
  *     Values in other dimensions can be shown by tooltip.formatter or series.label.formatter.
  *     
@@ -450,7 +585,7 @@ use Hisune\EchartsPHP\Property;
  *     
  *     
  *     Empty value:
- *     - or null or undefined or NaN can be used to describe that a data item is not exists (ps：not exist does not means its value is 0).
+ *     - or null or undefined or NaN can be used to describe that a data item does not exist (ps：not exist does not means its value is 0).
  *     For example, line chart can break when encounter an empty value, and scatter chart do not display graphic elements for empty values.
  *
  * @property Series\MarkPoint $markPoint
@@ -463,32 +598,40 @@ use Hisune\EchartsPHP\Property;
  *    Used to mark an area in chart. For example, mark a time interval.
  *
  * @property int $zlevel Default: 0
- *    zlevel value of all graphical elements in broken line graph.
+ *    zlevel value of all graphical elements in Line.
  *     zlevel is used to make layers with Canvas. Graphical elements with different zlevel values will be placed in different Canvases, which is a common optimization technique. We can put those frequently changed elements (like those with animations) to a separate zlevel. Notice that too many Canvases will increase memory cost, and should be used carefully on mobile phones to avoid crash.
  *     Canvases with bigger zlevel will be placed on Canvases with smaller zlevel.
  *
  * @property int $z Default: 2
- *    z value of all graphical elements in broken line graph, which controls order of drawing graphical components. Components with smaller z values may be overwritten by those with larger z values.
+ *    z value of all graphical elements in Line, which controls order of drawing graphical components. Components with smaller z values may be overwritten by those with larger z values.
  *     z has a lower priority to zlevel, and will not create new Canvas.
  *
  * @property boolean $silent Default: false
- *    Whether to ignore mouse events. Default value is false, for triggering and responding to mouse events.
+ *    
+ *     
+ *     Whether to ignore mouse events. Default value is false, for triggering and responding to mouse events.
  *
  * @property boolean $animation Default: true
- *    Whether to enable animation.
+ *    
+ *     
+ *     Whether to enable animation.
  *
  * @property int $animationThreshold Default: 2000
  *    Whether to set graphic number threshold to animation. Animation will be disabled when graphic number is larger than threshold.
  *
  * @property int|callable $animationDuration Default: 1000
- *    Duration of the first animation, which supports callback function for different data to have different animation effect:
+ *    
+ *     
+ *     Duration of the first animation, which supports callback function for different data to have different animation effect:
  *     animationDuration: function (idx) {
  *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *
  * @property string $animationEasing Default: 'linear'
- *    Easing method used for the first animation. Varied easing effects can be found at easing effect example.
+ *    
+ *     
+ *     Easing method used for the first animation. Varied easing effects can be found at easing effect example.
  *
  * @property int|callable $animationDelay Default: 0
  *    Delay before updating the first animation, which supports callback function for different data to have different animation effect.
@@ -501,14 +644,18 @@ use Hisune\EchartsPHP\Property;
  *     See this example for more information.
  *
  * @property int|callable $animationDurationUpdate Default: 300
- *    Time for animation to complete, which supports callback function for different data to have different animation effect:
+ *    
+ *     
+ *     Time for animation to complete, which supports callback function for different data to have different animation effect:
  *     animationDurationUpdate: function (idx) {
  *         // delay for later data is larger
  *         return idx * 100;
  *     }
  *
  * @property string $animationEasingUpdate Default: 'cubicOut'
- *    Easing method used for animation.
+ *    
+ *     
+ *     Easing method used for animation.
  *
  * @property int|callable $animationDelayUpdate Default: 0
  *    Delay before updating animation, which supports callback function for different data to have different animation effects.
@@ -520,14 +667,47 @@ use Hisune\EchartsPHP\Property;
  *     
  *     See this example for more information.
  *
+ * @property Series\UniversalTransition $universalTransition
+ *    Configuration related to universal transition animation.
+ *     Universal Transition provides the ability to morph between any series. With this feature enabled, each time setOption, transitions between series with the same id will be automatically associated with each other.
+ *     One-to-many or many-to-one animations such as drill-down, aggregation, etc. can also be achieved by specifying groups of data such as encode.itemGroupId or dataGroupId.
+ *     This can be enabled directly by configuring universalTransition: true in the series. It is also possible to provide an object for more detailed configuration.
+ *
  * @property Series\Tooltip $tooltip
  *    tooltip settings in this series.
  *
  * @property boolean $roundCap Default: false
- *    If to add round caps at the end of the bar sectors. Valid only for bar series on polar coordinates.
+ *    
+ *     
+ *     
+ *     
+ *     
+ *     Since v4.5.0
+ *     
+ *     
+ *     
+ *     Whether to add round caps at the end of the bar sectors. Valid only for bar series on polar coordinates.
+ *
+ * @property boolean $showBackground Default: false
+ *    
+ *     Since v4.7.0
+ *     
+ *     
+ *     
+ *     Whether to show background behind each bar. Use backgroundStyle to set background style.
+ *
+ * @property Series\BackgroundStyle $backgroundStyle
+ *    
+ *     Since v4.7.0
+ *     
+ *     Background style of each bar if showBackground is set to be true.
  *
  * @property int|string $barWidth
  *    The width of the bar. Adaptive when not specified.
+ *     
+ *     
+ *     
+ *     
  *     Can be an absolute value like 40 or a percent value like 60%. The percent is based on the calculated category width.
  *     In a single coodinate system, this attribute is shared by multiple bar series. This attribute should be set on the last bar series in the coodinate system, then it will be adopted by all bar series in the coordinate system.
  *
@@ -546,6 +726,9 @@ use Hisune\EchartsPHP\Property;
  * @property int $barMinHeight Default: 0
  *    The minimum width of bar. It could be used to avoid the following situation: the interaction would be affected when the value of some data item is too small.
  *
+ * @property int $barMinAngle Default: 0
+ *    The minimum angle of bar. It could be used to avoid the following situation: the interaction would be affected when the value of some data item is too small. Valid only for bar series on polar coordinates.
+ *
  * @property string $barGap Default: '30%'
  *    The gap between bars between different series, is a percent value like 30%, which means 30% of the bar width.
  *     Set barGap as -100% can overlap bars that belong to different series, which is useful when making a series of bar be background.
@@ -557,16 +740,21 @@ use Hisune\EchartsPHP\Property;
  *     In a single coodinate system, this attribute is shared by multiple bar series. This attribute should be set on the last bar series in the coodinate system, then it will be adopted by all bar series in the coordinate system.
  *
  * @property boolean $large Default: false
- *    Whether to enable the optimization of large-scale data. It could be set when large data causes performance problem.
+ *    
+ *     
+ *     Whether to enable the optimization of large-scale data. It could be set when large data causes performance problem.
  *     After being enabled, largeThreshold can be used to indicate the minimum number for turning on the optimization.
  *     But when the optimization enabled, the style of single data item cant be customized any more.
  *
  * @property int $largeThreshold Default: 400
- *    The threshold enabling the drawing optimization.
+ *    
+ *     
+ *     The threshold enabling the drawing optimization.
  *
  * @property int $progressive Default: 5000
  *    progressive specifies the amount of graphic elements that can be rendered within a frame (about 16ms) if progressive rendering enabled.
  *     When data amount is from thousand to more than 10 million, it will take too long time to render all of the graphic elements. Since ECharts 4, progressive rendering is supported in its workflow, which processes and renders data chunk by chunk alone with each frame, avoiding to block the UI thread of the browser.
+ *     Set progressive: 0 to disable progressive permanently. By default, progressive is auto-enabled when data amount is bigger than progressiveThreshold.
  *
  * @property int $progressiveThreshold Default: 3000
  *    If current data amount is over the threshold, progressive rendering is enabled.
@@ -577,46 +765,95 @@ use Hisune\EchartsPHP\Property;
  *     sequential: slice data by data index.
  *     mod: slice data by mod, which make the data items of each chunk coming from all over the data, bringing better visual effect while progressive rendering.
  *
- * @property int $hoverOffset Default: 10
- *    The offset distance of hovered sector.
- *
- * @property boolean|string $selectedMode Default: false
- *    Selected mode of pie.  It is enabled by default, and you may set it to be false to disabled it.
- *     Besides, it can be set to single or multiple, for single selection and multiple selection.
- *
  * @property int $selectedOffset Default: 10
- *    The offset distance of selected sector.
+ *    
+ *     
+ *     The offset distance of selected sector.
  *
  * @property boolean $clockwise Default: true
- *    Whether the layout of sectors of pie chart is clockwise.
+ *    
+ *     
+ *     Whether the layout of sectors of pie chart is clockwise.
  *
  * @property int $startAngle Default: 90
- *    The start angle, which range is [0, 360].
+ *    
+ *     
+ *     The start angle, which range is [0, 360].
  *
  * @property int $minAngle Default: 0
- *    The minimum angle of sector (0 ~ 360). It prevents some sector from being too small when value is small, which will affect user interaction.
+ *    
+ *     
+ *     The minimum angle of sector (0 ~ 360). It prevents some sector from being too small when value is small, which will affect user interaction.
  *
  * @property int $minShowLabelAngle Default: 0
- *    If a sector is less than this angle (0 ~ 360), label and labelLine will not be displayed.
+ *    
+ *     
+ *     If a sector is less than this angle (0 ~ 360), label and labelLine will not be displayed.
  *
  * @property boolean|string $roseType Default: false
- *    Whether to show as Nightingale chart, which distinguishs data through radius. There are 2 optional modes:
+ *    
+ *     
+ *     Whether to show as Nightingale chart, which distinguishs data through radius. There are 2 optional modes:
  *     
  *     radius Use central angle to show the percentage of data, radius to show data size.
  *     area All the sectors will share the same central angle, the data size is shown only through radiuses.
  *
  * @property boolean $avoidLabelOverlap Default: true
- *    Whether to enable the strategy to avoid labels overlap. Defaults to be enabled, which will move the label positions in the case of labels overlapping
+ *    
+ *     
+ *     Whether to enable the strategy to avoid labels overlap. Defaults to be enabled, which will move the label positions in the case of labels overlapping
  *
  * @property boolean $stillShowZeroSum Default: true
- *    Whether to show sector when all data are zero.
+ *    
+ *     
+ *     Whether to show sector when all data are zero.
  *
- * @property Series\LabelLine $labelLine
- *    The style of visual guide line. Will show when label position is set as outside.
- *     The style of visual guide line.
+ * @property string|int $left Default: 0
+ *    Distance between pie chart component and the left side of the container.
+ *     left value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be left, center, or right.
+ *     If the left value is set to be left, center, or right, then the component will be aligned automatically based on position.
+ *
+ * @property string|int $top Default: 0
+ *    Distance between pie chart component and the top side of the container.
+ *     top value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
+ *     If the top value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
+ *
+ * @property string|int $right Default: 0
+ *    Distance between pie chart component and the right side of the container.
+ *     right value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%.
+ *     Adaptive by default.
+ *
+ * @property string|int $bottom Default: 0
+ *    Distance between pie chart component and the bottom side of the container.
+ *     bottom value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%.
+ *     Adaptive by default.
+ *
+ * @property string|int $width Default: 'auto'
+ *    Width of pie chart component. Adaptive by default.
+ *
+ * @property string|int $height Default: 'auto'
+ *    Height of pie chart component. Adaptive by default.
+ *
+ * @property boolean $showEmptyCircle Default: true
+ *    
+ *     
+ *     
+ *     
+ *     
+ *     Since v5.2.0
+ *     
+ *     If display an placeholder circle when there is no data.
+ *
+ * @property Series\EmptyCircleStyle $emptyCircleStyle
+ *    
+ *     Since v5.2.0
+ *     
+ *     Style of circle placeholder.
  *
  * @property array $center Default: '[\'50%\', \'50%\']'
- *    Center position of Pie chart, the first of which is the horizontal position, and the second is the vertical position.
+ *    
+ *     
+ *     Center position of Pie chart, the first of which is the horizontal position, and the second is the vertical position.
  *     Percentage is supported. When set in percentage, the item is relative to the container width, and the second item to the height.
  *     Example: 
  *     // Set to absolute pixel values
@@ -625,24 +862,35 @@ use Hisune\EchartsPHP\Property;
  *     center: [50%, 50%]
  *
  * @property int|string|array $radius Default: '[0, \'75%\']'
- *    Radius of Pie chart. Value can be:
+ *    
+ *     
+ *     Radius of Pie chart. Value can be:
  *     
  *     number: Specify outside radius directly.
  *     string: For example, 20%, means that the outside radius is 20% of the viewport size (the little one between width and height of the chart container).
  *     
+ *     
  *     Array.&lt;number|string&gt;: The first item specifies the inside radius, and the second item specifies the outside radius. Each item follows the definitions above.
  *     
- *     
- *     You can set a large inner radius for a Donut chart.
+ *     Donut chart can be achieved by setting a inner radius.
  *
  * @property string $animationType Default: 'expansion'
- *    Initial animation type.
+ *    
+ *     
+ *     Initial animation type.
  *     
  *     expansion Default expansion animation.
  *     scale Scale animation. You can use it with animationEasing=elasticOut to have popup effect.
  *
  * @property string $animationTypeUpdate Default: 'transition'
- *    Animation type when data updates.
+ *    
+ *     
+ *     
+ *     
+ *     
+ *     Since v4.4.0
+ *     
+ *     Animation type when data updates.
  *     
  *     transition Changing start and end angle of each sector from the old value to new value.
  *     expansion The whole pie expands again.
@@ -654,10 +902,14 @@ use Hisune\EchartsPHP\Property;
  *    Index of calendar coordinates to combine with, which is useful for multiple calendar coordinates in one chart.
  *
  * @property string $effectType Default: 'ripple'
- *    Type of effect. Only ripple effect of ripple is supported currently.
+ *    
+ *     
+ *     Type of effect. Only ripple effect of ripple is supported currently.
  *
  * @property string $showEffectOn Default: 'render'
- *    When to show the effect.
+ *    
+ *     
+ *     When to show the effect.
  *     Options: 
  *     
  *     render Show the effect when rendering is done.
@@ -669,32 +921,10 @@ use Hisune\EchartsPHP\Property;
  * @property int $radarIndex
  *    Index of radar component that radar chart uses.
  *
- * @property string|int $left Default: '12%'
- *    Distance between tree component and the left side of the container.
- *     left value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be left, center, or right.
- *     If the left value is set to be left, center, or right, then the component will be aligned automatically based on position.
- *
- * @property string|int $top Default: '12%'
- *    Distance between tree component and the top side of the container.
- *     top value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
- *     If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
- *
- * @property string|int $right Default: '12%'
- *    Distance between tree component and the right side of the container.
- *     right value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%.
- *
- * @property string|int $bottom Default: '12%'
- *    Distance between tree component and the bottom side of the container.
- *     bottom value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%.
- *
- * @property string|int $width
- *    Width of tree component.
- *
- * @property string|int $height
- *    Height of tree component.
- *
  * @property string $layout Default: 'orthogonal'
- *    The layout of the tree, which can be orthogonal and radial. Here the orthogonal layout is what we usually refer to the horizontal and vertical direction, the corresponding parameter value is orthogonal. The radial layout refers to the view that the root node as the center and each layer of nodes as the ring, the corresponding parameter value is radial.
+ *    
+ *     
+ *     The layout of the tree, which can be orthogonal and radial. Here the orthogonal layout is what we usually refer to the horizontal and vertical direction, the corresponding parameter value is orthogonal. The radial layout refers to the view that the root node as the center and each layer of nodes as the ring, the corresponding parameter value is radial.
  *     Orthogonal Example：
  *     
  *     
@@ -703,28 +933,57 @@ use Hisune\EchartsPHP\Property;
  *     Radial Example：
  *
  * @property string $orient Default: 'LR'
- *    The direction of the orthogonal layout in the tree diagram. That means this configuration takes effect only if layout = orthogonal. The corresponding directions are from left to right, from right to left, from top to bottom, from bottom to top, with shorthand values LR, RL, TB, BT.
+ *    
+ *     
+ *     The direction of the orthogonal layout in the tree diagram. That means this configuration takes effect only if layout = orthogonal. The corresponding directions are from left to right, from right to left, from top to bottom, from bottom to top, with shorthand values LR, RL, TB, BT.
  *     Note: The previous configuration value horizontal is equivalent to LR, vertical is equivalent to TB.
  *
+ * @property string $edgeShape Default: 'curve'
+ *    
+ *     
+ *     
+ *     
+ *     
+ *     Since v4.7.0
+ *     
+ *     The shape of the edge which is under the tree orthogonal layout. There are two types of shape, curve and polyline, the corresponding values are curve and polyline.
+ *      Note: This configuration item is only valid under the orthogonal layout. Errors will be reported in the development environment under the radial layout.
+ *
+ * @property string $edgeForkPosition Default: '50%'
+ *    
+ *     
+ *     This is the position where the polyline branches in the subtree when the shape of the edge is a polyline in the orthogonal layout. The position here refers to the percentage of the distance between the bifurcation point and the parent node of the subtree to the height of the entire subtree. The default value is 50%, which can be between [0, 100%].
+ *      Note: This configuration item is only valid when edgeShape = polyline.
+ *
  * @property boolean|string $roam Default: false
- *    Whether to enable mouse zooming and translating. false by default. If either zooming or translating is wanted, it can be set to scale or move. Otherwise, set it to be true to enable both.
+ *    
+ *     
+ *     Whether to enable mouse zooming and translating. false by default. If either zooming or translating is wanted, it can be set to scale or move. Otherwise, set it to be true to enable both.
  *
  * @property boolean $expandAndCollapse Default: true
- *    Subtree collapses and expands interaction, default true. As the drawing area is limited, and usually the nodes of a tree may be more, so there will be hidden between the nodes. In order to avoid this problem, you can put a temporary unrelated subtree folded away, until you need to start when necessary. Such as the above radial layout tree example, the center of the node is filled with blue is the folded away subtree, you can click to expand it.
+ *    
+ *     
+ *     Subtree collapses and expands interaction, default true. As the drawing area is limited, and usually the nodes of a tree may be more, so there will be hidden between the nodes. In order to avoid this problem, you can put a temporary unrelated subtree folded away, until you need to start when necessary. Such as the above radial layout tree example, the center of the node is filled with blue is the folded away subtree, you can click to expand it.
  *     Note: If you configure a custom image as the tag for a node, it is not possible to distinguish whether the current node has a collapsed subtree by the fill color. And currently do not support, upload two pictures, respectively represent the collapsing and expansion state of the node. So, if you want to explicitly show the two states of the node, it is recommended to use ECharts regular tag types, such as emptyCircle.
  *
  * @property int $initialTreeDepth Default: 2
- *    The initial level (depth) of the tree. The root node is the 0th layer, then the first layer, the second layer, ... , until the leaf node. This configuration item is primarily used in conjunction with collapsing and expansion interactions. The purpose is to prevent the nodes from obscuring each other. If set as -1 or null or undefined, all nodes are expanded.
+ *    
+ *     
+ *     The initial level (depth) of the tree. The root node is the 0th layer, then the first layer, the second layer, ... , until the leaf node. This configuration item is primarily used in conjunction with collapsing and expansion interactions. The purpose is to prevent the nodes from obscuring each other. If set as -1 or null or undefined, all nodes are expanded.
  *
  * @property Series\Leaves $leaves
  *    Leaf node special configuration, such as the above tree diagram example, the leaf node and non-leaf node label location is different.
  *
  * @property int $squareRatio
- *    The expected square ratio. Layout would approach the ratio as close as possible.
+ *    
+ *     
+ *     The expected square ratio. Layout would approach the ratio as close as possible.
  *     It defaults to be the golden ratio: 0.5 * (1 + Math.sqrt(5)).
  *
  * @property int $leafDepth
- *    When leafDepth is set, the feature drill down is enabled, which means when clicking a tree node, this node will be set as root and its children will be shown.
+ *    
+ *     
+ *     When leafDepth is set, the feature drill down is enabled, which means when clicking a tree node, this node will be set as root and its children will be shown.
  *     leafDepth represents how many levels are shown at most. For example, when leafDepth is set to 1, only one level will be shown.
  *     leafDepth is null/undefined by default, which means that drill down is disabled.
  *     An example about drill down:
@@ -740,9 +999,203 @@ use Hisune\EchartsPHP\Property;
  *     link: If there is link in node data, do hyperlink jump after clicked.
  *
  * @property int $zoomToNodeRatio Default: '0.32*0.32'
- *    The treemap will be auto zoomed to a appropriate ratio when a node is clicked (when nodeClick is set as zoomToNode and no drill down happens). This configuration item indicates the ratio.
+ *    
+ *     
+ *     The treemap will be auto zoomed to a appropriate ratio when a node is clicked (when nodeClick is set as zoomToNode and no drill down happens). This configuration item indicates the ratio.
  *
- * @property array $levels Default: '[]'
+ * @property int $visualDimension Default: 0
+ *    treemap is able to map any dimensions of data to visual.
+ *     The value of series-treemap.data can be an array. And each item of the array represents a dimension. visualDimension specifies the dimension on which visual mapping will be performed.
+ *     About visual encoding, see details in series-treemap.levels.
+ *     
+ *     Tps: In treemap, visualDimension attribute could appear in more than one places:
+ *     
+ *     
+ *     
+ *     It could appear in sereis-treemap, indicating the unified setting of the series.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
+ *
+ * @property int $visualMin
+ *    
+ *     
+ *     The minimal value of current level. Auto-statistics by default.
+ *     When colorMappingBy is set to value, you are able to specify extent manually for visual mapping by specifying visualMin or visualMax.
+ *
+ * @property int $visualMax
+ *    
+ *     
+ *     The maximal value of current level. Auto-statistics by default.
+ *     When colorMappingBy is set to value, you are able to specify extent manually for visual mapping by specifying visualMin or visualMax.
+ *
+ * @property array $colorAlpha
+ *    It indicates the range of tranparent rate (color alpha) for nodes of the series
+ *     .
+ *     The range of values is 0 ~ 1.
+ *     For example, colorAlpha can be [0.3, 1].
+ *     About visual encoding, see details in series-treemap.levels.
+ *     
+ *     Tps: In treemap, colorAlpha attribute could appear in more than one places:
+ *     
+ *     
+ *     
+ *     It could appear in sereis-treemap, indicating the unified setting of the series.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
+ *
+ * @property int $colorSaturation
+ *    It indicates the range of saturation (color alpha) for nodes  of the series.
+ *     The range of values is 0 ~ 1.
+ *     For example, colorSaturation can be [0.3, 1].
+ *     About visual encoding, see details in series-treemap.levels.
+ *     
+ *     Tps: In treemap, colorSaturation attribute could appear in more than one places:
+ *     
+ *     
+ *     
+ *     It could appear in sereis-treemap, indicating the unified setting of the series.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
+ *
+ * @property string $colorMappingBy Default: 'index'
+ *    
+ *     
+ *     Specify the rule according to which each node obtain color from color list. Optional values:
+ *     
+ *     value:
+ *     
+ *     Map series-treemap.data.value to color.
+ *     In this way, the color of each node indicate its value.
+ *     visualDimension can be used to specify which dimension of data is used to perform visual mapping.
+ *     
+ *     index:
+ *     
+ *     Map the index (ordinal number) of nodes to color. Namely, in a level, the first node is mapped to the first color of color list, and the second node gets the second color.
+ *     In this way, adjacent nodes are distinguished by color.
+ *     
+ *     id:
+ *     
+ *     Map series-treemap.data.id to color.
+ *     Since id is used to identify node, if user call setOption to modify the tree, each node will remain the original color before and after setOption called. See this example.
+ *     About visual encoding, see details in series-treemap.levels.
+ *     
+ *     Tps: In treemap, colorMappingBy attribute could appear in more than one places:
+ *     
+ *     
+ *     
+ *     It could appear in sereis-treemap, indicating the unified setting of the series.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
+ *
+ * @property int $visibleMin Default: 10
+ *    
+ *     
+ *     A node will not be shown when its area size is smaller than this value (unit: px square).
+ *     In this way, tiny nodes will be hidden, otherwise they will huddle together. When user zoom the treemap, the area size will increase and the rectangle will be shown if the area size is larger than this threshold.
+ *     About visual encoding, see details in series-treemap.levels.
+ *     
+ *     Tps: In treemap, visibleMin attribute could appear in more than one places:
+ *     
+ *     
+ *     
+ *     It could appear in sereis-treemap, indicating the unified setting of the series.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
+ *
+ * @property int $childrenVisibleMin
+ *    
+ *     
+ *     Children will not be shown when area size of a node is smaller than this value (unit: px square).
+ *     This can hide the details of nodes when the rectangular area is not large enough. When users zoom nodes, the child node would show if the area is larger than this threshold.
+ *     About visual encoding, see details in series-treemap.levels.
+ *     
+ *     Tps: In treemap, childrenVisibleMin attribute could appear in more than one places:
+ *     
+ *     
+ *     
+ *     It could appear in sereis-treemap, indicating the unified setting of the series.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
+ *
+ * @property Series\UpperLabel $upperLabel
+ *    upperLabel is used to specify whether show label when the node has children. When upperLabel.show is set as true, the feature that show parent label is enabled.
+ *     The same as series-treemap.label, the option upperLabel can be placed at the root of series-treemap directly, or in series-treemap.level, or in each item of series-treemap.data.
+ *     Specifically, series-treemap.label specifies the style when a node is a leaf, while upperLabel specifies the style when a node has children, in which case the label is displayed in the inner top of the node.
+ *     See:
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     
+ *     Tps: In treemap, label attribute could appear in more than one places:
+ *     
+ *     
+ *     
+ *     It could appear in sereis-treemap, indicating the unified setting of the series.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
+ *     
+ *     
+ *     
+ *     
+ *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
+ *
+ * @property Series\Breadcrumb $breadcrumb
+ *    breadcrumb, showing the path of the current node.
+ *
+ * @property array $levels
  *    Multiple Levels Configuration
  *     treemap adopts 4-level configuration:
  *     each node --&gt; each level --&gt; each series.
@@ -774,13 +1227,11 @@ use Hisune\EchartsPHP\Property;
  *         ...
  *     ]
  *     
- *     
  *     The Rules about Visual Mapping
  *     When designing a treemap, we primarily focus on how to visually distinguish different levels, different categories in the same level, which requires appropriate settings of rectangular color, border thickness, border color and even color saturation of rectangular and so on on each level.
  *     See example. The top level is divided into several parts by colors red, green, blue, and etc ... In each color block, colorSaturation is used to distinguish nodes in sublevel. The border color of the top level is white, while the border color of the sublevel is the color that based on the current block color and processed by borderColorSaturation.
  *     treemap uses this rule of visual configuration: each level computes its visual value based on the configurations (color, colorSaturation, borderColor, borderColorSaturation) on this level. If there is no certain configuration in a node, it inherits the configuration from its parent.
  *     In this way, this effect can be configured: set a color list on the parent level, and set colorSaturation on the child level, and then each node in the parent level would obtain a color from the color list, and each node in the child level would obtain a value from colorSaturation and compound it with the color inherited from its parent node to get its final color.
- *     
  *     Dimensions and Extra Visual Mapping
  *     See the example below: every value field is set as an Array, in which each item in the array represents a dimension respectively.
  *     [
@@ -810,238 +1261,31 @@ use Hisune\EchartsPHP\Property;
  *     ]
  *     
  *     treemap will map the first dimension (the first item of the array) to area. If we want to express more information, we could map another dimension (specified by series-treemap.visualDimension) to another visual types, such as colorSaturation and so on. See the example and select the legend Growth.
- *     
  *     How to avoid confusion by setting border/gap of node
  *     If all of the border/gaps are set with the same color, confusion might occur when rectangulars in different levels display at the same time.
- *     See the example. Noticed that the child rectangles in the red area are in the deeper level than rectangles that are saparated by white gap. So in the red area, basically we set gap color with red, and use borderColorSaturation to lift the saturation.
- *     
+ *     See the example. Notice that the child rectangles in the red area are in the deeper level than rectangles that are saparated by white gap. So in the red area, basically we set gap color with red, and use borderColorSaturation to lift the saturation.
  *     Explanation about borderWidth, gapWidth, borderColor
  *
- * @property int $visualDimension Default: 0
- *    treemap is able to map any dimensions of data to visual.
- *     The value of series-treemap.data can be an array. And each item of the array represents a dimension. visualDimension specifies the dimension on which visual mapping will be performed.
- *     About visual encoding, see details in series-treemap.levels.
- *     
- *     
- *     Tps: In treemap, visualDimension attribute could appear in more than one places:
- *     
- *     
- *     
- *     It could appear in sereis-treemap, indicating the unified setting of the series.
- *     
- *     
- *     
- *     
- *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
- *     
- *     
- *     
- *     
- *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
- *
- * @property int $visualMin
- *    The minimal value of current level. Auto-statistics by default.
- *     When colorMappingBy is set to value, you are able to specify extent manually for visual mapping by specifying visualMin or visualMax.
- *
- * @property int $visualMax
- *    The maximal value of current level. Auto-statistics by default.
- *     When colorMappingBy is set to value, you are able to specify extent manually for visual mapping by specifying visualMin or visualMax.
- *
- * @property array $colorAlpha
- *    It indicates the range of tranparent rate (color alpha)  of the series. The range of values is 0 ~ 1.
- *     For example, colorAlpha can be [0.3, 1].
- *     About visual encoding, see details in series-treemap.levels.
- *     
- *     
- *     Tps: In treemap, colorAlpha attribute could appear in more than one places:
- *     
- *     
- *     
- *     It could appear in sereis-treemap, indicating the unified setting of the series.
- *     
- *     
- *     
- *     
- *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
- *     
- *     
- *     
- *     
- *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
- *
- * @property int $colorSaturation
- *    It indicates the range of saturation (color alpha)  of the series. The range of values is 0 ~ 1.
- *     For example, colorSaturation can be [0.3, 1].
- *     About visual encoding, see details in series-treemap.levels.
- *     
- *     
- *     Tps: In treemap, colorSaturation attribute could appear in more than one places:
- *     
- *     
- *     
- *     It could appear in sereis-treemap, indicating the unified setting of the series.
- *     
- *     
- *     
- *     
- *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
- *     
- *     
- *     
- *     
- *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
- *
- * @property string $colorMappingBy Default: 'index'
- *    Specify the rule according to which each node obtain color from color list. Optional values:
- *     
- *     value:
- *     
- *     Map series-treemap.data.value to color.
- *     In this way, the color of each node indicate its value.
- *     visualDimension can be used to specify which dimension of data is used to perform visual mapping.
- *     
- *     index:
- *     
- *     Map the index (ordinal number) of nodes to color. Namely, in a level, the first node is mapped to the first color of color list, and the second node gets the second color.
- *     In this way, adjacent nodes are distinguished by color.
- *     
- *     id:
- *     
- *     Map series-treemap.data.id to color.
- *     Since id is used to identify node, if user call setOption to modify the tree, each node will remain the original color before and after setOption called. See this example.
- *     About visual encoding, see details in series-treemap.levels.
- *     
- *     
- *     Tps: In treemap, colorMappingBy attribute could appear in more than one places:
- *     
- *     
- *     
- *     It could appear in sereis-treemap, indicating the unified setting of the series.
- *     
- *     
- *     
- *     
- *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
- *     
- *     
- *     
- *     
- *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
- *
- * @property int $visibleMin Default: 10
- *    A node will not be shown when its area size is smaller than this value (unit: px square).
- *     In this way, tiny nodes will be hidden, otherwise they will huddle together. When user zoom the treemap, the area size will increase and the rectangle will be shown if the area size is larger than this threshold.
- *     About visual encoding, see details in series-treemap.levels.
- *     
- *     
- *     Tps: In treemap, visibleMin attribute could appear in more than one places:
- *     
- *     
- *     
- *     It could appear in sereis-treemap, indicating the unified setting of the series.
- *     
- *     
- *     
- *     
- *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
- *     
- *     
- *     
- *     
- *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
- *
- * @property int $childrenVisibleMin
- *    Children will not be shown when area size of a node is smaller than this value (unit: px square).
- *     This can hide the details of nodes when the rectangular area is not large enough. When users zoom nodes, the child node would show if the area is larger than this threshold.
- *     About visual encoding, see details in series-treemap.levels.
- *     
- *     
- *     Tps: In treemap, childrenVisibleMin attribute could appear in more than one places:
- *     
- *     
- *     
- *     It could appear in sereis-treemap, indicating the unified setting of the series.
- *     
- *     
- *     
- *     
- *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
- *     
- *     
- *     
- *     
- *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
- *
- * @property Series\UpperLabel $upperLabel
- *    upperLabel is used to specify whether show label when the node has children. When upperLabel.show is set as true, the feature that show parent label is enabled.
- *     The same as series-treemap.label, the option upperLabel can be placed at the root of series-treemap directly, or in series-treemap.level, or in each item of series-treemap.data.
- *     Specifically, series-treemap.label specifies the style when a node is a leaf, while upperLabel specifies the style when a node has children, in which case the label is displayed in the inner top of the node.
- *     See:
- *     
- *     
- *     
- *     
- *     
- *     
- *     
- *     Tps: In treemap, label attribute could appear in more than one places:
- *     
- *     
- *     
- *     It could appear in sereis-treemap, indicating the unified setting of the series.
- *     
- *     
- *     
- *     
- *     It could appear in each array element of  series-treemap.levels, indicating the unified setting of each level of the tree.
- *     
- *     
- *     
- *     
- *     It could appear in each node of series-treemap.data, indicating the particular setting of each node.
- *
- * @property Series\Breadcrumb $breadcrumb
- *    breadcrumb, showing the path of the current node.
- *
- * @property string $highlightPolicy Default: 'descendant'
- *    When mouse hovers a sector, the sector is emphasized. If highlightPolicy is set to be descendant, then the sector and its descendant will be highlighted, and others will be downplayed. If highlightPolicy is ancestor, then the sector and its ancestors will be highlighted. If it is set to be self, then the sector will be highlighted and others downplayed. If it is set to be none, then others will not be downplayed.
- *     
- *     
- *     
- *     The highlightPolicy value above is the default value descendant. We use dispatchAction to highlight certain sector. Target sector will use the style of emphasis, and related sectors decided by highlightPolicy uses the style of highlight, and others use downplay.
- *     itemStyle: {
- *         color: yellow,
- *         borderWidth: 2,
- *         emphasis: {
- *             color: red
- *         },
- *         highlight: {
- *             color: orange
- *         },
- *         downplay: {
- *             color: #ccc
- *         }
- *     }
- *     
- *     If highlightPolicy is set to be ancestor, then the result looks like:
- *
  * @property string|callable $sort Default: 'desc'
- *    Sorting method that sectors use based on value, which is the sum of children when not set. The default value desc states for descending order, while it can also be set to be asc for ascending order, or null for not sorting, or callback function like:
+ *    
+ *     
+ *     Sorting method that sectors use based on value, which is the sum of children when not set. The default value desc states for descending order, while it can also be set to be asc for ascending order, or null for not sorting, or callback function like:
  *     function(nodeA, nodeB) {
  *         return nodeA.getValue() - nodeB.getValue();
  *     }
  *
  * @property boolean $renderLabelForZeroData Default: false
- *    If there is no name, whether need to render it.
+ *    
+ *     
+ *     If there is no name, whether need to render it.
  *
- * @property Series\Highlight $highlight
- *    Item style when mouse is hovering related items. See highlightPolicy.
- *
- * @property Series\Downplay $downplay
- *    Item style when mouse is hovering unrelated items. See highlightPolicy.
+ * @property boolean $hoverAnimation Default: true
+ *    Whether to enable the animation when hovering on box.
  *
  * @property array $boxWidth Default: '[7, 50]'
- *    Up and bottom boundary of box width. The array is in the form of [min, max].
+ *    
+ *     
+ *     Up and bottom boundary of box width. The array is in the form of [min, max].
  *     It could be absolute value in pixel, such as [7, 50], or percentage, such as [40%, 90%]. The percentage means the percentage to the maximum possible width.
  *
  * @property int $pointSize Default: 20
@@ -1057,39 +1301,65 @@ use Hisune\EchartsPHP\Property;
  *    Maximum opacity. It is valid with coordinateSystem of geo value.
  *
  * @property string $map Default: ''
- *    Map charts.
- *     Due to the increase of fineness of map, ECharts 3 doesnt include map data by default for package size consideration. You may find map files you need on map download page and then include and register them in ECharts.
- *     Two formats of map data are provided in ECharts, one of which can be included in &lt;script&gt; tag as JavaScript file, and the other of is in JSON format and should be loaded using AJAX. Map name and data will be loaded automatically once the JavaScript file is loaded, while in the JSON form, you have to assign name explicitly.
- *     Here are examples of these two types:
- *      JavaScript importing example 
- *     &lt;script src=echarts.js&gt;&lt;/script&gt;
- *     &lt;script src=map/js/china.js&gt;&lt;/script&gt;
- *     &lt;script&gt;
- *     var chart = echarts.init(document.getElmentById(main));
- *     chart.setOption({
- *         series: [{
- *             type: map,
- *             map: china
- *         }]
- *     });
- *     &lt;/script&gt;
- *     
- *      JSON importing example 
- *     $.get(map/json/china.json, function (chinaJson) {
- *         echarts.registerMap(china, chinaJson);
- *         var chart = echarts.init(document.getElmentById(main));
+ *    Map name registered in registerMap.
+ *     Use geoJSON
+ *     $.get(map/china_geo.json, function (geoJson) {
+ *         echarts.registerMap(china, {geoJSON: geoJson});
+ *         var chart = echarts.init(document.getElementById(main));
  *         chart.setOption({
  *             series: [{
  *                 type: map,
- *                 map: china
+ *                 map: china,
+ *                 ...
  *             }]
  *         });
  *     });
  *     
- *     ECharts uses geoJSON format as map outline. Besides the methods introduced above, you can also get geoJSON data through in other methods if you like and register it in ECharts. Reference to USA Population Estimates for more information.
+ *     See also USA Population Estimates.
+ *     The demo above shows that ECharts can uses geoJSON format as map outline. You can use third-party geoJSON data (like maps) and register them into ECharts.
+ *     Use SVG
+ *     $.get(map/topographic_map.svg, function (svg) {
+ *         echarts.registerMap(topo, {svg: svg});
+ *         var chart = echarts.init(document.getElementById(main));
+ *         chart.setOption({
+ *             series: [{
+ *                 type: map,
+ *                 map: topo,
+ *                 ...
+ *             }]
+ *         });
+ *     });
+ *     
+ *     See also Beef Cuts.
+ *     The demo above shows that SVG format can be used in ECharts. See more info in SVG Base Map.
+ *
+ * @property Series\Projection $projection
+ *    For custom map projection, at least two methods project, unproject should be provided to calculate the coordinates after projection and before projection respectively.
+ *     For example, for the Mercator projection.
+ *     series: {
+ *         type: map,
+ *         projection: {
+ *             project: (point) =&gt; [point[0] / 180 * Math.PI, -Math.log(Math.tan((Math.PI / 2 + point[1] / 180 * Math.PI) / 2))],
+ *             unproject: (point) =&gt; [point[0] * 180 / Math.PI, 2 * 180 / Math.PI * Math.atan(Math.exp(point[1])) - 90]
+ *         }
+ *     }
+ *     
+ *     In addition to our own implementation of the projection formula, we can also use exists projection implementations provided by third-party libraries such as d3-geo.
+ *     const projection = d3.geoConicEqualArea();
+ *     // ...
+ *     series: {
+ *         type: map,
+ *         projection: {
+ *             project: (point) =&gt; projection(point),
+ *             unproject: (point) =&gt; projection.invert(point)
+ *         }
+ *     }
+ *     
+ *     
+ *     Note: Custom projections are only useful when using GeoJSON as a data source.
  *
  * @property int $aspectScale Default: 0.75
- *    Used to scale aspect of geo.
+ *    Used to scale aspect of geo. Will be ignored if projection is set.
  *     The final aspect is calculated by: geoBoundingRect.width / geoBoundingRect.height * aspectScale.
  *
  * @property array $boundingCoords
@@ -1114,6 +1384,20 @@ use Hisune\EchartsPHP\Property;
  *    Name mapping for customized areas. For example:
  *     {
  *         China : 中国
+ *     }
+ *
+ * @property string $nameProperty Default: 'name'
+ *    
+ *     Since v4.8.0
+ *     
+ *     customized property key for GeoJSON feature. By default, name is used as primary key to identify GeoJSON feature.
+ *     For example:
+ *     {
+ *         nameProperty: NAME, // key to connect following data point to GeoJSON region {type:Feature,id:01,properties:{NAME:Alabama}, geometry: { ... }}
+ *         data:[
+ *             {name: Alabama, value: 4822023},
+ *             {name: Alaska, value: 731449},
+ *         ]
  *     }
  *
  * @property array $layoutCenter
@@ -1146,13 +1430,19 @@ use Hisune\EchartsPHP\Property;
  *    Index of parallel coordinates to combine with, which is useful for multiple parallel axes in one chart.
  *
  * @property int $inactiveOpacity Default: 0.05
- *    When perform brush selection, the unselected lines will be set as this transparency rate (which could darken those lines).
+ *    
+ *     
+ *     When perform brush selection, the unselected lines will be set as this transparency rate (which could darken those lines).
  *
  * @property int $activeOpacity Default: 1
- *    When perform brush selection, the selected lines will be set as this transparency rate (which could highlight those lines).
+ *    
+ *     
+ *     When perform brush selection, the selected lines will be set as this transparency rate (which could highlight those lines).
  *
  * @property boolean $realtime Default: true
- *    Whether to update view in realtime.
+ *    
+ *     
+ *     Whether to update view in realtime.
  *
  * @property boolean $polyline Default: false
  *    If draw as a polyline.
@@ -1171,13 +1461,14 @@ use Hisune\EchartsPHP\Property;
  *     The result of force-directed layout has a good symmetries and clustering, which is also aesthetically pleasing.
  *
  * @property int $nodeScaleRatio Default: 0.6
- *    Related zooming ratio of nodes when mouse zooming in or out. When it is set as 0, the node will not zoom as the mouse zooms.
+ *    
+ *     
+ *     Related zooming ratio of nodes when mouse zooming in or out. When it is set as 0, the node will not zoom as the mouse zooms.
  *
  * @property boolean $draggable Default: false
- *    If node is draggable. Only available when using force-directed layout.
- *
- * @property boolean $focusNodeAdjacency Default: false
- *    Whether to focus/highlight the hover node and its adjacencies.
+ *    
+ *     
+ *     If node is draggable. Only available when using force-directed layout.
  *
  * @property array|string $edgeSymbol Default: '[\'none\', \'none\']'
  *    Symbol of two ends of edge line.
@@ -1185,12 +1476,14 @@ use Hisune\EchartsPHP\Property;
  *     edgeSymbol: [circle, arrow]
  *
  * @property array|int $edgeSymbolSize Default: 10
- *    Size of symbol of two ends of edge line. Can be an array or a single number.
+ *    
+ *     
+ *     Size of symbol of two ends of edge line. Can be an array or a single number.
  *     For example:
  *     // Start symbol has size 5 and end symbol has size 10
- *     symbolSize: [5, 10],
+ *     edgeSymbolSize: [5, 10],
  *     // All has size 10
- *     symbolSize: 10
+ *     edgeSymbolSize: 10
  *
  * @property Series\EdgeLabel $edgeLabel
  *    
@@ -1198,6 +1491,13 @@ use Hisune\EchartsPHP\Property;
  * @property array $categories
  *    The categories of node, which is optional.
  *     If there is a classification of nodes, the category of each node can be assigned through data[i].category. And the style of category will also be applied to the style of nodes. categories can also be used in legend.
+ *
+ * @property boolean|int|array $autoCurveness Default: false
+ *    For the situation where there are multiple links between nodes, the curveness of each link is automatically calculated, not enabled by default.
+ *     When set true to enable automatic curvature calculation, the default edge curvenness array length is 20, if the number of edges between two nodes is more than 20, please use number or Array to set the edge curvenness array.
+ *     When set to number, it indicates the length of the edge curvenness array between two nodes, and the calculation result is given by the internal algorithm.
+ *     When set to Array, it means that the curveness array is directly specified, and the multilateral curveness is directly selected from the array.
+ *     Notice： if lineStyle.curveness has been set, this property is invalid.
  *
  * @property array $nodes
  *    Alias of data
@@ -1216,44 +1516,85 @@ use Hisune\EchartsPHP\Property;
  *    Alias of links
  *
  * @property int $nodeWidth Default: 20
- *    The node width of rectangle in Sankey diagram.
+ *    
+ *     
+ *     The node width of rectangle in Sankey diagram.
  *
  * @property int $nodeGap Default: 8
- *    The gap between any two regtangles in each column of the Sankey diagram.
+ *    
+ *     
+ *     The gap between any two rectangles in each column of the Sankey diagram.
+ *
+ * @property string $nodeAlign Default: 'justify'
+ *    
+ *     
+ *     Controls the horizontal alignment of nodes in the diagram.
+ *     May be:
+ *     
+ *     left: initial nodes (those with no incoming links) are aligned to the left of the diagram.
+ *     
+ *     right: terminal nodes (those with no outgoing links) are aligned to the right of the diagram.
+ *     
+ *     justify: initial and terminal nodes are aligned on the left and right edges.
+ *     
+ *     
+ *     Note when orient is vertical, nodeAlign controls vertical alignment.
  *
  * @property int $layoutIterations Default: 32
- *    The iterations of layout, which is used to continuously optimize the positions of nodes in Sankey diagram, decreasing the overlapping between nodes and edges.
- *     The default iterations of layout: 32.
- *     The test shows that iterations of layout could not be less than the default value.
+ *    
+ *     
+ *     The iterations of layout, which is used to iteratively optimize the position of the nodes and edges in the Sankey diagram to reduce the overlapping between nodes and edges. The default value is 32. If you want the order of the nodes in the chart to be the same with the order in the original data, you can set the value to be 0.
  *
  * @property int $min Default: 0
- *    The specified minimum value.
+ *    
+ *     
+ *     The specified minimum value.
  *
  * @property int $max Default: 100
- *    The specified maximum value.
+ *    
+ *     
+ *     The specified maximum value.
  *
- * @property string $minSize Default: '0%'
- *    The mapped width from minimum data value min.
+ * @property int|string $minSize Default: '0%'
+ *    
+ *     
+ *     The mapped width from minimum data value min.
  *     It can be absolute pixel and also the percentage of layout width. If you dont want the graph of minimum value to be a triangle, you can set up this property larger than 0.
  *
- * @property string $maxSize Default: '100%'
- *    The mapped width from maximum data value max.
+ * @property int|string $maxSize Default: '100%'
+ *    
+ *     
+ *     The mapped width from maximum data value max.
  *     It can be absolute pixel and also the percentage of layout width.
  *
  * @property int $gap Default: 0
- *    Gap between each trapezoid.
+ *    
+ *     
+ *     Gap between each trapezoid.
  *
  * @property string $funnelAlign Default: 'center'
- *    Horizontal align. Defaults to align center. Can be left, right, center.
+ *    
+ *     
+ *     Horizontal align. Defaults to align center. Can be left, right, center.
  *
  * @property int $endAngle Default: -45
- *    The end angle of gauge chart.
+ *    
+ *     
+ *     The end angle of gauge chart.
  *
  * @property int $splitNumber Default: 10
- *    The number of split segments of gauge chart scale.
+ *    
+ *     
+ *     The number of split segments of gauge chart scale.
  *
  * @property Series\AxisLine $axisLine
  *    The related configuration about the axis line of gauge chart.
+ *
+ * @property Series\Progress $progress
+ *    
+ *     Since v5.0
+ *     
+ *     Used to show current progress.
  *
  * @property Series\SplitLine $splitLine
  *    The style of split line.
@@ -1267,6 +1608,12 @@ use Hisune\EchartsPHP\Property;
  * @property Series\Pointer $pointer
  *    Gauge chart pointer.
  *
+ * @property Series\Anchor $anchor
+ *    
+ *     Since v5.0
+ *     
+ *     The fixed point of a pointer in a dial.
+ *
  * @property Series\Title $title
  *    The title of gauge chart.
  *
@@ -1274,7 +1621,9 @@ use Hisune\EchartsPHP\Property;
  *    The detail about gauge chart which is used to show data.
  *
  * @property string $symbolPosition Default: 'start'
- *    Specify the location of the graphic elements. Optional values:
+ *    
+ *     
+ *     Specify the location of the graphic elements. Optional values:
  *     
  *     start: The edge of graphic element inscribes with the start of the reference bar.
  *     end: The edge of graphic element inscribes with the end of the reference bar.
@@ -1304,7 +1653,9 @@ use Hisune\EchartsPHP\Property;
  *     }]
  *
  * @property boolean|int|string $symbolRepeat
- *    Whether to repeat a graphic element. Optional values:
+ *    
+ *     
+ *     Whether to repeat a graphic element. Optional values:
  *     
  *     false/null/undefined: Do not repeat, that is, each graphic element represents a data item.
  *     true: Repeat, that is, a group of repeated graphic elements represent a data item. The repeat times is calculated according to data.
@@ -1335,7 +1686,9 @@ use Hisune\EchartsPHP\Property;
  *     }]
  *
  * @property string $symbolRepeatDirection Default: 'start'
- *    When symbolRepeat is used, symbolRepeatDirection specifies the render order of the repeatd graphic elements. The setting is useful in these cases below:
+ *    
+ *     
+ *     When symbolRepeat is used, symbolRepeatDirection specifies the render order of the repeated graphic elements. The setting is useful in these cases below:
  *     
  *     If symbolMargin is set as a negative value, repeated elements will overlap with each other. symbolRepeatDirection can be used to specify the order of overlap.
  *     
@@ -1367,7 +1720,9 @@ use Hisune\EchartsPHP\Property;
  *     }]
  *
  * @property int|string $symbolMargin
- *    Specify margin of both sides of a graphic element. (both sides means the two sides in the direction of its value axis). It works only when symbolRepeat is used.
+ *    
+ *     
+ *     Specify margin of both sides of a graphic element. (both sides means the two sides in the direction of its value axis). It works only when symbolRepeat is used.
  *     Absolute value can be used (like 20), or percent value can be used (like -30%), which is based on its symbolSize.
  *     symbolMargin can be positive value or negative value, which enables overlap of graphic elements when symbolRepeat is used.
  *     A ! can be appended on the end of the value, like 30%! or 25!, which means a extra blank will be added on the both ends, otherwise the graphic elements on both ends will reach the boundary by default.
@@ -1402,12 +1757,14 @@ use Hisune\EchartsPHP\Property;
  *     }]
  *
  * @property boolean $symbolClip Default: false
- *    Whether to clip graphic elements.
+ *    
+ *     
+ *     Whether to clip graphic elements.
  *     
  *     false/null/undefined: The whole graphic elements represent the size of value.
  *     true: The clipped graphic elements reperent the size of value.
  *     
- *     symbolClip is usually used in this case: both amont value and current value should be displayed. In this case, tow series can be used. One for background, using complete graphic elements, while another for current value, using clipped graphic elements.
+ *     symbolClip is usually used in this case: both amount value and current value should be displayed. In this case, tow series can be used. One for background, using complete graphic elements, while another for current value, using clipped graphic elements.
  *     For example:
  *     
  *     
@@ -1473,9 +1830,6 @@ use Hisune\EchartsPHP\Property;
  *     
  *     
  *     
- *     
- *     
- *     
  *     This attribute can be set at the root level of a series, where all data items in the series will be affected by this attribute. And this attribute can also be set at each data item in series-pictorialBar.data, where only the data item is affected by this attribute.
  *     For example:
  *     series: [{
@@ -1494,7 +1848,9 @@ use Hisune\EchartsPHP\Property;
  *     }]
  *
  * @property int $symbolPatternSize Default: 400
- *    Image can be used as the pattern of graphic elements.
+ *    
+ *     
+ *     Image can be used as the pattern of graphic elements.
  *     var textureImg = new Image();
  *     textureImg.src = data:image/jpeg;base64,...; // dataURI
  *     // Or

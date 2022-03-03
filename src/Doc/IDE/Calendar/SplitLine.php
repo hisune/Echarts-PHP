@@ -10,7 +10,9 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: true
- *    Set this to false to prevent the splitLine from showing
+ *    
+ *     
+ *     Set this to false to prevent the splitLine from showing
  *
  * @property SplitLine\LineStyle $lineStyle
  *    

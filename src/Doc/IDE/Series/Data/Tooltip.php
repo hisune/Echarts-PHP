@@ -92,7 +92,7 @@ use Hisune\EchartsPHP\Property;
  *     
  *     2. Callback function
  *     The format of callback function:
- *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string
+ *     (params: Object|Array, ticket: string, callback: (ticket: string, html: string)) =&gt; string | HTMLElement | HTMLElement[]
  *     
  *     The first parameter params is the data that the formatter needs. Its format is shown as follows:
  *     {
@@ -128,40 +128,15 @@ use Hisune\EchartsPHP\Property;
  *         // Color of data
  *         color: string,
  *     
- *         // the percentage of pie chart
- *         percent: number,
  *     
- *     }
  *     
- *     Note: the usage of encode and dimensionNames can be:
- *     If data is:
- *     dataset: {
- *         source: [
- *             [Matcha Latte, 43.3, 85.8, 93.7],
- *             [Milk Tea, 83.1, 73.4, 55.1],
- *             [Cheese Cocoa, 86.4, 65.2, 82.5],
- *             [Walnut Brownie, 72.4, 53.9, 39.1]
- *         ]
- *     }
  *     
- *     We can get values that corresponding to y axis by:
- *     params.value[params.encode.y[0]]
  *     
- *     If data is:
- *     dataset: {
- *         dimensions: [product, 2015, 2016, 2017],
- *         source: [
- *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
- *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
- *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
- *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
- *         ]
- *     }
+ *     When [trigger](~tooltip.trigger) is `axis`, or when tooltip is triggered by [axisPointer](~xAxis.axisPointer), `params` is the data array of multiple series. The content of each item of the array is the same as above. Besides,
  *     
- *     We can get values that corresponding to y axis by:
- *     params.value[params.dimensionNames[params.encode.y[0]]]
  *     
- *     When trigger is axis, or when tooltip is triggered by axisPointer, params is the data array of multiple series. The content of each item of the array is the same as above. Besides,
+ *     
+ *     ```ts
  *     {
  *         componentType: series,
  *         // Series type
@@ -195,46 +170,36 @@ use Hisune\EchartsPHP\Property;
  *         // Color of data
  *         color: string,
  *     
- *     }
  *     
- *     Note: the usage of encode and dimensionNames can be:
- *     If data is:
- *     dataset: {
- *         source: [
- *             [Matcha Latte, 43.3, 85.8, 93.7],
- *             [Milk Tea, 83.1, 73.4, 55.1],
- *             [Cheese Cocoa, 86.4, 65.2, 82.5],
- *             [Walnut Brownie, 72.4, 53.9, 39.1]
- *         ]
- *     }
  *     
- *     We can get values that corresponding to y axis by:
- *     params.value[params.encode.y[0]]
  *     
- *     If data is:
- *     dataset: {
- *         dimensions: [product, 2015, 2016, 2017],
- *         source: [
- *             {product: Matcha Latte, 2015: 43.3, 2016: 85.8, 2017: 93.7},
- *             {product: Milk Tea, 2015: 83.1, 2016: 73.4, 2017: 55.1},
- *             {product: Cheese Cocoa, 2015: 86.4, 2016: 65.2, 2017: 82.5},
- *             {product: Walnut Brownie, 2015: 72.4, 2016: 53.9, 2017: 39.1}
- *         ]
- *     }
  *     
- *     We can get values that corresponding to y axis by:
- *     params.value[params.dimensionNames[params.encode.y[0]]]
+ *     **Note: **Using array to present all the parameters in ECharts 2.x is not supported anymore.
  *     
- *     Note: Using array to present all the parameters in ECharts 2.x is not supported anymore.
- *     The second parameter ticket is the asynchronous callback flag which should be used along with the third parameter callback when it is used.
- *     The third parameter callback is asynchronous callback. When the content of tooltip is acquired asynchronously, ticket and htm as introduced above can be used to update tooltip with callback.
+ *     The second parameter `ticket` is the asynchronous callback flag which should be used along with the third parameter `callback` when it is used.
+ *     
+ *     The third parameter `callback` is asynchronous callback. When the content of tooltip is acquired asynchronously, `ticket` and `htm` as introduced above can be used to update tooltip with callback.
+ *     
  *     Example:
+ *     ```ts
  *     formatter: function (params, ticket, callback) {
  *         $.get(detail?name= + params.name, function (content) {
  *             callback(ticket, toHTML(content));
  *         });
  *         return Loading;
  *     }
+ *
+ * @property string $valueFormatter
+ *    
+ *     Since v5.3.0
+ *     
+ *     Callback function for formatting the value section in tooltip.
+ *     Interface:
+ *     (value: number | string) =&gt; string
+ *     
+ *     Example:
+ *     // Add $ prefix
+ *     valueFormatter: (value) =&gt; $ + value.toFixed(2)
  *
  * @property string $backgroundColor Default: 'rgba(50,50,50,0.7)'
  *    
@@ -244,22 +209,39 @@ use Hisune\EchartsPHP\Property;
  *
  * @property string $borderColor Default: '#333'
  *    
+ *     
+ *     
+ *     
+ *     
+ *     
  *     Notice：series.data.tooltip only works when tooltip.trigger is item.
  *     
  *     The border color of tooltips floating layer.
  *
  * @property int $borderWidth Default: 0
  *    
+ *     
+ *     
+ *     
+ *     
+ *     
  *     Notice：series.data.tooltip only works when tooltip.trigger is item.
  *     
  *     The border width of tooltips floating layer.
  *
  * @property int $padding Default: 5
  *    
+ *     
+ *     
+ *     
+ *     
+ *     
  *     Notice：series.data.tooltip only works when tooltip.trigger is item.
  *     
+ *     
+ *     
  *     The floating layer of tooltip space around content. The unit is px. Default values for each position are 5. And they can be set to different values with left, right, top, and bottom.
- *     Examples: 
+ *     Examples:
  *     // Set padding to be 5
  *     padding: 5
  *     // Set the top and bottom paddings to be 5, and left and right paddings to be 10
@@ -280,6 +262,11 @@ use Hisune\EchartsPHP\Property;
  *
  * @property string $extraCssText
  *    
+ *     
+ *     
+ *     
+ *     
+ *     
  *     Notice：series.data.tooltip only works when tooltip.trigger is item.
  *     
  *     Extra CSS style for floating layer. The following is an example for adding shadow.

@@ -10,10 +10,10 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property DataBackground\LineStyle $lineStyle
- *    Line style of shadow
+ *    Line style of data shadow
  *
  * @property DataBackground\AreaStyle $areaStyle
- *    Area style of shadow
+ *    Area style of data shadow
  *
  * {_more_}
  */

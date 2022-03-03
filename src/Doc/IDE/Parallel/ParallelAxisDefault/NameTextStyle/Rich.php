@@ -9,7 +9,7 @@ namespace Hisune\EchartsPHP\Doc\IDE\Parallel\ParallelAxisDefault\NameTextStyle;
 use Hisune\EchartsPHP\Property;
 
 /**
- * @property Rich\<user defined style name> $<user defined style name>
+ * @property Rich\<style_name> $<style_name>
  *    
  *
  * {_more_}

@@ -10,10 +10,16 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: false
- *    Whether to show label.
+ *    
+ *     
+ *     Whether to show label.
  *
  * @property string|array $position
- *    Label position.
+ *    
+ *     
+ *     
+ *     
+ *     Label position.
  *     Followings are the options: 
  *     
  *     [x, y]
@@ -43,30 +49,43 @@ use Hisune\EchartsPHP\Property;
  *     See: label position.
  *
  * @property int $distance Default: 5
- *    Distance to the host graphic element. Works when position is string value (like top、insideRight).
+ *    
+ *     
+ *     Distance to the host graphic element.
+ *     It is valid only when position is string value (like top、insideRight).
  *     See: label position.
  *
  * @property int $rotate
- *    Rotate label, from -90 degree to 90, positive value represents rotate anti-clockwise.
+ *    
+ *     
+ *     Rotate label, from -90 degree to 90, positive value represents rotate anti-clockwise.
  *     See: label rotation.
  *
  * @property array $offset
- *    Whether to move text slightly. For example: [30, 40] means move 30 horizontally and move 40 vertically.
+ *    
+ *     
+ *     Whether to move text slightly. For example: [30, 40] means move 30 horizontally and move 40 vertically.
  *
- * @property string $color Default: '"#fff"'
- *     text color.
- *     If set as auto, the color will assigned as visual color, such as series color.
+ * @property string $color Default: '#fff'
+ *    
+ *     
+ *      text color.
+ *     If set as inherit, the color will assigned as visual color, such as series color.
  *
  * @property string $fontStyle Default: 'normal'
- *     font style
+ *    
+ *     
+ *      font style.
  *     Options are:
  *     
  *     normal
  *     italic
  *     oblique
  *
- * @property string $fontWeight Default: 'normal'
- *     font thick weight
+ * @property string|int $fontWeight Default: 'normal'
+ *    
+ *     
+ *      font thick weight.
  *     Options are:
  *     
  *     normal
@@ -76,14 +95,20 @@ use Hisune\EchartsPHP\Property;
  *     100 | 200 | 300 | 400...
  *
  * @property string $fontFamily Default: 'sans-serif'
- *     font family
+ *    
+ *     
+ *      font family.
  *     Can also be serif , monospace, ...
  *
  * @property int $fontSize Default: 12
- *     font size
+ *    
+ *     
+ *      font size.
  *
  * @property string $align
- *    Horizontal alignment of text, automatic by default.
+ *    
+ *     
+ *     Horizontal alignment of text, automatic by default.
  *     Options are:
  *     
  *     left
@@ -101,7 +126,9 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $verticalAlign
- *    Vertical alignment of text, automatic by default.
+ *    
+ *     
+ *     Vertical alignment of text, automatic by default.
  *     Options are:
  *     
  *     top
@@ -119,7 +146,9 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property int $lineHeight
- *    Line height of the text fregment.
+ *    
+ *     
+ *     Line height of the text fragment.
  *     If lineHeight is not set in rich, lineHeight in parent level will be used. For example:
  *     {
  *         lineHeight: 56,
@@ -131,7 +160,9 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string|array $backgroundColor Default: 'transparent'
- *    Background color of the text fregment.
+ *    
+ *     
+ *     Background color of the text fragment.
  *     Can be color string, like #123234, red, rgba(0,23,11,0.3).
  *     Or image can be used, for example:
  *     backgroundColor: {
@@ -144,20 +175,61 @@ use Hisune\EchartsPHP\Property;
  *     
  *     width or height can be specified when using background image, or
  *     auto adapted by default.
- *     If set as auto, the color will assigned as visual color, such as series color.
+ *     If set as inherit, the color will assigned as visual color, such as series color.
  *
- * @property string $borderColor Default: 'transparent'
- *    Border color of the text fregment.
- *     If set as auto, the color will assigned as visual color, such as series color.
+ * @property string $borderColor
+ *    
+ *     
+ *     Border color of the text fragment.
+ *     If set as inherit, the color will assigned as visual color, such as series color.
  *
  * @property int $borderWidth Default: 0
- *    Border width of the text fregment.
+ *    
+ *     
+ *     Border width of the text fragment.
+ *
+ * @property string|int|array $borderType Default: 'solid'
+ *    
+ *     
+ *     
+ *     the text fragment border type.
+ *     Possible values are:
+ *     
+ *     solid
+ *     dashed
+ *     dotted
+ *     
+ *     Since v5.0.0, it can also be a number or a number array to specify the dash array of the line. With 
+ *     borderDashOffset
+ *     , we can make the line style more flexible.
+ *     For example：
+ *     {
+ *     
+ *     borderType: [5, 10],
+ *     
+ *     borderDashOffset: 5
+ *     }
+ *
+ * @property int $borderDashOffset Default: 0
+ *    
+ *     Since v5.0.0
+ *     
+ *     
+ *     
+ *     To set the line dash offset. With 
+ *     borderType
+ *     , we can make the line style more flexible.
+ *     Refer to MDN lineDashOffset for more details.
  *
  * @property int $borderRadius Default: 0
- *    Border radius of the text fregment.
+ *    
+ *     
+ *     Border radius of the text fragment.
  *
  * @property int|array $padding Default: 0
- *    Padding of the text fregment, for example:
+ *    
+ *     
+ *     Padding of the text fragment, for example:
  *     
  *     padding: [3, 4, 5, 6]: represents padding of [top, right, bottom, left].
  *     padding: 4: represents padding: [4, 4, 4, 4].
@@ -166,52 +238,118 @@ use Hisune\EchartsPHP\Property;
  *     Notice, width and height specifies the width and height of the content, without padding.
  *
  * @property string $shadowColor Default: 'transparent'
- *    Shadow color of the text block.
+ *    
+ *     
+ *     Shadow color of the text block.
  *
  * @property int $shadowBlur Default: 0
- *    Show blur of the text block.
+ *    
+ *     
+ *     Show blur of the text block.
  *
  * @property int $shadowOffsetX Default: 0
- *    Shadow X offset of the text block.
+ *    
+ *     
+ *     Shadow X offset of the text block.
  *
  * @property int $shadowOffsetY Default: 0
- *    Shadow Y offset of the text block.
+ *    
+ *     
+ *     Shadow Y offset of the text block.
  *
- * @property int|string $width
- *    Width of the text block. It is the width of the text by default. In most cases, there is no need to specify it. You may want to use it in some cases like make simple table or using background image (see backgroundColor).
- *     Notice, width and height specifies the width and height of the content, without padding.
- *     width can also be percent string, like 100%, which represents the percent of contentWidth (that is, the width without padding) of its container box. It is based on contentWidth because that each text fregment is layout based on the content box, where it makes no sense that calculating width based on outerWith in prectice.
- *     Notice, width and height only work when rich specified.
+ * @property int $width
+ *    
+ *     
+ *     Width of text block.
  *
- * @property int|string $height
- *    Height of the text block. It is the width of the text by default. You may want to use it in some cases like using background image (see backgroundColor).
- *     Notice, width and height specifies the width and height of the content, without padding.
- *     Notice, width and height only work when rich specified.
+ * @property int $height
+ *    
+ *     
+ *     Height of text block.
  *
- * @property string $textBorderColor Default: 'transparent'
- *    Storke color of the text.
- *     If set as auto, the color will assigned as visual color, such as series color.
+ * @property string $textBorderColor
+ *    
+ *     
+ *     Storke color of the text.
+ *     If set as inherit, the color will assigned as visual color, such as series color.
  *
- * @property int $textBorderWidth Default: 0
- *    Storke line width of the text.
+ * @property int $textBorderWidth
+ *    
+ *     
+ *     Storke line width of the text.
+ *
+ * @property string|int|array $textBorderType Default: 'solid'
+ *    
+ *     
+ *     
+ *     Stroke line type of the text.
+ *     Possible values are:
+ *     
+ *     solid
+ *     dashed
+ *     dotted
+ *     
+ *     Since v5.0.0, it can also be a number or a number array to specify the dash array of the line. With 
+ *     textBorderDashOffset
+ *     , we can make the line style more flexible.
+ *     For example：
+ *     {
+ *     
+ *     textBorderType: [5, 10],
+ *     
+ *     textBorderDashOffset: 5
+ *     }
+ *
+ * @property int $textBorderDashOffset Default: 0
+ *    
+ *     Since v5.0.0
+ *     
+ *     
+ *     
+ *     To set the line dash offset. With 
+ *     textBorderType
+ *     , we can make the line style more flexible.
+ *     Refer to MDN lineDashOffset for more details.
  *
  * @property string $textShadowColor Default: 'transparent'
- *    Shadow color of the text itself.
+ *    
+ *     
+ *     Shadow color of the text itself.
  *
  * @property int $textShadowBlur Default: 0
- *    Shadow blue of the text itself.
+ *    
+ *     
+ *     Shadow blue of the text itself.
  *
  * @property int $textShadowOffsetX Default: 0
- *    Shadow X offset of the text itself.
+ *    
+ *     
+ *     Shadow X offset of the text itself.
  *
  * @property int $textShadowOffsetY Default: 0
- *    Shadow Y offset of the text itself.
+ *    
+ *     
+ *     Shadow Y offset of the text itself.
+ *
+ * @property string $overflow Default: 'none'
+ *    
+ *     
+ *     Determine how to display the text when its overflow. Available when width is set.
+ *     
+ *     truncate Truncate the text and trailing with ellipsis.
+ *     break Break by word
+ *     breakAll Break by character.
+ *
+ * @property string $ellipsis Default: '...'
+ *    Ellipsis to be displayed when overflow is set to truncate.
+ *     
+ *     truncate Truncate the overflow lines.
  *
  * @property Label\Rich $rich
  *    Rich text styles can be defined in this rich property. For example:
  *     label: {
- *         // Styles defined in rich can be applied to some fregments
- *         // of text by adding some markers to those fregment, like
+ *         // Styles defined in rich can be applied to some fragments
+ *         // of text by adding some markers to those fragment, like
  *         // `{styleName|text content text content}`.
  *         // `\n` is the newline character.
  *         formatter: [

@@ -16,7 +16,19 @@ use Hisune\EchartsPHP\Property;
  *    The style of the leaf node in the tree.
  *
  * @property Leaves\Emphasis $emphasis
+ *    Emphasis state of leaves nodes.
+ *
+ * @property Leaves\Blur $blur
  *    
+ *     Since v5.0.0
+ *     
+ *     Blur state of leaves nodes.
+ *
+ * @property Leaves\Select $select
+ *    
+ *     Since v5.0.0
+ *     
+ *     Select state of leaves nodes.
  *
  * {_more_}
  */

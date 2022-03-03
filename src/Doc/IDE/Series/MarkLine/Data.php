@@ -87,12 +87,6 @@ use Hisune\EchartsPHP\Property;
  * @property Data\1 $1
  *    Data of the ending point.
  *
- *  * @property Data\0 $0
- *    Data of the starting point.
- *
- * @property Data\1 $1
- *    Data of the ending point.
- *
  * {_more_}
  */
 class Data extends Property {}

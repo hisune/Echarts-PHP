@@ -10,10 +10,14 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: false
- *    axisPointer will not be displayed by default. But if tooltip.trigger is set as axis or tooltip.axisPointer.type is set as  cross, axisPointer will be displayed automatically. Each coordinate system will automatically chose the axes whose will display its axisPointer. tooltip.axisPointer.axis can be used to change the choice.
+ *    
+ *     
+ *     axisPointer will not be displayed by default. But if tooltip.trigger is set as axis or tooltip.axisPointer.type is set as  cross, axisPointer will be displayed automatically. Each coordinate system will automatically chose the axes whose will display its axisPointer. tooltip.axisPointer.axis can be used to change the choice.
  *
  * @property string $type Default: 'line'
- *    Indicator type.
+ *    
+ *     
+ *     Indicator type.
  *     Options:
  *     
  *     line line indicator.
@@ -39,13 +43,17 @@ use Hisune\EchartsPHP\Property;
  *    It is valid when axisPointer.type is shadow.
  *
  * @property boolean $triggerTooltip Default: true
- *    Whether to trigger tooltip.
+ *    
+ *     
+ *     Whether to trigger tooltip.
  *
  * @property int $value
  *    current value. When using axisPointer.handle, value can be set to define the initail position of axisPointer.
  *
  * @property boolean $status
- *    Current status, can be show 和 hide.
+ *    
+ *     
+ *     Current status, can be show 和 hide.
  *
  * @property AxisPointer\Handle $handle
  *    A button used to drag axisPointer. This feature is applicable in touch device. See example.

@@ -15,12 +15,6 @@ use Hisune\EchartsPHP\Property;
  * @property array $bar
  *    
  *
- * @property array $stack
- *    
- *
- * @property array $tiled
- *    
- *
  * {_more_}
  */
 class SeriesIndex extends Property {}

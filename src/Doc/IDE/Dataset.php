@@ -42,7 +42,7 @@ use Hisune\EchartsPHP\Property;
  *
  * @property array $dimensions
  *    dimensions can be used to define dimension info for series.data or dataset.source.
- *     Notice: if dataset is used, we can provide dimension names in the first column/row of dataset.source, and not need to specify dimensions here. But if dimensions is specified here, echarts will not retrieve dimension names from the first row/column of dataset.source any more.
+ *     Notice: if dataset is used, we can definite dimensions in dataset.dimensions, or provide dimension names in the first column/row of dataset.source, and not need to specify dimensions here. But if dimensions is specified here, it will be used despite the dimension definitions in dataset.
  *     For example:
  *     option = {
  *         dataset: {
@@ -91,14 +91,32 @@ use Hisune\EchartsPHP\Property;
  *     
  *     When dimensions is specified, the default tooltip will be displayed vertically, which is better to show diemsion names. Otherwise, tooltip will displayed only value horizontally.
  *
- * @property boolean $sourceHeader
+ * @property boolean|int $sourceHeader
  *    Whether the first row/column of dataset.source represents dimension names. Optional values:
  *     
- *     null/undefine: means auto detect whether the first row/column is dimension names or data.
+ *     null/undefined/auto: means auto detect whether the first row/column is dimension names or data.
  *     true: the first row/column is dimension names.
  *     false: data start from the first row/column.
+ *     number: means the row/column count of the dimension names, that is, the start index of data row/column. e.g. sourceHeader: 2 means the front two rows/columns are dimension names, the back ones are data.
  *     
  *     Note: the first row/column means that if series.seriesLayoutBy is set as column, pick the first row, otherwise, if it is set as row, pick the first column.
+ *
+ * @property array $transform
+ *    See the tutorial of data transform.
+ *
+ * @property int $fromDatasetIndex
+ *    Specify the input dataset for dataset.transform.
+ *     If dataset.transform specified but both fromDatasetIndex and fromDatasetId are not specified, fromDatasetIndex: 0 will be used by default.
+ *     See the tutorial of data transform.
+ *
+ * @property string $fromDatasetId
+ *    Specify the input dataset for dataset.transform.
+ *     See the tutorial of data transform.
+ *
+ * @property int $fromTransformResult
+ *    If a dataset.transform produces more than one result, we can use fromTransformResult to retrieve some certain result.
+ *     In most cases, fromTransformResult do not need to be specified because most transforms only produce one result. If fromTransformResult is not specified, we use fromTransformResult: 0 by default.
+ *     See the tutorial of data transform.
  *
  * {_more_}
  */

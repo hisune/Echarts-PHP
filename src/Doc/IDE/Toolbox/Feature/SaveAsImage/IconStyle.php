@@ -9,54 +9,105 @@ namespace Hisune\EchartsPHP\Doc\IDE\Toolbox\Feature\SaveAsImage;
 use Hisune\EchartsPHP\Property;
 
 /**
- * @property string $color
- *     color. 
+ * @property string $color Default: 'none'
+ *    
  *     
- *     Color can be represented in RGB, for example rgb(128, 128, 128). RGBA can be used when you need alpha channel, for example rgba(128, 128, 128, 0.5). You may also use hexadecimal format, for example #ccc. Gradient color and texture are also supported besides single colors.
- *     // Linear gradient. First four parameters are x0, y0, x2, and y2, each ranged from 0 to 1, standing for percentage in the bounding box. If global is `true`, then the first four parameters are in absolute pixel positions.
- *     color: {
- *         type: linear,
- *         x: 0,
- *         y: 0,
- *         x2: 0,
- *         y2: 1,
- *         colorStops: [{
- *             offset: 0, color: red // color at 0% position
- *         }, {
- *             offset: 1, color: blue // color at 100% position
- *         }],
- *         global: false // false by default
- *     }
- *     // Radial gradient. First three parameters are x and y positions of center, and radius, similar to linear gradient.
- *     color: {
- *         type: radial,
- *         x: 0.5,
- *         y: 0.5,
- *         r: 0.5,
- *         colorStops: [{
- *             offset: 0, color: red // color at 0% position
- *         }, {
- *             offset: 1, color: blue // color at 100% position
- *         }],
- *         global: false // false by default
- *     }
- *     // Fill with texture
- *     color: {
- *         image: imageDom, // HTMLImageElement, and HTMLCanvasElement are supported, while string path is not supported
- *         repeat: repeat // whether to repeat texture, whose value can be repeat-x, repeat-y, or no-repeat
- *     }
+ *      color. 
+ *     
+ *     Supports setting as solid color using rgb(255,255,255), rgba(255,255,255,1), #fff, etc. Also supports setting as gradient color and pattern fill, see option.color for details
  *
  * @property string $borderColor Default: '#666'
- *     border color, whose format is similar to that of color.
+ *    
+ *     
+ *      border color, whose format is similar to that of color.
  *
  * @property int $borderWidth Default: 1
- *     border width. No border when it is set to be 0.
+ *    
+ *     
+ *      border width. No border when it is set to be 0.
+ *      border width. No border when it is set to be 0.
  *
- * @property string $borderType Default: 'solid'
- *    Border type, which can be solid, dashed, or dotted. solid by default.
+ * @property string|int|array $borderType Default: 'solid'
+ *    
+ *     
+ *     
+ *      border type.
+ *     Possible values are:
+ *     
+ *     solid
+ *     dashed
+ *     dotted
+ *     
+ *     Since v5.0.0, it can also be a number or a number array to specify the dash array of the line. With 
+ *     borderDashOffset
+ *     , we can make the line style more flexible.
+ *     For example：
+ *     {
+ *     
+ *     borderType: [5, 10],
+ *     
+ *     borderDashOffset: 5
+ *     }
+ *
+ * @property int $borderDashOffset Default: 0
+ *    
+ *     Since v5.0.0
+ *     
+ *     
+ *     
+ *     To set the line dash offset. With 
+ *     borderType
+ *     , we can make the line style more flexible.
+ *     Refer to MDN lineDashOffset for more details.
+ *
+ * @property string $borderCap Default: 'butt'
+ *    
+ *     Since v5.0.0
+ *     
+ *     
+ *     
+ *     To specify how to draw the end points of the line.
+ *     Possible values are:
+ *     
+ *     butt: The ends of lines are squared off at the endpoints.
+ *     round: The ends of lines are rounded.
+ *     square: The ends of lines are squared off by adding a box with an equal width and half the height of the lines thickness.
+ *     
+ *     Default value is butt. Refer to MDN lineCap for more details.
+ *
+ * @property string $borderJoin Default: 'bevel'
+ *    
+ *     Since v5.0.0
+ *     
+ *     
+ *     
+ *     To determine the shape used to join two line segments where they meet.
+ *     Possible values are:
+ *     
+ *     bevel: Fills an additional triangular area between the common endpoint of connected segments, and the separate outside rectangular corners of each segment.
+ *     round: Rounds off the corners of a shape by filling an additional sector of disc centered at the common endpoint of connected segments. The radius for these rounded corners is equal to the line width.
+ *     miter: Connected segments are joined by extending their outside edges to connect at a single point, with the effect of filling an additional lozenge-shaped area. This setting is affected by the 
+ *     borderMiterLimit
+ *     property.
+ *     
+ *     Default value is bevel. Refer to MDN lineJoin for more details.
+ *
+ * @property int $borderMiterLimit Default: 10
+ *    
+ *     Since v5.0.0
+ *     
+ *     
+ *     
+ *     To set the miter limit ratio. Only works when 
+ *     borderJoin
+ *      is set as miter.
+ *     Default value is 10. Negative、0、Infinity and NaN values are ignored.
+ *     Refer to MDN miterLimit for more details.
  *
  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -64,16 +115,24 @@ use Hisune\EchartsPHP\Property;
  *     }
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
  *
  * @property int $shadowOffsetX Default: 0
- *    Offset distance on the horizontal direction of shadow.
+ *    
+ *     
+ *     Offset distance on the horizontal direction of shadow.
  *
  * @property int $shadowOffsetY Default: 0
- *    Offset distance on the vertical direction of shadow.
+ *    
+ *     
+ *     Offset distance on the vertical direction of shadow.
  *
  * @property int $opacity
- *    Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
+ *    
+ *     
+ *     Opacity of the component. Supports value from 0 to 1, and the component will not be drawn when set to 0.
  *
  * {_more_}
  */

@@ -13,7 +13,9 @@ use Hisune\EchartsPHP\Property;
  *    Component ID, not specified by default. If specified, it can be used to refer the component in option or API.
  *
  * @property boolean $show Default: false
- *    Whether to show the grid in rectangular coordinate.
+ *    
+ *     
+ *     Whether to show the grid in rectangular coordinate.
  *
  * @property int $zlevel Default: 0
  *    zlevel value of all graphical elements in .
@@ -32,7 +34,7 @@ use Hisune\EchartsPHP\Property;
  * @property string|int $top Default: 60
  *    Distance between grid  component and the top side of the container.
  *     top value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
- *     If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
+ *     If the top value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
  *
  * @property string|int $right Default: '10%'
  *    Distance between grid  component and the right side of the container.
@@ -49,7 +51,9 @@ use Hisune\EchartsPHP\Property;
  *    Height of grid  component. Adaptive by default.
  *
  * @property boolean $containLabel Default: false
- *    Whether the grid region contains axis tick label of axis.
+ *    
+ *     
+ *     Whether the grid region contains axis tick label of axis.
  *     
  *     When containLabel is false:
  *     grid.left grid.right grid.top grid.bottom grid.width grid.height decide the location and size of the rectangle that is made of by xAxis and yAxis.
@@ -61,22 +65,30 @@ use Hisune\EchartsPHP\Property;
  *     Setting to true will help when the length of axis labels is dynamic and is hard to approximate. This will avoid labels from overflowing the container or overlapping other components.
  *
  * @property string $backgroundColor Default: 'transparent'
- *    Background color of grid, which is transparent by default.
+ *    
+ *     
+ *     Background color of grid, which is transparent by default.
  *     
  *     Color can be represented in RGB, for example rgb(128, 128, 128). RGBA can be used when you need alpha channel, for example rgba(128, 128, 128, 0.5). You may also use hexadecimal format, for example #ccc.
  *     
  *     Attention: Works only if show: true is set.
  *
  * @property string $borderColor Default: '#ccc'
- *    Border color of grid. Support the same color format as backgroundColor.
+ *    
+ *     
+ *     Border color of grid. Support the same color format as backgroundColor.
  *     Attention: Works only if show: true is set.
  *
  * @property int $borderWidth Default: 1
- *    Border width of grid.
+ *    
+ *     
+ *     Border width of grid.
  *     Attention: Works only if show: true is set.
  *
  * @property int $shadowBlur
- *    Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
+ *    
+ *     
+ *     Size of shadow blur. This attribute should be used along with shadowColor,shadowOffsetX, shadowOffsetY to set shadow to component.
  *     For example:
  *     {
  *         shadowColor: rgba(0, 0, 0, 0.5),
@@ -86,20 +98,25 @@ use Hisune\EchartsPHP\Property;
  *     Attention: This property works only if show: true is configured and backgroundColor is defined other than transparent.
  *
  * @property string $shadowColor
- *    Shadow color. Support same format as color.
+ *    
+ *     
+ *     Shadow color. Support same format as color.
  *     Attention: This property works only if show: true configured.
  *
  * @property int $shadowOffsetX Default: 0
- *    Offset distance on the horizontal direction of shadow.
+ *    
+ *     
+ *     Offset distance on the horizontal direction of shadow.
  *     Attention: This property works only if show: true configured.
  *
  * @property int $shadowOffsetY Default: 0
- *    Offset distance on the vertical direction of shadow.
+ *    
+ *     
+ *     Offset distance on the vertical direction of shadow.
  *     Attention: This property works only if show: true configured.
  *
  * @property Grid\Tooltip $tooltip
  *    tooltip settings in the coordinate system component.
- *     
  *     General Introduction:
  *     tooltip can be configured on different places:
  *     

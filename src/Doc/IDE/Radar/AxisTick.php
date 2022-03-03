@@ -10,13 +10,17 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property boolean $show Default: true
- *    Set this to false to prevent the axis tick from showing.
+ *    
+ *     
+ *     Set this to false to prevent the axis tick from showing.
  *
  * @property int $length Default: 5
- *    The length of the axis tick.
+ *    
+ *     
+ *     The length of the axis tick.
  *
  * @property AxisTick\LineStyle $lineStyle
- *    
+ *    Line style of axis ticks.
  *
  * {_more_}
  */

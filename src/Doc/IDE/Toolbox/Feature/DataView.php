@@ -32,7 +32,9 @@ use Hisune\EchartsPHP\Property;
  *    
  *
  * @property boolean $readOnly Default: false
- *    Whether it is read-only.
+ *    
+ *     
+ *     Whether it is read-only.
  *
  * @property callable $optionToContent
  *    (option:Object) =&gt; HTMLDomElement|string
@@ -67,22 +69,34 @@ use Hisune\EchartsPHP\Property;
  *    There are 3 names in data view, which are [data view, turn off and refresh].
  *
  * @property string $backgroundColor Default: '#fff'
- *    Background color of the floating layer in data view.
+ *    
+ *     
+ *     Background color of the floating layer in data view.
  *
  * @property string $textareaColor Default: '#fff'
- *    Background color of input area of the floating layer in data view.
+ *    
+ *     
+ *     Background color of input area of the floating layer in data view.
  *
  * @property string $textareaBorderColor Default: '#333'
- *    Border color of input area of the floating layer in data view.
+ *    
+ *     
+ *     Border color of input area of the floating layer in data view.
  *
  * @property string $textColor Default: '#000'
- *    Text color.
+ *    
+ *     
+ *     Text color.
  *
  * @property string $buttonColor Default: '#c23531'
- *    Button color.
+ *    
+ *     
+ *     Button color.
  *
  * @property string $buttonTextColor Default: '#fff'
- *    Color of button text.
+ *    
+ *     
+ *     Color of button text.
  *
  * {_more_}
  */

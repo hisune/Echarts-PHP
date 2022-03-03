@@ -13,23 +13,33 @@ use Hisune\EchartsPHP\Property;
  *    Component ID, not specified by default. If specified, it can be used to refer the component in option or API.
  *
  * @property boolean $show Default: true
- *    Whether to show toolbox component.
+ *    
+ *     
+ *     Whether to show toolbox component.
  *
  * @property string $orient Default: 'horizontal'
- *    The layout orientation of toolboxs icon.
+ *    
+ *     
+ *     The layout orientation of toolboxs icon.
  *     Options:
  *     
  *     horizontal
  *     vertical
  *
  * @property int $itemSize Default: 15
- *    The size of toolboxs icon.
+ *    
+ *     
+ *     The size of toolboxs icon.
  *
  * @property int $itemGap Default: 10
- *    The gap between each icon of toolbox. It is horizontal gap in horizontal layout, while vertical gap in vertical layout.
+ *    
+ *     
+ *     The gap between each icon of toolbox. It is horizontal gap in horizontal layout, while vertical gap in vertical layout.
  *
  * @property boolean $showTitle Default: true
- *    Whether to show the title of each tool icon when mouse hovers.
+ *    
+ *     
+ *     Whether to show the title of each tool icon when mouse hovers.
  *
  * @property Toolbox\Feature $feature
  *    The configuration item for each tool.
@@ -81,7 +91,7 @@ use Hisune\EchartsPHP\Property;
  * @property string|int $top Default: 'auto'
  *    Distance between toolbox component and the top side of the container.
  *     top value can be instant pixel value like 20; it can also be a percentage value relative to container width like 20%; and it can also be top, middle, or bottom.
- *     If the left value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
+ *     If the top value is set to be top, middle, or bottom, then the component will be aligned automatically based on position.
  *
  * @property string|int $right Default: 'auto'
  *    Distance between toolbox component and the right side of the container.

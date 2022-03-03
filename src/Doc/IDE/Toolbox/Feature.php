@@ -26,7 +26,7 @@ use Hisune\EchartsPHP\Property;
  *     示例: 
  *     feature: {
  *         magicType: {
- *             type: [line, bar, stack, tiled]
+ *             type: [line, bar, stack]
  *         }
  *     }
  *

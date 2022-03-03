@@ -10,16 +10,27 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property string $type Default: 'png'
- *    Format to save the image in, which supportspng and jpeg.
+ *    
+ *     
+ *     File suffix of the image saved.
+ *     
+ *     If the renderer is set to be canvas when chart initialized (default), then png (default) and jpg are supported.
+ *     If the renderer is set to be svg when when chart initialized, then only svg is supported for type (svg type is supported since v4.8.0).
  *
  * @property string $name
- *    Name to save the image, whose default value is title.text.
+ *    
+ *     
+ *     Name to save the image, whose default value is title.text.
  *
  * @property string $backgroundColor Default: 'auto'
- *    Background color to save the image, whose default value is backgroundColor. If backgroundColor is not set, white color is used.
+ *    
+ *     
+ *     Background color to save the image, whose default value is backgroundColor. If backgroundColor is not set, white color is used.
  *
  * @property string $connectedBackgroundColor Default: '#fff'
- *    When echarts.connect is used to connect the interaction of multiple chart series, they will all be included in the exported image. This option sets the background color between these charts.
+ *    
+ *     
+ *     When echarts.connect is used to connect the interaction of multiple chart series, they will all be included in the exported image. This option sets the background color between these charts.
  *
  * @property array $excludeComponents Default: '[\'toolbox\']'
  *    Components to be excluded when export. By default, toolbox is excluded.
@@ -47,7 +58,9 @@ use Hisune\EchartsPHP\Property;
  *    
  *
  * @property int $pixelRatio Default: 1
- *    Resolution ratio to save image, whose default value is that of the container. Values larger than 1 (e.g.: 2) is supported when you need higher resolution.
+ *    
+ *     
+ *     Resolution ratio to save image, whose default value is that of the container. Values larger than 1 (e.g.: 2) is supported when you need higher resolution.
  *
  * {_more_}
  */

@@ -10,19 +10,29 @@ use Hisune\EchartsPHP\Property;
 
 /**
  * @property int $width Default: 20
- *    Width of selecting box.
+ *    
+ *     
+ *     Width of selecting box.
  *
  * @property int $borderWidth Default: 1
- *    Border width of the select box.
+ *    
+ *     
+ *     Border width of the select box.
  *
  * @property string $borderColor Default: 'rgba(160,197,232)'
- *    Border color of the select box.
+ *    
+ *     
+ *     Border color of the select box.
  *
  * @property string $color Default: 'rgba(160,197,232)'
- *    Border fill color of the select box.
+ *    
+ *     
+ *     Border fill color of the select box.
  *
  * @property int $opacity Default: 0.3
- *    Opacity of the select box.
+ *    
+ *     
+ *     Opacity of the select box.
  *
  * {_more_}
  */
