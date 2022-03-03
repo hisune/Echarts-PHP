@@ -1,7 +1,7 @@
 # Echarts-PHP
 [![Latest Stable Version](http://poser.pugx.org/hisune/echarts-php/v)](https://packagist.org/packages/hisune/echarts-php) [![Total Downloads](http://poser.pugx.org/hisune/echarts-php/downloads)](https://packagist.org/packages/hisune/echarts-php) [![Latest Unstable Version](http://poser.pugx.org/hisune/echarts-php/v/unstable)](https://packagist.org/packages/hisune/echarts-php) [![License](http://poser.pugx.org/hisune/echarts-php/license)](https://packagist.org/packages/hisune/echarts-php) [![PHP Version Require](http://poser.pugx.org/hisune/echarts-php/require/php)](https://packagist.org/packages/hisune/echarts-php)
 
-Echarts-PHP is a PHP library that works as a wrapper for the **Echarts js** library (https://github.com/ecomfe/echarts). Support [Apache ECharts (incubating)](https://github.com/apache/incubator-echarts) from version 2.2.x to 4.x.
+Echarts-PHP is a PHP library that works as a wrapper for the **Echarts js** library (https://github.com/ecomfe/echarts). Support [Apache ECharts (incubating)](https://github.com/apache/incubator-echarts) from version 2.2.x to 5.x.
 
 ## Setup
 
