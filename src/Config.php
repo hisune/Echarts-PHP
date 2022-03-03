@@ -10,7 +10,7 @@ namespace Hisune\EchartsPHP;
 
 class Config
 {
-    public static $dist = '//cdn.bootcdn.net/ajax/libs/echarts/5.3.0';
+    public static $dist = '//cdn.jsdelivr.net/npm/echarts@5/dist';
     public static $version = '5.3.0';
     public static $method = array();
     public static $renderScript = true;
