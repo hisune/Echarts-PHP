@@ -236,7 +236,7 @@ https://demo.hisune.com/echarts-php/
 
 [demo](demo)
 
-All the Echarts live demos present on http://echarts.baidu.com/.
+All the Echarts live demos present on https://echarts.apache.org/
 
 ## License
 MIT
