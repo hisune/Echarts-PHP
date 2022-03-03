@@ -134,6 +134,9 @@ $chart->legend->data[] = '销量';
 $chart->yAxis[0] = array('type' => 'value');
 ```
 
+### Empty object assignment
+If you need to assign a value to an empty object, you can use `StdClass`, for example: `$chart->yAxis = new \StdClass;`
+
 ### Javascript function
 `string Config::jsExpr(string $string)`
 ```php

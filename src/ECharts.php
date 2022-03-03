@@ -165,7 +165,7 @@ class ECharts extends Property
 
         foreach ($render as $k => $v) {
             if (is_object($v)) {
-                $options[$k] = $v->_options;
+                $options[$k] = $v instanceof \StdClass ? new \StdClass : $v->_options;
                 if (is_array($options[$k]))
                     $options[$k] = $this->getOption($options[$k]);
             } else
