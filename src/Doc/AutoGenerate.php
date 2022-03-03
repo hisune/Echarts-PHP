@@ -18,19 +18,17 @@ class AutoGenerate
 {
 
     public $optionJson = [
-        'cn' => 'https://www.echartsjs.com/documents/zh/option.json',
-        'en' => 'https://echarts.apache.org/documents/en/option.json',
+        'cn' => 'https://raw.githubusercontent.com/apache/echarts-website/asf-site/zh/documents/option.json',
+        'en' => 'https://raw.githubusercontent.com/apache/echarts-website/asf-site/en/documents/option.json',
     ];
 
     protected $language;
-
-    protected $dir = __DIR__ . '/IDE';
 
     private $anyOf = [];
 
     public function __construct($language = 'en')
     {
-        $this->delTree($this->dir);
+        $this->delTree($this->getDir());
         $this->setLanguage($language);
     }
 
@@ -40,6 +38,11 @@ class AutoGenerate
             (is_dir("$dir/$file") && !is_link($dir)) ? $this->delTree("$dir/$file") : unlink("$dir/$file");
         }
         return rmdir($dir);
+    }
+
+    private function getDir()
+    {
+        return __DIR__ . '/IDE';
     }
 
     public function getLanguage()
@@ -108,7 +111,7 @@ class AutoGenerate
                 $this->_properties($property['properties'], $dir . '/' . $top);
             }
 
-            $dirToWrite = $this->dir . $dir;
+            $dirToWrite = $this->getDir() . $dir;
             if($classPropertyString){
                 if(!file_exists($dirToWrite)){
                     mkdir($dirToWrite, 0700, true);
@@ -199,7 +202,7 @@ PHP;
     private function _propertyLine($type, $name, $default, $description, $top, $dir)
     {
         if($dir){
-            $file = $this->dir . $dir . '/' . $top . '.php';
+            $file = $this->getDir() . $dir . '/' . $top . '.php';
             if(file_exists($file)){
                 $contents = file_get_contents($file);
                 if(strpos($contents, ' $' . $name . ' ') > 0){
