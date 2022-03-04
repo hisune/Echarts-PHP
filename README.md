@@ -7,7 +7,7 @@ Echarts-PHP is a PHP library that works as a wrapper for the **Echarts js** libr
 
 The recommended way to install Echarts-PHP is through  [`Composer`](http://getcomposer.org). Just run the composer command to install it:
 ```sh
-composer require "hisune/echarts-php"
+composer require hisune/echarts-php
 ```
 
 ## Table of Contents
