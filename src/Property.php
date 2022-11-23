@@ -24,11 +24,13 @@ class Property implements \ArrayAccess
         return $this->offsetGet($offset);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->_options[$offset]);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if (!$this->offsetExists($offset))
@@ -37,6 +39,7 @@ class Property implements \ArrayAccess
         return $this->_options[$offset];
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         if (is_null($offset))
@@ -45,6 +48,7 @@ class Property implements \ArrayAccess
             return $this->_options[$offset] = $value;
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         unset($this->_options[$offset]);
