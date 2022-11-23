@@ -3,6 +3,8 @@
 
 Echarts-PHP is a PHP library that works as a wrapper for the **Echarts js** library (https://github.com/apache/echarts). Support [Apache ECharts (incubating)](https://github.com/apache/echarts) from version 2.2.x to 5.x.
 
+Welcome star ⭐️!
+
 ## Setup
 
 The recommended way to install Echarts-PHP is through  [`Composer`](http://getcomposer.org). Just run the composer command to install it:
