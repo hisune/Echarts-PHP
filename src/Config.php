@@ -89,7 +89,7 @@ class Config
             return <<<HTML
 <div id="$id" $attribute></div>
 $js
-<script type="text/javascript">
+<script>
 	require.config({
 		paths: {
 			echarts: '{$dist}'
@@ -119,7 +119,7 @@ HTML;
             return <<<HTML
 <div id="$id" $attribute></div>
 $js
-<script type="text/javascript">
+<script>
     var $prefix$jsVar = echarts.init(document.getElementById('$id'), '$theme');
     $prefix$jsVar.setOption($option);$eventsHtml
 </script>
