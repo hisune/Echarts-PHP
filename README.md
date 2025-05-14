@@ -245,3 +245,6 @@ All the Echarts live demos present on https://echarts.apache.org/
 
 ## License
 MIT
+
+## Sponsor
+Thanks to [zmto](https://www.zmto.com/) for providing VPS sponsorship.
